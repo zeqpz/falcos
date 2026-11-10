@@ -1,0 +1,335 @@
+"""Falcos - game configuration: symbols, cluster paytable, features, bonuses, bet modes.
+
+Source of truth for the rules: FALCOS_DESIGN.md (owner-approved, v1 2026-11-09). This file
+implements it exactly where it is specific; where it is not, the decision taken is written
+next to the value (and summarised in EVENTS.md, "Rules the books follow").
+
+Symbols
+    Paying (9)   H1 Cash Drawer  H2 Gold Key  H3 Pump Nozzle  H4 Jerry Can
+                 L1 Energy Drink  L2 Slushie  L3 Hot Dog  L4 Chips  L5 Donut
+    Features     ZP Zippo   ST Scratch Ticket   GT Gold Scratch Ticket   GP Gas Pump
+    Scatters     BS FALCOS Token (3 -> FILL UP, 4+ -> PREMIUM)
+                 DS Midnight Token (3 -> MIDNIGHT RUN; base and FUEL CHANCE only)
+    FILL UP only FD Fuel Drop (carries `value`), X blank; ST/GT are collectors, GP a booster,
+                 ZP a burner there.
+
+Board: 7x5 (7 reels wide, 5 rows tall, 35 cells; owner decision 2026-11-09), clusters of 5+ joined orthogonally, tumbles. Every cell carries a multiplier
+(x1 .. x2048) that doubles each time a win or a feature hits it; a cluster pays the SUM of
+its cells that are at x2 or more (x1 if none).
+"""
+
+import os
+from src.config.config import Config
+from src.config.distributions import Distribution
+from src.config.betmode import BetMode
+
+PAYING = ("H1", "H2", "H3", "H4", "L1", "L2", "L3", "L4", "L5")
+FEATURES = ("ZP", "ST", "GT", "GP")
+SCATTERS = ("BS", "DS")
+
+# --------------------------------------------------------------------------------------------
+# Paytable, verbatim from FALCOS_DESIGN.md (owner-approved tenths table, 2026-11-09): pays x bet
+# by cluster size, 15+ pays the top rate. Every entry is a whole number of tenths and a cluster's
+# multiplier is 1 or an even number (a sum of powers of two >= 2), so every win lands on the RGS's
+# 0.1x grid (math-sdk utils/rgs_verification.py asserts payout % 10 == 0 in hundredths) with no
+# rounding.
+DESIGN_PAYTABLE = {
+    #       5     6     7     8     9    10    11    12    13    14   15+
+    "H1": (1.0, 1.5, 2.0, 2.5, 3.0, 5.0, 8.0, 15.0, 30.0, 60.0, 150.0),
+    "H2": (0.8, 1.0, 1.2, 1.5, 2.0, 4.0, 6.0, 12.0, 25.0, 50.0, 100.0),
+    "H3": (0.5, 0.8, 1.0, 1.2, 1.5, 3.0, 4.5, 10.0, 20.0, 40.0, 60.0),
+    "H4": (0.4, 0.5, 0.8, 1.0, 1.2, 2.0, 3.0, 5.0, 10.0, 20.0, 40.0),
+    "L1": (0.3, 0.4, 0.5, 0.8, 1.0, 1.5, 2.5, 4.0, 8.0, 15.0, 30.0),
+    "L2": (0.3, 0.4, 0.5, 0.6, 0.8, 1.2, 2.0, 3.0, 6.0, 12.0, 25.0),
+    "L3": (0.2, 0.3, 0.4, 0.5, 0.7, 1.1, 1.8, 2.8, 5.5, 11.0, 22.0),
+    "L4": (0.2, 0.3, 0.4, 0.5, 0.6, 1.0, 1.5, 2.5, 5.0, 10.0, 20.0),
+    "L5": (0.2, 0.2, 0.3, 0.4, 0.5, 0.9, 1.4, 2.2, 4.5, 9.0, 18.0),
+}
+for _sym, _pays in DESIGN_PAYTABLE.items():
+    assert all(abs(p * 10 - round(p * 10)) < 1e-9 for p in _pays), f"{_sym}: pays must be in 0.1x steps"
+
+
+# --------------------------------------------------------------------------------------------
+# Feature tables
+
+# Gas Pump grades: key -> (grade, multiplier). FULL TANK has no multiplier (MAX cells).
+GP_GRADES = {
+    "R2": ("regular", 2), "R4": ("regular", 4),
+    "P8": ("plus", 8), "P16": ("plus", 16),
+    "PR32": ("premium", 32), "PR64": ("premium", 64),
+    "FT": ("fulltank", None),
+}
+
+# FILL UP: what lands in an empty cell on each spin, and what a Fuel Drop / pump is worth.
+FD_GREEN = (0.2, 0.5, 1, 2, 3)
+FD_AMBER = (5, 10, 15, 20)
+FD_RED = (50, 100, 250, 500)
+
+
+class GameConfig(Config):
+    """Falcos configuration class."""
+
+    def __init__(self):
+        super().__init__()
+        self.game_id = "falcos"
+        self.game_name = "falcos"
+        self.provider_numer = 0
+        self.provider_number = 0
+        self.provider_name = "falcos"
+        self.working_name = "Falcos"
+        self.wincap = 50000.0               # owner decision 2026-11-09: max win 50,000x in every mode
+        self.win_type = "cluster"
+        self.rtp = 0.965
+        self.construct_paths()
+
+        self.num_reels = 7
+        self.num_rows = [5] * self.num_reels       # 7 reels x 5 rows (35 cells)
+        self.include_padding = True
+
+        # Cell multipliers: start x1, double on every win/feature hit, capped at x2048.
+        self.cell_cap = 2048
+        # Safety net only: a spin keeps tumbling while anything pays or a feature fires; this
+        # bound is never meant to bind (sims report how often it does - it should be never).
+        self.max_tumbles_per_spin = 150
+
+        # Paytable (cluster size, symbol) -> pay. Sizes 5..14 individually, 15..35 the top rate.
+        pay_group = {}
+        for sym, pays in DESIGN_PAYTABLE.items():
+            for i, pay in enumerate(pays):
+                size = 5 + i
+                rng = (size, size) if size < 15 else (15, 35)
+                pay_group[(rng, sym)] = pay
+        self.paytable = self.convert_range_table(pay_group)
+
+        # "scatter" and "feature" become flags on the reveal/tumble symbols ({"name":"BS","scatter":true}).
+        self.special_symbols = {
+            "wild": [],
+            "scatter": list(SCATTERS),
+            "feature": list(FEATURES),
+        }
+        self.free_spins = 10                       # PREMIUM and MIDNIGHT RUN: 10 free spins, no retriggers
+        self.midnight_start_mult = 4               # MIDNIGHT RUN: every cell starts at x4
+        self.freespin_triggers = {self.basegame_type: {3: self.free_spins}, self.freegame_type: {}}
+        self.anticipation_triggers = {self.basegame_type: 2, self.freegame_type: 99}
+
+        # ---------------------------------------------------------------- reels
+        reels = {"BR0": "BR0.csv", "FR0": "FR0.csv", "FRM": "FRM.csv", "NR0": "NR0.csv"}
+        self.reels = {r: self.read_reels_csv(os.path.join(self.reels_path, f)) for r, f in reels.items()}
+        self.padding_reels = {self.basegame_type: self.reels["BR0"], self.freegame_type: self.reels["FR0"]}
+        # free-spin strips belong to the bonus, not to the criteria: PREMIUM plays FR0, MIDNIGHT
+        # RUN the pump-rich FRM, whichever criteria (or natural trigger) led there
+        self.bonus_reels = {"premium": {"FR0": 1}, "midnight": {"FRM": 1}}
+
+        # ---------------------------------------------------------------- Gas Pump grades
+        # FULL TANK is a rare roll everywhere; how often a player meets it is the optimiser's call
+        # (the wincap criteria force it). In a sticky bonus a FULL TANK column stays MAX for the rest
+        # of the bonus, so there it is close to a guaranteed max win and must stay very rare.
+        gp_base = {"R2": 420, "R4": 260, "P8": 150, "P16": 70, "PR32": 25, "PR64": 8, "FT": 0.05}
+        gp_free = {"R2": 420, "R4": 260, "P8": 150, "P16": 70, "PR32": 25, "PR64": 8, "FT": 0.01}
+        gp_cap = {"FT": 1}
+        self.gp_tables = {"base": gp_base, "free": gp_free, "cap": gp_cap}
+
+        # ---------------------------------------------------------------- big-win records
+        # Books whose round win reaches this (and is below the max win) get a {"symbol": "bigwin"}
+        # force record, so the optimiser can hold them in their own fence with a fixed RTP share:
+        # the 3-star volatility band reads etl10k (return from 10,000x+ wins) <= 0.8 and etl40b
+        # (return from wins >= 40x the mode cost) <= 0.9, both in ABSOLUTE bets, so a buy's tail
+        # must be weighted on purpose, not left to the optimiser's curves.
+        self.bigwin_threshold = {"fillup": 4000.0, "premium": 10000.0, "nitro": 10000.0, "lucky": 10000.0}
+
+        # ---------------------------------------------------------------- NITRO SPIN
+        # every cell preloaded x16 .. x2048 (powers of two), heavy at the bottom
+        nitro_cells = {16: 680, 32: 230, 64: 60, 128: 20, 256: 7, 512: 2.5, 1024: 1, 2048: 0.4}
+        nitro_cells_rich = {1024: 1, 2048: 1}
+        self.nitro_tables = {"standard": nitro_cells, "rich": nitro_cells_rich}
+
+        # ---------------------------------------------------------------- FILL UP
+        # Each spin, every empty cell independently lands one of these (X = blank). At most one
+        # Gas Pump per column per spin (a second one rolled in a column lands as X).
+        # seed_drops: FILL UP opens with this many Fuel Drops already on the board (the three
+        # FALCOS Tokens that triggered it turn into the first drops; a bought FILL UP gets the same).
+        self.fillup_profiles = {
+            "standard": {
+                "land": {"X": 1000, "FD": 24, "ST": 2.2, "GT": 0.35, "GP": 1.6, "ZP": 1.4},
+                "drop_values": {
+                    0.2: 260, 0.5: 240, 1: 200, 2: 130, 3: 90,
+                    5: 56, 10: 30, 15: 14, 20: 9,
+                    50: 2.5, 100: 1.0, 250: 0.25, 500: 0.08,
+                },
+                "gp_mults": {2: 50, 4: 26, 8: 13, 16: 6, 32: 2, 64: 0.6},
+                "seed_drops": 3,
+            },
+            # wincap criteria only: dense, heavy drops and pumps so 50,000x is reachable
+            "cap": {
+                "land": {"X": 300, "FD": 60, "ST": 4, "GT": 2, "GP": 8, "ZP": 0.5},
+                "drop_values": {50: 2, 100: 2, 250: 2, 500: 2},
+                "gp_mults": {16: 1, 32: 1, 64: 1},
+                "seed_drops": 3,
+            },
+        }
+
+        # scatter counts forced on a trigger board (the other scatter class may tease)
+        self.bonus_scatters = {
+            "fillup": {"BS": {3: 1}, "DS": {0: 80, 1: 15, 2: 5}},
+            "premium": {"BS": {4: 88, 5: 10, 6: 2}, "DS": {0: 80, 1: 15, 2: 5}},
+            "midnight": {"DS": {3: 1}, "BS": {0: 75, 1: 18, 2: 7}},
+        }
+
+        b, f = self.basegame_type, self.freegame_type
+
+        def base_dists(scale: float = 1.0):
+            """base / FUEL CHANCE criteria. `scale` multiplies the bonus criteria's sim quotas
+            (FUEL CHANCE: ~5x the bonus rate); ordinary spins take up the difference."""
+            q = {"wincap": 0.001, "midnight": 0.005, "premium": 0.01, "fillup": 0.03}
+            q = {k: round(v * scale, 6) for k, v in q.items()}
+            zero = 0.35 if scale == 1.0 else 0.30
+            rest = round(1.0 - sum(q.values()) - zero, 6)
+            return [
+                Distribution(
+                    # FULL TANK in the base game: a pump forced onto the reveal rolls FULL TANK; any
+                    # cluster on its MAX column pays the max win
+                    criteria="wincap", quota=q["wincap"], win_criteria=self.wincap,
+                    conditions={
+                        "reel_weights": {b: {"BR0": 1}},
+                        "gp_grades": {b: gp_base, f: gp_free},
+                        "force_fulltank": True,
+                        "bonus": None,
+                    },
+                ),
+                Distribution(
+                    criteria="midnight", quota=q["midnight"],
+                    conditions={
+                        "reel_weights": {b: {"BR0": 1}},
+                        "gp_grades": {b: gp_base, f: gp_free},
+                        "bonus": "midnight",
+                    },
+                ),
+                Distribution(
+                    criteria="premium", quota=q["premium"],
+                    conditions={
+                        "reel_weights": {b: {"BR0": 1}},
+                        "gp_grades": {b: gp_base, f: gp_free},
+                        "bonus": "premium",
+                    },
+                ),
+                Distribution(
+                    criteria="fillup", quota=q["fillup"],
+                    conditions={
+                        "reel_weights": {b: {"BR0": 1}},
+                        "gp_grades": {b: gp_base},
+                        "fillup_profile": "standard",
+                        "bonus": "fillup",
+                    },
+                ),
+                Distribution(
+                    criteria="0", quota=zero, win_criteria=0.0,
+                    conditions={"reel_weights": {b: {"BR0": 1}}, "gp_grades": {b: gp_base}, "bonus": None},
+                ),
+                Distribution(
+                    criteria="basegame", quota=rest,
+                    conditions={"reel_weights": {b: {"BR0": 1}}, "gp_grades": {b: gp_base}, "bonus": None},
+                ),
+            ]
+
+        self.bet_modes = [
+            BetMode(
+                name="base", cost=1.0, rtp=self.rtp, max_win=self.wincap,
+                auto_close_disabled=False, is_feature=True, is_buybonus=False,
+                distributions=base_dists(1.0),
+            ),
+            # FUEL CHANCE: one base spin with ~5x the chance of any bonus (MIDNIGHT RUN included).
+            # Same reels and rules as base; the optimiser's targets set the real 5x (phase 2).
+            BetMode(
+                name="chance", cost=3.0, rtp=self.rtp, max_win=self.wincap,
+                auto_close_disabled=False, is_feature=True, is_buybonus=False,
+                distributions=base_dists(5.0),
+            ),
+            # FILL UP buy (100x)
+            BetMode(
+                name="fillup", cost=100.0, rtp=self.rtp, max_win=self.wincap,
+                auto_close_disabled=False, is_feature=False, is_buybonus=True,
+                distributions=[
+                    Distribution(
+                        criteria="wincap", quota=0.002, win_criteria=self.wincap,
+                        conditions={"reel_weights": {b: {"BR0": 1}}, "buy": "fillup",
+                                    "fillup_profile": "cap", "bonus": "fillup"},
+                    ),
+                    Distribution(
+                        criteria="fillup", quota=0.998,
+                        conditions={"reel_weights": {b: {"BR0": 1}}, "buy": "fillup",
+                                    "fillup_profile": "standard", "bonus": "fillup"},
+                    ),
+                ],
+            ),
+            # PREMIUM buy (300x)
+            BetMode(
+                name="premium", cost=300.0, rtp=self.rtp, max_win=self.wincap,
+                auto_close_disabled=False, is_feature=False, is_buybonus=True,
+                distributions=[
+                    Distribution(
+                        # every pump in the bonus rolls FULL TANK: its column stays MAX for the rest
+                        # of the bonus and the next cluster on it pays the max win
+                        criteria="wincap", quota=0.004, win_criteria=self.wincap,
+                        conditions={"reel_weights": {b: {"BR0": 1}}, "buy": "premium",
+                                    "gp_grades": {f: gp_cap}, "bonus": "premium"},
+                    ),
+                    Distribution(
+                        criteria="premium", quota=0.996,
+                        conditions={"reel_weights": {b: {"BR0": 1}}, "buy": "premium",
+                                    "gp_grades": {f: gp_free}, "bonus": "premium"},
+                    ),
+                ],
+            ),
+            # NITRO SPIN (500x): one spin, every cell preloaded x16..x2048. Scatter-free strip:
+            # a NITRO spin cannot trigger a bonus.
+            BetMode(
+                name="nitro", cost=500.0, rtp=self.rtp, max_win=self.wincap,
+                auto_close_disabled=False, is_feature=False, is_buybonus=True,
+                distributions=[
+                    Distribution(
+                        criteria="wincap", quota=0.004, win_criteria=self.wincap,
+                        conditions={"reel_weights": {b: {"NR0": 1}}, "gp_grades": {b: gp_base},
+                                    "nitro_cells": nitro_cells_rich, "bonus": None},
+                    ),
+                    Distribution(
+                        criteria="0", quota=0.05, win_criteria=0.0,
+                        conditions={"reel_weights": {b: {"NR0": 1}}, "gp_grades": {b: gp_base},
+                                    "nitro_cells": nitro_cells, "bonus": None},
+                    ),
+                    Distribution(
+                        criteria="nitro", quota=0.946,
+                        conditions={"reel_weights": {b: {"NR0": 1}}, "gp_grades": {b: gp_base},
+                                    "nitro_cells": nitro_cells, "bonus": None},
+                    ),
+                ],
+            ),
+            # LUCKY PUMP (500x): a wheel resolves to PREMIUM (as bought), MIDNIGHT RUN (as if
+            # triggered, but bought: no scatters) or nothing. The book opens with luckyWheel
+            # {result}; how often each slice comes is the optimiser's (game_optimization.LUCKY).
+            BetMode(
+                name="lucky", cost=500.0, rtp=self.rtp, max_win=self.wincap,
+                auto_close_disabled=False, is_feature=False, is_buybonus=True,
+                distributions=[
+                    Distribution(
+                        # MIDNIGHT RUN with every pump rolling FULL TANK: the max win
+                        criteria="wincap", quota=0.002, win_criteria=self.wincap,
+                        conditions={"reel_weights": {b: {"BR0": 1}}, "buy": "midnight", "lucky": True,
+                                    "gp_grades": {f: gp_cap}, "bonus": "midnight"},
+                    ),
+                    Distribution(
+                        criteria="midnight", quota=0.35,
+                        conditions={"reel_weights": {b: {"BR0": 1}}, "buy": "midnight", "lucky": True,
+                                    "gp_grades": {f: gp_free}, "bonus": "midnight"},
+                    ),
+                    Distribution(
+                        criteria="premium", quota=0.5,
+                        conditions={"reel_weights": {b: {"BR0": 1}}, "buy": "premium", "lucky": True,
+                                    "gp_grades": {f: gp_free}, "bonus": "premium"},
+                    ),
+                    Distribution(
+                        criteria="0", quota=0.148, win_criteria=0.0,
+                        conditions={"reel_weights": {b: {"BR0": 1}}, "lucky": True, "bonus": None},
+                    ),
+                ],
+            ),
+        ]

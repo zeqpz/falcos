@@ -1,0 +1,11 @@
+[
+ {
+  "name": "scene_a_fix",
+  "size": "3840x2160",
+  "aspect_ratio": "16:9",
+  "refs": [
+   "art/falcos/raw/scene_a.png"
+  ],
+  "prompt": "Edit this image. Keep EVERYTHING exactly the same - the canopy, FALCOS neon sign, the woman, the Tahoe, the pump, the store front, the door, the ground, the sky, the style, colours and lighting - and change ONLY the big shop window on the right. Right now the cashier looks like he is leaning out of an open hatch with his arms outside. Fix it so he is clearly INSIDE the store behind closed glass: the window is a large closed plate-glass shop window with a metal frame, soft diagonal reflections and a faint reflection of the red neon on the glass, small window decals without text. Through the glass, set back a few feet inside the store, is the checkout counter with the cash register (drawer open), a lottery ticket display and a gum rack on the counter. Behind the counter stands the same cartoon South Asian Indian man with the thick moustache, greying temples and red FALCOS T-shirt (spelled exactly F-A-L-C-O-S), smiling, handing change and a receipt across the counter to a cartoon customer who stands INSIDE the store in front of the counter, seen from behind / three-quarter back (a guy in a hoodie and cap). Nothing pokes out of the window: all of the man's body, both his arms and the customer are inside, behind the glass, smaller and further away than before, with the shop interior (shelves, coffee machine, cups, snack poster) around them. Same polished cartoon style with bold ink outlines and cel shading."
+ }
+]

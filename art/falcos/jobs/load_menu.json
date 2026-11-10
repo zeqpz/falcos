@@ -1,0 +1,132 @@
+[
+ {
+  "name": "load_card_bonus",
+  "size": "1024x1536",
+  "aspect_ratio": "2:3",
+  "prompt": "Premium cartoon slot game card illustration for FALCOS (a night-time gas-station slot): polished high-end cartoon art, bold black ink outlines, rich cel shading, dramatic neon and amber lighting, rich detail, a dark backdrop, composition centred so it reads at small size. NO text, NO letters, NO numbers. Big bonuses: a glowing black-chrome Midnight token and a red FALCOS gas token flying out of a gas pump nozzle together with a shower of glowing green, amber and red fuel-drop gems and cash bills, purple night sky."
+ },
+ {
+  "name": "load_card_features",
+  "size": "1024x1536",
+  "aspect_ratio": "2:3",
+  "prompt": "Premium cartoon slot game card illustration for FALCOS (a night-time gas-station slot): polished high-end cartoon art, bold black ink outlines, rich cel shading, dramatic neon and amber lighting, rich detail, a dark backdrop, composition centred so it reads at small size. NO text, NO letters, NO numbers. Wild features: a chrome flip-top lighter with a big flame, a lottery scratch ticket with a silver coin, a golden scratch ticket and a retro red gas pump with a glowing gauge, grouped together in a dynamic pile with sparks."
+ },
+ {
+  "name": "load_card_max",
+  "size": "1024x1536",
+  "aspect_ratio": "2:3",
+  "prompt": "Premium cartoon slot game card illustration for FALCOS (a night-time gas-station slot): polished high-end cartoon art, bold black ink outlines, rich cel shading, dramatic neon and amber lighting, rich detail, a dark backdrop, composition centred so it reads at small size. NO text, NO letters, NO numbers. Max win: the chrome front grille and glowing headlights of a big black lifted SUV seen head-on, blue nitro flames under it, cash bills flying, gold light rays behind."
+ },
+ {
+  "name": "load_title_bonus",
+  "size": "3840x2160",
+  "aspect_ratio": "16:9",
+  "prompt": "Premium cartoon slot game logo lettering: bold chunky retro sign letters with chrome bevel, glowing neon tubes, thick black ink outline, glossy highlights. Lettering only, centred, filling the width, fully transparent background, nothing else - no buildings, no scene, no characters. Two lines: the text \"BIG\" spelled exactly B-I-G on top in hot red neon, the text \"BONUSES\" spelled exactly B-O-N-U-S-E-S below in cream with red outline.",
+  "background": "transparent"
+ },
+ {
+  "name": "load_title_features",
+  "size": "3840x2160",
+  "aspect_ratio": "16:9",
+  "prompt": "Premium cartoon slot game logo lettering: bold chunky retro sign letters with chrome bevel, glowing neon tubes, thick black ink outline, glossy highlights. Lettering only, centred, filling the width, fully transparent background, nothing else - no buildings, no scene, no characters. Two lines: the text \"WILD\" spelled exactly W-I-L-D on top in amber-gold neon, the text \"FEATURES\" spelled exactly F-E-A-T-U-R-E-S below in cream with red outline.",
+  "background": "transparent"
+ },
+ {
+  "name": "load_title_max",
+  "size": "3840x2160",
+  "aspect_ratio": "16:9",
+  "prompt": "Premium cartoon slot game logo lettering: bold chunky retro sign letters with chrome bevel, glowing neon tubes, thick black ink outline, glossy highlights. Lettering only, centred, filling the width, fully transparent background, nothing else - no buildings, no scene, no characters. Two lines: the text \"MAX\" spelled exactly M-A-X on top in red neon, the text \"WIN\" spelled exactly W-I-N below in cream with red outline.",
+  "background": "transparent"
+ },
+ {
+  "name": "load_card_frame",
+  "size": "1024x1536",
+  "aspect_ratio": "2:3",
+  "prompt": "An empty tall card frame seen straight on for a premium cartoon slot game: a polished chrome bezel with rounded corners, a thin hot-red neon tube inside it, small rivets, and a cream-and-red enamel nameplate panel across the bottom fifth of the card. The picture window above the nameplate and the nameplate itself are EMPTY. Bold ink outlines, cel shading. Fully transparent background and fully transparent picture window. No text.",
+  "background": "transparent"
+ },
+ {
+  "name": "load_bar_frame",
+  "size": "3840x2160",
+  "aspect_ratio": "16:9",
+  "prompt": "A wide horizontal loading bar for a premium cartoon slot game, shaped like a chrome fuel-gauge tube: a long rounded glass capsule in a polished chrome housing with small rivets, a red gas-pump nozzle attached at the left end pointing into the tube, a small letter E at the left end and F at the right end of the chrome housing, tick marks along the top edge. The inside of the glass tube is EMPTY and fully transparent. The bar fills the width of the image and about a fifth of its height, centred. Bold ink outlines, cel shading, glossy. Fully transparent background, nothing else.",
+  "background": "transparent"
+ },
+ {
+  "name": "load_bar_fill",
+  "size": "1536x1024",
+  "aspect_ratio": "3:2",
+  "prompt": "A seamless horizontal strip texture of glowing liquid fuel seen through glass: hot red-orange-amber liquid with a bright wavy surface highlight along the top, small rising bubbles, a soft glow, filling the whole image edge to edge, cartoon cel-shaded style. No frame, no text."
+ },
+ {
+  "name": "menu_chance",
+  "size": "1920x1088",
+  "aspect_ratio": "16:9",
+  "prompt": "Premium cartoon slot game card illustration for FALCOS (a night-time gas-station slot): polished high-end cartoon art, bold black ink outlines, rich cel shading, dramatic neon and amber lighting, rich detail, a dark backdrop, composition centred so it reads at small size. NO text, NO letters, NO numbers. FUEL CHANCE: a huge chrome fuel gauge with its needle swinging hard toward FULL with sparks flying, a gas nozzle and glowing fuel drops on the left side of the image, the right half darker and calm."
+ },
+ {
+  "name": "menu_lucky",
+  "size": "1920x1088",
+  "aspect_ratio": "16:9",
+  "prompt": "Premium cartoon slot game card illustration for FALCOS (a night-time gas-station slot): polished high-end cartoon art, bold black ink outlines, rich cel shading, dramatic neon and amber lighting, rich detail, a dark backdrop, composition centred so it reads at small size. NO text, NO letters, NO numbers. LUCKY PUMP: a glowing prize wheel built into the top of a retro red gas pump, the wheel's slices showing a zombie face, a crescent moon and an empty slice, coins flying, on the left side of the image, the right half darker and calm."
+ },
+ {
+  "name": "menu_fillup",
+  "size": "1024x1536",
+  "aspect_ratio": "2:3",
+  "prompt": "Premium cartoon slot game card illustration for FALCOS (a night-time gas-station slot): polished high-end cartoon art, bold black ink outlines, rich cel shading, dramatic neon and amber lighting, rich detail, a dark backdrop, composition centred so it reads at small size. NO text, NO letters, NO numbers. FILL UP: a glowing red gas nozzle pouring a stream of shining green, amber and red fuel-drop gems into a 3-bar fuel gauge, upper part of the card, sparks."
+ },
+ {
+  "name": "menu_premium",
+  "size": "1024x1536",
+  "aspect_ratio": "2:3",
+  "prompt": "Premium cartoon slot game card illustration for FALCOS (a night-time gas-station slot): polished high-end cartoon art, bold black ink outlines, rich cel shading, dramatic neon and amber lighting, rich detail, a dark backdrop, composition centred so it reads at small size. NO text, NO letters, NO numbers. PREMIUM zombie bonus: a goofy cartoon zombie gas station clerk with a moustache in a torn red shirt grinning at a cash register in an abandoned gas station under a green full moon, green fog, fun not gory, upper part of the card."
+ },
+ {
+  "name": "menu_bust",
+  "size": "1024x1536",
+  "aspect_ratio": "2:3",
+  "prompt": "Premium cartoon slot game card illustration for FALCOS (a night-time gas-station slot): polished high-end cartoon art, bold black ink outlines, rich cel shading, dramatic neon and amber lighting, rich detail, a dark backdrop, composition centred so it reads at small size. NO text, NO letters, NO numbers. FULL TANK OR BUST: a giant chrome fuel gauge with the needle slammed past F into a glowing red MAX zone, cracking glass, sparks and gold coins exploding outward, upper part of the card."
+ },
+ {
+  "name": "menu_nitro",
+  "size": "1024x1536",
+  "aspect_ratio": "2:3",
+  "prompt": "Premium cartoon slot game card illustration for FALCOS (a night-time gas-station slot): polished high-end cartoon art, bold black ink outlines, rich cel shading, dramatic neon and amber lighting, rich detail, a dark backdrop, composition centred so it reads at small size. NO text, NO letters, NO numbers. NITRO SPIN: a black lifted SUV with flame decals and chrome nitro tanks launching off the line with blue nitro flames, checkered flags, electric-blue and purple neon, speed streaks, upper part of the card."
+ },
+ {
+  "name": "logo_chance",
+  "size": "3840x2160",
+  "aspect_ratio": "16:9",
+  "prompt": "Premium cartoon slot game logo lettering: bold chunky retro sign letters with chrome bevel, glowing neon tubes, thick black ink outline, glossy highlights. Lettering only, centred, filling the width, fully transparent background, nothing else - no buildings, no scene, no characters. the text \"FUEL CHANCE\" spelled exactly F-U-E-L-C-H-A-N-C-E on one line, red neon and cream, with a small fuel-gauge needle accent.",
+  "background": "transparent"
+ },
+ {
+  "name": "logo_lucky",
+  "size": "3840x2160",
+  "aspect_ratio": "16:9",
+  "prompt": "Premium cartoon slot game logo lettering: bold chunky retro sign letters with chrome bevel, glowing neon tubes, thick black ink outline, glossy highlights. Lettering only, centred, filling the width, fully transparent background, nothing else - no buildings, no scene, no characters. the text \"LUCKY PUMP\" spelled exactly L-U-C-K-Y-P-U-M-P on one line, gold and red neon with a small four-leaf clover accent.",
+  "background": "transparent"
+ },
+ {
+  "name": "logo_bust",
+  "size": "3840x2160",
+  "aspect_ratio": "16:9",
+  "prompt": "Premium cartoon slot game logo lettering: bold chunky retro sign letters with chrome bevel, glowing neon tubes, thick black ink outline, glossy highlights. Lettering only, centred, filling the width, fully transparent background, nothing else - no buildings, no scene, no characters. the text \"FULL TANK OR BUST\" spelled exactly F-U-L-L-T-A-N-K-O-R-B-U-S-T on two lines (FULL TANK / OR BUST), red and gold neon, cracked chrome.",
+  "background": "transparent"
+ },
+ {
+  "name": "logo_nitro",
+  "size": "3840x2160",
+  "aspect_ratio": "16:9",
+  "prompt": "Premium cartoon slot game logo lettering: bold chunky retro sign letters with chrome bevel, glowing neon tubes, thick black ink outline, glossy highlights. Lettering only, centred, filling the width, fully transparent background, nothing else - no buildings, no scene, no characters. the text \"NITRO SPIN\" spelled exactly N-I-T-R-O-S-P-I-N on one line, electric-blue neon with flame accents.",
+  "background": "transparent"
+ },
+ {
+  "name": "logo_premium_zombie",
+  "size": "3840x2160",
+  "aspect_ratio": "16:9",
+  "prompt": "Premium cartoon slot game logo lettering: bold chunky retro sign letters with chrome bevel, glowing neon tubes, thick black ink outline, glossy highlights. Lettering only, centred, filling the width, fully transparent background, nothing else - no buildings, no scene, no characters. the text \"PREMIUM\" spelled exactly P-R-E-M-I-U-M on one line in toxic green dripping slime-neon letters with a cracked chrome bevel, spooky-fun zombie style.",
+  "background": "transparent"
+ }
+]

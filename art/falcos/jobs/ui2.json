@@ -1,0 +1,130 @@
+[
+ {
+  "name": "intro_word",
+  "size": "3840x2160",
+  "aspect_ratio": "16:9",
+  "prompt": "Hand-painted lettering for a game intro, pure WHITE paint on a fully transparent background, the word \"FALCOS\" (spelled exactly F-A-L-C-O-S, six separate letters with clear gaps between every letter, no letter touching another), big bold expressive dry-brush script with energetic strokes, paint flicks and one or two small paint drips, all six letters the same height on one baseline, centred. Only white, no colour, no other text, no underline.",
+  "background": "transparent"
+ },
+ {
+  "name": "intro_swash",
+  "size": "3840x2160",
+  "aspect_ratio": "16:9",
+  "prompt": "A single long white dry-brush swoosh underline stroke, pure white paint on a fully transparent background, thick at the left, tapering to a sharp flick at the right, a few bristle streaks. Nothing else.",
+  "background": "transparent"
+ },
+ {
+  "name": "big_win",
+  "size": "3840x2160",
+  "aspect_ratio": "16:9",
+  "prompt": "Premium cartoon slot game UI art for FALCOS, a night-time American gas station: polished high-end cartoon illustration, bold black ink outlines, rich cel shading, glossy chrome, cream-and-red station paint, glowing hot-red neon tubes with soft bloom, warm amber accents. Fully transparent background, nothing else in the image. Big chunky win-celebration lettering: the text \"BIG WIN\" spelled exactly B-I-G-W-I-N in a bold condensed retro sign font, glowing red neon with chrome edges, slight perspective swoop, centred on one line, filling the width. No plate, no background.",
+  "background": "transparent"
+ },
+ {
+  "name": "mega_win",
+  "size": "3840x2160",
+  "aspect_ratio": "16:9",
+  "prompt": "Premium cartoon slot game UI art for FALCOS, a night-time American gas station: polished high-end cartoon illustration, bold black ink outlines, rich cel shading, glossy chrome, cream-and-red station paint, glowing hot-red neon tubes with soft bloom, warm amber accents. Fully transparent background, nothing else in the image. Big chunky win-celebration lettering: the text \"MEGA WIN\" spelled exactly M-E-G-A-W-I-N in a bold condensed retro sign font, glowing hot amber-gold neon with chrome edges and small sparkles, slight perspective swoop, centred on one line, filling the width. No plate, no background.",
+  "background": "transparent"
+ },
+ {
+  "name": "epic_win",
+  "size": "3840x2160",
+  "aspect_ratio": "16:9",
+  "prompt": "Premium cartoon slot game UI art for FALCOS, a night-time American gas station: polished high-end cartoon illustration, bold black ink outlines, rich cel shading, glossy chrome, cream-and-red station paint, glowing hot-red neon tubes with soft bloom, warm amber accents. Fully transparent background, nothing else in the image. Big chunky win-celebration lettering: the text \"EPIC WIN\" spelled exactly E-P-I-C-W-I-N in a bold condensed retro sign font, glowing electric-blue and red neon with heavy chrome bevel and sparks, slight perspective swoop, centred on one line, filling the width. No plate, no background.",
+  "background": "transparent"
+ },
+ {
+  "name": "total_win",
+  "size": "3840x2160",
+  "aspect_ratio": "16:9",
+  "prompt": "Premium cartoon slot game UI art for FALCOS, a night-time American gas station: polished high-end cartoon illustration, bold black ink outlines, rich cel shading, glossy chrome, cream-and-red station paint, glowing hot-red neon tubes with soft bloom, warm amber accents. Fully transparent background, nothing else in the image. Big chunky win-celebration lettering: the text \"TOTAL WIN\" spelled exactly T-O-T-A-L-W-I-N in a bold condensed retro sign font, warm cream lettering with red neon outline and chrome bevel, slight perspective swoop, centred on one line, filling the width. No plate, no background.",
+  "background": "transparent"
+ },
+ {
+  "name": "tier_bg",
+  "size": "3840x2160",
+  "aspect_ratio": "16:9",
+  "prompt": "Premium cartoon slot game UI art for FALCOS, a night-time American gas station: polished high-end cartoon illustration, bold black ink outlines, rich cel shading, glossy chrome, cream-and-red station paint, glowing hot-red neon tubes with soft bloom, warm amber accents. Fully transparent background, nothing else in the image. A wide celebration splash plate behind win lettering: a dark charcoal metal sign plate with rounded ends, a hot-red neon tube border, chrome rivets, red and gold light rays bursting from behind it. No text.",
+  "background": "transparent"
+ },
+ {
+  "name": "total_bg",
+  "size": "3840x2160",
+  "aspect_ratio": "16:9",
+  "prompt": "Premium cartoon slot game UI art for FALCOS, a night-time American gas station: polished high-end cartoon illustration, bold black ink outlines, rich cel shading, glossy chrome, cream-and-red station paint, glowing hot-red neon tubes with soft bloom, warm amber accents. Fully transparent background, nothing else in the image. A wide dark sign plate for showing a money amount: rounded rectangle of dark tinted glass with a chrome bezel, a thin red neon inner line, subtle reflections. No text.",
+  "background": "transparent"
+ },
+ {
+  "name": "info_panel",
+  "size": "1360x2048",
+  "aspect_ratio": "2:3",
+  "prompt": "Premium cartoon slot game UI art for FALCOS, a night-time American gas station: polished high-end cartoon illustration, bold black ink outlines, rich cel shading, glossy chrome, cream-and-red station paint, glowing hot-red neon tubes with soft bloom, warm amber accents. Fully transparent background, nothing else in the image. A tall empty UI panel for a rules screen: dark navy-charcoal metal sign board with a chrome rounded frame, rivets, a thin red neon tube inside the edge, the middle empty and flat. No text.",
+  "background": "transparent"
+ },
+ {
+  "name": "feature_box",
+  "size": "1360x2048",
+  "aspect_ratio": "2:3",
+  "prompt": "Premium cartoon slot game UI art for FALCOS, a night-time American gas station: polished high-end cartoon illustration, bold black ink outlines, rich cel shading, glossy chrome, cream-and-red station paint, glowing hot-red neon tubes with soft bloom, warm amber accents. Fully transparent background, nothing else in the image. A tall empty card frame: dark tinted-glass card with a chrome bezel, a red neon trim line, a small chrome nameplate area at the bottom, the middle empty. No text.",
+  "background": "transparent"
+ },
+ {
+  "name": "banner_box",
+  "size": "3840x2160",
+  "aspect_ratio": "16:9",
+  "prompt": "Premium cartoon slot game UI art for FALCOS, a night-time American gas station: polished high-end cartoon illustration, bold black ink outlines, rich cel shading, glossy chrome, cream-and-red station paint, glowing hot-red neon tubes with soft bloom, warm amber accents. Fully transparent background, nothing else in the image. An empty banner plate: a long dark metal sign with chrome end caps and red neon trim, the middle empty. No text.",
+  "background": "transparent"
+ },
+ {
+  "name": "logo_fillup",
+  "size": "3840x2160",
+  "aspect_ratio": "16:9",
+  "prompt": "Premium cartoon slot game UI art for FALCOS, a night-time American gas station: polished high-end cartoon illustration, bold black ink outlines, rich cel shading, glossy chrome, cream-and-red station paint, glowing hot-red neon tubes with soft bloom, warm amber accents. Fully transparent background, nothing else in the image. Bonus title logo: the text \"FILL UP\" spelled exactly F-I-L-L-U-P in big bold retro sign lettering, red neon with a chrome gas-nozzle shape forming part of the letter P. Lettering only, no plate.",
+  "background": "transparent"
+ },
+ {
+  "name": "logo_premium",
+  "size": "3840x2160",
+  "aspect_ratio": "16:9",
+  "prompt": "Premium cartoon slot game UI art for FALCOS, a night-time American gas station: polished high-end cartoon illustration, bold black ink outlines, rich cel shading, glossy chrome, cream-and-red station paint, glowing hot-red neon tubes with soft bloom, warm amber accents. Fully transparent background, nothing else in the image. Bonus title logo: the text \"PREMIUM\" spelled exactly P-R-E-M-I-U-M in big bold retro sign lettering, gold and amber neon with chrome, three small stars above. Lettering only, no plate.",
+  "background": "transparent"
+ },
+ {
+  "name": "logo_midnight",
+  "size": "3840x2160",
+  "aspect_ratio": "16:9",
+  "prompt": "Premium cartoon slot game UI art for FALCOS, a night-time American gas station: polished high-end cartoon illustration, bold black ink outlines, rich cel shading, glossy chrome, cream-and-red station paint, glowing hot-red neon tubes with soft bloom, warm amber accents. Fully transparent background, nothing else in the image. Bonus title logo: the text \"MIDNIGHT RUN\" spelled exactly M-I-D-N-I-G-H-T-R-U-N in big bold retro sign lettering, dark crimson and purple neon on black chrome, a crescent moon, wisps of smoke - ominous and premium. Lettering only, no plate.",
+  "background": "transparent"
+ },
+ {
+  "name": "banner_chance",
+  "size": "1920x1088",
+  "aspect_ratio": "16:9",
+  "prompt": "Bonus shop card illustration for a premium cartoon slot game called FALCOS (night-time gas station): a fuel gauge needle swinging toward full with sparks, dramatic red neon and amber lighting, bold ink outlines, cel shading, rich detail, a dark night background. No text at all."
+ },
+ {
+  "name": "banner_fillup",
+  "size": "1920x1088",
+  "aspect_ratio": "16:9",
+  "prompt": "Bonus shop card illustration for a premium cartoon slot game called FALCOS (night-time gas station): a glowing red gas nozzle pouring a stream of shining green, amber and red fuel drops, dramatic red neon and amber lighting, bold ink outlines, cel shading, rich detail, a dark night background. No text at all."
+ },
+ {
+  "name": "banner_premium",
+  "size": "1920x1088",
+  "aspect_ratio": "16:9",
+  "prompt": "Bonus shop card illustration for a premium cartoon slot game called FALCOS (night-time gas station): a golden premium gas pump glowing with x2 x8 multiplier tags floating around, dramatic red neon and amber lighting, bold ink outlines, cel shading, rich detail, a dark night background. No text at all."
+ },
+ {
+  "name": "banner_nitro",
+  "size": "1920x1088",
+  "aspect_ratio": "16:9",
+  "prompt": "Bonus shop card illustration for a premium cartoon slot game called FALCOS (night-time gas station): a nitro canister blasting blue flame with huge multiplier numbers, dramatic red neon and amber lighting, bold ink outlines, cel shading, rich detail, a dark night background. No text at all."
+ },
+ {
+  "name": "banner_midnight",
+  "size": "1920x1088",
+  "aspect_ratio": "16:9",
+  "prompt": "Bonus shop card illustration for a premium cartoon slot game called FALCOS (night-time gas station): a black chrome Midnight token under a crescent moon over the gas station at night, dramatic red neon and amber lighting, bold ink outlines, cel shading, rich detail, a dark night background. No text at all."
+ }
+]

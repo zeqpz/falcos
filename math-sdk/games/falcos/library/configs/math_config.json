@@ -1,0 +1,390 @@
+{
+    "game_id": "falcos",
+    "bet_modes": [
+        {
+            "bet_mode": "base",
+            "cost": 1.0,
+            "rtp": 0.965,
+            "max_win": 25000.0
+        },
+        {
+            "bet_mode": "chance",
+            "cost": 3.0,
+            "rtp": 0.965,
+            "max_win": 25000.0
+        },
+        {
+            "bet_mode": "fillup",
+            "cost": 100.0,
+            "rtp": 0.965,
+            "max_win": 25000.0
+        },
+        {
+            "bet_mode": "premium",
+            "cost": 300.0,
+            "rtp": 0.965,
+            "max_win": 25000.0
+        },
+        {
+            "bet_mode": "nitro",
+            "cost": 500.0,
+            "rtp": 0.965,
+            "max_win": 25000.0
+        }
+    ],
+    "fences": [
+        {
+            "bet_mode": "base",
+            "fences": [
+                {
+                    "name": "wincap",
+                    "avg_win": "25000.0",
+                    "rtp": "0.003",
+                    "identity_condition": {
+                        "search": [],
+                        "win_range_start": 25000.0,
+                        "win_range_end": 25000.0,
+                        "opposite": false
+                    }
+                },
+                {
+                    "name": "midnight",
+                    "hr": "15000.0",
+                    "rtp": "0.07",
+                    "identity_condition": {
+                        "search": [
+                            {
+                                "name": "symbol",
+                                "value": "midnight"
+                            }
+                        ],
+                        "win_range_start": -1,
+                        "win_range_end": -1,
+                        "opposite": false
+                    }
+                },
+                {
+                    "name": "premium",
+                    "hr": "2700.0",
+                    "rtp": "0.1",
+                    "identity_condition": {
+                        "search": [
+                            {
+                                "name": "symbol",
+                                "value": "premium"
+                            }
+                        ],
+                        "win_range_start": -1,
+                        "win_range_end": -1,
+                        "opposite": false
+                    }
+                },
+                {
+                    "name": "fillup",
+                    "hr": "450.0",
+                    "rtp": "0.22",
+                    "identity_condition": {
+                        "search": [
+                            {
+                                "name": "symbol",
+                                "value": "fillup"
+                            }
+                        ],
+                        "win_range_start": -1,
+                        "win_range_end": -1,
+                        "opposite": false
+                    }
+                },
+                {
+                    "name": "0",
+                    "avg_win": "0",
+                    "rtp": "0",
+                    "identity_condition": {
+                        "search": [],
+                        "win_range_start": 0,
+                        "win_range_end": 0,
+                        "opposite": false
+                    }
+                },
+                {
+                    "name": "basegame",
+                    "hr": "2.8",
+                    "rtp": "0.572",
+                    "identity_condition": {
+                        "search": [],
+                        "win_range_start": -1,
+                        "win_range_end": -1,
+                        "opposite": false
+                    }
+                }
+            ]
+        },
+        {
+            "bet_mode": "chance",
+            "fences": [
+                {
+                    "name": "wincap",
+                    "avg_win": "25000.0",
+                    "rtp": "0.005",
+                    "identity_condition": {
+                        "search": [],
+                        "win_range_start": 25000.0,
+                        "win_range_end": 25000.0,
+                        "opposite": false
+                    }
+                },
+                {
+                    "name": "midnight",
+                    "hr": "3000.0",
+                    "rtp": "0.116667",
+                    "identity_condition": {
+                        "search": [
+                            {
+                                "name": "symbol",
+                                "value": "midnight"
+                            }
+                        ],
+                        "win_range_start": -1,
+                        "win_range_end": -1,
+                        "opposite": false
+                    }
+                },
+                {
+                    "name": "premium",
+                    "hr": "540.0",
+                    "rtp": "0.166667",
+                    "identity_condition": {
+                        "search": [
+                            {
+                                "name": "symbol",
+                                "value": "premium"
+                            }
+                        ],
+                        "win_range_start": -1,
+                        "win_range_end": -1,
+                        "opposite": false
+                    }
+                },
+                {
+                    "name": "fillup",
+                    "hr": "90.0",
+                    "rtp": "0.366667",
+                    "identity_condition": {
+                        "search": [
+                            {
+                                "name": "symbol",
+                                "value": "fillup"
+                            }
+                        ],
+                        "win_range_start": -1,
+                        "win_range_end": -1,
+                        "opposite": false
+                    }
+                },
+                {
+                    "name": "0",
+                    "avg_win": "0",
+                    "rtp": "0",
+                    "identity_condition": {
+                        "search": [],
+                        "win_range_start": 0,
+                        "win_range_end": 0,
+                        "opposite": false
+                    }
+                },
+                {
+                    "name": "basegame",
+                    "hr": "2.8",
+                    "rtp": "0.309999",
+                    "identity_condition": {
+                        "search": [],
+                        "win_range_start": -1,
+                        "win_range_end": -1,
+                        "opposite": false
+                    }
+                }
+            ]
+        },
+        {
+            "bet_mode": "fillup",
+            "fences": [
+                {
+                    "name": "wincap",
+                    "avg_win": "25000.0",
+                    "rtp": "0.002",
+                    "identity_condition": {
+                        "search": [],
+                        "win_range_start": 25000.0,
+                        "win_range_end": 25000.0,
+                        "opposite": false
+                    }
+                },
+                {
+                    "name": "fillup",
+                    "hr": "x",
+                    "rtp": "0.963",
+                    "identity_condition": {
+                        "search": [],
+                        "win_range_start": -1,
+                        "win_range_end": -1,
+                        "opposite": false
+                    }
+                }
+            ]
+        },
+        {
+            "bet_mode": "premium",
+            "fences": [
+                {
+                    "name": "wincap",
+                    "avg_win": "25000.0",
+                    "rtp": "0.004",
+                    "identity_condition": {
+                        "search": [],
+                        "win_range_start": 25000.0,
+                        "win_range_end": 25000.0,
+                        "opposite": false
+                    }
+                },
+                {
+                    "name": "premium",
+                    "hr": "x",
+                    "rtp": "0.961",
+                    "identity_condition": {
+                        "search": [],
+                        "win_range_start": -1,
+                        "win_range_end": -1,
+                        "opposite": false
+                    }
+                }
+            ]
+        },
+        {
+            "bet_mode": "nitro",
+            "fences": [
+                {
+                    "name": "wincap",
+                    "avg_win": "25000.0",
+                    "rtp": "0.02",
+                    "identity_condition": {
+                        "search": [],
+                        "win_range_start": 25000.0,
+                        "win_range_end": 25000.0,
+                        "opposite": false
+                    }
+                },
+                {
+                    "name": "nitro",
+                    "hr": "x",
+                    "rtp": "0.945",
+                    "identity_condition": {
+                        "search": [],
+                        "win_range_start": -1,
+                        "win_range_end": -1,
+                        "opposite": false
+                    }
+                },
+                {
+                    "name": "0",
+                    "avg_win": "0",
+                    "rtp": "0",
+                    "identity_condition": {
+                        "search": [],
+                        "win_range_start": 0,
+                        "win_range_end": 0,
+                        "opposite": false
+                    }
+                }
+            ]
+        }
+    ],
+    "dresses": [
+        {
+            "bet_mode": "base",
+            "dresses": []
+        },
+        {
+            "bet_mode": "chance",
+            "dresses": []
+        },
+        {
+            "bet_mode": "fillup",
+            "dresses": []
+        },
+        {
+            "bet_mode": "premium",
+            "dresses": []
+        },
+        {
+            "bet_mode": "nitro",
+            "dresses": []
+        }
+    ],
+    "bias": [
+        {
+            "bet_mode": "base",
+            "bias": [
+                {
+                    "criteria": "",
+                    "range": [
+                        0.0,
+                        0.0
+                    ],
+                    "prob": 0.0
+                }
+            ]
+        },
+        {
+            "bet_mode": "chance",
+            "bias": [
+                {
+                    "criteria": "",
+                    "range": [
+                        0.0,
+                        0.0
+                    ],
+                    "prob": 0.0
+                }
+            ]
+        },
+        {
+            "bet_mode": "fillup",
+            "bias": [
+                {
+                    "criteria": "",
+                    "range": [
+                        0.0,
+                        0.0
+                    ],
+                    "prob": 0.0
+                }
+            ]
+        },
+        {
+            "bet_mode": "premium",
+            "bias": [
+                {
+                    "criteria": "",
+                    "range": [
+                        0.0,
+                        0.0
+                    ],
+                    "prob": 0.0
+                }
+            ]
+        },
+        {
+            "bet_mode": "nitro",
+            "bias": [
+                {
+                    "criteria": "",
+                    "range": [
+                        0.0,
+                        0.0
+                    ],
+                    "prob": 0.0
+                }
+            ]
+        }
+    ]
+}

@@ -28,3 +28,9 @@ art/blender/chars/*/renders/
 art/blender/chars/*/qa/
 # QA review screenshots (local notes)
 qa-review/
+
+# Falcos SFX raw generations (rebuildable with tools/falcos/sfx/gen.py)
+art/falcos/sfx_raw/
+art/falcos/renders/
+art/falcos/blend/
+art/falcos/sfx_raw/

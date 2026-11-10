@@ -24,7 +24,7 @@ import zstandard
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
-GAME = os.path.join(ROOT, "math-sdk", "games", "smukiez_tag_run")
+GAME = os.path.join(ROOT, "math-sdk", "games", "falcos")
 PUBLISH = os.path.join(GAME, "library", "publish_files")
 CACHE = os.path.join(GAME, "library", "beta_cache")
 

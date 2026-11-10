@@ -1,0 +1,143 @@
+{
+    "workingName": "Falcos",
+    "frontendConfig": {
+        "file": "fe_config.json",
+        "sha256": "ef333e18444f5c3a5a533b83df048750d6569c70015f3dddc9a26b638e417150"
+    },
+    "gameID": "falcos",
+    "rtp": 96.5,
+    "betDenomination": 1000,
+    "minDenomination": 10,
+    "providerNumber": 0,
+    "standardForceFile": {
+        "file": "force.json",
+        "sha256": "b2e040b920e35d8963f3d7d83a184ab24b1d7caf8f2184a9f165ce36ea54eb74"
+    },
+    "bookShelfConfig": [
+        {
+            "name": "base",
+            "tables": [
+                {
+                    "file": "lookUpTable_base_0.csv",
+                    "sha256": "4fd225e567df0916ca6be41daa63507507aaadffebddfe1041724299b26727d5"
+                }
+            ],
+            "cost": 1.0,
+            "rtp": 0.965,
+            "std": 792.16,
+            "bookLength": 2000,
+            "feature": true,
+            "autoEndRoundDisabled": false,
+            "buyBonus": false,
+            "maxWin": 25000.0,
+            "booksFile": {
+                "file": "books_base.jsonl.zst",
+                "sha256": "acbc848acf85135ec2c6d2b8dd05d22232fe03874ca1ce42d6c90f90df9c0d39"
+            },
+            "forceFile": {
+                "file": "force_record_base.json",
+                "sha256": "b11762f39ff83dfca9507d8468f629ab62cd313445a7aa564ae1f8286651ff51"
+            }
+        },
+        {
+            "name": "chance",
+            "tables": [
+                {
+                    "file": "lookUpTable_chance_0.csv",
+                    "sha256": "a7a4db077005597349f6a6f9c36d03de5974347210f45e02e1d8fe9e20138f79"
+                }
+            ],
+            "cost": 3.0,
+            "rtp": 0.965,
+            "std": 589.17,
+            "bookLength": 500,
+            "feature": true,
+            "autoEndRoundDisabled": false,
+            "buyBonus": false,
+            "maxWin": 25000.0,
+            "booksFile": {
+                "file": "books_chance.jsonl.zst",
+                "sha256": "b817a7570362a57e81b71f95e185e185653948e188c3c1ac3b8ed2842b3e7afb"
+            },
+            "forceFile": {
+                "file": "force_record_chance.json",
+                "sha256": "d91917ba4accbfc7f1d82063d02df5cd62317490a6beda79ed05c9220c5652f2"
+            }
+        },
+        {
+            "name": "fillup",
+            "tables": [
+                {
+                    "file": "lookUpTable_fillup_0.csv",
+                    "sha256": "a638359ce1abbba24b051ece2ef1e3ec731185fbd65d93697154e5d35f06b616"
+                }
+            ],
+            "cost": 100.0,
+            "rtp": 0.965,
+            "std": 11.31,
+            "bookLength": 500,
+            "feature": false,
+            "autoEndRoundDisabled": false,
+            "buyBonus": true,
+            "maxWin": 25000.0,
+            "booksFile": {
+                "file": "books_fillup.jsonl.zst",
+                "sha256": "3800e2f91c9c33a2a14a772e125cfe5c79ab91e0446b3b622787dfccb86c259c"
+            },
+            "forceFile": {
+                "file": "force_record_fillup.json",
+                "sha256": "7925d7139737c935691b86b339842fe070c24629adf0ef7641b3203797b13d3c"
+            }
+        },
+        {
+            "name": "premium",
+            "tables": [
+                {
+                    "file": "lookUpTable_premium_0.csv",
+                    "sha256": "5ecb0635e8eea5e4d8e575c4e19950ee36dd099ea6647c1d4932c5da94745aa7"
+                }
+            ],
+            "cost": 300.0,
+            "rtp": 0.965,
+            "std": 5.57,
+            "bookLength": 500,
+            "feature": false,
+            "autoEndRoundDisabled": false,
+            "buyBonus": true,
+            "maxWin": 25000.0,
+            "booksFile": {
+                "file": "books_premium.jsonl.zst",
+                "sha256": "c9235719020be058727c6022fc18818f9ee40c4c7047a174ef67028951781dd5"
+            },
+            "forceFile": {
+                "file": "force_record_premium.json",
+                "sha256": "3189680a7405ad8b7cc92254598cbf8f69c4663514c1e4b5cddd374a6324f372"
+            }
+        },
+        {
+            "name": "nitro",
+            "tables": [
+                {
+                    "file": "lookUpTable_nitro_0.csv",
+                    "sha256": "5cad7216b34af37feb9ffb5c640d9271605ff0b8e47003cde6dd1436fe3dbfa3"
+                }
+            ],
+            "cost": 500.0,
+            "rtp": 0.965,
+            "std": 4.68,
+            "bookLength": 500,
+            "feature": false,
+            "autoEndRoundDisabled": false,
+            "buyBonus": true,
+            "maxWin": 25000.0,
+            "booksFile": {
+                "file": "books_nitro.jsonl.zst",
+                "sha256": "71dca3bee49f6d98cb2b3270bc32e33d29f5dfed0bd79b19f6043f5824b0a9b5"
+            },
+            "forceFile": {
+                "file": "force_record_nitro.json",
+                "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+            }
+        }
+    ]
+}

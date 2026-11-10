@@ -1,0 +1,1976 @@
+{
+ "sfx_win_h1": {
+  "takes": [
+   "sfx_win_h1_1.wav",
+   "sfx_win_h1_2.wav",
+   "sfx_win_h1_3.wav"
+  ],
+  "ogg": [
+   "sfx_win_h1_1.ogg",
+   "sfx_win_h1_2.ogg",
+   "sfx_win_h1_3.ogg"
+  ],
+  "aac": [
+   "sfx_win_h1_1.aac",
+   "sfx_win_h1_2.aac",
+   "sfx_win_h1_3.aac"
+  ],
+  "seconds": [
+   0.928,
+   0.931,
+   0.93
+  ],
+  "lufs": [
+   -26.0,
+   -26.0,
+   -26.0
+  ],
+  "peak_db": [
+   -16.98,
+   -13.86,
+   -14.51
+  ],
+  "peak_db_ogg": [
+   -16.87,
+   -14.13,
+   -14.48
+  ],
+  "peak_db_aac": [
+   -17.05,
+   -14.09,
+   -14.45
+  ],
+  "tail_floor_db": [
+   -93.6,
+   -90.9,
+   -92.1
+  ],
+  "centroid_hz": [
+   2082,
+   2052,
+   1785
+  ],
+  "hf_floor_db": [
+   -107.7,
+   -92.3,
+   -107.5
+  ],
+  "source_speech_score": [
+   0.004,
+   0.015,
+   0.005
+  ],
+  "target_lufs": -26,
+  "purpose": "H1 Cash Drawer cluster win: register bell + drawer, rich D-major chime (D5 F#5 A5 D6 + low D4)",
+  "sources": [
+   "reg_bell_6",
+   "reg_bell_2",
+   "reg_bell_3"
+  ]
+ },
+ "sfx_win_h2": {
+  "takes": [
+   "sfx_win_h2_1.wav",
+   "sfx_win_h2_2.wav",
+   "sfx_win_h2_3.wav"
+  ],
+  "ogg": [
+   "sfx_win_h2_1.ogg",
+   "sfx_win_h2_2.ogg",
+   "sfx_win_h2_3.ogg"
+  ],
+  "aac": [
+   "sfx_win_h2_1.aac",
+   "sfx_win_h2_2.aac",
+   "sfx_win_h2_3.aac"
+  ],
+  "seconds": [
+   0.824,
+   0.825,
+   0.828
+  ],
+  "lufs": [
+   -26.0,
+   -26.0,
+   -26.0
+  ],
+  "peak_db": [
+   -12.85,
+   -12.39,
+   -12.31
+  ],
+  "peak_db_ogg": [
+   -12.81,
+   -12.6,
+   -12.36
+  ],
+  "peak_db_aac": [
+   -12.74,
+   -12.47,
+   -12.57
+  ],
+  "tail_floor_db": [
+   -91.2,
+   -91.6,
+   -91.3
+  ],
+  "centroid_hz": [
+   2453,
+   2599,
+   2716
+  ],
+  "hf_floor_db": [
+   -107.9,
+   -107.7,
+   -107.9
+  ],
+  "source_speech_score": [
+   0.002,
+   0.001,
+   0.0
+  ],
+  "target_lufs": -26,
+  "purpose": "H2 Gold Key cluster win: car keys jingle + 3-note chime (A5 D6 F#6)",
+  "sources": [
+   "keys_4",
+   "keys_7",
+   "keys_2"
+  ]
+ },
+ "sfx_win_h3": {
+  "takes": [
+   "sfx_win_h3_1.wav",
+   "sfx_win_h3_2.wav",
+   "sfx_win_h3_3.wav"
+  ],
+  "ogg": [
+   "sfx_win_h3_1.ogg",
+   "sfx_win_h3_2.ogg",
+   "sfx_win_h3_3.ogg"
+  ],
+  "aac": [
+   "sfx_win_h3_1.aac",
+   "sfx_win_h3_2.aac",
+   "sfx_win_h3_3.aac"
+  ],
+  "seconds": [
+   0.731,
+   0.73,
+   0.727
+  ],
+  "lufs": [
+   -26.0,
+   -26.05,
+   -26.14
+  ],
+  "peak_db": [
+   -7.23,
+   -6.5,
+   -6.5
+  ],
+  "peak_db_ogg": [
+   -7.2,
+   -6.38,
+   -6.66
+  ],
+  "peak_db_aac": [
+   -7.31,
+   -6.81,
+   -6.53
+  ],
+  "tail_floor_db": [
+   -88.8,
+   -88.2,
+   -85.1
+  ],
+  "centroid_hz": [
+   2310,
+   2322,
+   1636
+  ],
+  "hf_floor_db": [
+   -108.0,
+   -108.0,
+   -107.8
+  ],
+  "source_speech_score": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "target_lufs": -26,
+  "purpose": "H3 Pump Nozzle cluster win: nozzle click/gurgle + 2-note chime (F#5 B5)",
+  "sources": [
+   "nozzle_5",
+   "nozzle_3",
+   "nozzle_6"
+  ]
+ },
+ "sfx_win_h4": {
+  "takes": [
+   "sfx_win_h4_1.wav",
+   "sfx_win_h4_2.wav",
+   "sfx_win_h4_3.wav"
+  ],
+  "ogg": [
+   "sfx_win_h4_1.ogg",
+   "sfx_win_h4_2.ogg",
+   "sfx_win_h4_3.ogg"
+  ],
+  "aac": [
+   "sfx_win_h4_1.aac",
+   "sfx_win_h4_2.aac",
+   "sfx_win_h4_3.aac"
+  ],
+  "seconds": [
+   0.727,
+   0.719,
+   0.724
+  ],
+  "lufs": [
+   -26.0,
+   -26.0,
+   -26.13
+  ],
+  "peak_db": [
+   -11.66,
+   -10.39,
+   -6.5
+  ],
+  "peak_db_ogg": [
+   -11.7,
+   -10.56,
+   -6.44
+  ],
+  "peak_db_aac": [
+   -11.54,
+   -9.52,
+   -6.86
+  ],
+  "tail_floor_db": [
+   -89.8,
+   -83.8,
+   -84.5
+  ],
+  "centroid_hz": [
+   429,
+   468,
+   758
+  ],
+  "hf_floor_db": [
+   -107.7,
+   -107.8,
+   -107.7
+  ],
+  "source_speech_score": [
+   0.012,
+   0.017,
+   0.054
+  ],
+  "target_lufs": -26,
+  "purpose": "H4 Jerry Can cluster win: metal can tap/slosh + 2-note chime (D5 A5)",
+  "sources": [
+   "jerry_1",
+   "jerry_5",
+   "jerry_3"
+  ]
+ },
+ "sfx_win_l1": {
+  "takes": [
+   "sfx_win_l1_1.wav",
+   "sfx_win_l1_2.wav",
+   "sfx_win_l1_3.wav"
+  ],
+  "ogg": [
+   "sfx_win_l1_1.ogg",
+   "sfx_win_l1_2.ogg",
+   "sfx_win_l1_3.ogg"
+  ],
+  "aac": [
+   "sfx_win_l1_1.aac",
+   "sfx_win_l1_2.aac",
+   "sfx_win_l1_3.aac"
+  ],
+  "seconds": [
+   0.597,
+   0.597,
+   0.586
+  ],
+  "lufs": [
+   -26.01,
+   -26.0,
+   -26.01
+  ],
+  "peak_db": [
+   -8.87,
+   -11.59,
+   -9.81
+  ],
+  "peak_db_ogg": [
+   -8.86,
+   -11.93,
+   -9.82
+  ],
+  "peak_db_aac": [
+   -9.21,
+   -11.39,
+   -10.18
+  ],
+  "tail_floor_db": [
+   -88.3,
+   -92.0,
+   -90.4
+  ],
+  "centroid_hz": [
+   2567,
+   3290,
+   3221
+  ],
+  "hf_floor_db": [
+   -107.7,
+   -107.8,
+   -107.9
+  ],
+  "source_speech_score": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "target_lufs": -26,
+  "purpose": "L1 Energy Drink cluster win: can crack + fizz + single note A5",
+  "sources": [
+   "soda_1",
+   "soda_3",
+   "soda_7"
+  ]
+ },
+ "sfx_win_l2": {
+  "takes": [
+   "sfx_win_l2_1.wav",
+   "sfx_win_l2_2.wav",
+   "sfx_win_l2_3.wav"
+  ],
+  "ogg": [
+   "sfx_win_l2_1.ogg",
+   "sfx_win_l2_2.ogg",
+   "sfx_win_l2_3.ogg"
+  ],
+  "aac": [
+   "sfx_win_l2_1.aac",
+   "sfx_win_l2_2.aac",
+   "sfx_win_l2_3.aac"
+  ],
+  "seconds": [
+   0.596,
+   0.597,
+   0.558
+  ],
+  "lufs": [
+   -26.0,
+   -26.06,
+   -26.0
+  ],
+  "peak_db": [
+   -11.35,
+   -6.5,
+   -8.12
+  ],
+  "peak_db_ogg": [
+   -11.26,
+   -6.4,
+   -8.05
+  ],
+  "peak_db_aac": [
+   -11.43,
+   -6.52,
+   -8.18
+  ],
+  "tail_floor_db": [
+   -90.6,
+   -88.1,
+   -86.6
+  ],
+  "centroid_hz": [
+   1038,
+   1077,
+   1145
+  ],
+  "hf_floor_db": [
+   -107.7,
+   -107.5,
+   -107.4
+  ],
+  "source_speech_score": [
+   0.039,
+   0.022,
+   0.026
+  ],
+  "target_lufs": -26,
+  "purpose": "L2 Slushie cluster win: soft ice rattle + single note B5",
+  "sources": [
+   "slushie_1",
+   "slushie_4",
+   "slushie_6"
+  ]
+ },
+ "sfx_win_l3": {
+  "takes": [
+   "sfx_win_l3_1.wav",
+   "sfx_win_l3_2.wav",
+   "sfx_win_l3_3.wav"
+  ],
+  "ogg": [
+   "sfx_win_l3_1.ogg",
+   "sfx_win_l3_2.ogg",
+   "sfx_win_l3_3.ogg"
+  ],
+  "aac": [
+   "sfx_win_l3_1.aac",
+   "sfx_win_l3_2.aac",
+   "sfx_win_l3_3.aac"
+  ],
+  "seconds": [
+   0.585,
+   0.561,
+   0.593
+  ],
+  "lufs": [
+   -26.0,
+   -26.0,
+   -26.0
+  ],
+  "peak_db": [
+   -18.2,
+   -14.91,
+   -14.67
+  ],
+  "peak_db_ogg": [
+   -18.1,
+   -15.02,
+   -14.69
+  ],
+  "peak_db_aac": [
+   -18.14,
+   -14.95,
+   -15.13
+  ],
+  "tail_floor_db": [
+   -88.1,
+   -91.4,
+   -91.0
+  ],
+  "centroid_hz": [
+   1539,
+   1317,
+   1463
+  ],
+  "hf_floor_db": [
+   -107.7,
+   -107.8,
+   -107.6
+  ],
+  "source_speech_score": [
+   0.002,
+   0.003,
+   0.002
+  ],
+  "target_lufs": -26,
+  "purpose": "L3 Hot Dog cluster win: small grill sizzle + single note E5",
+  "sources": [
+   "sizzle_6",
+   "sizzle_4",
+   "sizzle_5"
+  ]
+ },
+ "sfx_win_l4": {
+  "takes": [
+   "sfx_win_l4_1.wav",
+   "sfx_win_l4_2.wav",
+   "sfx_win_l4_3.wav"
+  ],
+  "ogg": [
+   "sfx_win_l4_1.ogg",
+   "sfx_win_l4_2.ogg",
+   "sfx_win_l4_3.ogg"
+  ],
+  "aac": [
+   "sfx_win_l4_1.aac",
+   "sfx_win_l4_2.aac",
+   "sfx_win_l4_3.aac"
+  ],
+  "seconds": [
+   0.595,
+   0.594,
+   0.595
+  ],
+  "lufs": [
+   -26.0,
+   -26.0,
+   -26.15
+  ],
+  "peak_db": [
+   -10.45,
+   -6.83,
+   -6.5
+  ],
+  "peak_db_ogg": [
+   -10.49,
+   -6.7,
+   -6.41
+  ],
+  "peak_db_aac": [
+   -10.55,
+   -6.89,
+   -6.77
+  ],
+  "tail_floor_db": [
+   -91.8,
+   -86.6,
+   -92.1
+  ],
+  "centroid_hz": [
+   1792,
+   1298,
+   1330
+  ],
+  "hf_floor_db": [
+   -107.9,
+   -107.6,
+   -107.8
+  ],
+  "source_speech_score": [
+   0.0,
+   0.0,
+   0.011
+  ],
+  "target_lufs": -26,
+  "purpose": "L4 Chips cluster win: chip bag crinkle + single note F#5",
+  "sources": [
+   "chips_8",
+   "chips_5",
+   "chips_7"
+  ]
+ },
+ "sfx_win_l5": {
+  "takes": [
+   "sfx_win_l5_1.wav",
+   "sfx_win_l5_2.wav",
+   "sfx_win_l5_3.wav"
+  ],
+  "ogg": [
+   "sfx_win_l5_1.ogg",
+   "sfx_win_l5_2.ogg",
+   "sfx_win_l5_3.ogg"
+  ],
+  "aac": [
+   "sfx_win_l5_1.aac",
+   "sfx_win_l5_2.aac",
+   "sfx_win_l5_3.aac"
+  ],
+  "seconds": [
+   0.575,
+   0.584,
+   0.594
+  ],
+  "lufs": [
+   -26.05,
+   -26.0,
+   -26.0
+  ],
+  "peak_db": [
+   -6.5,
+   -9.36,
+   -11.67
+  ],
+  "peak_db_ogg": [
+   -6.42,
+   -9.35,
+   -11.68
+  ],
+  "peak_db_aac": [
+   -6.65,
+   -9.57,
+   -11.96
+  ],
+  "tail_floor_db": [
+   -81.9,
+   -84.0,
+   -86.2
+  ],
+  "centroid_hz": [
+   949,
+   881,
+   976
+  ],
+  "hf_floor_db": [
+   -107.9,
+   -107.9,
+   -107.9
+  ],
+  "source_speech_score": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "target_lufs": -26,
+  "purpose": "L5 Donut cluster win: soft bouncy pop + single note D6",
+  "sources": [
+   "pop_8",
+   "pop_6",
+   "pop_2"
+  ]
+ },
+ "sfx_zippo_flick": {
+  "takes": [
+   "sfx_zippo_flick_1.wav",
+   "sfx_zippo_flick_2.wav",
+   "sfx_zippo_flick_3.wav"
+  ],
+  "ogg": [
+   "sfx_zippo_flick_1.ogg",
+   "sfx_zippo_flick_2.ogg",
+   "sfx_zippo_flick_3.ogg"
+  ],
+  "aac": [
+   "sfx_zippo_flick_1.aac",
+   "sfx_zippo_flick_2.aac",
+   "sfx_zippo_flick_3.aac"
+  ],
+  "seconds": [
+   0.591,
+   0.592,
+   0.596
+  ],
+  "lufs": [
+   -24.05,
+   -24.07,
+   -24.08
+  ],
+  "peak_db": [
+   -6.5,
+   -6.5,
+   -6.5
+  ],
+  "peak_db_ogg": [
+   -6.65,
+   -6.53,
+   -6.41
+  ],
+  "peak_db_aac": [
+   -6.56,
+   -7.42,
+   -6.44
+  ],
+  "tail_floor_db": [
+   -81.2,
+   -93.1,
+   -83.1
+  ],
+  "centroid_hz": [
+   690,
+   598,
+   549
+  ],
+  "hf_floor_db": [
+   -108.4,
+   -106.9,
+   -106.0
+  ],
+  "source_speech_score": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "target_lufs": -24,
+  "purpose": "Zippo lands/activates: lid click + soft flame whoosh",
+  "sources": [
+   [
+    "zippo_5",
+    "whoomp_3"
+   ],
+   [
+    "zippo_3",
+    "whoomp_1"
+   ],
+   [
+    "zippo_6",
+    "whoomp_2"
+   ]
+  ]
+ },
+ "sfx_zippo_burn": {
+  "takes": [
+   "sfx_zippo_burn_1.wav",
+   "sfx_zippo_burn_2.wav",
+   "sfx_zippo_burn_3.wav"
+  ],
+  "ogg": [
+   "sfx_zippo_burn_1.ogg",
+   "sfx_zippo_burn_2.ogg",
+   "sfx_zippo_burn_3.ogg"
+  ],
+  "aac": [
+   "sfx_zippo_burn_1.aac",
+   "sfx_zippo_burn_2.aac",
+   "sfx_zippo_burn_3.aac"
+  ],
+  "seconds": [
+   0.866,
+   0.965,
+   0.97
+  ],
+  "lufs": [
+   -24.0,
+   -24.0,
+   -24.0
+  ],
+  "peak_db": [
+   -6.67,
+   -9.17,
+   -12.98
+  ],
+  "peak_db_ogg": [
+   -6.67,
+   -8.51,
+   -12.52
+  ],
+  "peak_db_aac": [
+   -6.67,
+   -9.14,
+   -12.91
+  ],
+  "tail_floor_db": [
+   -73.4,
+   -81.5,
+   -88.9
+  ],
+  "centroid_hz": [
+   114,
+   172,
+   216
+  ],
+  "hf_floor_db": [
+   -107.8,
+   -107.8,
+   -106.7
+  ],
+  "source_speech_score": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "target_lufs": -24,
+  "purpose": "Zippo 3x3 burn: warm low whoomp of fire spreading",
+  "sources": [
+   "whoomp_3",
+   "whoomp_6",
+   "whoomp_5"
+  ]
+ },
+ "sfx_scratch": {
+  "takes": [
+   "sfx_scratch_1.wav",
+   "sfx_scratch_2.wav",
+   "sfx_scratch_3.wav"
+  ],
+  "ogg": [
+   "sfx_scratch_1.ogg",
+   "sfx_scratch_2.ogg",
+   "sfx_scratch_3.ogg"
+  ],
+  "aac": [
+   "sfx_scratch_1.aac",
+   "sfx_scratch_2.aac",
+   "sfx_scratch_3.aac"
+  ],
+  "seconds": [
+   0.57,
+   0.569,
+   0.581
+  ],
+  "lufs": [
+   -24.0,
+   -24.0,
+   -24.0
+  ],
+  "peak_db": [
+   -9.59,
+   -10.55,
+   -9.01
+  ],
+  "peak_db_ogg": [
+   -9.0,
+   -11.35,
+   -8.89
+  ],
+  "peak_db_aac": [
+   -9.79,
+   -10.52,
+   -9.07
+  ],
+  "tail_floor_db": [
+   -92.5,
+   -92.4,
+   -89.7
+  ],
+  "centroid_hz": [
+   1703,
+   2294,
+   2578
+  ],
+  "hf_floor_db": [
+   -76.4,
+   -82.7,
+   -80.6
+  ],
+  "source_speech_score": [
+   0.018,
+   0.018,
+   0.018
+  ],
+  "target_lufs": -24,
+  "purpose": "Scratch Ticket scratching (3 short strokes, ~0.6 s)",
+  "sources": [
+   [
+    "scratch_5",
+    "scratch_5",
+    "scratch_1"
+   ],
+   [
+    "scratch_1",
+    "scratch_5",
+    "scratch_6"
+   ],
+   [
+    "scratch_1",
+    "scratch_6",
+    "scratch_5"
+   ]
+  ]
+ },
+ "sfx_scratch_reveal": {
+  "takes": [
+   "sfx_scratch_reveal_1.wav",
+   "sfx_scratch_reveal_2.wav",
+   "sfx_scratch_reveal_3.wav"
+  ],
+  "ogg": [
+   "sfx_scratch_reveal_1.ogg",
+   "sfx_scratch_reveal_2.ogg",
+   "sfx_scratch_reveal_3.ogg"
+  ],
+  "aac": [
+   "sfx_scratch_reveal_1.aac",
+   "sfx_scratch_reveal_2.aac",
+   "sfx_scratch_reveal_3.aac"
+  ],
+  "seconds": [
+   0.712,
+   0.718,
+   0.714
+  ],
+  "lufs": [
+   -24.0,
+   -24.0,
+   -24.0
+  ],
+  "peak_db": [
+   -14.76,
+   -14.0,
+   -13.28
+  ],
+  "peak_db_ogg": [
+   -14.59,
+   -13.87,
+   -13.37
+  ],
+  "peak_db_aac": [
+   -15.08,
+   -13.8,
+   -13.13
+  ],
+  "tail_floor_db": [
+   -89.0,
+   -87.1,
+   -87.1
+  ],
+  "centroid_hz": [
+   1545,
+   1587,
+   1519
+  ],
+  "hf_floor_db": [
+   -99.4,
+   -102.9,
+   -102.3
+  ],
+  "source_speech_score": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "target_lufs": -24,
+  "purpose": "Scratch Ticket reveal: gentle pentatonic sparkle",
+  "sources": [
+   "synth",
+   "synth",
+   "synth"
+  ]
+ },
+ "sfx_gold_scratch": {
+  "takes": [
+   "sfx_gold_scratch_1.wav",
+   "sfx_gold_scratch_2.wav",
+   "sfx_gold_scratch_3.wav"
+  ],
+  "ogg": [
+   "sfx_gold_scratch_1.ogg",
+   "sfx_gold_scratch_2.ogg",
+   "sfx_gold_scratch_3.ogg"
+  ],
+  "aac": [
+   "sfx_gold_scratch_1.aac",
+   "sfx_gold_scratch_2.aac",
+   "sfx_gold_scratch_3.aac"
+  ],
+  "seconds": [
+   1.128,
+   1.131,
+   1.147
+  ],
+  "lufs": [
+   -24.0,
+   -24.0,
+   -23.63
+  ],
+  "peak_db": [
+   -7.94,
+   -9.08,
+   -7.75
+  ],
+  "peak_db_ogg": [
+   -7.66,
+   -9.77,
+   -7.84
+  ],
+  "peak_db_aac": [
+   -8.14,
+   -9.16,
+   -7.62
+  ],
+  "tail_floor_db": [
+   -83.9,
+   -84.5,
+   -82.0
+  ],
+  "centroid_hz": [
+   1582,
+   2303,
+   2073
+  ],
+  "hf_floor_db": [
+   -105.4,
+   -105.4,
+   -106.0
+  ],
+  "source_speech_score": [
+   0.005,
+   0.018,
+   0.018
+  ],
+  "target_lufs": -24,
+  "purpose": "Gold Scratch Ticket: scratch strokes + golden shimmer",
+  "sources": [
+   [
+    "scratch_5",
+    "scratch_5"
+   ],
+   [
+    "scratch_1",
+    "scratch_6"
+   ],
+   [
+    "scratch_1",
+    "scratch_1"
+   ]
+  ]
+ },
+ "sfx_pump_roll": {
+  "takes": [
+   "sfx_pump_roll_1.wav",
+   "sfx_pump_roll_2.wav",
+   "sfx_pump_roll_3.wav"
+  ],
+  "ogg": [
+   "sfx_pump_roll_1.ogg",
+   "sfx_pump_roll_2.ogg",
+   "sfx_pump_roll_3.ogg"
+  ],
+  "aac": [
+   "sfx_pump_roll_1.aac",
+   "sfx_pump_roll_2.aac",
+   "sfx_pump_roll_3.aac"
+  ],
+  "seconds": [
+   1.193,
+   1.204,
+   1.2
+  ],
+  "lufs": [
+   -24.0,
+   -24.0,
+   -24.0
+  ],
+  "peak_db": [
+   -10.23,
+   -9.72,
+   -11.01
+  ],
+  "peak_db_ogg": [
+   -10.32,
+   -9.82,
+   -11.36
+  ],
+  "peak_db_aac": [
+   -10.24,
+   -10.03,
+   -11.01
+  ],
+  "tail_floor_db": [
+   -92.0,
+   -81.9,
+   -91.9
+  ],
+  "centroid_hz": [
+   2780,
+   1073,
+   2349
+  ],
+  "hf_floor_db": [
+   -81.5,
+   -84.6,
+   -68.6
+  ],
+  "source_speech_score": [
+   0.003,
+   0.006,
+   0.021
+  ],
+  "target_lufs": -24,
+  "purpose": "Gas Pump grade roll: mechanical counter winding and stopping (~1.2 s)",
+  "sources": [
+   "counter_7",
+   "counter_4",
+   "counter_3"
+  ]
+ },
+ "sfx_pump_regular": {
+  "takes": [
+   "sfx_pump_regular_1.wav",
+   "sfx_pump_regular_2.wav",
+   "sfx_pump_regular_3.wav"
+  ],
+  "ogg": [
+   "sfx_pump_regular_1.ogg",
+   "sfx_pump_regular_2.ogg",
+   "sfx_pump_regular_3.ogg"
+  ],
+  "aac": [
+   "sfx_pump_regular_1.aac",
+   "sfx_pump_regular_2.aac",
+   "sfx_pump_regular_3.aac"
+  ],
+  "seconds": [
+   0.727,
+   0.731,
+   0.731
+  ],
+  "lufs": [
+   -25.0,
+   -25.0,
+   -25.0
+  ],
+  "peak_db": [
+   -16.05,
+   -14.34,
+   -14.01
+  ],
+  "peak_db_ogg": [
+   -15.99,
+   -14.45,
+   -13.9
+  ],
+  "peak_db_aac": [
+   -16.09,
+   -13.83,
+   -13.94
+  ],
+  "tail_floor_db": [
+   -93.1,
+   -89.3,
+   -92.9
+  ],
+  "centroid_hz": [
+   557,
+   597,
+   740
+  ],
+  "hf_floor_db": [
+   -108.2,
+   -107.8,
+   -108.1
+  ],
+  "source_speech_score": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "target_lufs": -25,
+  "purpose": "Gas Pump grade REGULAR (x2/x4): 2-note bell",
+  "sources": [
+   "synth",
+   "synth",
+   "synth"
+  ]
+ },
+ "sfx_pump_plus": {
+  "takes": [
+   "sfx_pump_plus_1.wav",
+   "sfx_pump_plus_2.wav",
+   "sfx_pump_plus_3.wav"
+  ],
+  "ogg": [
+   "sfx_pump_plus_1.ogg",
+   "sfx_pump_plus_2.ogg",
+   "sfx_pump_plus_3.ogg"
+  ],
+  "aac": [
+   "sfx_pump_plus_1.aac",
+   "sfx_pump_plus_2.aac",
+   "sfx_pump_plus_3.aac"
+  ],
+  "seconds": [
+   0.83,
+   0.832,
+   0.829
+  ],
+  "lufs": [
+   -24.5,
+   -24.5,
+   -24.5
+  ],
+  "peak_db": [
+   -14.82,
+   -13.3,
+   -13.94
+  ],
+  "peak_db_ogg": [
+   -14.86,
+   -13.33,
+   -13.94
+  ],
+  "peak_db_aac": [
+   -14.79,
+   -12.14,
+   -13.91
+  ],
+  "tail_floor_db": [
+   -93.1,
+   -92.8,
+   -90.1
+  ],
+  "centroid_hz": [
+   912,
+   901,
+   1026
+  ],
+  "hf_floor_db": [
+   -107.9,
+   -107.9,
+   -108.0
+  ],
+  "source_speech_score": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "target_lufs": -24.5,
+  "purpose": "Gas Pump grade PLUS (x8/x16): 3-note bell",
+  "sources": [
+   "synth",
+   "synth",
+   "synth"
+  ]
+ },
+ "sfx_pump_premium": {
+  "takes": [
+   "sfx_pump_premium_1.wav",
+   "sfx_pump_premium_2.wav",
+   "sfx_pump_premium_3.wav"
+  ],
+  "ogg": [
+   "sfx_pump_premium_1.ogg",
+   "sfx_pump_premium_2.ogg",
+   "sfx_pump_premium_3.ogg"
+  ],
+  "aac": [
+   "sfx_pump_premium_1.aac",
+   "sfx_pump_premium_2.aac",
+   "sfx_pump_premium_3.aac"
+  ],
+  "seconds": [
+   1.034,
+   1.033,
+   1.032
+  ],
+  "lufs": [
+   -24.0,
+   -24.0,
+   -24.0
+  ],
+  "peak_db": [
+   -14.46,
+   -14.39,
+   -14.37
+  ],
+  "peak_db_ogg": [
+   -14.31,
+   -14.39,
+   -14.27
+  ],
+  "peak_db_aac": [
+   -14.47,
+   -14.47,
+   -14.18
+  ],
+  "tail_floor_db": [
+   -93.7,
+   -93.7,
+   -92.4
+  ],
+  "centroid_hz": [
+   835,
+   747,
+   741
+  ],
+  "hf_floor_db": [
+   -107.0,
+   -107.1,
+   -107.0
+  ],
+  "source_speech_score": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "target_lufs": -24,
+  "purpose": "Gas Pump grade PREMIUM (x32/x64): 4-note arpeggio + soft pad",
+  "sources": [
+   "synth",
+   "synth",
+   "synth"
+  ]
+ },
+ "sfx_pump_fulltank": {
+  "takes": [
+   "sfx_pump_fulltank_1.wav",
+   "sfx_pump_fulltank_2.wav",
+   "sfx_pump_fulltank_3.wav"
+  ],
+  "ogg": [
+   "sfx_pump_fulltank_1.ogg",
+   "sfx_pump_fulltank_2.ogg",
+   "sfx_pump_fulltank_3.ogg"
+  ],
+  "aac": [
+   "sfx_pump_fulltank_1.aac",
+   "sfx_pump_fulltank_2.aac",
+   "sfx_pump_fulltank_3.aac"
+  ],
+  "seconds": [
+   1.48,
+   1.484,
+   1.478
+  ],
+  "lufs": [
+   -23.0,
+   -23.0,
+   -23.0
+  ],
+  "peak_db": [
+   -12.17,
+   -13.47,
+   -12.83
+  ],
+  "peak_db_ogg": [
+   -12.16,
+   -13.46,
+   -12.84
+  ],
+  "peak_db_aac": [
+   -12.55,
+   -13.69,
+   -12.62
+  ],
+  "tail_floor_db": [
+   -89.2,
+   -92.5,
+   -89.9
+  ],
+  "centroid_hz": [
+   1026,
+   1011,
+   1081
+  ],
+  "hf_floor_db": [
+   -107.6,
+   -107.4,
+   -107.8
+  ],
+  "source_speech_score": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "target_lufs": -23,
+  "purpose": "Gas Pump FULL TANK: arpeggio, held brass-like chord, sparkle",
+  "sources": [
+   "synth",
+   "synth",
+   "synth"
+  ]
+ },
+ "sfx_mult_double": {
+  "takes": [
+   "sfx_mult_double_1.wav",
+   "sfx_mult_double_2.wav",
+   "sfx_mult_double_3.wav"
+  ],
+  "ogg": [
+   "sfx_mult_double_1.ogg",
+   "sfx_mult_double_2.ogg",
+   "sfx_mult_double_3.ogg"
+  ],
+  "aac": [
+   "sfx_mult_double_1.aac",
+   "sfx_mult_double_2.aac",
+   "sfx_mult_double_3.aac"
+  ],
+  "seconds": [
+   0.148,
+   0.148,
+   0.147
+  ],
+  "lufs": [
+   -28.02,
+   -28.02,
+   -28.02
+  ],
+  "peak_db": [
+   -15.85,
+   -16.51,
+   -17.08
+  ],
+  "peak_db_ogg": [
+   -15.88,
+   -16.49,
+   -17.14
+  ],
+  "peak_db_aac": [
+   -13.78,
+   -15.48,
+   -13.76
+  ],
+  "tail_floor_db": [
+   -93.4,
+   -93.7,
+   -93.2
+  ],
+  "centroid_hz": [
+   1173,
+   1288,
+   1461
+  ],
+  "hf_floor_db": [
+   -107.8,
+   -108.0,
+   -107.6
+  ],
+  "source_speech_score": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "target_lufs": -28,
+  "purpose": "Cell multiplier doubles: tiny soft tick-up (many overlap; mixed lower)",
+  "sources": [
+   "synth",
+   "synth",
+   "synth"
+  ]
+ },
+ "sfx_burn_clear": {
+  "takes": [
+   "sfx_burn_clear_1.wav",
+   "sfx_burn_clear_2.wav",
+   "sfx_burn_clear_3.wav"
+  ],
+  "ogg": [
+   "sfx_burn_clear_1.ogg",
+   "sfx_burn_clear_2.ogg",
+   "sfx_burn_clear_3.ogg"
+  ],
+  "aac": [
+   "sfx_burn_clear_1.aac",
+   "sfx_burn_clear_2.aac",
+   "sfx_burn_clear_3.aac"
+  ],
+  "seconds": [
+   0.461,
+   0.581,
+   0.584
+  ],
+  "lufs": [
+   -24.18,
+   -24.17,
+   -24.23
+  ],
+  "peak_db": [
+   -6.5,
+   -6.5,
+   -6.5
+  ],
+  "peak_db_ogg": [
+   -6.6,
+   -6.43,
+   -6.34
+  ],
+  "peak_db_aac": [
+   -6.46,
+   -6.71,
+   -6.3
+  ],
+  "tail_floor_db": [
+   -80.0,
+   -79.2,
+   -89.4
+  ],
+  "centroid_hz": [
+   1186,
+   1570,
+   1880
+  ],
+  "hf_floor_db": [
+   -72.6,
+   -105.7,
+   -60.3
+  ],
+  "source_speech_score": [
+   0.0,
+   0.004,
+   0.0
+  ],
+  "target_lufs": -24,
+  "purpose": "Symbols burning away: soft crackle-poof",
+  "sources": [
+   "burn_8",
+   "burn_2",
+   "burn_6"
+  ]
+ },
+ "sfx_drop_land": {
+  "takes": [
+   "sfx_drop_land_1.wav",
+   "sfx_drop_land_2.wav",
+   "sfx_drop_land_3.wav"
+  ],
+  "ogg": [
+   "sfx_drop_land_1.ogg",
+   "sfx_drop_land_2.ogg",
+   "sfx_drop_land_3.ogg"
+  ],
+  "aac": [
+   "sfx_drop_land_1.aac",
+   "sfx_drop_land_2.aac",
+   "sfx_drop_land_3.aac"
+  ],
+  "seconds": [
+   0.3,
+   0.3,
+   0.3
+  ],
+  "lufs": [
+   -24.0,
+   -24.2,
+   -24.11
+  ],
+  "peak_db": [
+   -7.81,
+   -6.5,
+   -6.5
+  ],
+  "peak_db_ogg": [
+   -7.86,
+   -6.47,
+   -6.49
+  ],
+  "peak_db_aac": [
+   -7.07,
+   -6.65,
+   -6.32
+  ],
+  "tail_floor_db": [
+   -87.9,
+   -92.1,
+   -87.7
+  ],
+  "centroid_hz": [
+   1221,
+   1629,
+   1624
+  ],
+  "hf_floor_db": [
+   -107.8,
+   -107.6,
+   -107.8
+  ],
+  "source_speech_score": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "target_lufs": -24,
+  "purpose": "Fuel Drop lands: glassy plink",
+  "sources": [
+   "drip_8",
+   "drip_1",
+   "drip_7"
+  ]
+ },
+ "sfx_drop_collect": {
+  "takes": [
+   "sfx_drop_collect_1.wav",
+   "sfx_drop_collect_2.wav",
+   "sfx_drop_collect_3.wav"
+  ],
+  "ogg": [
+   "sfx_drop_collect_1.ogg",
+   "sfx_drop_collect_2.ogg",
+   "sfx_drop_collect_3.ogg"
+  ],
+  "aac": [
+   "sfx_drop_collect_1.aac",
+   "sfx_drop_collect_2.aac",
+   "sfx_drop_collect_3.aac"
+  ],
+  "seconds": [
+   0.638,
+   0.638,
+   0.638
+  ],
+  "lufs": [
+   -24.0,
+   -23.99,
+   -24.0
+  ],
+  "peak_db": [
+   -13.33,
+   -12.17,
+   -14.06
+  ],
+  "peak_db_ogg": [
+   -13.05,
+   -12.29,
+   -14.35
+  ],
+  "peak_db_aac": [
+   -13.43,
+   -12.16,
+   -14.19
+  ],
+  "tail_floor_db": [
+   -100.3,
+   -92.1,
+   -140.0
+  ],
+  "centroid_hz": [
+   1450,
+   705,
+   229
+  ],
+  "hf_floor_db": [
+   -107.9,
+   -107.7,
+   -107.8
+  ],
+  "source_speech_score": [
+   0.023,
+   0.008,
+   0.0
+  ],
+  "target_lufs": -24,
+  "purpose": "Fuel Drops collected: soft whoosh ending in a gloop",
+  "sources": [
+   "suck_1",
+   "suck_8",
+   "suck_4"
+  ]
+ },
+ "sfx_gauge_refill": {
+  "takes": [
+   "sfx_gauge_refill_1.wav",
+   "sfx_gauge_refill_2.wav",
+   "sfx_gauge_refill_3.wav"
+  ],
+  "ogg": [
+   "sfx_gauge_refill_1.ogg",
+   "sfx_gauge_refill_2.ogg",
+   "sfx_gauge_refill_3.ogg"
+  ],
+  "aac": [
+   "sfx_gauge_refill_1.aac",
+   "sfx_gauge_refill_2.aac",
+   "sfx_gauge_refill_3.aac"
+  ],
+  "seconds": [
+   0.659,
+   0.659,
+   0.658
+  ],
+  "lufs": [
+   -24.0,
+   -24.01,
+   -24.0
+  ],
+  "peak_db": [
+   -7.98,
+   -9.93,
+   -8.93
+  ],
+  "peak_db_ogg": [
+   -8.02,
+   -9.77,
+   -8.71
+  ],
+  "peak_db_aac": [
+   -8.27,
+   -8.89,
+   -9.18
+  ],
+  "tail_floor_db": [
+   -90.8,
+   -91.6,
+   -85.7
+  ],
+  "centroid_hz": [
+   657,
+   1146,
+   1440
+  ],
+  "hf_floor_db": [
+   -107.8,
+   -107.8,
+   -107.9
+  ],
+  "source_speech_score": [
+   0.0,
+   0.023,
+   0.004
+  ],
+  "target_lufs": -24,
+  "purpose": "Fuel gauge refills to 3 bars: three soft ratchet clicks rising D5 F#5 A5",
+  "sources": [
+   [
+    "dial_click_4",
+    "dial_click_4",
+    "dial_click_1"
+   ],
+   [
+    "dial_click_3",
+    "ratchet_7",
+    "ratchet_3"
+   ],
+   [
+    "ratchet_4",
+    "ratchet_3",
+    "ratchet_3"
+   ]
+  ]
+ },
+ "sfx_gauge_tick": {
+  "takes": [
+   "sfx_gauge_tick_1.wav",
+   "sfx_gauge_tick_2.wav",
+   "sfx_gauge_tick_3.wav"
+  ],
+  "ogg": [
+   "sfx_gauge_tick_1.ogg",
+   "sfx_gauge_tick_2.ogg",
+   "sfx_gauge_tick_3.ogg"
+  ],
+  "aac": [
+   "sfx_gauge_tick_1.aac",
+   "sfx_gauge_tick_2.aac",
+   "sfx_gauge_tick_3.aac"
+  ],
+  "seconds": [
+   0.323,
+   0.341,
+   0.339
+  ],
+  "lufs": [
+   -25.08,
+   -26.13,
+   -25.1
+  ],
+  "peak_db": [
+   -6.5,
+   -6.5,
+   -6.5
+  ],
+  "peak_db_ogg": [
+   -6.36,
+   -6.41,
+   -6.52
+  ],
+  "peak_db_aac": [
+   -6.97,
+   -6.65,
+   -6.91
+  ],
+  "tail_floor_db": [
+   -73.1,
+   -72.9,
+   -83.6
+  ],
+  "centroid_hz": [
+   3682,
+   1926,
+   668
+  ],
+  "hf_floor_db": [
+   -108.8,
+   -108.2,
+   -107.8
+  ],
+  "source_speech_score": [
+   0.004,
+   0.004,
+   0.003
+  ],
+  "target_lufs": -25,
+  "purpose": "Fuel gauge loses a bar: soft click + low A4",
+  "sources": [
+   "ratchet_3",
+   "ratchet_3",
+   "ratchet_5"
+  ]
+ },
+ "sfx_token_land": {
+  "takes": [
+   "sfx_token_land_1.wav",
+   "sfx_token_land_2.wav",
+   "sfx_token_land_3.wav"
+  ],
+  "ogg": [
+   "sfx_token_land_1.ogg",
+   "sfx_token_land_2.ogg",
+   "sfx_token_land_3.ogg"
+  ],
+  "aac": [
+   "sfx_token_land_1.aac",
+   "sfx_token_land_2.aac",
+   "sfx_token_land_3.aac"
+  ],
+  "seconds": [
+   0.699,
+   0.698,
+   0.699
+  ],
+  "lufs": [
+   -24.11,
+   -24.16,
+   -24.11
+  ],
+  "peak_db": [
+   -6.5,
+   -6.5,
+   -6.5
+  ],
+  "peak_db_ogg": [
+   -6.3,
+   -6.4,
+   -6.71
+  ],
+  "peak_db_aac": [
+   -6.73,
+   -6.24,
+   -6.44
+  ],
+  "tail_floor_db": [
+   -84.7,
+   -90.7,
+   -93.1
+  ],
+  "centroid_hz": [
+   1169,
+   1625,
+   1363
+  ],
+  "hf_floor_db": [
+   -107.8,
+   -107.7,
+   -107.7
+  ],
+  "source_speech_score": [
+   0.0,
+   0.027,
+   0.011
+  ],
+  "target_lufs": -24,
+  "purpose": "FALCOS Token lands: soft coin + chime + faint neon hum (A2)",
+  "sources": [
+   "coin_7",
+   "coin_3",
+   "coin_5"
+  ]
+ },
+ "sfx_midnight_land": {
+  "takes": [
+   "sfx_midnight_land_1.wav",
+   "sfx_midnight_land_2.wav",
+   "sfx_midnight_land_3.wav"
+  ],
+  "ogg": [
+   "sfx_midnight_land_1.ogg",
+   "sfx_midnight_land_2.ogg",
+   "sfx_midnight_land_3.ogg"
+  ],
+  "aac": [
+   "sfx_midnight_land_1.aac",
+   "sfx_midnight_land_2.aac",
+   "sfx_midnight_land_3.aac"
+  ],
+  "seconds": [
+   1.002,
+   1.005,
+   1.004
+  ],
+  "lufs": [
+   -25.0,
+   -25.0,
+   -25.0
+  ],
+  "peak_db": [
+   -8.43,
+   -7.31,
+   -8.87
+  ],
+  "peak_db_ogg": [
+   -8.68,
+   -7.13,
+   -9.0
+  ],
+  "peak_db_aac": [
+   -8.14,
+   -7.42,
+   -6.43
+  ],
+  "tail_floor_db": [
+   -74.8,
+   -82.7,
+   -82.4
+  ],
+  "centroid_hz": [
+   190,
+   178,
+   179
+  ],
+  "hf_floor_db": [
+   -108.0,
+   -107.8,
+   -107.6
+  ],
+  "source_speech_score": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "target_lufs": -25,
+  "purpose": "Midnight Token lands: low dark thud + B-minor pad (inside the key)",
+  "sources": [
+   "thud_4",
+   "thud_5",
+   "thud_1"
+  ]
+ },
+ "sfx_bonus_trigger": {
+  "takes": [
+   "sfx_bonus_trigger_1.wav",
+   "sfx_bonus_trigger_2.wav",
+   "sfx_bonus_trigger_3.wav"
+  ],
+  "ogg": [
+   "sfx_bonus_trigger_1.ogg",
+   "sfx_bonus_trigger_2.ogg",
+   "sfx_bonus_trigger_3.ogg"
+  ],
+  "aac": [
+   "sfx_bonus_trigger_1.aac",
+   "sfx_bonus_trigger_2.aac",
+   "sfx_bonus_trigger_3.aac"
+  ],
+  "seconds": [
+   1.475,
+   1.474,
+   1.473
+  ],
+  "lufs": [
+   -22.0,
+   -22.0,
+   -22.0
+  ],
+  "peak_db": [
+   -11.56,
+   -12.03,
+   -11.13
+  ],
+  "peak_db_ogg": [
+   -11.67,
+   -12.04,
+   -11.33
+  ],
+  "peak_db_aac": [
+   -11.46,
+   -12.24,
+   -11.35
+  ],
+  "tail_floor_db": [
+   -88.7,
+   -87.9,
+   -88.0
+  ],
+  "centroid_hz": [
+   1071,
+   1043,
+   1021
+  ],
+  "hf_floor_db": [
+   -104.7,
+   -102.1,
+   -103.5
+  ],
+  "source_speech_score": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "target_lufs": -22,
+  "purpose": "Bonus triggered: tasteful 1.5 s fanfare in D",
+  "sources": [
+   "synth",
+   "synth",
+   "synth"
+  ]
+ }
+}
