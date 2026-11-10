@@ -30,40 +30,38 @@
   },
   "fx_woman": {
    "rect": [
-    420,
-    300,
-    600,
-    680
+    496.0,
+    404.0,
+    234.0,
+    548.0
    ],
    "frames": 240,
-   "fps": 30,
-   "w": 300,
-   "h": 340,
-   "cols": 13,
-   "per_sheet": 156,
+   "fps": 30.0,
+   "w": 117,
+   "h": 274,
+   "cols": 35,
+   "per_sheet": 490,
    "sheets": [
-    "fx_woman_0.webp",
-    "fx_woman_1.webp"
+    "fx_woman_0.webp"
    ]
   },
   "fx_cashier": {
    "rect": [
-    2870,
-    660,
-    960,
-    740
+    2880.0,
+    686.0,
+    940.0,
+    698.0
    ],
-   "frames": 240,
-   "fps": 30,
-   "w": 480,
-   "h": 370,
-   "cols": 8,
-   "per_sheet": 88,
+   "frames": 120,
+   "fps": 15.0,
+   "w": 235,
+   "h": 174,
+   "cols": 17,
+   "per_sheet": 391,
    "sheets": [
-    "fx_cashier_0.webp",
-    "fx_cashier_1.webp",
-    "fx_cashier_2.webp"
+    "fx_cashier_0.webp"
    ]
   }
- }
+ },
+ "packed": 2
 }

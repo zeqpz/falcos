@@ -13,6 +13,9 @@ menu    - the 7x5 board frame (frame_75.webp + .json), the bonus-buy menu (asset
 symbols - assets/sym/ (manifest + d10..d24 sheets) and assets/flat/ replaced by the 18 Falcos symbols;
           skipped while art/falcos/game/sym/manifest.json does not exist yet
 No argument: all of them.
+
+Then ALWAYS run tools/falcos/compress_assets.py: it shrinks what was just copied (drops the d24 symbol density,
+re-encodes, makes the phone plates, repacks the scene loops, builds frame_sq) - the raw installs are ~2.5x bigger.
 """
 import os, sys, shutil
 from PIL import Image
@@ -91,3 +94,4 @@ if __name__ == '__main__':
     jobs = sys.argv[1:] or ['ui', 'scene', 'intro', 'menu', 'symbols']
     for j in jobs:
         {'ui': ui, 'scene': scene, 'intro': intro, 'menu': menu, 'symbols': symbols}[j]()
+    print('next: .venv/bin/python tools/falcos/compress_assets.py')

@@ -19,7 +19,8 @@
   "use strict";
   const PAD = 72;        // css px the canvas reaches past the board: the reels clip 60 px out at the sides; pops and bursts swell past the edge
   const MAX_RES = 2;     // device px per css px at most (a 3x phone draws its board at 2x: a third of the pixels to fill)
-  const TOP_CLIP = { spinning: 0, tumbling: 24 }, SIDE_CLIP = 60;   // the reels' clip-paths (.reel.spinning / .reel.tumbling)
+  const TOP_CLIP = { spinning: 0, tumbling: 24 }, SIDE_CLIP = 60;
+  const FIT = typeof SYM_FIT === "number" ? SYM_FIT : .92;   // a symbol's share of its tile (index.html SYM_FIT)   // the reels' clip-paths (.reel.spinning / .reel.tumbling)
 
   let app = null, board = null, root = null, tried = null;
   let dirty = true, geoDirty = true, res = 1, W = 0, H = 0;
@@ -44,6 +45,7 @@
         await app.init({ backgroundAlpha: 0, antialias: false, autoDensity: true, resolution: resolution(), width: 4, height: 4, preference: "webgl" });
       } catch (e) { console.warn("board canvas unavailable:", e.message); app = null; return false; }
       app.ticker.remove(app.render, app);
+      app.ticker.maxFPS = 63;   // (perf, 2026-11-10) a 120 Hz phone read all 35 cells and redrew twice as often as a 60 Hz one for no visible gain (63, not 60: Pixi floors the frame delta)
       app.canvas.addEventListener("webglcontextlost", onLost, false);
       app.canvas.addEventListener("webglcontextrestored", onRestored, false);
       app.canvas.className = "boardgl";
@@ -284,9 +286,9 @@
         if (c.cont.parent !== parent) parent.addChild(c.cont);
         c.cont.zIndex = c.z * 1000 + c.order;
         if (rr && rr.clip) rr.cont.zIndex = Math.max(rr.cont.zIndex || 0, c.cont.zIndex);
-        // the rig: the icon's footprint scaled into the cell's 88% box, centred; the clip's box inside it
+        // the rig: the icon's footprint scaled into the cell's FIT box, centred; the clip's box inside it
         const m = rig._m, rw = m.icon[0] * 10, rh = m.icon[1] * 10, bx = m.clips[rig._gclip].box;
-        const sR = Math.min(b.cw * .88 / rw, b.ch * .88 / rh);
+        const sR = Math.min(b.cw * FIT / rw, b.ch * FIT / rh) * (window.symScaleOf ? window.symScaleOf(rig._name) : 1);
         c.spr.texture = tex;
         c.spr.x = b.w / 2 + ((bx[0] + m.icon[0] / 2) * 10 - rw / 2) * sR;
         c.spr.y = b.h / 2 + ((bx[1] + m.icon[1] / 2) * 10 - rh / 2) * sR;
@@ -296,7 +298,7 @@
         // the motion blur behind a falling tile (.smear: left 6%, 88% wide, its foot 6% up, 2.1 boxes tall)
         const st = c.smop > .005 ? smearTexture(cell) : null;
         if (st) {
-          const sw = b.cw * .88, sh = b.ch * .88 * 2.1, sx = b.bl + b.cw * .06, sy = b.bt + b.ch * .94 - sh;
+          const sw = b.cw * FIT, sh = b.ch * FIT * 2.1, sx = b.bl + b.cw * (1 - FIT) / 2, sy = b.bt + b.ch * (1 + FIT) / 2 - sh;
           // its own transform (the stretch) is about its own box: then the box is moved to where it sits
           const sm = c.smm ? new PIXI.Matrix(c.smm.a, c.smm.b, c.smm.c, c.smm.d, c.smm.e, c.smm.f) : new PIXI.Matrix();
           sm.translate(sx, sy);

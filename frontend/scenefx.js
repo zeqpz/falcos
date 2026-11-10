@@ -82,12 +82,16 @@
       const im = new Image();
       im.src = URL.createObjectURL(blob);
       await im.decode();
-      if (k < .97 && typeof createImageBitmap === "function") {
+      // always held as an ImageBitmap (perf, 2026-11-10): drawn from the <img> itself, the browser was free to
+      // drop its decoded pixels and decode the whole sheet again on the main thread - 200-340 ms stalls every
+      // second or two on a phone, the game's worst lag (compress_assets.py also cut the sheets ~9x)
+      if (typeof createImageBitmap === "function") {
         try {
-          const bm = await createImageBitmap(im, { resizeWidth: Math.round(im.naturalWidth * k), resizeHeight: Math.round(im.naturalHeight * k), resizeQuality: "high" });
+          const bm = k < .97 ? await createImageBitmap(im, { resizeWidth: Math.round(im.naturalWidth * k), resizeHeight: Math.round(im.naturalHeight * k), resizeQuality: "high" })
+                             : await createImageBitmap(im);
           URL.revokeObjectURL(im.src);
-          return { src: bm, k };
-        } catch (e) { /* no resize: the sheet as it is */ }
+          return { src: bm, k: k < .97 ? k : 1 };
+        } catch (e) { /* no bitmap: the sheet as it is */ }
       }
       return { src: im, k: 1 };
     })).then(sheets => {
