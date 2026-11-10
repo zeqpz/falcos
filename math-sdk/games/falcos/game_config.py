@@ -188,7 +188,7 @@ class GameConfig(Config):
 
         def base_dists(scale: float = 1.0):
             """base / FUEL CHANCE criteria. `scale` multiplies the bonus criteria's sim quotas
-            (FUEL CHANCE: ~5x the bonus rate); ordinary spins take up the difference."""
+            (FUEL CHANCE: ~2.2x the bonus rate); ordinary spins take up the difference."""
             q = {"wincap": 0.001, "midnight": 0.005, "premium": 0.01, "fillup": 0.03}
             q = {k: round(v * scale, 6) for k, v in q.items()}
             zero = 0.35 if scale == 1.0 else 0.30
@@ -246,12 +246,12 @@ class GameConfig(Config):
                 auto_close_disabled=False, is_feature=True, is_buybonus=False,
                 distributions=base_dists(1.0),
             ),
-            # FUEL CHANCE: one base spin with ~5x the chance of any bonus (MIDNIGHT RUN included).
-            # Same reels and rules as base; the optimiser's targets set the real 5x (phase 2).
+            # FUEL CHANCE: one base spin with ~2.2x the chance of any bonus (MIDNIGHT RUN included).
+            # Same reels and rules as base; the optimiser's targets set the real 2.2x (phase 2).
             BetMode(
                 name="chance", cost=3.0, rtp=self.rtp, max_win=self.wincap,
                 auto_close_disabled=False, is_feature=True, is_buybonus=False,
-                distributions=base_dists(5.0),
+                distributions=base_dists(2.2),
             ),
             # FILL UP buy (100x)
             BetMode(

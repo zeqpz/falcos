@@ -78,6 +78,10 @@ if __name__ == "__main__":
         if buys:
             subprocess.run([sys.executable, os.path.join(os.path.dirname(os.path.abspath(__file__)), "cap_books.py"),
                             "--modes", *buys], check=True)
+        # FUEL CHANCE: keep etl40b inside the 3-star band (see trim_chance_tail.py)
+        if "chance" in num_sim_args:
+            subprocess.run([sys.executable, os.path.join(os.path.dirname(os.path.abspath(__file__)), "trim_chance_tail.py")],
+                           check=True)
         generate_configs(gamestate)
 
     if args.analysis:

@@ -91,7 +91,7 @@ Gold Tickets one at a time, then Zippos.
 | mode | cost | what it is |
 |---|---|---|
 | base | 1x | normal spin |
-| FUEL CHANCE | 3x | one base spin with about 5x the chance of triggering any bonus |
+| FUEL CHANCE | 3x | one base spin with about 2.2x the chance of triggering any bonus |
 | FILL UP | 100x | buys the collection bonus |
 | PREMIUM | 300x | buys the sticky-multiplier free spins |
 | NITRO SPIN | 500x | one spin with every cell preloaded with a multiplier from x16 to x2048 |
@@ -127,7 +127,7 @@ Books: base 100,000, FUEL CHANCE 50,000, FILL UP / PREMIUM / NITRO / LUCKY PUMP 
 | LUCKY PUMP | 96.50% | 1 in 1.11 | 1 in 200,000 | 1 in 2 | 1 in 2,000 | 0.60 | pass |
 
 Bonuses: base FILL UP 1 in 400 (avg 112x), PREMIUM 1 in 2,700 (avg 365x), MIDNIGHT RUN 1 in
-14,000 (avg 968x); FUEL CHANCE 5x as often (1 in 80 / 540 / 2,800). Bought FILL UP averages 96.5x,
+14,000 (avg 968x); FUEL CHANCE 2.2x as often (1 in 182 / 1,227 / 6,364; 5x failed the 3-star etl40b limit, trim_chance_tail.py keeps it at 0.84). Bought FILL UP averages 96.5x,
 PREMIUM 289.5x. LUCKY PUMP wheel: PREMIUM 55.9% (avg 316x), MIDNIGHT RUN 34.1% (avg 897x),
 nothing 10.0%.
 

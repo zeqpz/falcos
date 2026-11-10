@@ -25,7 +25,7 @@ Targets (base bets)
 -------------------
     base     FILL UP 1 in 400, PREMIUM 1 in 2,700, MIDNIGHT RUN 1 in 14,000; max win 1 in 8M
              (rtp 0.00625); ordinary winning spins ~1 in 3
-    chance   (3x) the bonuses and the max win 5x as often, same average bonus; ordinary spins
+    chance   (3x) the bonuses and the max win 2.2x as often (5x failed etl40b), same average bonus; ordinary spins
              take the rest at hr 2.5
     fillup   wincap 0.20 bb (1 in 250,000) | bigwin (>= 4,000x) 0.50 bb | fillup the rest
     premium  wincap 0.25 bb (1 in 200,000) | bigwin (>= 10,000x) 0.35 bb | premium the rest
@@ -46,7 +46,7 @@ from optimization_program.optimization_config import (
     verify_optimization_input,
 )
 
-CHANCE_BONUS = 5.0
+CHANCE_BONUS = 2.2
 CHANCE_COST = 3.0
 
 BASE_HR = {"midnight": 14000, "premium": 2700, "fillup": 400}
@@ -170,7 +170,7 @@ def base_book_scaling(pool, books, criteria, hr, rtp, cost):
 
 # ------------------------------------------------------------------------------------- modes
 def spin_mode(game_config, mode, k, cost, base_hit):
-    """base (k=1, cost 1) and FUEL CHANCE (k=5, cost 3)."""
+    """base (k=1, cost 1) and FUEL CHANCE (k=2.2, cost 3)."""
     cap, rtp = game_config.wincap, game_config.rtp
     pool = Pool(game_config, mode)
     out = {}

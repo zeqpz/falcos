@@ -2,7 +2,7 @@
     "workingName": "Falcos",
     "frontendConfig": {
         "file": "fe_config.json",
-        "sha256": "d1dbbcb59c5afe40dad4c7e644b09a36b8e9a4ba6d3cb4fa1f3a842e01306c01"
+        "sha256": "03e02648556467584803a46a3a9df7d427c24899fb27707924ee94a0d8fd02f7"
     },
     "gameID": "falcos",
     "rtp": 96.5,
@@ -11,7 +11,7 @@
     "providerNumber": 0,
     "standardForceFile": {
         "file": "force.json",
-        "sha256": "edaa7b93e72b18d3c4c99b01280ea1506f91884857ecd4603b559937bb29f7d6"
+        "sha256": "6a1eaa2b7f29f3a62023dc6e73351a926da8e42c1246c5091ffecf24cdad0886"
     },
     "bookShelfConfig": [
         {
@@ -44,12 +44,12 @@
             "tables": [
                 {
                     "file": "lookUpTable_chance_0.csv",
-                    "sha256": "552f3a1bd8b717a897836abc10983b4ec0b99b32eeb93585044bc0d220110009"
+                    "sha256": "0fe50cb1c90f02856573250970dad5e83787fb68de3b9b3782052b8f6095c17a"
                 }
             ],
             "cost": 3.0,
             "rtp": 0.965,
-            "std": 16.96,
+            "std": 14.22,
             "bookLength": 50000,
             "feature": true,
             "autoEndRoundDisabled": false,
@@ -57,11 +57,11 @@
             "maxWin": 50000.0,
             "booksFile": {
                 "file": "books_chance.jsonl.zst",
-                "sha256": "105205a810ea6bc38f253d2a509ff9500fb4638ac5c286e6737f075a55eddb5f"
+                "sha256": "a7d9a8926d8317756e4c37b610677e2aaf8236878e926388402073fc301437aa"
             },
             "forceFile": {
                 "file": "force_record_chance.json",
-                "sha256": "231bee1487993a9e276f59de699b7577d183e87ac7bb5137daf4c1e2b9c501d3"
+                "sha256": "e803fde7ac5f40b7b6029d5d768758256378786ba32fc56e1a89846fe1483b91"
             }
         },
         {

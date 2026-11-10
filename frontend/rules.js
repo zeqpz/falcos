@@ -39,7 +39,7 @@ const RULES = (() => {
   const DROPS = { green: [0.2, 0.5, 1, 2, 3], amber: [5, 10, 15, 20], red: [50, 100, 250, 500] };
   // the bet modes (the math's mode keys), as the Bonus panel sells them
   const MODES = [
-    { keys: ["chance"], name: "FUEL CHANCE", what: "One boosted base spin with about 5 times the chance of triggering any bonus." },
+    { keys: ["chance"], name: "FUEL CHANCE", what: "One boosted base spin with about 2.2 times the chance of triggering any bonus." },
     { keys: ["lucky"], name: "LUCKY PUMP", what: "Spins the pump wheel: it lands on PREMIUM (55.9%), MIDNIGHT RUN (34.1%) or nothing (10.0%). PREMIUM and MIDNIGHT RUN then play exactly as when triggered." },
     { keys: ["fillup"], name: "Buy FILL UP", what: "Starts the FILL UP bonus." },
     { keys: ["premium"], name: "Buy PREMIUM", what: "Starts PREMIUM: 10 free spins with sticky cell multipliers." },
