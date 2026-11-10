@@ -1,0 +1,29 @@
+[
+ {
+  "name": "pump_main",
+  "size": "1024x1536",
+  "aspect_ratio": "2:3",
+  "refs": [
+   "art/falcos/raw/car_main.png"
+  ],
+  "prompt": "Edit this image. Keep EVERYTHING exactly as it is - the woman (same pose, face, hair, clothes, hands, size and position, pixel-aligned), the car, the canopy pillar, the bollards, the background, lighting and style - and fix ONLY the gas pump and its hose: redraw the gas pump in the same place and size as a clean, correctly built modern fuel dispenser in cream and red - straight vertical body, a proper display screen and keypad, price buttons, and the fuel nozzle resting in its holster on the side of the pump, its rubber hose hanging in a neat loop from the top of the pump down to the holster. NOTHING goes into the car: remove the hose and nozzle that run to the car completely, the car's fuel door is closed and smooth. Same polished cartoon style, bold ink outlines, cel shading."
+ },
+ {
+  "name": "pump_zombie",
+  "size": "1024x1536",
+  "aspect_ratio": "2:3",
+  "refs": [
+   "art/falcos/raw/car_zombie.png"
+  ],
+  "prompt": "Edit this image. Keep EVERYTHING exactly as it is - the woman (same pose, face, hair, clothes, hands, size and position, pixel-aligned), the car, the canopy pillar, the bollards, the background, lighting and style - and fix ONLY the gas pump and its hose: redraw the gas pump in the same place and size as a clean, correctly built modern fuel dispenser in faded rusty cream and red, abandoned, its screen cracked and dark, cobwebs - straight vertical body, a proper display screen and keypad, price buttons, and the fuel nozzle resting in its holster on the side of the pump, its rubber hose hanging in a neat loop from the top of the pump down to the holster. NOTHING goes into the car: remove the hose and nozzle that run to the car completely, the car's fuel door is closed and smooth. Same polished cartoon style, bold ink outlines, cel shading."
+ },
+ {
+  "name": "pump_nitro",
+  "size": "1024x1536",
+  "aspect_ratio": "2:3",
+  "refs": [
+   "art/falcos/raw/car_nitro.png"
+  ],
+  "prompt": "Edit this image. Keep EVERYTHING exactly as it is - the woman (same pose, face, hair, clothes, hands, size and position, pixel-aligned), the car, the canopy pillar, the bollards, the background, lighting and style - and fix ONLY the gas pump and its hose: redraw the gas pump in the same place and size as a clean, correctly built modern fuel dispenser in cream and red lit by blue and purple neon, with NO flames or sparks coming out of it - straight vertical body, a proper display screen and keypad, price buttons, and the fuel nozzle resting in its holster on the side of the pump, its rubber hose hanging in a neat loop from the top of the pump down to the holster. NOTHING goes into the car: remove the hose and nozzle that run to the car completely, the car's fuel door is closed and smooth. Same polished cartoon style, bold ink outlines, cel shading."
+ }
+]
