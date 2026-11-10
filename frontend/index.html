@@ -1134,7 +1134,7 @@
   .banner.epic .big { color: #fff; text-shadow: 0 4px 0 rgba(0,0,0,.75), 0 0 22px rgba(0,0,0,.9), 0 0 40px rgba(91,140,255,1), 0 0 70px rgba(91,140,255,.8); }
 
   /* main — slots front and center, info cards beneath */
-  .main { flex: 1; display: flex; flex-direction: column; gap: 18px; padding: 64px 20px 22px; align-items: center; }
+  .main { flex: 1; display: flex; flex-direction: column; gap: 18px; padding: 64px 14px 22px; align-items: center; }
   .stage {
     position: relative; padding-bottom: 44px;   /* a breath under the outline before the rail */
     /* the board sits on the turned wall: the scene's lean (--scene-yaw). The reveal's pop and
@@ -3256,6 +3256,14 @@
     #bonusWrap .bcbtn, #bonusWrap .bc.tall .bcbtn { min-width: 0; width: auto; padding: 9px 16px; font-size: 13px; margin-left: 0; }
     #bonusWrap .bshopbar { gap: 12px; }
     #bonusWrap .bsbet .val { min-width: 84px; }
+  }
+  /* a bigger board (owner, 2026-11-10: "make the square bigger"): on a wide screen the page is fitted by its
+     height, so the empty bands above the topper and between the frame and the bar went - the board
+     takes the room (about 11% bigger at 16:9); the side padding is thinner for a phone, fitted by width */
+  @media (orientation: landscape) {
+    .main { padding-top: 12px; gap: 8px; }
+    .stage { padding-bottom: 4px; }
+    .bottom { padding-top: 0; }
   }
 </style>
 </head>
@@ -7917,7 +7925,8 @@ function fitToScreen() {
     const root = document.documentElement.style;
     const measure = () => {
       app.style.transform = "none"; app.style.width = "auto"; app.style.height = "auto";
-      const needW = stage.offsetWidth + 40;                   // .main's side padding
+      const mcs = getComputedStyle(stage.parentElement);
+      const needW = stage.offsetWidth + (parseFloat(mcs.paddingLeft) + parseFloat(mcs.paddingRight) || 40);   // .main's side padding
       const fitW = Math.min(1, W / needW);
       app.style.width = (W / fitW) + "px";
       // the live rims' canvases hang past their elements: they must not count as page height
