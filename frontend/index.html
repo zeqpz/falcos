@@ -3078,16 +3078,17 @@
     border-radius: 40%; animation: flameSweep calc(.62s * var(--tempo, 1)) cubic-bezier(.45, 0, .4, 1) both; }
   @keyframes flameSweep { 0% { transform: translateX(0) skewX(-12deg); } 100% { transform: translateX(270%) skewX(-12deg); } }
   /* the end of FILL UP: its logo, why it ended, and the fuel total in the neon numerals, over the board */
-  .fillsum { left: 0; top: 0; right: 0; bottom: 0; z-index: 8; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
-    background: radial-gradient(ellipse at 50% 50%, rgba(20, 10, 4, .9), rgba(10, 5, 2, .78) 70%, rgba(10, 5, 2, .55));
+  .fillsum { left: calc(var(--bpx) - 4px); right: calc(var(--bpx) - 4px); top: calc(var(--bpt) - 4px); bottom: calc(var(--bpb) - 4px); z-index: 8; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+    background: radial-gradient(ellipse at 50% 45%, rgba(60, 26, 4, .96), rgba(14, 7, 2, .95) 62%, rgba(8, 4, 1, .9));
+    box-shadow: inset 0 0 60px rgba(255, 150, 40, .25);
     border-radius: 24px; animation: fillSumIn calc(.45s * var(--tempo, 1)) ease-out both; pointer-events: none; }
-  .fillsum .fslogo { width: 74%; max-width: 560px; height: auto; animation: bslam .7s cubic-bezier(.2, 1.2, .3, 1) .05s both; }
-  .fillsum .fswhy { font-family: "Fredoka", var(--label); font-weight: 700; font-size: 26px; letter-spacing: .2em; text-transform: uppercase;
+  .fillsum .fslogo { width: 88%; max-width: 760px; height: auto; animation: bslam .7s cubic-bezier(.2, 1.2, .3, 1) .05s both; }
+  .fillsum .fswhy { font-family: "Fredoka", var(--label); font-weight: 700; font-size: 34px; letter-spacing: .2em; text-transform: uppercase;
     color: #FFB547; -webkit-text-stroke: 5px #140902; paint-order: stroke fill; text-shadow: 0 0 16px rgba(255, 150, 40, .8); }
-  .fillsum .fsmult { font-family: "Fredoka", var(--num); font-weight: 700; font-size: 36px; color: #FFE6A8; -webkit-text-stroke: 6px #140902; paint-order: stroke fill; }
-  .fillsum .fsmoney { min-height: 92px; }
-  .fillsum .fsmoney img { height: 92px; }
-  .fillsum .fsmoney .sym { font-size: 64px; -webkit-text-stroke-width: 6px; }
+  .fillsum .fsmult { font-family: "Fredoka", var(--num); font-weight: 700; font-size: 44px; color: #FFE6A8; -webkit-text-stroke: 6px #140902; paint-order: stroke fill; }
+  .fillsum .fsmoney { min-height: 120px; }
+  .fillsum .fsmoney img { height: 120px; }
+  .fillsum .fsmoney .sym { font-size: 84px; -webkit-text-stroke-width: 7px; }
   .fillsum.out { animation: fillSumOut calc(.35s * var(--tempo, 1)) ease-in both; }
   @keyframes fillSumIn { 0% { opacity: 0; transform: scale(.94); } 100% { opacity: 1; transform: none; } }
   @keyframes fillSumOut { to { opacity: 0; transform: scale(1.04); } }
@@ -6239,6 +6240,8 @@ function fillSet(r, y, f, pop = false) {
 // the running board total: FUEL TOTAL under the board, in money at the bet, in the neon numerals - counting
 // up (or down) to each new total the events give
 let fuelShown = 0, fuelRaf = 0;
+// a figure part way through a count, at whole cents (the RGS's money is in millionths)
+const tidyMoney = x => bet() >= 10000 ? Math.round(x / 10000) * 10000 : Math.round(x);
 function fillTotal(v, quiet) {
   const card = $("fsCard"), el = $("fuelNum");
   card.classList.add("fill");
@@ -6252,7 +6255,7 @@ function fillTotal(v, quiet) {
   const t0 = performance.now(), ms = Math.min(1100, 320 + 25 * Math.sqrt(Math.abs(to - from) / Math.max(1, bet()) * 100)) * tempo();
   const step = now => {
     const p = Math.min(1, (now - t0) / ms), e = 1 - Math.pow(1 - p, 3);
-    rollNumerals(el, fmt(Math.round(from + (to - from) * e)), p < 1);
+    rollNumerals(el, fmt(p < 1 ? tidyMoney(from + (to - from) * e) : to), p < 1);
     if (p < 1) fuelRaf = requestAnimationFrame(step);
     else { el.classList.remove("bump"); restyle(el); el.classList.add("bump"); }
   };
@@ -6344,7 +6347,7 @@ async function fillSummary(ev) {
     await new Promise(res => {
       const step = now => {
         const p = Math.min(1, (now - t0) / ms), e = 1 - Math.pow(1 - p, 3);
-        rollNumerals(money, fmt(Math.round(to * e)), p < 1);
+        rollNumerals(money, fmt(p < 1 ? tidyMoney(to * e) : to), p < 1);
         if (p < 1) requestAnimationFrame(step); else res();
       };
       requestAnimationFrame(step);
