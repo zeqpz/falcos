@@ -41,6 +41,7 @@ PLATE_Q = 78
 DROP_DENSITIES = ['d24']
 PLATES = ['bonus_wall.webp', 'scene/plate_nitro.webp', 'scene/plate_zombie.webp']
 PLATE_W, PLATE_W_M = 2560, 1600
+FRAME_MAX = 1600               # the board frame is drawn ~700-1100 px wide
 # never named by the front end (checked 2026-11-10); install_game.py copies some of them back
 PRUNE = ['frame.webp', 'xbonus_text.webp', 'win_box.webp', 'feature_box.webp', 'logo_premium.webp',
          'logo_fillup.webp', 'menu/logo_premium.webp', 'bonus', 'frame_75.webp', 'frame_75.json', 'plate_grey.webp']
@@ -341,7 +342,7 @@ def build_frame_from_v3(aspect):
 def step_frame():
     sq = os.path.join(RAW, 'board_frame_sq.png')
     dst = os.path.join(F, 'frame_sq.webp')
-    src_tag = 'sq:' + sha(sq) if os.path.exists(sq) else 'v3'
+    src_tag = ('sq:' + sha(sq) if os.path.exists(sq) else 'v3') + f'@{FRAME_MAX}'
     if state.get('frame_sq.src') == src_tag and done('frame_sq.webp'):
         return
     if os.path.exists(sq):
@@ -351,8 +352,8 @@ def step_frame():
     else:
         im = build_frame_from_v3(1.16)
     o = opening(np.array(im.getchannel('A')))
-    if max(im.size) > 2048:
-        k = 2048 / max(im.size)
+    if max(im.size) > FRAME_MAX:
+        k = FRAME_MAX / max(im.size)
         im = im.resize((round(im.width * k), round(im.height * k)), Image.LANCZOS)
     n = encode(im, dst, Q, 90)
     meta = {'frame_size': list(im.size), 'opening': [round(x, 5) for x in o], 'source': src_tag[:2]}
