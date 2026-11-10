@@ -3017,9 +3017,9 @@
   .plaque .pqname { font-family: "Fredoka", var(--num); font-weight: 700; font-size: 27px; letter-spacing: .24em; color: #B00F26;
     text-shadow: 0 0 6px rgba(255, 42, 61, .6), 0 1px 0 rgba(255, 255, 255, .5); }
   .plaque .pqgauge { display: none; gap: 7px; }
-  .plaque .pqgauge i { width: 46px; height: 24px; border-radius: 6px; border: 2px solid #3a2a20; background: #2a1d16;
+  .plaque .pqgauge i { width: 46px; height: 24px; border-radius: 6px; border: 2px solid #8a5a2a; background: #4a3426;
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, .7); transition: background .3s, box-shadow .3s; }
-  .plaque .pqgauge i.on { background: linear-gradient(180deg, #FFE08A, #FFB547 45%, #E07A10); box-shadow: 0 0 10px #FFB547, inset 0 -3px 5px rgba(140, 50, 0, .5); }
+  .plaque .pqgauge i.on { background: linear-gradient(180deg, #FFE08A, #FFB547 45%, #E07A10); border-color: #FFE08A; box-shadow: 0 0 14px #FFB547, 0 0 4px #fff, inset 0 -3px 5px rgba(140, 50, 0, .5); }
   .plaque .pqgauge i.drain { animation: gaugeDrain calc(.6s * var(--tempo, 1)) ease-in both; }
   .plaque .pqgauge i.fill { animation: gaugeFill calc(.45s * var(--tempo, 1)) cubic-bezier(.2, .9, .3, 1.4) both; }
   @keyframes gaugeDrain { 0% { filter: brightness(1.8); } 40% { scale: 1.15; } 100% { filter: brightness(.6); scale: 1; } }
@@ -3115,8 +3115,10 @@
   #bonusWrap .bsbet button::before { content: ""; position: absolute; left: 50%; top: 50%; width: 11px; height: 11px; border-left: 3px solid currentColor; border-bottom: 3px solid currentColor; translate: -35% -50%; rotate: 45deg; }
   #bonusWrap .bsbet #bonusBetUp::before { rotate: -135deg; translate: -65% -50%; }
   #bonusWrap .bsbet button:disabled { opacity: .35; cursor: default; }
-  #bonusWrap .bshop #bonusBetDown, #bonusWrap .bshop #bonusBetUp { -webkit-mask: none; mask: none; rotate: none; width: 42px; height: 42px; border-radius: 50%;
-    background: #1d1626; border: 2px solid rgba(255, 255, 255, .28); color: #fff; }
+  #bonusWrap .bshop #bonusBetDown, #bonusWrap .bshop #bonusBetUp { -webkit-mask: none; mask: none; rotate: none; width: 46px; height: 46px; border-radius: 50%;
+    background: radial-gradient(circle at 50% 35%, #3a2c48, #1d1626 70%); border: 2px solid #FFB547; color: #fff;
+    box-shadow: 0 0 10px rgba(255, 181, 71, .35), inset 0 1px 0 rgba(255, 255, 255, .15); }
+  #bonusWrap .bshop #bonusBetDown::before, #bonusWrap .bshop #bonusBetUp::before { width: 14px; height: 14px; border-left-width: 4px; border-bottom-width: 4px; }
   #bonusWrap .bshop #bonusBetDown:hover:not(:disabled), #bonusWrap .bshop #bonusBetUp:hover:not(:disabled) { background: #2a2036; border-color: #FFB547; color: #FFB547; }
   #bonusWrap .bshop #bonusBetDown::before, #bonusWrap .bshop #bonusBetUp::before { content: ""; }
   #bonusWrap .bshopbar { background: transparent; border: 0; border-top: 1px solid rgba(255, 255, 255, .08); border-radius: 0; box-shadow: none; }
