@@ -13,16 +13,16 @@
 const RULES = (() => {
   // Cluster sizes, one column each; the last is "15 or more".
   const TIERS = ["5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15+"];
-  const PAYS = {   // symbol: one pay per TIERS column (x the total bet) - DRAFT (FALCOS_DESIGN.md)
+  const PAYS = {   // symbol: one pay per TIERS column (x the total bet) - owner-approved table (FALCOS_DESIGN.md, config_fe_falcos.json)
     H1: [1, 1.5, 2, 2.5, 3, 5, 8, 15, 30, 60, 150],
-    H2: [0.8, 1, 1.25, 1.5, 2, 4, 6, 12, 25, 50, 100],
-    H3: [0.5, 0.8, 1, 1.25, 1.5, 3, 4.5, 10, 20, 40, 60],
-    H4: [0.4, 0.5, 0.8, 1, 1.25, 2, 3, 5, 10, 20, 40],
+    H2: [0.8, 1, 1.2, 1.5, 2, 4, 6, 12, 25, 50, 100],
+    H3: [0.5, 0.8, 1, 1.2, 1.5, 3, 4.5, 10, 20, 40, 60],
+    H4: [0.4, 0.5, 0.8, 1, 1.2, 2, 3, 5, 10, 20, 40],
     L1: [0.3, 0.4, 0.5, 0.8, 1, 1.5, 2.5, 4, 8, 15, 30],
-    L2: [0.25, 0.3, 0.4, 0.5, 0.8, 1.25, 2, 3, 6, 12, 25],
-    L3: [0.25, 0.3, 0.4, 0.5, 0.75, 1.25, 2, 3, 6, 12, 25],
-    L4: [0.2, 0.25, 0.3, 0.4, 0.5, 1, 1.5, 2.5, 5, 10, 20],
-    L5: [0.2, 0.25, 0.3, 0.4, 0.5, 1, 1.5, 2.5, 5, 10, 20],
+    L2: [0.3, 0.4, 0.5, 0.6, 0.8, 1.2, 2, 3, 6, 12, 25],
+    L3: [0.2, 0.3, 0.4, 0.5, 0.7, 1.1, 1.8, 2.8, 5.5, 11, 22],
+    L4: [0.2, 0.3, 0.4, 0.5, 0.6, 1, 1.5, 2.5, 5, 10, 20],
+    L5: [0.2, 0.2, 0.3, 0.4, 0.5, 0.9, 1.4, 2.2, 4.5, 9, 18],
   };
   const NAMES = {
     H1: "Cash Drawer", H2: "Gold Key", H3: "Pump Nozzle", H4: "Jerry Can",
@@ -32,16 +32,17 @@ const RULES = (() => {
     BS: "FALCOS Token", DS: "Midnight Token",
   };
   const ORDER = ["H1", "H2", "H3", "H4", "L1", "L2", "L3", "L4", "L5"];
-  const RTP = "96.50%", MAX_WIN = 25000;
+  const RTP = "96.50%", MAX_WIN = 50000;
   const CELL_MAX = 2048;
   // Gas Pump grades and Fuel Drop values (FALCOS_DESIGN.md)
   const PUMP = { REGULAR: [2, 4], PLUS: [8, 16], PREMIUM: [32, 64] };
   const DROPS = { green: [0.2, 0.5, 1, 2, 3], amber: [5, 10, 15, 20], red: [50, 100, 250, 500] };
-  // the bet modes, the Falcos mode key first, then the key the mock RGS still serves (TEMPORARY)
+  // the bet modes (the math's mode keys), as the Bonus panel sells them
   const MODES = [
-    { keys: ["chance", "boost"], name: "FUEL CHANCE", what: "One base spin with about 5 times the chance of triggering any bonus. A switch in the Bonus panel: while it is on, every spin (autoplay included) is played this way." },
+    { keys: ["chance"], name: "FUEL CHANCE", what: "One boosted base spin with about 5 times the chance of triggering any bonus." },
+    { keys: ["lucky"], name: "LUCKY PUMP", what: "Spins the pump wheel: it lands on PREMIUM (55.9%), MIDNIGHT RUN (34.1%) or nothing (10.0%). PREMIUM and MIDNIGHT RUN then play exactly as when triggered." },
     { keys: ["fillup"], name: "Buy FILL UP", what: "Starts the FILL UP bonus." },
-    { keys: ["premium", "bonus"], name: "Buy PREMIUM", what: "Starts PREMIUM: 10 free spins with sticky cell multipliers." },
+    { keys: ["premium"], name: "Buy PREMIUM", what: "Starts PREMIUM: 10 free spins with sticky cell multipliers." },
     { keys: ["nitro"], name: "NITRO SPIN", what: "One spin with every cell preloaded with a multiplier from x16 to x2048." },
   ];
 
@@ -119,7 +120,7 @@ const RULES = (() => {
     const html = `
 <section>
   <h4>${t("About the game")}</h4>
-  <p>${t(`Falcos is a 7-reel, 7-row video slot with cluster pays and tumbling reels. A cluster is 5 or more matching symbols touching horizontally or vertically (diagonals do not count), anywhere on the board. Every cluster pays by its symbol and size (15 or more pays the top rate), times its multiplier; then the winning symbols clear, the symbols above fall, new ones drop in, and the new board is paid again. The values below are multiples of the total bet, shown at your current bet of ${fmt(bet)}.`)}</p>
+  <p>${t(`Falcos is a 7-reel, 5-row video slot with cluster pays and tumbling reels. A cluster is 5 or more matching symbols touching horizontally or vertically (diagonals do not count), anywhere on the board. Every cluster pays by its symbol and size (15 or more pays the top rate), times its multiplier; then the winning symbols clear, the symbols above fall, new ones drop in, and the new board is paid again. The values below are multiples of the total bet, shown at your current bet of ${fmt(bet)}.`)}</p>
   <div class="kvgrid">
     <div><span>RTP</span><b>${RTP}</b><small>${t("every mode")}</small></div>
     <div><span>${t("Max win")}</span><b>${x(MAX_WIN)}</b><small>${t("of the total bet")} · ${money(MAX_WIN)}</small></div>
@@ -135,7 +136,7 @@ const RULES = (() => {
     <tr><td>${t("Base game")}</td><td>${x(1)} <em>${money(1)}</em></td><td>${t("One spin. FILL UP, PREMIUM and MIDNIGHT RUN trigger naturally from FALCOS Tokens and Midnight Tokens.")}</td></tr>
     ${modeRows}
   </table>
-  <p class="fine">${t("All are chosen from the Bonus panel, which shows the exact price at your bet before anything is charged; a buy asks you to confirm. MIDNIGHT RUN cannot be bought. While FUEL CHANCE is on, the bet in the bar shows the cost of a spin in that mode. The max win applies to every mode.")}</p>
+  <p class="fine">${t("All are chosen from the Bonus panel, which shows the exact price at your bet before anything is charged; a buy asks you to confirm. MIDNIGHT RUN cannot be bought directly; LUCKY PUMP can land on it. The max win applies to every mode.")}</p>
 </section>
 
 <section>
@@ -170,7 +171,7 @@ const RULES = (() => {
   <h4>${t("Bonuses")}</h4>
   <p><b>FILL UP</b> — ${t("3 FALCOS Tokens, or bought. A Fuel Drop collection game with a 3-bar fuel gauge; no cell multipliers. The gauge starts full. Every spin uses one bar, and any spin that lands something new (a drop or a feature) refills it to 3. The bonus ends when the gauge is empty and nothing new lands. At the end you win the total of every drop left plus every collector's total, times the bet, capped at the max win.")}</p>
   <p><b>PREMIUM</b> — ${t("4 or more FALCOS Tokens, or bought. 10 free spins of the base game with sticky cell multipliers: a cell that reached x8 keeps x8 into the next spin and keeps growing.")}</p>
-  <p><b>MIDNIGHT RUN</b> — ${t("3 Midnight Tokens only. 10 free spins with sticky cell multipliers, every cell starting at x4, and Gas Pumps landing far more often. The biggest bonus in the game.")}</p>
+  <p><b>MIDNIGHT RUN</b> — ${t("3 Midnight Tokens, or a LUCKY PUMP wheel landing on it. 10 free spins with sticky cell multipliers, every cell starting at x4, and Gas Pumps landing far more often. The biggest bonus in the game.")}</p>
   <p class="fine">${t("Bonuses are played at the bet of the triggering spin. If the connection drops, reload the game to finish the round.")}</p>
 </section>
 
@@ -179,7 +180,7 @@ const RULES = (() => {
   <table class="guide">
     <tr><td><b>${t("Spin")}</b></td><td>${t("Plays one round at the current bet. The spacebar does the same. While the reels are turning the button reads Skip and lands them at once (clicking the board also skips); every winning cluster is always shown in full.")}</td></tr>
     <tr><td><b>− / +</b></td><td>${t("Lowers or raises the bet through every level offered by the server.")}</td></tr>
-    <tr><td><b>${t("Bonus")}</b></td><td>${t("Opens the Bonus panel: buy a bonus or a special spin, or switch FUEL CHANCE on and off. The total charge is shown before you confirm.")}</td></tr>
+    <tr><td><b>${t("Bonus")}</b></td><td>${t("Opens the Bonus panel: buy a bonus or a special spin (FUEL CHANCE, LUCKY PUMP, NITRO SPIN). The total charge is shown before you confirm.")}</td></tr>
     <tr><td><b>${t("Auto")}</b></td><td>${t("Plays a chosen number of rounds one after another at the current bet. You confirm the number before it starts; press it again to stop. It also stops when the balance can't cover the next round.")}</td></tr>
     <tr><td><b>${t("Rapid")}</b></td><td>${t("Shortens the reel spin and win animations. Results are unaffected.")}</td></tr>
     <tr><td><b>${t("Info")}</b></td><td>${t("Opens this page: the rules, the paytable and your recent rounds.")}</td></tr>

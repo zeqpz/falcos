@@ -1,6 +1,6 @@
 """Copy the packed Falcos art (art/falcos/game, from pack_game.py) into the front end (frontend/assets).
 
-  .venv/bin/python tools/falcos/install_game.py [ui] [scene] [intro] [symbols]
+  .venv/bin/python tools/falcos/install_game.py [ui] [scene] [intro] [menu] [symbols]
 
 ui      - plates, logos, win lettering, digits, board frame, bonus banners. Lettering and plates that
           were packed on a big transparent canvas (a faint glow around them) are trimmed to what
@@ -8,6 +8,8 @@ ui      - plates, logos, win lettering, digits, board frame, bonus banners. Lett
 scene   - bonus_wall.webp (the 4K plate) and assets/scene/ (scene.json + overlays, read by scenefx.js)
 intro   - assets/intro_letters/ replaced by the FALCOS letters (pieces.json is copied too; its numbers
           are also written into INTRO_SIZE / INTRO_PIECES / INTRO_DROP in index.html by hand)
+menu    - the 7x5 board frame (frame_75.webp + .json), the bonus-buy menu (assets/menu: card art as is, the
+          logos trimmed) and the load-in screen (assets/load: card art as is, the titles trimmed)
 symbols - assets/sym/ (manifest + d10..d24 sheets) and assets/flat/ replaced by the 18 Falcos symbols;
           skipped while art/falcos/game/sym/manifest.json does not exist yet
 No argument: all of them.
@@ -62,6 +64,21 @@ def intro():
     copytree(os.path.join(G, 'intro_letters'), os.path.join(F, 'intro_letters'))
 
 
+def menu():
+    for n in ['frame_75.webp', 'frame_75.json']:
+        shutil.copyfile(os.path.join(G, n), os.path.join(F, n))
+        print('copy', n)
+    for sub in ['menu', 'load']:
+        os.makedirs(os.path.join(F, sub), exist_ok=True)
+        for n in sorted(os.listdir(os.path.join(G, sub))):
+            src, dst = os.path.join(G, sub, n), os.path.join(F, sub, n)
+            if n.startswith(('logo_', 'title_')):
+                trimmed(src, dst)
+            else:
+                shutil.copyfile(src, dst)
+                print('copy', sub + '/' + n)
+
+
 def symbols():
     if not os.path.exists(os.path.join(G, 'sym', 'manifest.json')):
         print('symbols: art/falcos/game/sym/manifest.json not there yet - skipped')
@@ -71,6 +88,6 @@ def symbols():
 
 
 if __name__ == '__main__':
-    jobs = sys.argv[1:] or ['ui', 'scene', 'intro', 'symbols']
+    jobs = sys.argv[1:] or ['ui', 'scene', 'intro', 'menu', 'symbols']
     for j in jobs:
-        {'ui': ui, 'scene': scene, 'intro': intro, 'symbols': symbols}[j]()
+        {'ui': ui, 'scene': scene, 'intro': intro, 'menu': menu, 'symbols': symbols}[j]()
