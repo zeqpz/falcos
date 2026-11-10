@@ -1168,9 +1168,8 @@
     scale: 1.045;
     transition: scale var(--zoomms, 1.8s) cubic-bezier(.35,0,.65,1), transform-origin var(--zoomms, 1.8s) ease, opacity .25s ease;
   }
-  /* the plate behind the reels: the Falcos night-blue tiled backing (plate_grey.webp keeps the base
-     game's file name), filling the frame's open middle under its neon, nearly solid so the busy store
-     front behind never fights the symbols */
+  /* the plate behind the reels: an opaque dark night-blue backing filling the frame's opening (owner, 2026-11-10:
+     the shop front must never show through the board); FILL UP swaps in its amber fuel-glow backing */
   .boardplate {
     position: absolute; z-index: -1; pointer-events: none; border-radius: 26px;
     left: calc(var(--bpx) - 14px); right: calc(var(--bpx) - 14px); top: calc(var(--bpt) - 14px); bottom: calc(var(--bpb) - 14px);
