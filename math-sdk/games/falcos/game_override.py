@@ -26,6 +26,9 @@ class GameStateOverride(GameExecutables):
         t = self.config.bigwin_threshold.get(self.betmode)
         if t is not None and t <= self.final_win < self.config.wincap:
             self.record({"symbol": "bigwin"})
+        h = self.config.highwin_threshold.get(self.betmode)
+        if h is not None and h <= self.final_win < t:
+            self.record({"symbol": "highwin"})
 
     def check_repeat(self):
         """Resimulate when the outcome does not satisfy the assigned criteria:

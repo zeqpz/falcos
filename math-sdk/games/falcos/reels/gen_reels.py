@@ -30,23 +30,29 @@ STRIP_LEN = 200
 NUM_REELS = 7
 SPACED_GAP = 10
 
-# relative share of the free stops (after scatters/features) each paying symbol takes
+# relative share of the free stops (after scatters/features) each paying symbol takes.
+# 7x5 retune (2026-11-09): 35 cells make 5+ clusters much rarer than on 7x7, so the lows are
+# skewed harder (base hit rate ~1 in 3; the 7x7 weights H 4.5-7.5 / L 12-20 gave 1 in 4.2 and a
+# base game worth 0.29x on 7x5).
 PAY_WEIGHTS = {
-    "H1": 4.5, "H2": 5.5, "H3": 6.5, "H4": 7.5,
-    "L1": 12.0, "L2": 13.5, "L3": 15.0, "L4": 17.0, "L5": 20.0,
+    "H1": 3.5, "H2": 4.5, "H3": 5.5, "H4": 6.5,
+    "L1": 12.0, "L2": 14.5, "L3": 17.0, "L4": 19.5, "L5": 23.0,
 }
 # NITRO SPIN: a 500x spin must not be max-or-nothing, so its strip leans hard on the lows - about
-# two reveals in three hold a cluster (one in four on the base strip) and every cell is boosted.
+# four reveals in five hold a cluster and every cell is boosted.
 PAY_WEIGHTS_NITRO = {
-    "H1": 2.0, "H2": 3.0, "H3": 4.0, "H4": 5.0,
-    "L1": 10.0, "L2": 14.0, "L3": 20.0, "L4": 28.0, "L5": 40.0,
+    "H1": 1.5, "H2": 2.0, "H3": 2.5, "H4": 3.0,
+    "L1": 8.0, "L2": 12.0, "L3": 20.0, "L4": 32.0, "L5": 50.0,
 }
 
-# per-strip symbol counts: {symbol: int | [r0 .. r6]}
+# per-strip symbol counts: {symbol: int | [r0 .. r6]}  (7x5 retune, 2026-11-09 - see
+# FALCOS_DESIGN.md "Math notes" for what each count was measured to give)
 STRIPS = {
     "BR0": {
         "seed": 1101,
-        "scatters": {"BS": 1, "DS": [0, 1, 0, 1, 0, 1, 0]},
+        # BS 10 per 1,400 stops (was 7): FILL UP ~1 in 400 base spins on the 5-row window
+        # DS on reels 2/4/6 (index 1, 3, 5): 2/1/2 (was 1/1/1): MIDNIGHT RUN ~1 in 14,500
+        "scatters": {"BS": [2, 1, 2, 1, 2, 1, 1], "DS": [0, 2, 0, 1, 0, 2, 0]},
         "pumps": 1,
         "features": {"ZP": 2, "ST": 1, "GT": [0, 0, 0, 1, 0, 0, 0]},
     },
@@ -54,13 +60,16 @@ STRIPS = {
         "seed": 2202,
         "scatters": {},
         "pumps": 1,
-        "features": {"ZP": 2, "ST": 2, "GT": [0, 0, 0, 1, 0, 0, 0]},
+        # PREMIUM: 23 Zippos / 21 Scratch Tickets per strip set (was 14 / 14) - the bought bonus
+        # averages ~0.96x its cost before weighting (it was ~0.2x on 7x5 with the 7x7 counts)
+        "features": {"ZP": [3, 3, 4, 3, 4, 3, 3], "ST": 3, "GT": [0, 0, 0, 1, 0, 0, 0]},
     },
     "FRM": {
         "seed": 3303,
         "scatters": {},
         "pumps": 3,       # MIDNIGHT RUN: "Gas Pumps landing far more often" (3x the base strip)
-        "features": {"ZP": 1, "ST": 1, "GT": [0, 0, 0, 0, 0, 0, 0]},
+        # 18 Zippos / 14 Scratch Tickets (was 7 / 7): MIDNIGHT RUN averages ~930x
+        "features": {"ZP": [3, 2, 3, 2, 3, 2, 3], "ST": 2, "GT": [0, 0, 0, 0, 0, 0, 0]},
     },
     "NR0": {
         "seed": 4404,

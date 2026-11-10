@@ -105,6 +105,8 @@ class GameExecutables(GameCalculations):
 
     def force_scatter_board(self, strip_id: str, n_bs: int, n_ds: int) -> None:
         """Force a board holding exactly n_bs FALCOS Tokens and n_ds Midnight Tokens."""
+        # one scatter per reel at most: a teaser class never takes a reel the trigger needs
+        n_ds = min(n_ds, self.config.num_reels - n_bs)
         bs_stops = self.get_syms_on_reel(strip_id, "BS")
         ds_stops = self.get_syms_on_reel(strip_id, "DS")
         ds_reels = [r for r in range(self.config.num_reels) if ds_stops[r]]

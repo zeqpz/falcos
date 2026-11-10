@@ -29,6 +29,12 @@
             "cost": 500.0,
             "events": "books_nitro.jsonl.zst",
             "weights": "lookUpTable_nitro_0.csv"
+        },
+        {
+            "name": "lucky",
+            "cost": 500.0,
+            "events": "books_lucky.jsonl.zst",
+            "weights": "lookUpTable_lucky_0.csv"
         }
     ]
 }

@@ -3,9 +3,11 @@
     python run.py                                   # phase-1 test books (small)
     python run.py --base 200000 --others 50000 --threads 8
     python run.py --modes base nitro                # only these modes; the others' files stay
+    python run.py --modes fillup --others 20000 --threads 8 --batch 1250   # bound memory
     python run.py --optimize --analysis --checks    # phase 2 (needs the Rust toolchain)
 
-Every mode's sim count must divide evenly by --threads (the SDK splits sims per thread).
+Every mode's sim count must divide evenly by --threads (the SDK splits sims per thread), and by
+threads x batch when it is larger than batch^2.
 Without --optimize the lookup tables are uniform (weight 1 per book): the client then meets every
 criteria at its sim quota, which is what front-end testing wants - NOT the real frequencies
 (sim_stats.py gives those).
@@ -23,14 +25,16 @@ from game_optimization import OptimizationSetup  # noqa: E402
 from src.state.run_sims import create_books  # noqa: E402
 from src.write_data.write_configs import generate_configs  # noqa: E402
 
-MODES = ("base", "chance", "fillup", "premium", "nitro")
+MODES = ("base", "chance", "fillup", "premium", "nitro", "lucky")
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description="Simulate Falcos outcomes.")
     ap.add_argument("--base", type=int, default=2000, help="base mode sims")
-    ap.add_argument("--others", type=int, default=500, help="sims for chance / fillup / premium / nitro")
+    ap.add_argument("--others", type=int, default=500, help="sims for chance / fillup / premium / nitro / lucky")
     ap.add_argument("--modes", nargs="+", default=None, help=f"subset of {MODES}")
     ap.add_argument("--threads", type=int, default=4)
+    ap.add_argument("--batch", type=int, default=50000,
+                    help="sims per thread per batch (memory: bonus books are ~30 KB each)")
     ap.add_argument("--rust-threads", type=int, default=8)
     ap.add_argument("--no-sims", action="store_true")
     ap.add_argument("--optimize", action="store_true")
@@ -46,7 +50,7 @@ if __name__ == "__main__":
     for m, n in num_sim_args.items():
         assert n % args.threads == 0, f"{m}: {n} sims do not split evenly over {args.threads} threads"
 
-    batching_size = 50000
+    batching_size = args.batch
     compression = True
     profiling = False
 
@@ -68,6 +72,12 @@ if __name__ == "__main__":
         from optimization_program.run_script import OptimizationExecution
 
         OptimizationExecution().run_all_modes(config, list(num_sim_args), args.rust_threads)
+        # no single buy board drawn more often than 1 in 2,000 rounds (see cap_books.py)
+        import subprocess
+        buys = [m for m in num_sim_args if m in ("fillup", "premium", "nitro", "lucky")]
+        if buys:
+            subprocess.run([sys.executable, os.path.join(os.path.dirname(os.path.abspath(__file__)), "cap_books.py"),
+                            "--modes", *buys], check=True)
         generate_configs(gamestate)
 
     if args.analysis:

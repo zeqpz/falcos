@@ -136,10 +136,14 @@ class GameConfig(Config):
         # (return from wins >= 40x the mode cost) <= 0.9, both in ABSOLUTE bets, so a buy's tail
         # must be weighted on purpose, not left to the optimiser's curves.
         self.bigwin_threshold = {"fillup": 4000.0, "premium": 10000.0, "nitro": 10000.0, "lucky": 10000.0}
+        # 500x modes: prob5k (P(win >= 5,000x) x 0.5 <= 1%) needs their 5,000-10,000x books held too
+        self.highwin_threshold = {"nitro": 5000.0, "lucky": 5000.0}
 
         # ---------------------------------------------------------------- NITRO SPIN
         # every cell preloaded x16 .. x2048 (powers of two), heavy at the bottom
-        nitro_cells = {16: 680, 32: 230, 64: 60, 128: 20, 256: 7, 512: 2.5, 1024: 1, 2048: 0.4}
+        # 7x5 retune: the x16/x32 bulk with a thinner top (x1024 0.4 / x2048 0.1 per ~1,000, was
+        # 1 / 0.4): spins under 5,000x average ~350x, 5,000x+ comes ~1 in 25 before weighting
+        nitro_cells = {16: 600, 32: 300, 64: 80, 128: 20, 256: 5, 512: 1.5, 1024: 0.4, 2048: 0.1}
         nitro_cells_rich = {1024: 1, 2048: 1}
         self.nitro_tables = {"standard": nitro_cells, "rich": nitro_cells_rich}
 
@@ -150,13 +154,18 @@ class GameConfig(Config):
         # FALCOS Tokens that triggered it turn into the first drops; a bought FILL UP gets the same).
         self.fillup_profiles = {
             "standard": {
-                "land": {"X": 1000, "FD": 24, "ST": 2.2, "GT": 0.35, "GP": 1.6, "ZP": 1.4},
+                # 7x5 retune: 35 cells land far fewer drops than 49, so drops, pumps and tickets
+                # land ~1.9x / 2.3x / 1.4x as often (FD 24 -> 45, GP 1.6 -> 3.7, ST 2.2 -> 3.1)
+                "land": {"X": 1000, "FD": 45, "ST": 3.1, "GT": 0.5, "GP": 3.7, "ZP": 1.2},
                 "drop_values": {
                     0.2: 260, 0.5: 240, 1: 200, 2: 130, 3: 90,
-                    5: 56, 10: 30, 15: 14, 20: 9,
-                    50: 2.5, 100: 1.0, 250: 0.25, 500: 0.08,
+                    5: 60, 10: 32, 15: 15, 20: 10,
+                    # thinner red top (250: 0.25 -> 0.12, 500: 0.08 -> 0.03) and x32/x64 pumps
+                    # (2 -> 1.5, 0.6 -> 0.3): the natural 4,000x+ tail, which etl40b counts in
+                    # absolute bets, was ~11% of the bonus's value
+                    50: 2.5, 100: 0.8, 250: 0.12, 500: 0.03,
                 },
-                "gp_mults": {2: 50, 4: 26, 8: 13, 16: 6, 32: 2, 64: 0.6},
+                "gp_mults": {2: 50, 4: 26, 8: 13, 16: 6, 32: 1.5, 64: 0.3},
                 "seed_drops": 3,
             },
             # wincap criteria only: dense, heavy drops and pumps so 50,000x is reachable
