@@ -16,7 +16,8 @@ every output, so a re-run only touches newly installed art and never re-encodes 
   5. everything else (never the HUD's own art: HUD) - downscaled to MAX_SIDE (2x the largest size it is ever drawn at 1600x900; the
                       app is scaled to fit, so this is 1600x900 at DPR 2 / 3200x1800 at DPR 1) and
                       re-encoded as lossy WebP (alpha kept where the picture has any)
-  6. the board frame - art/falcos/raw/board_frame_sq.png (when it exists) trimmed to frame_sq.webp and its
+  6. the board frame - art/falcos/raw/board_frame_sq_small.png (shrink_topper.py: the sign at 60%) or
+                      board_frame_sq.png (when it exists) trimmed to frame_sq.webp and its
                       glass opening measured into frame_sq.json; otherwise frame_sq is built from
                       board_frame_v3.png's slim bezel + topper at the board's squarer shape
   7. FILL UP art    - art/falcos/raw/fillup_{backing,cell2,gauge}.png (when they exist) -> assets/fillup/
@@ -340,7 +341,9 @@ def build_frame_from_v3(aspect):
 
 
 def step_frame():
-    sq = os.path.join(RAW, 'board_frame_sq.png')
+    sq = os.path.join(RAW, 'board_frame_sq_small.png')   # the smaller sign (shrink_topper.py), when it is built
+    if not os.path.exists(sq):
+        sq = os.path.join(RAW, 'board_frame_sq.png')
     dst = os.path.join(F, 'frame_sq.webp')
     src_tag = ('sq:' + sha(sq) if os.path.exists(sq) else 'v3') + f'@{FRAME_MAX}'
     if state.get('frame_sq.src') == src_tag and done('frame_sq.webp'):
