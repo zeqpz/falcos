@@ -6,6 +6,24 @@ Art direction: art/falcos/STYLE.md.
 
 RTP 96.50% in every mode. Max win 50,000x the bet.
 
+## Code layout and the round contract (2026-11-10)
+
+Two parts, reviewed together, joined only by the event contract (math-sdk/games/falcos/EVENTS.md):
+
+* **Front end - `frontend/`**: visuals, UI, animation, sound. It holds no math: no RNG that decides anything
+  (Math.random only for cosmetics such as particles and which matching wheel slice to stop on), no reel strips,
+  weights, lookup tables or RTP logic. The paytable, prices and odds in the rules are display text.
+* **Math - `math-sdk/games/falcos/`**: game config, reel strips, simulation, optimisation and the published
+  books + lookup tables (`library/publish_files`).
+* **Local RGS - `rgs/mock_rgs.py`**: a stand-in for the Stake Engine RGS for testing only (never uploaded): it
+  draws a weighted book per bet and serves `frontend/`.
+
+Every bet is stateless: one `/play` returns the whole, already-resolved round (a LUCKY PUMP wheel and the bonus it
+lands on, or a FUEL CHANCE spin and any bonus it triggers, are one book); `/end-round` only pays it. There are no
+progressive jackpots, no links between rounds, no `/bet/event` progress markers and no mid-round save or resume:
+a round left open by a dropped connection is settled on the next load and its result shown in a notice.
+Six modes (base, FUEL CHANCE, FILL UP, PREMIUM, NITRO SPIN, LUCKY PUMP).
+
 ## Board and ways to win
 
 7x5: 7 reels (columns) wide and 5 rows tall, 35 cells (owner decision 2026-11-09). A cluster is 5 or more matching symbols joined up, down, left or right (diagonals don't count).
@@ -44,9 +62,9 @@ Each paying symbol has its own land, idle and win animation and its own soft win
 ## Feature symbols
 
 Each tumble resolves in order: cluster wins, then all Gas Pumps together, then Scratch Tickets and
-Gold Tickets one at a time, then Zippos.
+Gold Tickets one at a time, then Lighters.
 
-* **Zippo (ZP)** - lights up its 3x3 area: the 8 cells around it and its own cell double their
+* **Lighter (ZP)** - lights up its 3x3 area: the 8 cells around it and its own cell double their
   multipliers; paying symbols there burn (clear, feeding their doubled multipliers into any cluster
   they were part of). Scatters keep their place but still double. FILL UP: burns every Fuel Drop
   in its 3x3 area (only drops) and disappears.
@@ -78,7 +96,7 @@ Gold Tickets one at a time, then Zippos.
   something new (a drop or a feature) refills it to 3. The bonus ends when the gauge is empty and
   nothing new lands. Fuel Drops are sticky: green x0.2/x0.5/x1/x2/x3, amber x5/x10/x15/x20, red
   x50/x100/x250/x500, and a drop that grows changes colour (green under x5, amber from x5, red from
-  x50). Zippos burn drops, Scratch Tickets and Gold Tickets collect them, Gas Pumps multiply them.
+  x50). Lighters burn drops, Scratch Tickets and Gold Tickets collect them, Gas Pumps multiply them.
   At the end you win the total of every drop left plus every collector's total, times the bet,
   capped at the max win.
 * **PREMIUM** (4+ FALCOS Tokens, or buy 300x) - 10 free spins of the base game with sticky cell
@@ -132,7 +150,7 @@ PREMIUM 289.5x. LUCKY PUMP wheel: PREMIUM 55.9% (avg 316x), MIDNIGHT RUN 34.1% (
 nothing 10.0%.
 
 Base game as played: a winning spin 1 in 3; base-game wins 5-20x 1 in 75 spins, 20-100x 1 in
-430, 100x+ 1 in 5,100; a Zippo fires 1 in 2.8 spins, a Scratch Ticket 1 in 5.1, a Gold Ticket
+430, 100x+ 1 in 5,100; a Lighter fires 1 in 2.8 spins, a Scratch Ticket 1 in 5.1, a Gold Ticket
 1 in 36, a Gas Pump REGULAR 1 in 6.9 / PLUS 1 in 20 / PREMIUM 1 in 123; two FALCOS Tokens (tease)
 1 in 47, two Midnight Tokens 1 in 242.
 
@@ -143,8 +161,8 @@ Base game as played: a winning spin 1 in 3; base-game wins 5-20x 1 in 75 spins, 
   (was 1/1/1). Natural rates: FILL UP 1 in ~390, PREMIUM 1 in ~8,000, MIDNIGHT 1 in ~16,000 (the
   published rates are the optimiser's; a PREMIUM rate of 1 in 2,700 by density alone would make
   FILL UP ~1 in 150, so the PREMIUM rate is set by the table, not the strip).
-* FR0 (PREMIUM): Zippos 3/3/4/3/4/3/3, Scratch Tickets 3 per reel (were 2 and 2).
-* FRM (MIDNIGHT RUN): Zippos 3/2/3/2/3/2/3, Scratch Tickets 2 per reel (were 1 and 1), pumps 3.
+* FR0 (PREMIUM): Lighters 3/3/4/3/4/3/3, Scratch Tickets 3 per reel (were 2 and 2).
+* FRM (MIDNIGHT RUN): Lighters 3/2/3/2/3/2/3, Scratch Tickets 2 per reel (were 1 and 1), pumps 3.
 * FILL UP: lands FD 45 / ST 3.1 / GT 0.5 / GP 3.7 / ZP 1.2 per 1,000 blanks (was 24 / 2.2 / 0.35
   / 1.6 / 1.4); amber drops a little more often, 250 / 500 drops 0.12 / 0.03 (were 0.25 / 0.08),
   x32 / x64 pumps 1.5 / 0.3 (were 2 / 0.6).

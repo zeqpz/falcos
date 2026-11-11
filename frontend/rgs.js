@@ -231,11 +231,6 @@ const RGS = (() => {
       return (m && typeof m.maxBet === "number") ? m.maxBet : null;
     },
 
-    /** Optional progress marker so a disconnect can resume mid-round. */
-    async event(name) {
-      try { return await call("/bet/event", { event: name }); }
-      catch (e) { return null; }   // never let bookkeeping break a round
-    },
 
     /** The token the player is playing with, as the balance label names it. The social
      *  coins go by their short codes: their long names carry words social mode forbids. */

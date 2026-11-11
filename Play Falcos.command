@@ -10,4 +10,4 @@ if lsof -nP -iTCP:8733 -sTCP:LISTEN >/dev/null 2>&1; then
 fi
 echo "Starting Falcos... (close this window to stop it)"
 ( sleep 2; open "$URL" ) &
-exec .venv/bin/python frontend/mock_rgs.py
+exec .venv/bin/python rgs/mock_rgs.py

@@ -50,7 +50,7 @@
 "load/features.webp": "8c03e811d296f6dcf005352789aab1e936be5dcd",
 "load/max.webp": "ba46425f56742935d82157389b032f19b8a64b18",
 "load/title_bonus.webp": "51ae88d8363fa2ce4a282656ed7c2fceb7df3d4b",
-"load/title_features.webp": "b0b1a74436c785f21e7f2aaec7173b17c7231195",
+"load/title_features.webp": "a5ab321a99871e825ba2b510bfd8aee5470e7962",
 "load/title_max.webp": "3258bb7f321a4c90e9c02ae64276b7b03eb5aa4b",
 "mega_win.webp": "5a157db78f22ab188803686445ab8dad9a388ff5",
 "menu/chance.webp": "98e05420d327d8af9646d003e8dfa6305465ac1c",
@@ -79,6 +79,7 @@
 "num/x.webp": "a640b08455d1783b006473dad66f512eeeb16d26",
 "scene/blink_cashier.webp": "8a0322c9259cecd2359a06006ffdbbb958c935bd",
 "scene/blink_woman.webp": "cb18e03c202cb6a66a7cae9188f300bfa31e6e99",
+"scene/clouds_zombie.webp": "bdcf545fafee8e96066e83e5fd99a3af4feec0a2",
 "scene/fx_cashier_0.webp": "eddb73f3fc06ddcb20b034b154038832d7bbbf41",
 "scene/fx_woman_0.webp": "1ad411ac6d05e064df0ce3f042ae4b6a7f3b7d86",
 "scene/plate_nitro.webp": "1119efa1647886f3fa73203252e92b7f74499406",
@@ -306,5 +307,8 @@
 "title_logo.webp": "1ba0fe15ab34b61192adceae502f7b51de50614e",
 "total_bg.webp": "7a0411ebbd7d3801844195bdba379e7ecdf125fb",
 "total_win.webp": "349b4232e3a8e906c0fa42238a486608108b63e1",
+"wheel/midnight.webp": "9d5483d542181a689fd6879ba1080c9758893d55",
+"wheel/none.webp": "91a4d5d940a144fc4cd9fef8a94507ef5e840486",
+"wheel/premium.webp": "8fc20f273e35c0ed52790b7342f5d2ef734a0ab8",
 "xtreme_win.webp": "c0524b843366a7b3294e679fe9b15124b83e01f0"
 }

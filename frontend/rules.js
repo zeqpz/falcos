@@ -27,7 +27,7 @@ const RULES = (() => {
   const NAMES = {
     H1: "Cash Drawer", H2: "Gold Key", H3: "Pump Nozzle", H4: "Jerry Can",
     L1: "Energy Drink", L2: "Slushie", L3: "Hot Dog", L4: "Chips", L5: "Donut",
-    ZP: "Zippo", ST: "Scratch Ticket", GT: "Gold Scratch Ticket", GP: "Gas Pump",
+    ZP: "Lighter", ST: "Scratch Ticket", GT: "Gold Scratch Ticket", GP: "Gas Pump",
     FDG: "Fuel Drop (green)", FDA: "Fuel Drop (amber)", FDR: "Fuel Drop (red)",
     BS: "FALCOS Token", DS: "Midnight Token",
   };
@@ -153,8 +153,8 @@ const RULES = (() => {
 
 <section>
   <h4>${t("Feature symbols")}</h4>
-  <p class="fine">${t("Each tumble resolves in order: cluster wins, then all Gas Pumps together, then Scratch Tickets and Gold Scratch Tickets one at a time, then Zippos. Feature symbols do not form clusters.")}</p>
-  ${special("ZP", "Zippo", "Lights up its 3x3 area: its own cell and the 8 around it double their multipliers, and the paying symbols there burn - they clear, feeding their doubled multipliers into any cluster they were part of. Tokens keep their place but their cells still double. In FILL UP it burns every Fuel Drop in its 3x3 area and disappears.", social, t)}
+  <p class="fine">${t("Each tumble resolves in order: cluster wins, then all Gas Pumps together, then Scratch Tickets and Gold Scratch Tickets one at a time, then Lighters. Feature symbols do not form clusters.")}</p>
+  ${special("ZP", "Lighter", "Lights up its 3x3 area: its own cell and the 8 around it double their multipliers, and the paying symbols there burn - they clear, feeding their doubled multipliers into any cluster they were part of. Tokens keep their place but their cells still double. In FILL UP it burns every Fuel Drop in its 3x3 area and disappears.", social, t)}
   ${special("ST", "Scratch Ticket", "Scratches off one paying symbol that is on the board: every cell holding it doubles and burns, and so does the ticket's own cell. In FILL UP it collects every Fuel Drop in its 8 neighbours, adding their values to its own, plus any collector there that activated on an earlier spin; with nothing to collect it is removed, otherwise it stays with its total.", social, t)}
   ${special("GT", "Gold Scratch Ticket", "Every paying symbol on the board doubles and burns, and so does the ticket's own cell. In FILL UP it collects every Fuel Drop on the whole board.", social, t)}
   ${special("GP", "Gas Pump", `The biggest single event - at most one per column. It rolls a fuel grade: REGULAR ${list(PUMP.REGULAR)}, PLUS ${list(PUMP.PLUS)}, PREMIUM ${list(PUMP.PREMIUM)}, or FULL TANK. REGULAR to PREMIUM: every cell in its column gets the pump's multiplier and the paying symbols in the column burn. FULL TANK: every cell in the column becomes a MAX cell, and any cluster touching a MAX cell pays the max win. Pumps in different columns fire together. In FILL UP it rolls ${x(2)} to ${x(64)} and multiplies every Fuel Drop in its column and any collector there that has already collected; then it leaves.`, social, t)}

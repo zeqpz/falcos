@@ -1,10 +1,10 @@
 """Local stand-in for the Stake Engine RGS, for testing frontend/ before upload.
 
-Implements the documented wallet protocol (authenticate / balance / play / end-round and
-bet/event) over the game's real optimized books, and serves the frontend from the same
-origin so no CORS is involved.
+Implements the documented wallet protocol (authenticate / balance / play / end-round) over the
+game's real optimized books - every round is resolved by /play alone, no /bet/event - and serves
+the frontend from the same origin so no CORS is involved.
 
-    .venv/Scripts/python.exe frontend/mock_rgs.py
+    .venv/bin/python rgs/mock_rgs.py
     ->  http://localhost:8733/index.html?sessionID=test&rgs_url=http://localhost:8733&lang=en&device=desktop
 
 Money follows the spec: integers with six decimal places, 1_000_000 == 1.00.
@@ -22,8 +22,10 @@ from urllib.parse import urlparse
 
 import zstandard
 
-HERE = os.path.dirname(os.path.abspath(__file__))
-ROOT = os.path.dirname(HERE)
+# rgs/ (this server) sits beside frontend/ (what it serves) and math-sdk/games/falcos (the books it draws from):
+# the two halves of the game stay apart, and only this local stand-in for the RGS joins them for testing
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+HERE = os.path.join(ROOT, "frontend")
 GAME = os.path.join(ROOT, "math-sdk", "games", "falcos")
 PUBLISH = os.path.join(GAME, "library", "publish_files")
 CACHE = os.path.join(GAME, "library", "beta_cache")
@@ -271,9 +273,6 @@ class Handler(BaseHTTPRequestHandler):
             w["round"] = None
             # end-round answers with the bare wallet, not a { balance: ... } envelope.
             return self._json({"amount": w["balance"], "currency": w["currency"]})
-
-        if path == "/bet/event":
-            return self._json({"event": body.get("event")})
 
         return self._json({"error": "not found"}, 404)
 
