@@ -28,23 +28,6 @@
     80
    ]
   },
-  "fx_woman": {
-   "rect": [
-    496.0,
-    404.0,
-    234.0,
-    548.0
-   ],
-   "frames": 240,
-   "fps": 30.0,
-   "w": 117,
-   "h": 274,
-   "cols": 35,
-   "per_sheet": 490,
-   "sheets": [
-    "fx_woman_0.webp"
-   ]
-  },
   "fx_cashier": {
    "rect": [
     2880.0,

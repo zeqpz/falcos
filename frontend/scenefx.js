@@ -1,8 +1,8 @@
 // The Falcos scene's life, laid exactly over the night plate (#bgwall's background, bonus_wall.webp):
 // the canopy's FALCOS neon now and then stuttering off (sign_off), the woman by the Tahoe and the
 // cashier in the window each blinking on a clock of their own (blink_woman / blink_cashier), and
-// the two Blender loops - her cigarette smoke, ember and exhale (fx_woman); the window's glass
-// reflection and the coin glints at the till (fx_cashier).
+// the Blender loop of the window's glass reflection and the coin glints at the till (fx_cashier). (Her
+// cigarette smoke loop, fx_woman, is gone: no smoking in the scene, 2026-11-10.)
 //
 // Everything is described by assets/scene/scene.json in PLATE pixels (the plate is 3840x2160).
 // The layer (#scenefx) is put inside #bgwall and sized to the plate exactly as the browser draws

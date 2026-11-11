@@ -121,6 +121,8 @@ def scene():
         save(Image.open(os.path.join(A, 'scene', f'blink_{k}.png')).convert('RGBA'), f'scene/blink_{k}.webp', q=90)
         meta['layers']['blink_' + k] = {'rect': r}
     for k, v in json.load(open(os.path.join(A, 'scene', 'fx', 'regions.json'))).items():
+        if k == 'woman':   # no smoking in the scene (owner, 2026-11-10): her cigarette smoke loop is not packed
+            continue
         fs = sorted(glob.glob(os.path.join(A, 'scene', 'fx', k, '*.png')))
         S = 0.5                                     # the plate shows at <= ~0.5 scale on screen
         frames = [Image.open(f).convert('RGBA') for f in fs]
