@@ -1,8 +1,9 @@
 """Upload changed frontend/ and math files to the Stake Engine (engine.io) scratch bucket.
 
 There is no API key. engine.io only trusts the logged-in browser session, so the minting happens
-in a logged-in tab on https://studio.engine.io/teams/smukiez/games/smukiezs-city/files and the
-bytes go up from this machine. Two ways:
+in a logged-in tab on https://studio.engine.io/teams/<team>/games/<game>/files and the
+bytes go up from this machine. Falcos's team and game slugs on engine.io come from the environment:
+FALCOS_TEAM and FALCOS_GAME (set them to the game's own once it has one there). Two ways:
 
   Whole game, only what changed (the usual one):
   1. `python tools/stake_upload.py manifest`  writes upload_manifest.txt (every local file:
@@ -36,9 +37,9 @@ import urllib.parse
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FRONT = os.path.join(ROOT, "frontend")
-PUBLISH = os.path.join(ROOT, "math-sdk", "games", "smukiez_tag_run", "library", "publish_files")
-TEAM, GAME = "smukiez", "smukiezs-city"
-SKIP_DIRS, SKIP_FILES = {"__pycache__"}, {"mock_rgs.py"}   # the local dev server is not part of the bundle
+PUBLISH = os.path.join(ROOT, "math-sdk", "games", "falcos", "library", "publish_files")
+TEAM, GAME = os.environ.get("FALCOS_TEAM", ""), os.environ.get("FALCOS_GAME", "")
+SKIP_DIRS, SKIP_FILES = {"__pycache__"}, set()   # (the local dev server lives in rgs/, outside frontend/)
 
 # target -> (local base dir, remote prefix). `front` files live in frontend/,
 # `math` files (books + LUTs + index.json) live in the game's publish_files/.
@@ -54,6 +55,8 @@ def _target(args):
 
 def mint(rels, target="front"):
     """Print the browser-side snippet that mints one presigned PUT URL per file."""
+    if not (TEAM and GAME):
+        sys.exit("set FALCOS_TEAM and FALCOS_GAME to the game's engine.io team and game slugs first")
     base, prefix = TARGETS[target]
     want = [[f"{prefix}/{rel}", os.path.getsize(os.path.join(base, rel.replace("/", os.sep)))] for rel in rels]
     print(f"// paste into the DevTools console (or the app browser's javascript tool) on the engine.io Files page ({target}):")
@@ -114,6 +117,8 @@ def manifest(out_dir):
     with open(os.path.join(out_dir, "upload_manifest.txt"), "w", encoding="utf-8", newline="\n") as fh:
         fh.write(text)
     with open(os.path.join(out_dir, "upload_tab.js"), "w", encoding="utf-8", newline="\n") as fh:
+        if not (TEAM and GAME):
+            sys.exit('set FALCOS_TEAM and FALCOS_GAME to the game\'s engine.io team and game slugs first')
         fh.write(TAB_JS % {"man": text, "sha": digest, "team": TEAM, "game": GAME})
     print(f"{len(lines)} files, manifest sha256 {digest}; run upload_tab.js in the logged-in Files tab")
 

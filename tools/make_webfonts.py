@@ -18,7 +18,7 @@ it has one beside it (<stem>_OFL.txt, <stem>_LICENSE.txt), is copied next to the
 usage: python tools/make_webfonts.py           build frontend/assets/<stem>.woff2 for every master
        python tools/make_webfonts.py --check   also decode each WOFF2 and compare every glyph with the master
 
-Python: the project's (smukiez-slot/.venv: fontTools). WOFF2's Brotli step runs in Node's own zlib (Node is
+Python: the project's (.venv: fontTools). WOFF2's Brotli step runs in Node's own zlib (Node is
 needed anyway for the sfx tools), so nothing else has to be installed.
 """
 import glob, io, json, os, re, shutil, subprocess, sys, types

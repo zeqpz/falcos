@@ -1,7 +1,7 @@
 import os, json
 
 base = "frontend"
-skip = {"mock_rgs.py"}          # test harness, not part of the shipped bundle
+skip = set()                   # (the local test server lives in rgs/, outside frontend/)
 out = []
 for root, dirs, files in os.walk(base):
     for f in sorted(files):

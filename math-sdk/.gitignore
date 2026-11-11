@@ -28,7 +28,7 @@ __pycache__
 **/site/*
 
 
-# Smukiez Tag Run: keep the verified math release in the repo
+# keep the verified math release in the repo
 !**/library/
 !**/library/publish_files/
 !**/library/publish_files/**

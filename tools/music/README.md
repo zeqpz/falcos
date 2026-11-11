@@ -23,7 +23,7 @@ python tools/music/build.py base --wav         # cut + encode -> frontend/assets
 `build.py` prints the cue's `MUSIC` entry; paste it over the old one in `frontend/index.html`.
 `--wav` also writes `%TEMP%/music_build/<cue>.wav` (the head, then the loop twice) to listen to.
 Runs on `.venv312` (numpy, scipy, PyAV). The key is read from
-`%USERPROFILE%\.smukiez\openrouter-key.txt`, as `tools/icon_redraw` does.
+`~/.falcos/openrouter-key.txt`, as `tools/falcos/orgen.py` does.
 
 ## Things the first round taught
 

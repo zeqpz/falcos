@@ -66,7 +66,7 @@ const BITRATE = { 1: 64000, 2: 96000 };
       const opusHead = new Uint8Array(19); const hv = new DataView(opusHead.buffer);
       opusHead.set([..."OpusHead"].map(c => c.charCodeAt(0))); opusHead[8] = 1; opusHead[9] = ch;
       hv.setUint16(10, preskip, true); hv.setUint32(12, buf.sampleRate || 48000, true); hv.setInt16(16, 0, true); opusHead[18] = 0;
-      const vendor = [..."smukiez sfx"].map(c => c.charCodeAt(0));
+      const vendor = [..."falcos sfx"].map(c => c.charCodeAt(0));
       const tags = new Uint8Array(8 + 4 + vendor.length + 4); const tv = new DataView(tags.buffer);
       tags.set([..."OpusTags"].map(c => c.charCodeAt(0))); tv.setUint32(8, vendor.length, true); tags.set(vendor, 12); tv.setUint32(12 + vendor.length, 0, true);
       page([opusHead], 0, 2); page([tags], 0, 0);
