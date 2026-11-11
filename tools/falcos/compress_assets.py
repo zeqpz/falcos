@@ -20,6 +20,7 @@ every output, so a re-run only touches newly installed art and never re-encodes 
                       board_frame_sq.png (when it exists) trimmed to frame_sq.webp and its
                       glass opening measured into frame_sq.json; otherwise frame_sq is built from
                       board_frame_v3.png's slim bezel + topper at the board's squarer shape
+                      + frame_wide.webp/json from board_frame_wide.png (widen_frame.py), for landscape
   7. FILL UP art    - art/falcos/raw/fillup_{backing,cell2,gauge}.png (when they exist) -> assets/fillup/
 """
 import hashlib, io, json, os, shutil, sys
@@ -43,6 +44,7 @@ DROP_DENSITIES = ['d24']
 PLATES = ['bonus_wall.webp', 'scene/plate_nitro.webp', 'scene/plate_zombie.webp']
 PLATE_W, PLATE_W_M = 2560, 1600
 FRAME_MAX = 1600               # the board frame is drawn ~700-1100 px wide
+FRAME_WIDE_MAX = 1800          # the landscape frame, up to ~950 px wide at 1600x900 (DPR 2)
 # never named by the front end (checked 2026-11-10); install_game.py copies some of them back
 PRUNE = ['frame.webp', 'xbonus_text.webp', 'win_box.webp', 'feature_box.webp', 'logo_premium.webp',
          'logo_fillup.webp', 'menu/logo_premium.webp', 'bonus', 'frame_75.webp', 'frame_75.json', 'plate_grey.webp']
@@ -341,12 +343,21 @@ def build_frame_from_v3(aspect):
 
 
 def step_frame():
-    sq = os.path.join(RAW, 'board_frame_sq_small.png')   # the smaller sign (shrink_topper.py), when it is built
+    # frame_sq: the phone's (portrait) frame - the smaller sign (shrink_topper.py) when it is built
+    sq = os.path.join(RAW, 'board_frame_sq_small.png')
     if not os.path.exists(sq):
         sq = os.path.join(RAW, 'board_frame_sq.png')
-    dst = os.path.join(F, 'frame_sq.webp')
-    src_tag = ('sq:' + sha(sq) if os.path.exists(sq) else 'v3') + f'@{FRAME_MAX}'
-    if state.get('frame_sq.src') == src_tag and done('frame_sq.webp'):
+    one_frame('frame_sq', sq, FRAME_MAX)
+    # frame_wide: the landscape frame, square cells (widen_frame.py)
+    wide = os.path.join(RAW, 'board_frame_wide.png')
+    if os.path.exists(wide):
+        one_frame('frame_wide', wide, FRAME_WIDE_MAX)
+
+
+def one_frame(name, sq, fmax):
+    dst = os.path.join(F, name + '.webp')
+    src_tag = ('sq:' + sha(sq) if os.path.exists(sq) else 'v3') + f'@{fmax}'
+    if state.get(name + '.src') == src_tag and done(name + '.webp'):
         return
     if os.path.exists(sq):
         im = Image.open(sq).convert('RGBA')
@@ -355,15 +366,15 @@ def step_frame():
     else:
         im = build_frame_from_v3(1.16)
     o = opening(np.array(im.getchannel('A')))
-    if max(im.size) > FRAME_MAX:
-        k = FRAME_MAX / max(im.size)
+    if max(im.size) > fmax:
+        k = fmax / max(im.size)
         im = im.resize((round(im.width * k), round(im.height * k)), Image.LANCZOS)
     n = encode(im, dst, Q, 90)
     meta = {'frame_size': list(im.size), 'opening': [round(x, 5) for x in o], 'source': src_tag[:2]}
     if not DRY:
-        json.dump(meta, open(os.path.join(F, 'frame_sq.json'), 'w'))
-        mark('frame_sq.webp'); state['frame_sq.src'] = src_tag
-    print(f'frame_sq ({src_tag[:2]}): {im.size} opening {meta["opening"]} aspect '
+        json.dump(meta, open(os.path.join(F, name + '.json'), 'w'))
+        mark(name + '.webp'); state[name + '.src'] = src_tag
+    print(f'{name} ({src_tag[:2]}): {im.size} opening {meta["opening"]} aspect '
           f'{(o[2] - o[0]) * im.width / ((o[3] - o[1]) * im.height):.3f} {n / 1e3:.0f}K')
 
 
