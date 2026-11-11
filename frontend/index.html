@@ -5698,7 +5698,8 @@ function applyVolumes() {
   if (musicBus) musicBus.gain.value = vol.music / 100;
 }
 /* ---------- music ---------- */
-// Five cues, each cut from a Lyria take by tools/music/build.py (which prints these entries): the
+// Five cues of Falcos's own (2026-11-10: late-night synth-funk and night-drive synthwave in keys that fit the effects'
+// D major pentatonic - tools/music/cues.py), each cut from a Lyria take by tools/music/build.py (which prints these entries): the
 // base game, the bonus buy menu, the YOU WON n FREE SPINS screen, the free spins and the bonus's
 // TOTAL WIN. Every loop was cut on a beat where its end runs on like its start - lined up to the
 // sample, its first 1/16 note crossfaded in from what followed its end in the take - so it goes
@@ -5713,11 +5714,11 @@ function applyVolumes() {
 // game where the old loop sat, the menu under it and the bonus and its screens a little over it,
 // all well under the effects. bpm and bars give the cue's beat, so the free spins can start on one.
 const MUSIC = {
-  base:  { ogg: "assets/music_base.ogg",  aac: "assets/music_base.aac",  frames: 2949081, aacStart: 5824, aacFrames: 2955264, bpm: 124.998, bars: 32, level: .3 },
-  menu:  { ogg: "assets/music_menu.ogg",  aac: "assets/music_menu.aac",  frames: 1536012, aacStart: 5824, aacFrames: 1542144, bpm: 120.003, bars: 16, level: .224 },
-  intro: { ogg: "assets/music_intro.ogg", aac: "assets/music_intro.aac", frames: 529664,  head: 268153, headLen: 296953, aacStart: 5824, aacFrames: 832512,  bpm: 174.005, bars: 8,  level: .335 },
-  bonus: { ogg: "assets/music_bonus.ogg", aac: "assets/music_bonus.aac", frames: 2118613, aacStart: 5824, aacFrames: 2124800, bpm: 173.996, bars: 32, level: .398 },
-  total: { ogg: "assets/music_total.ogg", aac: "assets/music_total.aac", frames: 768000,  head: 414889, headLen: 472489, aacStart: 5824, aacFrames: 1247232, bpm: 120,     bars: 8,  level: .376 },
+  base:  { ogg: "assets/music_base.ogg",  aac: "assets/music_base.aac",  frames: 3291251, aacStart: 5824, aacFrames: 3297280, bpm: 112.002, bars: 32, level: .282 },
+  menu:  { ogg: "assets/music_menu.ogg",  aac: "assets/music_menu.aac",  frames: 1675647, aacStart: 5824, aacFrames: 1682432, bpm: 110.002, bars: 16, level: .224 },
+  intro: { ogg: "assets/music_intro.ogg", aac: "assets/music_intro.aac", frames: 669155,  head: 276041, headLen: 304841, aacStart: 5824, aacFrames: 979968,  bpm: 137.73,  bars: 8,  level: .316 },
+  bonus: { ogg: "assets/music_bonus.ogg", aac: "assets/music_bonus.aac", frames: 2635947, aacStart: 5824, aacFrames: 2641920, bpm: 139.849, bars: 32, level: .376 },
+  total: { ogg: "assets/music_total.ogg", aac: "assets/music_total.aac", frames: 864031,  head: 420702, headLen: 478302, aacStart: 5824, aacFrames: 1348608, bpm: 106.643, bars: 8,  level: .355 },
 };
 const MUSIC_RATE = 48000;
 const OPUS_OK = (() => { try { return !!new Audio().canPlayType('audio/ogg; codecs="opus"'); } catch (e) { return false; } })();

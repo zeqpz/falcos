@@ -44,7 +44,15 @@ OPUS_RATE, AAC_RATE = 128000, 160000
 def load(path):
     c = av.open(path)
     rate = c.streams.audio[0].rate
-    x = np.concatenate([f.to_ndarray() for f in c.decode(audio=0)], axis=1).T.astype(np.float64)
+    parts = []
+    for f in c.decode(audio=0):
+        a = f.to_ndarray()
+        if not f.format.is_planar:                       # packed (a WAV's s16): one row of interleaved samples
+            a = a.reshape(-1, len(f.layout.channels)).T
+        if a.dtype == np.int16:
+            a = a / 32768.0
+        parts.append(a)
+    x = np.concatenate(parts, axis=1).T.astype(np.float64)
     c.close()
     if rate != SR:
         g = np.gcd(SR, rate)
@@ -289,9 +297,10 @@ def cut(cue, x, verbose=True):
 
 
 # ------------------------------------------------------------------ build
-def build(cue, wav=False):
+def build(cue, wav=False):  # noqa: C901
     spec = CUES[cue]
-    x = load(os.path.join(SRC, cue + ".mp3"))
+    wav = os.path.join(SRC, cue + ".wav")   # a varispeed source (tools/music/varispeed.py) wins over the take
+    x = load(wav if os.path.exists(wav) else os.path.join(SRC, cue + ".mp3"))
     pre, loop, info = cut(cue, x)
     g = 10 ** ((MASTER_LUFS - lufs(np.vstack([loop, loop]))) / 20)
     pre, loop = pre * g, loop * g
@@ -329,7 +338,7 @@ def build(cue, wav=False):
 
 
 def main(argv):
-    want = [a for a in argv if a in CUES] or [c for c in CUES if os.path.exists(os.path.join(SRC, c + ".mp3"))]
+    want = [a for a in argv if a in CUES] or [c for c in CUES if any(os.path.exists(os.path.join(SRC, c + e)) for e in (".mp3", ".wav"))]
     entries = {}
     for cue in want:
         print(cue)
