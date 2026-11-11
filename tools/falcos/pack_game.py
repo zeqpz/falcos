@@ -15,6 +15,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 A = os.path.join(ROOT, 'art', 'falcos')
 G = os.path.join(A, 'game')
 SYMS = ['H1', 'H2', 'H3', 'H4', 'L1', 'L2', 'L3', 'L4', 'L5', 'ZP', 'ST', 'GT', 'GP', 'FDG', 'FDA', 'FDR', 'BS', 'DS']
+if os.environ.get('FALCOS_SYMS'):   # pack only these (e.g. FALCOS_SYMS=H1 after re-rendering one symbol)
+    SYMS = os.environ['FALCOS_SYMS'].split(',')
 CLIPS = {'idle': (72, True), 'land': (24, False), 'hit': (46, False), 'burn': (36, False)}
 DENS = {'d10': 1.0, 'd12': 1.2, 'd16': 1.6, 'd24': 2.4}       # icon px = 100 * density
 CAM, ICON = 13.0, 10.0                                          # render frame spans 13 units, icon 10

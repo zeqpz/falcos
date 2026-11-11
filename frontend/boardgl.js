@@ -90,6 +90,7 @@
   const waiting = [];
   const slot = () => busy < 2 ? (busy++, Promise.resolve()) : new Promise(r => waiting.push(r));
   const free = () => { const n = waiting.shift(); if (n) n(); else busy--; };
+  const NO_SHIFT = [0, 0];
   const built = new Set();   // every atlas handed out: { id, clip, url, k, frames, source }
   async function build(id, clip, url, k) {
     await slot();
@@ -291,8 +292,9 @@
         const m = rig._m, rw = m.icon[0] * 10, rh = m.icon[1] * 10, bx = m.clips[rig._gclip].box;
         const sR = Math.min(b.cw * FIT / rw, b.ch * FIT / rh) * (window.symScaleOf ? window.symScaleOf(rig._name) : 1);
         c.spr.texture = tex;
-        c.spr.x = b.w / 2 + ((bx[0] + m.icon[0] / 2) * 10 - rw / 2) * sR;
-        c.spr.y = b.h / 2 + ((bx[1] + m.icon[1] / 2) * 10 - rh / 2) * sR;
+        const ctr = m.centre || NO_SHIFT;   // the picture's own centre on the cell's (tools/falcos/centre_symbols.py)
+        c.spr.x = b.w / 2 + ((bx[0] + m.icon[0] / 2) * 10 - rw / 2 + ctr[0]) * sR;
+        c.spr.y = b.h / 2 + ((bx[1] + m.icon[1] / 2) * 10 - rh / 2 + ctr[1]) * sR;
         c.spr.width = bx[2] * 10 * sR; c.spr.height = bx[3] * 10 * sR;
         c.spr.alpha = c.op * c.ico;
         c.spr.visible = true;
@@ -319,5 +321,5 @@
     if (dirty) { dirty = false; app.render(); }
   }
 
-  window.BoardGL = { on: false, init, atlas, touch: () => { dirty = true; }, MAX_RES, get app() { return app; } };
+  window.BoardGL = { on: false, init, atlas, touch: () => { dirty = true; }, MAX_RES, get app() { return app; }, get cells() { return C; } };   // cells: read-only, for QA
 })();
