@@ -3265,6 +3265,25 @@
     .stage { padding-bottom: 4px; }
     .bottom { padding-top: 0; }
   }
+  /* ...and in a bonus it keeps that size (owner, 2026-11-10: "go bigger"): on a wide screen the free-spin
+     counter and FILL UP's fuel gauge stand beside the board, at the right of its glass's foot, not under
+     it - out of the flow, so they no longer push the board smaller. The frame's box is worked out from the
+     same numbers as .board's (--frw / --frh): its width and height. Narrower screens keep them under it. */
+  @media (orientation: landscape) and (min-aspect-ratio: 3/2) {
+    .main { position: relative; }
+    .rail {
+      --rfrw: calc((7 * (var(--cell-w) + 10px) + 6 * var(--cell-gap) + 12px) / var(--fo-w));
+      --rfrh: calc((5 * var(--cell-h) + 4 * var(--cell-gap) + 22px) / var(--fo-h));
+      position: absolute; max-width: none; justify-content: flex-start;
+      left: calc(50% + var(--rfrw) / 2 + 18px);
+      top: calc(12px + var(--rfrh) * (var(--fo-t) + var(--fo-h)));
+      transform: translateY(-100%); transform-origin: 0 100%;
+    }
+    /* the spins counter alone is a small plate: beside the board there is room to draw it half again as big */
+    .rail:has(#fsCard.on:not(.fill)) { transform: translateY(-100%) scale(1.5); }
+    #fsCard.fill .fuelrow { flex-direction: column; align-items: flex-start; gap: 4px; }
+    .ftotal { height: 84px; padding-left: 12px; }
+  }
 </style>
 </head>
 <body>
