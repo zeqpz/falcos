@@ -2863,17 +2863,6 @@
     background: radial-gradient(circle at 50% 55%, var(--wc) 0, color-mix(in srgb, var(--wc) 50%, transparent) 35%, rgba(0, 0, 0, .85) 80%);
     animation: sceneWipe 1.3s ease-in-out both; }
   @keyframes sceneWipe { 0% { opacity: 0; } 40% { opacity: 1; } 100% { opacity: 0; } }
-  /* the LUCKY PUMP wheel */
-  .luckywheel { position: fixed; inset: 0; z-index: 59; display: grid; place-items: center; background: rgba(4, 3, 10, .72);
-    opacity: 0; transition: opacity .4s ease; }
-  .luckywheel.up { opacity: 1; }
-  .luckywheel .lwbox { position: relative; width: min(64vh, 86vw); aspect-ratio: 1; }
-  .luckywheel .lwlogo { position: absolute; left: 50%; top: -2%; translate: -50% -100%; width: 80%; height: auto; filter: drop-shadow(0 6px 12px rgba(0, 0, 0, .7)); }
-  .luckywheel svg { width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 12px 30px rgba(0, 0, 0, .8)); }
-  .luckywheel .lwres { position: absolute; left: 50%; bottom: -4%; translate: -50% 100%; white-space: nowrap;
-    font-family: "Fredoka", var(--num); font-weight: 700; font-size: clamp(22px, 4.4vh, 44px); letter-spacing: .1em; color: #fff;
-    text-shadow: 0 3px 0 rgba(0, 0, 0, .8), 0 0 22px var(--c, #FFB547); opacity: 0; scale: .5; transition: opacity .2s, scale .4s cubic-bezier(.2, .9, .3, 1.5); }
-  .luckywheel.landed .lwres { opacity: 1; scale: 1; }
   /* NITRO SPIN's opening splash */
   .modesplash { position: fixed; inset: 0; z-index: 57; display: grid; place-items: center; pointer-events: none; }
   .modesplash img { width: min(70vw, 900px); height: auto; filter: drop-shadow(0 0 30px rgba(91, 140, 255, .9)); animation: splashIn calc(1.4s * var(--tempo, 1)) cubic-bezier(.2, .9, .3, 1.2) both; }
@@ -2882,8 +2871,8 @@
     .badgelayer .badge.bump > span, .colglow.on, .firebox, .firebox::before, .firebox::after, .pumpdial, .scratchcard, .goldsweep::before, .cell.tflash::after, .modesplash img, .scenewipe { animation: none !important; }
   }
   /* ---------- the bonus-buy menu (2026-11-10, a premium Stake game's) ----------
-     Two wide cards on top (FUEL CHANCE, LUCKY PUMP) and three tall ones under them (FILL UP, PREMIUM,
-     NITRO SPIN): dark rounded cards, the art fading into the card, the logo, a line on what it is, the price
+     Two wide cards on top (FUEL CHANCE, NITRO SPIN) and three tall ones under them (FILL UP, PREMIUM,
+     MIDNIGHT RUN): dark rounded cards, the art fading into the card, the logo, a line on what it is, the price
      at the live bet and a pill - green PLAY for a bonus, amber ACTIVATE for a special spin. The bet arrows
      with the bet at the foot, the close X in the corner. A phone stacks the cards and scrolls. */
   #bonusWrap { padding: 0; }
@@ -3095,8 +3084,8 @@
 
 <div class="infowrap" id="bonusWrap" hidden>
   <div class="bonuspop">
-    <!-- The bonus-buy menu (2026-11-10): two wide cards (FUEL CHANCE, LUCKY PUMP) over three tall ones
-         (FILL UP, PREMIUM, NITRO SPIN), written by paintBonus() from BUYS. A buy asks once more (CONFIRM)
+    <!-- The bonus-buy menu (2026-11-10): two wide cards (FUEL CHANCE, NITRO SPIN) over three tall ones
+         (FILL UP, PREMIUM, MIDNIGHT RUN), written by paintBonus() from BUYS. A buy asks once more (CONFIRM)
          before it charges. -->
     <div class="bshop" role="dialog" aria-modal="true" aria-label="Bonus buy">
       <button type="button" class="bshopx" id="bonusClose" aria-label="Close"></button>
@@ -3213,7 +3202,7 @@ const REELS = 7, ROWS = 5;   // the 7x5 cluster board; the events pad every reel
 const MODE_COST = { base: 1, chance: 3, fillup: 100, premium: 300, nitro: 500, midnight: 500 };   // replaced from the RGS's gameModes at boot
 // Falcos's bet modes (FALCOS_DESIGN.md "Bet modes") as the player reads them, by the math's mode key.
 const MODE_NAMES = {
-  base: "Base game", chance: "FUEL CHANCE spin", fillup: "Buy FILL UP", premium: "Buy PREMIUM", nitro: "NITRO SPIN", lucky: "LUCKY PUMP",
+  base: "Base game", chance: "FUEL CHANCE spin", fillup: "Buy FILL UP", premium: "Buy PREMIUM", nitro: "NITRO SPIN", midnight: "Buy MIDNIGHT RUN",
 };
 
 const state = {
@@ -5236,7 +5225,6 @@ const SFX = {
   moneyTick: "assets/sfx_money_tick.wav", mediumWin: "assets/sfx_medium_win.wav",
   trophy: "assets/sfx_trophy.wav", coinsRain: "assets/sfx_coins_rain.wav",   // the total's own arrival
   pop: "assets/sfx_pop.wav",                     // a symbol popping off the board
-  bustA: "assets/sfx_bust_a.wav",                // LUCKY PUMP's wheel landing on EMPTY
   winText: "assets/sfx_win_text.wav",            // the win amount popping up
   hoverLoop: "assets/sfx_hover_loop.wav",        // looped under the pointer on the Bonus button
   autoStart: "assets/sfx_auto_start.wav", autoStop: "assets/sfx_auto_stop.wav",
@@ -5253,7 +5241,7 @@ function pickSfx(list, memo) {
 }
 const SFX_VOL = {
   spin: .5, bet: .45, reels: .3, skip: .45, line: .4,
-  bonusEnd: .55, pop: .42, bustA: .5, winText: .5, hoverLoop: .28, autoStart: .45, autoStop: .45, menuOpen: .4, menuClose: .4, toggle: .4,
+  bonusEnd: .55, pop: .42, winText: .5, hoverLoop: .28, autoStart: .45, autoStop: .45, menuOpen: .4, menuClose: .4, toggle: .4,
   moneyTick: .4, mediumWin: .55, trophy: .6, coinsRain: .45,
 };
 // Each paying symbol's own soft win sound (sfx_win_<id>, three takes - SFX_SETS), played as its cluster
@@ -6073,11 +6061,12 @@ async function fireBox(cells) {
 // a plate's 1600-wide twin on a phone-sized window (the same test as the stylesheet's --wall-img)
 const SMALL_PLATES = matchMedia("(max-width: 900px) and (max-height: 1000px), (max-height: 500px)").matches;
 const plateUrl = u => SMALL_PLATES ? u.replace(/\.webp$/, "_m.webp") : u;
-// PREMIUM plays on the abandoned station (zombies), NITRO SPIN on the street race. The alternate plate is
+// PREMIUM plays on the abandoned station (zombies), MIDNIGHT RUN on the station at midnight, NITRO SPIN on the street race. The alternate plate is
 // laid over the night plate inside #bgwall - which hides scenefx's overlays (they belong to the night plate)
 // - with a short wash of the mode's colour; on the zombie plate the canopy sign flickers a sickly green.
 const Scene = (() => {
   const PLATES = { zombie: { url: plateUrl("assets/scene/plate_zombie.webp"), wash: "rgba(90, 255, 70, .55)" },
+                   midnight: { url: plateUrl("assets/scene/plate_midnight.webp"), wash: "rgba(140, 110, 255, .6)" },
                    nitro: { url: plateUrl("assets/scene/plate_nitro.webp"), wash: "rgba(70, 120, 255, .6)" } };
   let alt = null, now = "normal", flickT = 0;
   const el = () => {
@@ -6146,80 +6135,6 @@ const Scene = (() => {
   return { to, get now() { return now; } };
 })();
 
-/* ---------- LUCKY PUMP's wheel ---------- */
-// Nine slices round a pump-lit wheel, about in the published odds (PREMIUM 55.9%, MIDNIGHT RUN 34.1%, nothing
-// 10.0%): PREMIUM (zombie green) five, MIDNIGHT RUN (night blue) three, EMPTY one. It spins and lands on what the
-// book says (luckyWheel.result); the slice is chosen here only for where to stop - the outcome is the event's.
-const WHEEL = ["premium", "midnight", "premium", "midnight", "premium", "none", "premium", "midnight", "premium"];
-const WHEEL_LOOK = { premium: { c: "#3FCF3A", t: "PREMIUM", ink: "#0d2a08" }, midnight: { c: "#2D4FD6", t: "MIDNIGHT", ink: "#fff" }, none: { c: "#3a1218", t: "EMPTY", ink: "#FFB547" } };
-function luckyWheel(result) {
-  return new Promise(resolve => {
-    const wrap = document.createElement("div");
-    wrap.className = "luckywheel";
-    wrap.setAttribute("role", "dialog");
-    wrap.setAttribute("aria-label", T("Lucky Pump"));
-    const n = WHEEL.length, seg = 360 / n;
-    // each slice carries its result's cover art (assets/wheel, tools/falcos/wheel_art.py), drawn in the slice at the
-    // top of the wheel and turned into place - one clip shape serves all nine - under a tint of the result's colour
-    // (so the three still read apart at a glance), its name on top in an outlined face
-    const sa0 = (-seg / 2 - 90) * Math.PI / 180, sa1 = (seg / 2 - 90) * Math.PI / 180;
-    const wedge = `M200 200 L${(200 + 180 * Math.cos(sa0)).toFixed(1)} ${(200 + 180 * Math.sin(sa0)).toFixed(1)} A180 180 0 0 1 ${(200 + 180 * Math.cos(sa1)).toFixed(1)} ${(200 + 180 * Math.sin(sa1)).toFixed(1)} Z`;
-    const slices = `<defs><clipPath id="lwslice"><path d="${wedge}"/></clipPath>` +
-      `<linearGradient id="lwshade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity=".1"/><stop offset="1" stop-color="#000" stop-opacity=".55"/></linearGradient></defs>` +
-      WHEEL.map((k, i) => {
-        const L = WHEEL_LOOK[k];
-        return `<g transform="rotate(${i * seg} 200 200)"><g clip-path="url(#lwslice)">` +
-          `<rect x="120" y="14" width="160" height="190" fill="${L.c}"/>` +
-          `<image href="assets/wheel/${k}.webp" x="128" y="18" width="144" height="186" preserveAspectRatio="xMidYMin slice"/>` +
-          `<rect x="120" y="14" width="160" height="190" fill="${L.c}" opacity=".22"/>` +
-          `<rect x="120" y="14" width="160" height="190" fill="url(#lwshade)"/></g>` +
-          `<path d="${wedge}" fill="none" stroke="#14080c" stroke-width="3"/>` +
-          `<text x="200" y="62" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="${k === "midnight" ? 17 : 19}" fill="${k === "premium" ? "#B8FF6A" : k === "midnight" ? "#CFE0FF" : "#FFB547"}" stroke="#0b0610" stroke-width="4" paint-order="stroke" letter-spacing="1">${L.t}</text></g>`;
-      }).join("");
-    const bulbs = Array.from({ length: 24 }, (_, i) => { const a = i * 15 * Math.PI / 180;
-      return `<circle class="lwbulb" cx="${(200 + 191 * Math.cos(a)).toFixed(1)}" cy="${(200 + 191 * Math.sin(a)).toFixed(1)}" r="5" fill="${i % 2 ? "#FFB547" : "#FFF1B8"}"/>`; }).join("");
-    wrap.innerHTML = `<div class="lwbox"><img class="lwlogo" src="assets/menu/logo_lucky.webp" alt="${T("Lucky Pump")}" draggable="false">
-      <svg viewBox="0 0 400 400" aria-hidden="true">
-        <circle cx="200" cy="200" r="198" fill="#b8bec9" stroke="#1a1a22" stroke-width="4"/>
-        <g class="lwspin">${slices}<circle cx="200" cy="200" r="46" fill="#C8102E" stroke="#fff" stroke-width="5"/>
-          <text x="200" y="207" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="20" fill="#fff">FALCOS</text></g>
-        ${bulbs}
-        <path d="M200 46 L184 4 L216 4 Z" fill="#FF2A3D" stroke="#fff" stroke-width="3"/>
-      </svg><div class="lwres"></div></div>`;
-    document.body.appendChild(wrap);
-    restyle(wrap); wrap.classList.add("up");
-    const choices = WHEEL.map((k, i) => k === result ? i : -1).filter(i => i >= 0);
-    const idx = choices[Math.floor(Math.random() * choices.length)] ?? 1;
-    const spin = wrap.querySelector(".lwspin"), t = tempo();
-    const end = 360 * 5 + (360 - idx * seg) + (Math.random() - .5) * seg * .6;
-    sfx("pumpRoll");
-    const dur = (REDUCED_MOTION ? 0 : 4200) * t;
-    // the ticks as slices pass the pointer, slowing with the wheel
-    const t0 = performance.now(); let lastSeg = 0;
-    const ease = p => 1 - Math.pow(1 - p, 3.2);
-    const tickLoop = now => {
-      const p = dur ? Math.min(1, (now - t0) / dur) : 1, a = end * ease(p), sgi = Math.floor((a + seg / 2) / seg);
-      if (sgi !== lastSeg) { lastSeg = sgi; sfxGap("gaugeTick", 45); }
-      if (p < 1 && wrap.isConnected) requestAnimationFrame(tickLoop);
-    };
-    requestAnimationFrame(tickLoop);
-    const a = spin.animate([{ transform: "rotate(0deg)" }, { transform: `rotate(${end}deg)` }],
-      { duration: Math.max(1, dur), easing: "cubic-bezier(.12,.6,.2,1)", fill: "forwards" });
-    spin.style.transformOrigin = "200px 200px";
-    a.finished.then(() => {
-      const L = WHEEL_LOOK[result] || WHEEL_LOOK.none;
-      const res = wrap.querySelector(".lwres");
-      res.textContent = result === "none" ? T("No luck this time") : result === "midnight" ? "MIDNIGHT RUN!" : "PREMIUM!";
-      res.style.setProperty("--c", L.c);
-      wrap.classList.add("landed");
-      if (result === "none") sfx("bustA"); else { sfx("bonusTrigger"); sparkBurst(wrap.querySelector(".lwbox"), { n: 36, reach: 1.4, colors: [L.c, "#ffffff", "#FFB547"] }); }
-      setTimeout(() => {
-        wrap.classList.remove("up");
-        setTimeout(() => { wrap.remove(); resolve(); }, 420);
-      }, (result === "none" ? 1500 : 1900) * t);
-    });
-  });
-}
 // a short splash of a mode's logo (NITRO SPIN as it starts)
 function modeSplash(src) {
   const w = document.createElement("div");
@@ -6475,12 +6390,6 @@ const handlers = {
     await banner("MAX WIN", `${fmt(cents(ev.amount))} — ${RULES.MAX_WIN.toLocaleString("en-US")}x`, 1800, "mega");
   },
 
-  // LUCKY PUMP: the wheel lands on PREMIUM, MIDNIGHT RUN or nothing
-  async luckyWheel(ev) {
-    await luckyWheel(ev.result);
-    if (ev.result === "none") tick(T("LUCKY PUMP — no luck this time."));
-  },
-
   // PREMIUM / MIDNIGHT RUN awarded: the scatters that did it light up (a bought one has none)
   async freeSpinTrigger(ev) {
     state.fsTotal = ev.totalFs;
@@ -6517,6 +6426,7 @@ const handlers = {
       clearFx(); paintGrid();
       if (kind === "fillup") fillBegin();
       if (kind === "premium") Scene.to("zombie");
+      if (kind === "midnight") Scene.to("midnight");   // its own night (owner, 2026-11-10)
     });
   },
 
@@ -7080,8 +6990,7 @@ async function presentRound(round, { settle = true } = {}) {
 // the last two. It is also the only route into the bonus modes — nothing else calls
 // playRound() with anything but "base".
 // The menu's cards (2026-11-10), by the math's mode keys. wide: the two special spins on top; the rest tall.
-// PLAY (green) buys a bonus; ACTIVATE (amber) plays a special spin. MIDNIGHT RUN cannot be bought (only
-// LUCKY PUMP can land on it).
+// PLAY (green) buys a bonus; ACTIVATE (amber) turns a special spin on until it is turned off.
 const BUYS = [
   { mode: "chance", wide: true, art: "chance", logo: "logo_chance", title: "FUEL CHANCE", desc: "Every spin with about 2.2x the chance of triggering a bonus. Stays on until you turn it off", btn: "Activate", acc: "#FFB547" },
   { mode: "nitro", wide: true, art: "nitro", logo: "logo_nitro", title: "NITRO SPIN", desc: "Every cell preloaded from x16 to x2048 on each spin. Stays on until you turn it off", btn: "Activate", acc: "#5B8CFF" },
@@ -7729,17 +7638,16 @@ function assetUrls() {
   // the win screen's lettering, named rather than read off WIN_TIERS: that list is declared
   // further down the file than this screen runs
   for (const n of ["total_win", "big_win", "mega_win", "xtreme_win"]) urls.add("assets/" + n + ".webp");
-  for (const n of ["logo_fillup", "logo_premium_zombie", "logo_midnight", "logo_nitro", "logo_lucky", "logo_chance"]) urls.add("assets/menu/" + n + ".webp");   // the bonus screens' and the buy menu's lettering
-  for (const n of ["chance", "lucky", "fillup", "premium", "nitro"]) urls.add("assets/menu/" + n + ".webp");
-  for (const n of ["premium", "midnight", "none"]) urls.add("assets/wheel/" + n + ".webp");   // LUCKY PUMP's wheel slices
-  for (const n of ["plate_zombie", "plate_nitro"]) urls.add(plateUrl("assets/scene/" + n + ".webp"));   // the bonus scenes
+  for (const n of ["logo_fillup", "logo_premium_zombie", "logo_midnight", "logo_nitro", "logo_chance"]) urls.add("assets/menu/" + n + ".webp");   // the bonus screens' and the buy menu's lettering
+  for (const n of ["chance", "fillup", "premium", "nitro", "midnight"]) urls.add("assets/menu/" + n + ".webp");
+  for (const n of ["plate_zombie", "plate_nitro", "plate_midnight"]) urls.add(plateUrl("assets/scene/" + n + ".webp"));   // the bonus scenes
   // a plate named in :root is the desktop one; on a phone-sized window only its _m twin is drawn
   return [...new Set([...urls].map(u => /(bonus_wall|scene\/plate_\w+?)\.webp$/.test(u) && !/_m\.webp$/.test(u) ? plateUrl(u) : u))];
 }
 // What the loading screen and the first board do not show waits until the game is up (perf, 2026-11-10: the
 // load bar carried ~16 MB of pictures, a third of them the buy menu, the win screens and the bonus scenes);
 // it comes down right after, long before any of it can be asked for, and is held the same way.
-const LATER_PIC = /assets\/(menu\/|wheel\/|fillup\/|scene\/plate_|scene\/clouds_|(big|mega|xtreme|total)_win|tier_bg|total_bg|bonus_panel|info_panel|banner_box)/;
+const LATER_PIC = /assets\/(menu\/|fillup\/|scene\/plate_|scene\/clouds_|(big|mega|xtreme|total)_win|tier_bg|total_bg|bonus_panel|info_panel|banner_box)/;
 function preloadLater() {
   for (const u of assetUrls().filter(u => LATER_PIC.test(u))) {
     const img = new Image();

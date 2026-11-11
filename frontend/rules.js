@@ -39,11 +39,11 @@ const RULES = (() => {
   const DROPS = { green: [0.2, 0.5, 1, 2, 3], amber: [5, 10, 15, 20], red: [50, 100, 250, 500] };
   // the bet modes (the math's mode keys), as the Bonus panel sells them
   const MODES = [
-    { keys: ["chance"], name: "FUEL CHANCE", what: "One boosted base spin with about 2.2 times the chance of triggering any bonus." },
-    { keys: ["lucky"], name: "LUCKY PUMP", what: "Spins the pump wheel: it lands on PREMIUM (55.9%), MIDNIGHT RUN (34.1%) or nothing (10.0%). PREMIUM and MIDNIGHT RUN then play exactly as when triggered." },
+    { keys: ["chance"], name: "FUEL CHANCE", what: "Base spins with about 2.2 times the chance of triggering any bonus. Once activated it stays on for every spin until you turn it off." },
     { keys: ["fillup"], name: "Buy FILL UP", what: "Starts the FILL UP bonus." },
     { keys: ["premium"], name: "Buy PREMIUM", what: "Starts PREMIUM: 10 free spins with sticky cell multipliers." },
-    { keys: ["nitro"], name: "NITRO SPIN", what: "One spin with every cell preloaded with a multiplier from x16 to x2048." },
+    { keys: ["nitro"], name: "NITRO SPIN", what: "Spins with every cell preloaded with a multiplier from x16 to x2048. Once activated it stays on for every spin until you turn it off." },
+    { keys: ["midnight"], name: "Buy MIDNIGHT RUN", what: "Starts MIDNIGHT RUN: 10 free spins with sticky cell multipliers, every cell starting at x4." },
   ];
 
   // Restricted phrase -> replacement, from Stake's jurisdiction-requirements table. Longer
@@ -136,7 +136,7 @@ const RULES = (() => {
     <tr><td>${t("Base game")}</td><td>${x(1)} <em>${money(1)}</em></td><td>${t("One spin. FILL UP, PREMIUM and MIDNIGHT RUN trigger naturally from FALCOS Tokens and Midnight Tokens.")}</td></tr>
     ${modeRows}
   </table>
-  <p class="fine">${t("All are chosen from the Bonus panel, which shows the exact price at your bet before anything is charged; a buy asks you to confirm. MIDNIGHT RUN cannot be bought directly; LUCKY PUMP can land on it. The max win applies to every mode.")}</p>
+  <p class="fine">${t("All are chosen from the Bonus panel, which shows the exact price at your bet before anything is charged; a buy asks you to confirm. FUEL CHANCE and NITRO SPIN, once activated, stay on until you turn them off. The max win applies to every mode.")}</p>
 </section>
 
 <section>
@@ -153,7 +153,7 @@ const RULES = (() => {
 
 <section>
   <h4>${t("Feature symbols")}</h4>
-  <p class="fine">${t("Each tumble resolves in order: cluster wins, then all Gas Pumps together, then Scratch Tickets and Gold Scratch Tickets one at a time, then Lighters. Feature symbols do not form clusters.")}</p>
+  <p class="fine">${t("Each tumble resolves in order: cluster wins, then all Gas Pumps together, then Scratch Tickets and Gold Scratch Tickets one at a time, then Lighters - and the board refills after each of them, so a later feature acts on the refilled board. A feature that drops in during a refill fires in the next step. Feature symbols do not form clusters.")}</p>
   ${special("ZP", "Lighter", "Lights up its 3x3 area: its own cell and the 8 around it double their multipliers, and the paying symbols there burn - they clear, feeding their doubled multipliers into any cluster they were part of. Tokens keep their place but their cells still double. In FILL UP it burns every Fuel Drop in its 3x3 area and disappears.", social, t)}
   ${special("ST", "Scratch Ticket", "Scratches off one paying symbol that is on the board: every cell holding it doubles and burns, and so does the ticket's own cell. In FILL UP it collects every Fuel Drop in its 8 neighbours, adding their values to its own, plus any collector there that activated on an earlier spin; with nothing to collect it is removed, otherwise it stays with its total.", social, t)}
   ${special("GT", "Gold Scratch Ticket", "Every paying symbol on the board doubles and burns, and so does the ticket's own cell. In FILL UP it collects every Fuel Drop on the whole board.", social, t)}
@@ -171,8 +171,8 @@ const RULES = (() => {
   <h4>${t("Bonuses")}</h4>
   <p><b>FILL UP</b> — ${t("3 FALCOS Tokens, or bought. A Fuel Drop collection game with a 3-bar fuel gauge; no cell multipliers. The gauge starts full. Every spin uses one bar, and any spin that lands something new (a drop or a feature) refills it to 3. The bonus ends when the gauge is empty and nothing new lands. At the end you win the total of every drop left plus every collector's total, times the bet, capped at the max win.")}</p>
   <p><b>PREMIUM</b> — ${t("4 or more FALCOS Tokens, or bought. 10 free spins of the base game with sticky cell multipliers: a cell that reached x8 keeps x8 into the next spin and keeps growing.")}</p>
-  <p><b>MIDNIGHT RUN</b> — ${t("3 Midnight Tokens, or a LUCKY PUMP wheel landing on it. 10 free spins with sticky cell multipliers, every cell starting at x4, and Gas Pumps landing far more often. The biggest bonus in the game.")}</p>
-  <p class="fine">${t("Bonuses are played at the bet of the triggering spin. If the connection drops, reload the game to finish the round.")}</p>
+  <p><b>MIDNIGHT RUN</b> — ${t("3 Midnight Tokens, or bought. 10 free spins with sticky cell multipliers, every cell starting at x4, and Gas Pumps landing far more often. The biggest bonus in the game.")}</p>
+  <p class="fine">${t("Bonuses are played at the bet of the triggering spin. Every round is decided in full the moment it is placed: if the connection drops, reload the game and the round is settled and paid.")}</p>
 </section>
 
 <section>
@@ -180,7 +180,7 @@ const RULES = (() => {
   <table class="guide">
     <tr><td><b>${t("Spin")}</b></td><td>${t("Plays one round at the current bet. The spacebar does the same. While the reels are turning the button reads Skip and lands them at once (clicking the board also skips); every winning cluster is always shown in full.")}</td></tr>
     <tr><td><b>− / +</b></td><td>${t("Lowers or raises the bet through every level offered by the server.")}</td></tr>
-    <tr><td><b>${t("Bonus")}</b></td><td>${t("Opens the Bonus panel: buy a bonus or a special spin (FUEL CHANCE, LUCKY PUMP, NITRO SPIN). The total charge is shown before you confirm.")}</td></tr>
+    <tr><td><b>${t("Bonus")}</b></td><td>${t("Opens the Bonus panel: buy a bonus (FILL UP, PREMIUM, MIDNIGHT RUN) or turn on a special spin (FUEL CHANCE, NITRO SPIN). The total charge is shown before you confirm; a special spin stays on - the bar shows its price a spin - until you turn it off on its card or the pill over the bar.")}</td></tr>
     <tr><td><b>${t("Auto")}</b></td><td>${t("Plays a chosen number of rounds one after another at the current bet. You confirm the number before it starts; press it again to stop. It also stops when the balance can't cover the next round.")}</td></tr>
     <tr><td><b>${t("Rapid")}</b></td><td>${t("Shortens the reel spin and win animations. Results are unaffected.")}</td></tr>
     <tr><td><b>${t("Info")}</b></td><td>${t("Opens this page: the rules, the paytable and your recent rounds.")}</td></tr>

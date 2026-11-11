@@ -26,13 +26,12 @@ Targets (base bets)
     base     FILL UP 1 in 400, PREMIUM 1 in 2,700, MIDNIGHT RUN 1 in 14,000; max win 1 in 8M
              (rtp 0.00625); ordinary winning spins ~1 in 3
     chance   (3x) the bonuses and the max win 2.2x as often (5x failed etl40b), same average bonus; ordinary spins
-             take the rest at hr 2.5
+             take the rest at hr 2.5 (their shape is set afterwards by trim_chance_tail.py)
     fillup   wincap 0.20 bb (1 in 250,000) | bigwin (>= 4,000x) 0.50 bb | fillup the rest
     premium  wincap 0.25 bb (1 in 200,000) | bigwin (>= 10,000x) 0.35 bb | premium the rest
     nitro    wincap 0.25 bb | bigwin 0.35 bb | highwin (5,000-10,000x) 1.7% of spins | 80% win
-    lucky    wincap 0.25 bb | bigwin 0.35 bb | highwin 1.2% | wheel "none" 10%; PREMIUM at the
-             premium buy's own average, MIDNIGHT RUN at its pool mean, the split solved so the
-             mode returns 0.965 x 500
+    midnight wincap 0.25 bb | bigwin 0.35 bb | highwin (5,000-10,000x) 1.2% of rounds | midnight
+             (the MIDNIGHT RUN buy's main fence) the rest, so the mode returns 0.965 x 500 = 482.5x
 """
 
 import json
@@ -55,10 +54,9 @@ BASE_HIT = 3.0                           # ordinary winning base spins ~1 in 3 (
 CHANCE_HIT = 2.5                         # FUEL CHANCE's ordinary spins (see the docstring)
 
 # fixed tail returns per buy mode, in base bets: (wincap, bigwin)
-BUY_TAIL = {"fillup": (0.20, 0.50), "premium": (0.25, 0.35), "nitro": (0.25, 0.35), "lucky": (0.25, 0.35)}
-HIGHWIN_P = {"nitro": 0.017, "lucky": 0.012}
+BUY_TAIL = {"fillup": (0.20, 0.50), "premium": (0.25, 0.35), "nitro": (0.25, 0.35), "midnight": (0.25, 0.35)}
+HIGHWIN_P = {"nitro": 0.017, "midnight": 0.012}
 NITRO_HIT = 0.80
-LUCKY_NONE = 0.10
 
 # the pool means used when no pool is on disk yet (first run before any sims)
 DEFAULT_MEAN = {"midnight": 930.0, "premium": 290.0, "fillup": 100.0, "basegame": 1.6,
@@ -238,31 +236,6 @@ def nitro_mode(game_config):
     return out
 
 
-def lucky_mode(game_config):
-    cost = 500.0
-    pool = Pool(game_config, "lucky")
-    out = {}
-    used_rtp, used_p = tail_fences(game_config, "lucky", pool, out)
-    mid = pool.take_symbol("midnight") if pool.ok else set()
-    av_m = pool.mean(mid, "midnight")
-    # PREMIUM from the wheel pays like the premium buy's own main fence
-    p_cap, p_big = BUY_TAIL["premium"]
-    prem_cost = 300.0
-    av_p = (game_config.rtp * prem_cost - p_cap - p_big) / (1 - p_cap / game_config.wincap - p_big / 15000.0)
-    need = game_config.rtp * cost - used_rtp * cost             # base bets left for the two bonuses
-    slots = 1 - LUCKY_NONE - used_p                             # wheel share left for them
-    p_m = (need - slots * av_p) / (av_m - av_p)
-    p_p = slots - p_m
-    assert 0 < p_m < slots, f"LUCKY PUMP split infeasible: midnight {p_m:.3f} of {slots:.3f}"
-    out["midnight"] = cond(rtp=round(p_m * av_m / cost, 7), hr=round(1 / p_m, 6), search_conditions={"symbol": "midnight"})
-    out["premium"] = cond(rtp=round(p_p * av_p / cost, 7), hr=round(1 / p_p, 6), search_conditions={"symbol": "premium"})
-    out["0"] = cond(rtp=0, av_win=0, search_conditions=0)
-    # absorb rounding so the criteria add up to the mode's RTP exactly
-    diff = round(game_config.rtp - sum(c["rtp"] for c in out.values()), 7)
-    out["premium"]["rtp"] = round(out["premium"]["rtp"] + diff, 7)
-    return out
-
-
 def _params(test_spins, test_weights):
     return ConstructParameters(
         num_show=1500, num_per_fence=2000, min_m2m=1, max_m2m=400, pmb_rtp=1.0,
@@ -287,7 +260,7 @@ class OptimizationSetup:
             "fillup": {"conditions": buy_mode(game_config, "fillup"), "scaling": [], "parameters": buy},
             "premium": {"conditions": buy_mode(game_config, "premium"), "scaling": [], "parameters": buy},
             "nitro": {"conditions": nitro_mode(game_config), "scaling": [], "parameters": buy},
-            "lucky": {"conditions": lucky_mode(game_config), "scaling": [], "parameters": buy},
+            "midnight": {"conditions": buy_mode(game_config, "midnight"), "scaling": [], "parameters": buy},
         }
         self.game_config.opt_params = opt
         verify_optimization_input(self.game_config, self.game_config.opt_params)

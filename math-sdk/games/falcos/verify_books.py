@@ -7,8 +7,12 @@
 It tracks the board (reveal + tumbleBoard), the cell-multiplier grid (cellMults / featureFire),
 MAX cells, the FILL UP board and gauge, and checks that every number the events carry follows
 from the ones before it: cluster pays and multipliers, doublings, pump multipliers, collector
-totals, board totals, setWin/setTotalWin/finalWin and the book's payoutMultiplier. Any failure is
-a math bug (or a contract change EVENTS.md has to follow).
+totals, board totals, setWin/setTotalWin/finalWin and the book's payoutMultiplier. It also checks
+the cascade order (EVENTS.md section 2): the board refills after the cluster pays and after every
+feature group (all pumps together, then each ticket, then each zippo), each tumbleBoard removes
+exactly the cells that paid / burned / fired since the last one, the features of a step are the
+ones standing when its feature part starts, and a spin ends on a board with no cluster and no
+feature left. Any failure is a math bug (or a contract change EVENTS.md has to follow).
 """
 
 import argparse
@@ -27,6 +31,8 @@ from game_config import GameConfig, PAYING  # noqa: E402
 
 PUBLISH = os.path.join(HERE, "library", "publish_files")
 CAP = 2048
+FEATURES = ("ZP", "ST", "GT", "GP")
+RANK = {"pump": 0, "scratch": 1, "gold": 1, "zippo": 2}   # feature groups in firing order
 _CFG = GameConfig()
 WINCAP = int(round(_CFG.wincap * 100))   # hundredths (max win 50,000x = 5,000,000)
 NR, NC = _CFG.num_reels, _CFG.num_rows[0]   # 7 reels x 5 rows
@@ -68,8 +74,14 @@ class Replay:
         self.fs_seen = 0
         self.fill = None
         self.fuel = None
-        self.wheel = None
         self.bonuses = []
+        self.uid = None             # a token per visible symbol: survivors keep theirs in a tumble
+        self.next_uid = 0
+        self.pending = set()        # cells that paid / burned / fired and wait for their tumbleBoard
+        self.pending_kind = None
+        self.step = None            # current cascade step's feature part: step, snapshot, fired, rank
+        self.capped = False
+        self.spin_open = False
         final = None
         for e in ev:
             t = e["type"]
@@ -83,24 +95,45 @@ class Replay:
         check(final == min(self.paid, WINCAP), f"finalWin {final} != paid {self.paid}")
         check(self.last_total == final, f"last setTotalWin {self.last_total} != finalWin {final}")
         check(final % 10 == 0, f"payout {final} not a 0.1x step")
-        if self.wheel is not None:
-            check(ev[0]["type"] == "luckyWheel", "luckyWheel must be the first event")
-            if self.wheel == "none":
-                check([e["type"] for e in ev] == ["luckyWheel", "finalWin"] and final == 0,
-                      "a 'none' wheel is followed by finalWin 0 only")
-            else:
-                check(self.bonuses == [self.wheel], f"wheel {self.wheel} but bonuses {self.bonuses}")
-                check(ev[1]["type"] in ("freeSpinTrigger", "enterBonus"), "the bonus follows the wheel")
+        check(not self.pending or self.capped, "cells left waiting for a tumbleBoard at the end of the round")
         if final >= WINCAP:
             tags.add("wincap")
         if final == 0:
             tags.add("loss")
 
-    def on_luckyWheel(self, e, tags):
-        check(e["result"] in ("premium", "midnight", "none"), "luckyWheel result")
-        check(self.wheel is None, "one wheel per book")
-        self.wheel = e["result"]
-        tags.add(f"wheel_{e['result']}")
+    def fresh(self):
+        self.next_uid += 1
+        return self.next_uid
+
+    def close_step(self):
+        """The feature part of a step is over: every feature standing when it started fired."""
+        if self.step is not None:
+            st, snap, fired, _ = self.step
+            check(fired == snap, f"step {st}: features {sorted(snap - fired)} on the board never fired")
+            self.step = None
+
+    def end_of_spin(self):
+        """A spin's cascade ends only on a board with no cluster and no feature (or at the cap)."""
+        self.close_step()
+        check(not self.pending, "spin ended with cells waiting for a tumbleBoard")
+        if self.capped:
+            return
+        check(not any(n in FEATURES for col in self.board for n in col), "spin ended with a feature on the board")
+        seen = set()
+        for r in range(NR):
+            for c in range(NC):
+                if (r, c) in seen or self.board[r][c] not in PAYING:
+                    continue
+                stack, size = [(r, c)], 0
+                seen.add((r, c))
+                while stack:
+                    x, y = stack.pop()
+                    size += 1
+                    for nx, ny in ((x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)):
+                        if 0 <= nx < NR and 0 <= ny < NC and (nx, ny) not in seen and self.board[nx][ny] == self.board[r][c]:
+                            seen.add((nx, ny))
+                            stack.append((nx, ny))
+                check(size < 5, "spin ended on a board that still holds a cluster")
 
     def on_unknown(self, e, tags):
         raise Fail(f"unknown event type {e['type']}")
@@ -109,8 +142,12 @@ class Replay:
     def on_reveal(self, e, tags):
         b = e["board"]
         check(len(b) == NR and all(len(col) == NC + 2 for col in b), f"reveal must be {NR} reels x {NC + 2} (padded) rows")
+        check(not self.pending and not self.spin_open, "reveal before the last spin finished")
         self.pad = [col[0]["name"] for col in b]
         self.board = [[s["name"] for s in col[1:NC + 1]] for col in b]
+        self.uid = [[self.fresh() for _ in range(NC)] for _ in range(NR)]
+        self.step = None
+        self.spin_open = True
         names = [n for col in self.board for n in col]
         if names.count("DS") == 2:
             tags.add("ds_tease")
@@ -126,6 +163,8 @@ class Replay:
                     check(b[r][c + 1].get("scatter") is True, "scatter missing scatter flag")
 
     def on_winInfo(self, e, tags):
+        self.close_step()
+        check(not self.pending, "winInfo while earlier cells still wait for their tumbleBoard")
         total = 0
         self.last_wins = []
         for w in e["wins"]:
@@ -154,6 +193,8 @@ class Replay:
             self.last_wins.extend(pos)
         check(total == e["totalWin"], "winInfo totalWin != sum of wins")
         self.paid += total
+        self.pending = set(self.last_wins)
+        self.pending_kind = "win"
         tags.add("cluster_win")
 
     def on_updateTumbleWin(self, e, tags):
@@ -164,9 +205,14 @@ class Replay:
 
     def on_setTotalWin(self, e, tags):
         check(e["amount"] == min(self.paid, WINCAP), f"setTotalWin {e['amount']} != paid {self.paid}")
+        if self.spin_open:
+            self.end_of_spin()
+            self.spin_open = False
 
     def on_wincap(self, e, tags):
         check(e["amount"] == WINCAP, "wincap amount")
+        self.capped = True
+        self.pending = set()
 
     def on_finalWin(self, e, tags):
         pass
@@ -197,6 +243,23 @@ class Replay:
         kind = e["kind"]
         sym = {"zippo": "ZP", "scratch": "ST", "gold": "GT", "pump": "GP"}[kind]
         check(self.board[r][c] == sym, f"featureFire {kind} at a cell holding {self.board[r][c]}")
+        # refill order: a feature group fires only once everything before it has tumbled away;
+        # the pumps of a step fire together (one tumbleBoard after the last of them)
+        if self.step is not None and self.step[0] != e["step"]:
+            self.close_step()
+        if self.step is None:
+            check(not self.pending, f"{kind} fired before the cells that paid/burned were refilled")
+            snap = {self.uid[x][y] for x in range(NR) for y in range(NC) if self.board[x][y] in FEATURES}
+            self.step = [e["step"], snap, set(), -1]
+        else:
+            together = kind == "pump" and self.pending_kind == "pump"
+            check(not self.pending or together, f"{kind} fired before the previous group's tumbleBoard")
+        st = self.step
+        check(RANK[kind] >= st[3], f"step {st[0]}: {kind} fired after a later group")
+        check(self.uid[r][c] in st[1], f"step {st[0]}: {kind} at ({r},{c}) dropped in during the step's feature part")
+        check(self.uid[r][c] not in st[2], "a feature fired twice")
+        st[2].add(self.uid[r][c])
+        st[3] = RANK[kind]
         ch = [(x["reel"], x["row"] - 1, x["from"], x["to"]) for x in e["cells"]]
         burned = [(x["reel"], x["row"] - 1, x["symbol"]) for x in e["burned"]]
         for a, b, s in burned:
@@ -224,6 +287,8 @@ class Replay:
             g[a][b] = t
         check(g == e["gridMults"], f"{kind}: gridMults mismatch")
         self.grid = g
+        self.pending |= {(r, c)} | {(a, b) for a, b, _ in burned}
+        self.pending_kind = "pump" if kind == "pump" else kind
 
     def on_maxCells(self, e, tags):
         added = {(p["reel"], p["row"] - 1) for p in e["added"]}
@@ -235,6 +300,15 @@ class Replay:
         expl = defaultdict(list)
         for p in e["explodingSymbols"]:
             expl[p["reel"]].append(p["row"] - 1)
+        cells = {(p["reel"], p["row"] - 1) for p in e["explodingSymbols"]}
+        check(len(cells) == len(e["explodingSymbols"]), "explodingSymbols lists a cell twice")
+        check(cells and cells == self.pending,
+              f"tumbleBoard removes {sorted(cells)} but {sorted(self.pending)} paid/burned/fired since the last one")
+        if self.pending_kind == "win" and self.step is None:
+            tags.add("refill_after_win")
+        elif self.pending_kind != "win":
+            tags.add(f"refill_after_{self.pending_kind}")
+        self.pending = set()
         for r in range(NR):
             k = len(expl[r])
             new = [s["name"] for s in e["newSymbols"][r]]
@@ -243,7 +317,9 @@ class Replay:
             check(len(new) == k, f"reel {r}: {k} exploding but {len(new)} new symbols")
             if k:
                 survivors = [n for c, n in enumerate(self.board[r]) if c not in expl[r]]
+                keep = [u for c, u in enumerate(self.uid[r]) if c not in expl[r]]
                 self.board[r] = new[1:] + [self.pad[r]] + survivors
+                self.uid[r] = [self.fresh() for _ in range(k)] + keep
                 self.pad[r] = new[0]
                 check(len(self.board[r]) == NC, "column length after tumble")
 

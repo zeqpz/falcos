@@ -1,5 +1,13 @@
 # Falcos - front-end event contract (math phase 2: 7x5 board, max win 50,000x)
 
+**Changes 2026-11-10 (owner):** (1) the board refills after the cluster pay and after EVERY feature
+group - one `tumbleBoard` after the cluster pay, one after all the step's Gas Pumps, one after each
+Scratch / Gold Ticket, one after each Zippo (it used to be one `tumbleBoard` per board, after every
+feature had fired); (2) the LUCKY PUMP mode and its `luckyWheel` event are gone; MIDNIGHT RUN is
+bought directly in the new `midnight` mode (500x). No event changed its fields: `featureFire.step`
+now numbers cascade *steps* (one step = a cluster pay plus the feature groups after it, each with its
+own refill), and `tumbleBoard` simply arrives more often.
+
 Game id `falcos`. This is everything a book (and the RGS `round.state`) carries, in the order the
 client must play it. The client never re-derives math: every number it shows (cluster wins, cell
 multipliers, pump multipliers, drop values, collector totals, board totals, the gauge, wins) is in
@@ -26,11 +34,17 @@ replay `event` id; regenerate with `python verify_books.py --write-index`).
 ```
 base / chance (FUEL CHANCE)
   reveal
-  repeat per board of the cascade ("step" 0, 1, 2 ...):
-      winInfo -> updateTumbleWin -> cellMults(reason "win")        only if clusters paid
-      [wincap]                                                      cap reached: cascade stops here
-      featureFire (pumps, then tickets, then zippos) [+ maxCells after a FULL TANK]
-      tumbleBoard                                                   only if anything paid/burned/fired
+  repeat per cascade step ("step" 0, 1, 2 ...):
+      winInfo -> updateTumbleWin -> cellMults(reason "win") -> tumbleBoard
+                                         only if clusters paid; the paid cells leave, the refill drops in
+      [wincap]                           cap reached (right after updateTumbleWin): the cascade stops
+                                         here - no cellMults, no tumbleBoard, nothing else in this spin
+      featureFire(pump) x every pump [+ maxCells after a FULL TANK] -> tumbleBoard
+                                         all the step's pumps fire together, then ONE refill
+      per Scratch / Gold Ticket:  featureFire(scratch | gold) -> tumbleBoard     a refill after each
+      per Zippo:                  featureFire(zippo) -> tumbleBoard              a refill after each
+      (the step ends; the next one checks clusters on the board it ended on; a spin ends after a
+       step that neither paid nor fired a feature)
   setWin (only if the spin won; omitted when the cap was hit) -> setTotalWin
   -- bonus, if the final board shows 3+ DS / 4+ BS / 3 BS --
   [freeSpinTrigger] (PREMIUM / MIDNIGHT RUN only) -> enterBonus -> bonus events (below)
@@ -50,15 +64,37 @@ FILL UP (after enterBonus)
 
 fillup buy (100x)   enterBonus(bought) -> FILL UP -> finalWin                 (no base spin)
 premium buy (300x)  freeSpinTrigger -> enterBonus(bought) -> PREMIUM -> finalWin (no base spin)
+midnight buy (500x) freeSpinTrigger(symbol "DS", positions []) -> enterBonus(reason "midnight", bought true)
+                    -> MIDNIGHT RUN -> finalWin                                (no base spin)
 nitro (500x)        cellMults(reason "nitro") -> reveal -> cascade -> setWin/setTotalWin -> finalWin
-lucky (500x)        luckyWheel -> [freeSpinTrigger -> enterBonus(bought) -> PREMIUM | MIDNIGHT RUN] -> finalWin
-                    (result "none": luckyWheel -> finalWin, a zero book)
 ```
 
-Within one board the order is fixed: cluster pays (and their cells double) -> all Gas Pumps
-(consecutive `featureFire` kind `pump` events with the same `step` fire **together** - play them at
-once; pumps sit in different columns, so the last one's `gridMults` is the grid after all of them) -> Scratch / Gold Tickets one at a time -> Zippos one at a time -> one `tumbleBoard`.
+Within one step the order is fixed and the board refills after each part, so every feature acts on
+a full board: cluster pays (and their cells double) -> `tumbleBoard` -> all Gas Pumps (consecutive
+`featureFire` kind `pump` events with the same `step` fire **together** - play them at once; pumps
+sit in different columns, so the last one's `gridMults` is the grid after all of them) ->
+`tumbleBoard` -> each Scratch / Gold Ticket, each followed by its `tumbleBoard` -> each Zippo, each
+followed by its `tumbleBoard`. Every `tumbleBoard` removes exactly what paid, or what the feature
+group just before it burned or fired.
 Ties within a group go in reading order: reel 0-6, then row top to bottom.
+
+Which features fire in a step: the ones standing on the board when its feature part starts (after
+the cluster refill, or straight after the reveal / previous step when nothing paid). A feature that
+drops in during one of the step's feature refills waits: it fires in the next step (after that
+step's cluster pay, if any). So a spin always ends on a board with no cluster and no feature (unless
+the max win stopped it).
+
+A real base book (`base` book 147, pays 3.4x) - event types in order:
+```
+0 reveal
+1 winInfo (L5 x5) -> 2 updateTumbleWin -> 3 cellMults "win" -> 4 tumbleBoard (the 5 paid cells)
+5 featureFire pump (step 0, REGULAR, burns 4)          -> 6 tumbleBoard (its column: pump + 4 burned)
+7 featureFire scratch (step 0, target L4, burns 7)     -> 8 tumbleBoard (ticket + 7 burned)
+9 featureFire zippo (step 0, burns 8)                  -> 10 tumbleBoard (zippo + 8 burned)
+11 winInfo (L2 x6) -> 12 updateTumbleWin -> 13 cellMults "win" -> 14 tumbleBoard        step 1
+15 featureFire zippo (step 1: it dropped in during step 0's refills) -> 16 tumbleBoard
+17 setWin -> 18 setTotalWin -> 19 finalWin
+```
 
 Cell multipliers: base game and NITRO reset at the start of every round (all x1, or the NITRO
 preload). PREMIUM / MIDNIGHT RUN keep the grid (and MAX cells) from spin to spin for the whole bonus.
@@ -93,8 +129,10 @@ the max win, and any cluster may be trimmed so the round never exceeds the max w
 {"index":8,"type":"finalWin","amount":20}
 ```
 
-**tumbleBoard** - everything that paid, burned or fired leaves at once. `explodingSymbols` lists
-exactly those cells. `newSymbols[reel]` = `[new top padding, new visible symbols top->bottom]`: with
+**tumbleBoard** - what just paid (the step's clusters), or what the feature group just before it
+burned or fired, leaves at once and the refill drops in. `explodingSymbols` lists exactly those
+cells. A step holds one `tumbleBoard` after its cluster pay, one after its pumps and one after each
+ticket and each zippo. `newSymbols[reel]` = `[new top padding, new visible symbols top->bottom]`: with
 k cells leaving a reel, k entries arrive; the old top padding symbol drops into view directly under
 the new ones. New column (top->bottom) = `newSymbols[reel][1:] + [old padding] + survivors`.
 ```json
@@ -112,8 +150,8 @@ scatter cells that did it (`[]` when bought).
 ```
 
 **enterBonus** `{reason: "fillup"|"premium"|"midnight", bought, positions}` - `positions` = trigger
-scatter cells (`[]` when bought). MIDNIGHT RUN is bought only through the LUCKY PUMP wheel
-(otherwise 3 DS in base / chance).
+scatter cells (`[]` when bought). MIDNIGHT RUN comes from 3 DS in base / chance, or is bought in
+the `midnight` mode (`bought: true`, preceded by `freeSpinTrigger` symbol `DS`, positions `[]`).
 ```json
 {"index":0,"type":"enterBonus","reason":"fillup","bought":true,"positions":[]}
 ```
@@ -129,11 +167,13 @@ the whole `gridMults`). `maxCells` = every MAX cell live now.
 {"index":3,"type":"cellMults","reason":"win","changed":[{"reel":2,"row":4,"from":1,"to":2},{"reel":3,"row":2,"from":1,"to":2},{"reel":3,"row":3,"from":1,"to":2},{"reel":3,"row":4,"from":1,"to":2},{"reel":4,"row":3,"from":1,"to":2}],"gridMults":[[1,1,1,1,1],[1,1,1,1,1],[1,1,1,2,1],[1,2,2,2,1],[1,1,2,1,1],[1,1,1,1,1],[1,1,1,1,1]],"maxCells":[]}
 ```
 
-**featureFire** - one feature symbol fired (it always leaves in the next `tumbleBoard`).
-Fields: `step` (cascade board index, 0 = the reveal), `kind` `zippo|scratch|gold|pump`,
-`reel,row` (the feature's cell), `cells` = every multiplier change `{reel,row,from,to}` in the
-order applied, `burned` = paying symbols it burned `{reel,row,symbol}`,
-`gridMults` = the grid after it.
+**featureFire** - one feature symbol fired (it always leaves in the next `tumbleBoard`, which
+follows it directly - or, for pumps, follows the last pump of the step).
+Fields: `step` (cascade step, 0 = the reveal's; several boards share a step since the board refills
+after every feature group), `kind` `zippo|scratch|gold|pump`, `reel,row` (the feature's cell on the
+board as it is now - the refills before it may have moved it down its reel), `cells` = every
+multiplier change `{reel,row,from,to}` in the order applied, `burned` = paying symbols it burned
+`{reel,row,symbol}`, `gridMults` = the grid after it.
 * `zippo`: `cells` = its 3x3 (clipped at the edges), each doubled. Burns paying symbols there;
   scatters / features stay.
 * `scratch`: `target` = the paying symbol scratched off (`null` if none were left standing); every
@@ -201,26 +241,22 @@ what FILL UP pays: `boardTotal` capped at the max win (minus anything the round 
 {"index":21,"type":"fillUpEnd","reason":"empty","spins":7,"drops":[],"collectors":[{"reel":3,"row":2,"name":"GT","value":11.2}],"boardTotal":11.2,"win":1120}
 ```
 
-## 5b. Custom events - LUCKY PUMP
-
-**luckyWheel** `{result}` - first event of every `lucky` book: `"premium"`, `"midnight"` or
-`"none"`. Spin the wheel to that slice, then play what follows: `premium` -> `freeSpinTrigger`
-(symbol `BS`, no positions) -> `enterBonus` (reason `premium`, bought `true`) -> PREMIUM as in a
-bought PREMIUM; `midnight` -> `freeSpinTrigger` (symbol `DS`, no positions) -> `enterBonus`
-(reason `midnight`, bought `true`) -> MIDNIGHT RUN (every cell starts x4); `none` -> `finalWin`
-`{amount: 0}` and nothing else.
-```json
-{"index":0,"type":"luckyWheel","result":"midnight"}
-```
-
 ## 6. Rules the books follow (decisions where FALCOS_DESIGN.md is not specific)
 
 * Cluster wins are evaluated through the multipliers the cells hold before the win; the cells of
   every paid cluster then double. Paying symbols burned by a feature simply clear; their cells keep
   the boosted multiplier for whatever tumbles in.
-* Every feature symbol fires on the board it is on (after that board's cluster pays) and leaves
-  in the same tumble. Features never burn scatters or other features.
-* Scratch Ticket target: uniform among the paying symbol types still standing.
+* Cascade step: cluster pays -> refill -> all Gas Pumps together -> refill -> each Scratch / Gold
+  Ticket -> refill after each -> each Zippo -> refill after each (owner, 2026-11-10: the board
+  drops new symbols after every feature that removes symbols, so no cell sits empty while the next
+  one fires). The features that fire in a step are fixed when its feature part starts (after the
+  cluster refill), in reading order; a tumble keeps that order (symbols only fall within their
+  reel). A feature that drops in during the step's feature refills waits for the next step. The
+  next step evaluates clusters on the board the step ended on; the spin ends after a step that
+  neither paid nor fired. Each feature fires once and leaves in the refill right after its group.
+  Features never burn scatters or other features.
+* Scratch Ticket target: uniform among the paying symbol types standing on the (refilled) board.
+  Gold Ticket: every paying symbol on the (refilled) board.
 * Gas Pump multiplier is applied to the cell (`to = from x mult`), cap x2048. FULL TANK: the column's
   cells become MAX cells (the column's paying symbols burn so fresh symbols drop onto them); a
   cluster **covering** a MAX cell pays the max win (`meta.maxWin`, win = room left to the cap).
@@ -229,9 +265,10 @@ bought PREMIUM; `midnight` -> `freeSpinTrigger` (symbol `DS`, no positions) -> `
   PREMIUM / MIDNIGHT RUN: 10 spins, no retriggers (their strips carry no scatters).
 * MIDNIGHT RUN plays a strip with 3x the Gas Pumps (and fewer doublers than PREMIUM's); grids start
   at x4.
-* LUCKY PUMP: the wheel result decides the whole book (`luckyWheel` first). How often each slice
-  comes is set by the lookup table (about 56% PREMIUM / 34% MIDNIGHT RUN / 10% nothing); the
-  client never needs the odds.
+* MIDNIGHT RUN buy (`midnight`, 500x): the same bonus as the natural one (FRM strip, grid starts
+  x4, 10 spins, no retriggers); the book starts as a bought PREMIUM does (`freeSpinTrigger` symbol
+  `DS` with no positions, then `enterBonus` reason `midnight`, bought `true`). Its lookup table
+  weights the books so the mode returns 96.50% (482.5x on average).
 * Board 7 reels x 5 rows. A Gas Pump's column is 5 cells; a Zippo's 3x3 is clipped at the edges;
   FILL UP's board is 35 cells; NITRO preloads all 35 cells.
 * NITRO SPIN: every cell preloaded x16..x2048 (powers of two, heavy at x16); a scatter-free strip

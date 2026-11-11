@@ -11,7 +11,7 @@ class GameStateOverride(GameExecutables):
         if not hasattr(self, "stats"):
             self.stats = {}
         self.bonus_kind = None
-        self.forced_grades = {}          # (reel,row) -> grade key for a planted pump
+        self.forced_grades = {}          # id(pump symbol) -> grade key for a planted pump
         self.max_cells = set()           # FULL TANK MAX cells live on this spin / bonus
         self.fill_board = {}
         self.tumble_explode_positions = None

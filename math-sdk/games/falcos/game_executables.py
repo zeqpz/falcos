@@ -1,5 +1,6 @@
 """Falcos executables: board drawing/forcing, the tumble pipeline with cell multipliers and the
-four features, bonus triggers, PREMIUM / MIDNIGHT RUN free spins and the FILL UP collection game."""
+four features (the board refills after the cluster pays and after every feature group), bonus
+triggers, PREMIUM / MIDNIGHT RUN free spins and the FILL UP collection game."""
 
 import random
 
@@ -135,33 +136,40 @@ class GameExecutables(GameCalculations):
         c = random.choice(rows)
         self.board[r][c] = self.create_symbol("GP")
         self.get_special_symbols_on_board()
-        self.forced_grades[(r, c)] = "FT"
+        # keyed by the symbol object, not the cell: the cluster refill can move it down its reel
+        # before it fires (the object stays on the board, so its id cannot be reused meanwhile)
+        self.forced_grades[id(self.board[r][c])] = "FT"
 
     # ================================================================== tumble pipeline
     def resolve_tumbles(self) -> None:
-        """One spin's cascade. Each board resolves in the design's order:
-            1. cluster wins (through the current cell multipliers), then the cells of every
-               paid cluster double;
-            2. all Gas Pumps together;
-            3. Scratch Tickets and Gold Scratch Tickets one at a time (reading order: reel by
-               reel, top to bottom);
-            4. Zippos (same order).
-        Everything that paid or burned (and every feature symbol, which fires once and leaves)
-        then clears in ONE tumble and the refill drops in. Repeat until a board neither pays
-        nor holds a feature, or the max win is reached."""
+        """One spin's cascade, step by step. Each step resolves in the design's order, and the
+        board refills (one tumbleBoard) after every part that removed symbols, so a later
+        feature always acts on a full board:
+            1. cluster wins (through the current cell multipliers), the cells of every paid
+               cluster double -> tumbleBoard (the paid symbols leave, the refill drops in);
+            2. all Gas Pumps together -> tumbleBoard;
+            3. each Scratch Ticket / Gold Scratch Ticket in turn -> tumbleBoard after each;
+            4. each Zippo in turn -> tumbleBoard after each.
+        The features that fire in a step are the ones standing on the board when its feature
+        part starts (after the cluster refill), in reading order (reel by reel, top to bottom;
+        a tumble keeps that order, since symbols only fall within their reel). A feature that
+        drops in during the step's feature refills waits for the next step. The next step
+        evaluates clusters on the board the step ended on. Repeat until a step neither pays nor
+        fires a feature, or the max win is reached (the cascade stops on the paying board)."""
         step = 0
         while True:
             self.evaluate_falcos_wins()
             paid = self.pay_board()
             if self.wincap_triggered:
                 break
+            if paid:
+                self.tumble_flagged()
             fired = self.fire_features(step)
             if not paid and not fired:
                 break
             if step >= self.config.max_tumbles_per_spin:
                 self.stat("tumble_cap_hit")
                 break
-            self.tumble_flagged()
             step += 1
         self.stat("tumbles", step)
 
@@ -187,24 +195,38 @@ class GameExecutables(GameCalculations):
             cell_mults_event(self, "win", changed)
         return True
 
+    def locate(self, sym) -> tuple:
+        """Current cell of a symbol object (tumbles move survivors down their reel)."""
+        for r, column in enumerate(self.board):
+            for c, s in enumerate(column):
+                if s is sym:
+                    return r, c
+        raise RuntimeError(f"{sym.name} left the board before it fired")
+
     def fire_features(self, step: int) -> bool:
-        """Fire every feature on the board in the design's order. Returns True if any fired."""
-        feats = [(r, c, s.name) for r, column in enumerate(self.board)
-                 for c, s in enumerate(column) if s.name in FEATURE_KIND and not s.explode]
+        """Fire the features standing on the board in the design's order, refilling the board
+        after each group: all pumps together -> tumble, then each ticket -> tumble, then each
+        zippo -> tumble. Returns True if any fired."""
+        feats = [s for column in self.board for s in column if s.name in FEATURE_KIND and not s.explode]
         if not feats:
             return False
-        pumps = [(r, c) for r, c, n in feats if n == "GP"]
-        tickets = [(r, c, n) for r, c, n in feats if n in ("ST", "GT")]
-        zippos = [(r, c) for r, c, n in feats if n == "ZP"]
-        for r, c in pumps:
-            self.fire_pump(r, c, step)
-        for r, c, n in tickets:
-            if n == "ST":
+        pumps = [s for s in feats if s.name == "GP"]
+        tickets = [s for s in feats if s.name in ("ST", "GT")]
+        zippos = [s for s in feats if s.name == "ZP"]
+        if pumps:
+            for sym in pumps:
+                self.fire_pump(*self.locate(sym), step)
+            self.tumble_flagged()
+        for sym in tickets:
+            r, c = self.locate(sym)
+            if sym.name == "ST":
                 self.fire_scratch(r, c, step)
             else:
                 self.fire_gold(r, c, step)
-        for r, c in zippos:
-            self.fire_zippo(r, c, step)
+            self.tumble_flagged()
+        for sym in zippos:
+            self.fire_zippo(*self.locate(sym), step)
+            self.tumble_flagged()
         return True
 
     def _burn(self, r: int, c: int, burned: list) -> None:
@@ -219,7 +241,7 @@ class GameExecutables(GameCalculations):
         pump's multiplier (cap x2048) and burn the column's paying symbols. FULL TANK turns the
         column into MAX cells (and burns its paying symbols too, so fresh symbols drop onto them)."""
         c = col_row
-        key = self.forced_grades.pop((r, c), None)
+        key = self.forced_grades.pop(id(self.board[r][c]), None)
         if key is None:
             key = get_random_outcome(self.get_current_distribution_conditions()["gp_grades"][self.gametype])
         grade, mult = GP_GRADES[key]
@@ -293,8 +315,8 @@ class GameExecutables(GameCalculations):
                 for c, s in enumerate(column) if s.explode]
 
     def tumble_flagged(self) -> None:
-        """Every flagged symbol (paid, burned, fired) leaves in ONE tumble; tumbleBoard lists
-        exactly those cells (see the SDK's tumble_board_event)."""
+        """Every flagged symbol (paid, burned, fired) leaves in one tumble and the refill drops
+        in; tumbleBoard lists exactly those cells (see the SDK's tumble_board_event)."""
         self.tumble_explode_positions = self.flagged_positions()
         self.tumble_game_board()
 

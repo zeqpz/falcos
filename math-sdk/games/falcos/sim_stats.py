@@ -9,8 +9,8 @@ the optimiser weights anything:
     python sim_stats.py --base 50000 --bonus 5000 --procs 8 --json out.json
 
 Per mode: RTP (x cost), hit rate, average win, max seen, feature frequency per round, bonus
-trigger rates (base), average bonus win. "midnight" is not a bet mode: it plays MIDNIGHT RUN
-directly so its average can be measured (it is reachable only by 3 Midnight Tokens).
+trigger rates (base), average bonus win. "midnight" plays MIDNIGHT RUN directly, as the 500x
+MIDNIGHT RUN buy does (natural, unweighted: the buy's optimiser weights are not applied here).
 """
 
 import argparse
@@ -45,7 +45,7 @@ def natural_config():
         mode("base", 1.0, {"reel_weights": {b: {"BR0": 1}}, "bonus": "any"}),
         mode("fillup", 100.0, {"reel_weights": {b: {"BR0": 1}}, "buy": "fillup", "bonus": "fillup"}),
         mode("premium", 300.0, {"reel_weights": {b: {"BR0": 1}}, "buy": "premium", "bonus": "premium"}),
-        mode("midnight", 300.0, {"reel_weights": {b: {"BR0": 1}}, "buy": "midnight", "bonus": "midnight"}),
+        mode("midnight", 500.0, {"reel_weights": {b: {"BR0": 1}}, "buy": "midnight", "bonus": "midnight"}),
         mode("nitro", 500.0, {"reel_weights": {b: {"NR0": 1}}, "bonus": None,
                               "nitro_cells": cfg.nitro_tables["standard"]}),
     ]
@@ -124,7 +124,7 @@ def main():
     ap.add_argument("--modes", nargs="+", default=["base", "fillup", "premium", "midnight", "nitro"])
     ap.add_argument("--json", default=None)
     args = ap.parse_args()
-    costs = {"base": 1.0, "fillup": 100.0, "premium": 300.0, "midnight": 300.0, "nitro": 500.0}
+    costs = {"base": 1.0, "fillup": 100.0, "premium": 300.0, "midnight": 500.0, "nitro": 500.0}
     results = []
     with Pool(args.procs) as pool:
         for mode in args.modes:

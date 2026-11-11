@@ -9,7 +9,8 @@ Symbols
                  L1 Energy Drink  L2 Slushie  L3 Hot Dog  L4 Chips  L5 Donut
     Features     ZP Zippo   ST Scratch Ticket   GT Gold Scratch Ticket   GP Gas Pump
     Scatters     BS FALCOS Token (3 -> FILL UP, 4+ -> PREMIUM)
-                 DS Midnight Token (3 -> MIDNIGHT RUN; base and FUEL CHANCE only)
+                 DS Midnight Token (3 -> MIDNIGHT RUN in base and FUEL CHANCE; MIDNIGHT RUN can also
+                 be bought outright - the `midnight` bet mode)
     FILL UP only FD Fuel Drop (carries `value`), X blank; ST/GT are collectors, GP a booster,
                  ZP a burner there.
 
@@ -135,9 +136,9 @@ class GameConfig(Config):
         # the 3-star volatility band reads etl10k (return from 10,000x+ wins) <= 0.8 and etl40b
         # (return from wins >= 40x the mode cost) <= 0.9, both in ABSOLUTE bets, so a buy's tail
         # must be weighted on purpose, not left to the optimiser's curves.
-        self.bigwin_threshold = {"fillup": 4000.0, "premium": 10000.0, "nitro": 10000.0, "lucky": 10000.0}
+        self.bigwin_threshold = {"fillup": 4000.0, "premium": 10000.0, "nitro": 10000.0, "midnight": 10000.0}
         # 500x modes: prob5k (P(win >= 5,000x) x 0.5 <= 1%) needs their 5,000-10,000x books held too
-        self.highwin_threshold = {"nitro": 5000.0, "lucky": 5000.0}
+        self.highwin_threshold = {"nitro": 5000.0, "midnight": 5000.0}
 
         # ---------------------------------------------------------------- NITRO SPIN
         # every cell preloaded x16 .. x2048 (powers of two), heavy at the bottom
@@ -312,32 +313,25 @@ class GameConfig(Config):
                     ),
                 ],
             ),
-            # LUCKY PUMP (500x): a wheel resolves to PREMIUM (as bought), MIDNIGHT RUN (as if
-            # triggered, but bought: no scatters) or nothing. The book opens with luckyWheel
-            # {result}; how often each slice comes is the optimiser's (game_optimization.LUCKY).
+            # MIDNIGHT RUN buy (500x): the natural MIDNIGHT RUN (10 sticky free spins, every cell
+            # starting at x4, the pump-rich FRM strip), bought outright: no base spin, no scatters.
+            # The book opens like the premium buy's: freeSpinTrigger (DS, no positions) ->
+            # enterBonus (midnight, bought) -> cellMults bonusStart x4 -> the 10 spins.
             BetMode(
-                name="lucky", cost=500.0, rtp=self.rtp, max_win=self.wincap,
+                name="midnight", cost=500.0, rtp=self.rtp, max_win=self.wincap,
                 auto_close_disabled=False, is_feature=False, is_buybonus=True,
                 distributions=[
                     Distribution(
-                        # MIDNIGHT RUN with every pump rolling FULL TANK: the max win
-                        criteria="wincap", quota=0.002, win_criteria=self.wincap,
-                        conditions={"reel_weights": {b: {"BR0": 1}}, "buy": "midnight", "lucky": True,
+                        # every pump in the bonus rolls FULL TANK: its column stays MAX for the rest
+                        # of the bonus and the next cluster on it pays the max win
+                        criteria="wincap", quota=0.004, win_criteria=self.wincap,
+                        conditions={"reel_weights": {b: {"BR0": 1}}, "buy": "midnight",
                                     "gp_grades": {f: gp_cap}, "bonus": "midnight"},
                     ),
                     Distribution(
-                        criteria="midnight", quota=0.35,
-                        conditions={"reel_weights": {b: {"BR0": 1}}, "buy": "midnight", "lucky": True,
+                        criteria="midnight", quota=0.996,
+                        conditions={"reel_weights": {b: {"BR0": 1}}, "buy": "midnight",
                                     "gp_grades": {f: gp_free}, "bonus": "midnight"},
-                    ),
-                    Distribution(
-                        criteria="premium", quota=0.5,
-                        conditions={"reel_weights": {b: {"BR0": 1}}, "buy": "premium", "lucky": True,
-                                    "gp_grades": {f: gp_free}, "bonus": "premium"},
-                    ),
-                    Distribution(
-                        criteria="0", quota=0.148, win_criteria=0.0,
-                        conditions={"reel_weights": {b: {"BR0": 1}}, "lucky": True, "bonus": None},
                     ),
                 ],
             ),

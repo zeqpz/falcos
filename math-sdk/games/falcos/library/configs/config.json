@@ -2,7 +2,7 @@
     "workingName": "Falcos",
     "frontendConfig": {
         "file": "fe_config.json",
-        "sha256": "03e02648556467584803a46a3a9df7d427c24899fb27707924ee94a0d8fd02f7"
+        "sha256": "19a0fd076c8dfe413af2edc282bb1bb6fdc1307c8d76ebdeddc475caff8a8500"
     },
     "gameID": "falcos",
     "rtp": 96.5,
@@ -11,7 +11,7 @@
     "providerNumber": 0,
     "standardForceFile": {
         "file": "force.json",
-        "sha256": "6a1eaa2b7f29f3a62023dc6e73351a926da8e42c1246c5091ffecf24cdad0886"
+        "sha256": "981c5eacdae0e0dd0e052d4a2932eae9b0f365a17f0a183b999d4e72683a133f"
     },
     "bookShelfConfig": [
         {
@@ -19,12 +19,12 @@
             "tables": [
                 {
                     "file": "lookUpTable_base_0.csv",
-                    "sha256": "b280d334eb8333c5fda12a573aefefeb92aac0f15759cd5fdfd46c4191864f57"
+                    "sha256": "454bea07c277406d8ada80fdcd0e73ee7b664f702f78d04c4f23f1f6741180f3"
                 }
             ],
             "cost": 1.0,
             "rtp": 0.965,
-            "std": 29.51,
+            "std": 26.81,
             "bookLength": 100000,
             "feature": true,
             "autoEndRoundDisabled": false,
@@ -32,11 +32,11 @@
             "maxWin": 50000.0,
             "booksFile": {
                 "file": "books_base.jsonl.zst",
-                "sha256": "8d4060387474d8fcff8cc9acd7d530318354642b416361eb200e3ba6199a0d9f"
+                "sha256": "a18b365b39d4b022cd5b5f7769def222e115263e91f6d8bf1551771cb816a1e7"
             },
             "forceFile": {
                 "file": "force_record_base.json",
-                "sha256": "01d52308aa14106763d5a9f670bb364e2764b5d4dc59bcd6826db86e52cc91b9"
+                "sha256": "149ca00014e9aa2c9d237be9a2a8fa9637247b875f324f28447edfbf657c948b"
             }
         },
         {
@@ -44,12 +44,12 @@
             "tables": [
                 {
                     "file": "lookUpTable_chance_0.csv",
-                    "sha256": "0fe50cb1c90f02856573250970dad5e83787fb68de3b9b3782052b8f6095c17a"
+                    "sha256": "d5deb23608d39c0620949bea629cdf7479e9c59317ab056b87f34b47584afa7c"
                 }
             ],
             "cost": 3.0,
             "rtp": 0.965,
-            "std": 14.22,
+            "std": 14.12,
             "bookLength": 50000,
             "feature": true,
             "autoEndRoundDisabled": false,
@@ -57,11 +57,11 @@
             "maxWin": 50000.0,
             "booksFile": {
                 "file": "books_chance.jsonl.zst",
-                "sha256": "a7d9a8926d8317756e4c37b610677e2aaf8236878e926388402073fc301437aa"
+                "sha256": "1d86648611eacf47d79f6481c2608304104d3ffba1fa34d40d9803bf376c8d9d"
             },
             "forceFile": {
                 "file": "force_record_chance.json",
-                "sha256": "e803fde7ac5f40b7b6029d5d768758256378786ba32fc56e1a89846fe1483b91"
+                "sha256": "b0500bff33c02d6a70e09d9d9adfa0ef09f2d94db7c3d2e57dcc7d8a99171220"
             }
         },
         {
@@ -94,12 +94,12 @@
             "tables": [
                 {
                     "file": "lookUpTable_premium_0.csv",
-                    "sha256": "521f81123aac56ee9ebbbc5e6ba680af61bb3d055caa5ee39930110aa6e1cced"
+                    "sha256": "e7ad14e7747819046e5cd9e86793ace8ba456151b3f2eb8334e99315d8bc13a9"
                 }
             ],
             "cost": 300.0,
             "rtp": 0.965,
-            "std": 1.29,
+            "std": 1.23,
             "bookLength": 20000,
             "feature": false,
             "autoEndRoundDisabled": false,
@@ -107,11 +107,11 @@
             "maxWin": 50000.0,
             "booksFile": {
                 "file": "books_premium.jsonl.zst",
-                "sha256": "ea3bf4402364e9f2c7c8a4f8f5160620043f43ab2f56b2a25cd2e3c8326b206e"
+                "sha256": "0a3e549b75bc2aceb71db439f4cc59040586f73ae43652b32475a819403b900e"
             },
             "forceFile": {
                 "file": "force_record_premium.json",
-                "sha256": "edc7b23dd0fe359fc8b9f61feac43fff223c7c6d5b0d6dfaddccddf998a04b29"
+                "sha256": "1f94a7349f76a533763a243c1dcddc8a0635bb6933ff90c123be5a462a5cea60"
             }
         },
         {
@@ -119,12 +119,12 @@
             "tables": [
                 {
                     "file": "lookUpTable_nitro_0.csv",
-                    "sha256": "7a22045a72ae6bb5e4fbc70d318c11f07a0c240d7550d2733a1bd4a359dd629b"
+                    "sha256": "5dddadbe529aee484ae9e5d923066ef10c9c862bbc158db703ee18634bb88b27"
                 }
             ],
             "cost": 500.0,
             "rtp": 0.965,
-            "std": 2.26,
+            "std": 2.36,
             "bookLength": 20000,
             "feature": false,
             "autoEndRoundDisabled": false,
@@ -132,36 +132,36 @@
             "maxWin": 50000.0,
             "booksFile": {
                 "file": "books_nitro.jsonl.zst",
-                "sha256": "3f6e36c12b498c9eb153ef390888c28082aef568efc56a38d86b5f6a1094f6ae"
+                "sha256": "c663d0b6c50a52db186943cd6cee30c59f0d742a74991e2cc14e7bf875404617"
             },
             "forceFile": {
                 "file": "force_record_nitro.json",
-                "sha256": "86fba54e48da3ab31e452a38fcf482148f6f99bdf8a0c3083dd6bbf8ac155a60"
+                "sha256": "f842172bd69c7f43b46f5ad9cc610e2c49bf89cb087b40c93dbc5afad160202a"
             }
         },
         {
-            "name": "lucky",
+            "name": "midnight",
             "tables": [
                 {
-                    "file": "lookUpTable_lucky_0.csv",
-                    "sha256": "b65efe307416ae85848e9e15713b2fef73bf42e58f6573e4887e0abe6b9e72cc"
+                    "file": "lookUpTable_midnight_0.csv",
+                    "sha256": "e49c45df3d5fa5cca7bd524c41872be740bba7275e77ea8af29e6491015ab20d"
                 }
             ],
             "cost": 500.0,
             "rtp": 0.965,
-            "std": 2.06,
+            "std": 2.03,
             "bookLength": 20000,
             "feature": false,
             "autoEndRoundDisabled": false,
             "buyBonus": true,
             "maxWin": 50000.0,
             "booksFile": {
-                "file": "books_lucky.jsonl.zst",
-                "sha256": "e77d8d50969165d0cac87ed44811ab669336b4b5d600f2e0bf7e14a179471e32"
+                "file": "books_midnight.jsonl.zst",
+                "sha256": "f539321db25876f342df152b76956ffd90ce05b5e5e1c84578a6b2a1ebd4f3d3"
             },
             "forceFile": {
-                "file": "force_record_lucky.json",
-                "sha256": "48c23fbbcf1ea01121fecbed00ea58131af6fab4ac1440f6f4cf7fd03213b21e"
+                "file": "force_record_midnight.json",
+                "sha256": "e8bd8732f7be55f588267ee3a2deb2ec544f92c5437ee9a049713af10a024cb4"
             }
         }
     ]

@@ -16,7 +16,7 @@ instead:
 
 The books are not touched, so the verification sidecars stay valid. A second run changes nothing.
 
-    python cap_books.py [--modes fillup premium nitro lucky] [--cap 2000] [--dry-run]
+    python cap_books.py [--modes fillup premium nitro midnight] [--cap 2000] [--dry-run]
 """
 
 import argparse
@@ -24,7 +24,7 @@ import os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 PUBLISH = os.path.join(HERE, "library", "publish_files")
-BUY_MODES = ("fillup", "premium", "nitro", "lucky")
+BUY_MODES = ("fillup", "premium", "nitro", "midnight")
 
 
 def read(mode):

@@ -25,12 +25,12 @@ from game_optimization import OptimizationSetup  # noqa: E402
 from src.state.run_sims import create_books  # noqa: E402
 from src.write_data.write_configs import generate_configs  # noqa: E402
 
-MODES = ("base", "chance", "fillup", "premium", "nitro", "lucky")
+MODES = ("base", "chance", "fillup", "premium", "nitro", "midnight")
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description="Simulate Falcos outcomes.")
     ap.add_argument("--base", type=int, default=2000, help="base mode sims")
-    ap.add_argument("--others", type=int, default=500, help="sims for chance / fillup / premium / nitro / lucky")
+    ap.add_argument("--others", type=int, default=500, help="sims for chance / fillup / premium / nitro / midnight")
     ap.add_argument("--modes", nargs="+", default=None, help=f"subset of {MODES}")
     ap.add_argument("--threads", type=int, default=4)
     ap.add_argument("--batch", type=int, default=50000,
@@ -74,7 +74,7 @@ if __name__ == "__main__":
         OptimizationExecution().run_all_modes(config, list(num_sim_args), args.rust_threads)
         # no single buy board drawn more often than 1 in 2,000 rounds (see cap_books.py)
         import subprocess
-        buys = [m for m in num_sim_args if m in ("fillup", "premium", "nitro", "lucky")]
+        buys = [m for m in num_sim_args if m in ("fillup", "premium", "nitro", "midnight")]
         if buys:
             subprocess.run([sys.executable, os.path.join(os.path.dirname(os.path.abspath(__file__)), "cap_books.py"),
                             "--modes", *buys], check=True)

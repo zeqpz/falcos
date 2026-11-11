@@ -1,7 +1,6 @@
 """Handles the state and output for a single Falcos simulation round."""
 
 from game_override import GameStateOverride
-from game_events import lucky_wheel_event
 
 
 class GameState(GameStateOverride):
@@ -12,7 +11,7 @@ class GameState(GameStateOverride):
     fillup        : the FILL UP collection game, bought (no base spin).
     premium       : PREMIUM's 10 sticky free spins, bought (no base spin).
     nitro         : one base spin with every cell preloaded x16..x2048; cannot trigger a bonus.
-    lucky         : LUCKY PUMP - luckyWheel, then PREMIUM or MIDNIGHT RUN as bought, or nothing.
+    midnight      : MIDNIGHT RUN's 10 sticky free spins from x4, bought (no base spin).
     """
 
     def run_spin(self, sim, simulation_seed=None):
@@ -22,12 +21,8 @@ class GameState(GameStateOverride):
             self.reset_book()
             conds = self.get_current_distribution_conditions()
             buy = conds.get("buy")
-            if conds.get("lucky"):
-                lucky_wheel_event(self, buy or "none")
             if buy:
                 self.run_bonus(buy, [], "DS" if buy == "midnight" else "BS", 0, bought=True)
-            elif conds.get("lucky"):
-                pass                      # the wheel landed on nothing: a zero book
             else:
                 if "nitro_cells" in conds:
                     self.preload_nitro()

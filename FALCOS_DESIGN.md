@@ -18,17 +18,19 @@ Two parts, reviewed together, joined only by the event contract (math-sdk/games/
 * **Local RGS - `rgs/mock_rgs.py`**: a stand-in for the Stake Engine RGS for testing only (never uploaded): it
   draws a weighted book per bet and serves `frontend/`.
 
-Every bet is stateless: one `/play` returns the whole, already-resolved round (a LUCKY PUMP wheel and the bonus it
-lands on, or a FUEL CHANCE spin and any bonus it triggers, are one book); `/end-round` only pays it. There are no
+Every bet is stateless: one `/play` returns the whole, already-resolved round (a bought bonus, or a FUEL CHANCE
+spin and any bonus it triggers, is one book); `/end-round` only pays it. There are no
 progressive jackpots, no links between rounds, no `/bet/event` progress markers and no mid-round save or resume:
 a round left open by a dropped connection is settled on the next load and its result shown in a notice.
-Six modes (base, FUEL CHANCE, FILL UP, PREMIUM, NITRO SPIN, LUCKY PUMP).
+Six modes (base, FUEL CHANCE, FILL UP, PREMIUM, NITRO SPIN, MIDNIGHT RUN).
 
 ## Board and ways to win
 
 7x5: 7 reels (columns) wide and 5 rows tall, 35 cells (owner decision 2026-11-09). A cluster is 5 or more matching symbols joined up, down, left or right (diagonals don't count).
 It pays by symbol and size (15+ pays the top rate), times its multiplier. After every win the board
-tumbles: winners clear, survivors fall, new symbols drop in, and a spin can chain many tumbles.
+tumbles: winners clear, survivors fall, new symbols drop in, and a spin can chain many tumbles. The
+board also refills after every feature that removes symbols (see Feature symbols), so no cell sits
+empty while the next feature fires.
 
 ### Cell multipliers
 
@@ -61,8 +63,12 @@ Each paying symbol has its own land, idle and win animation and its own soft win
 
 ## Feature symbols
 
-Each tumble resolves in order: cluster wins, then all Gas Pumps together, then Scratch Tickets and
-Gold Tickets one at a time, then Lighters.
+Each cascade step resolves in order, and the board drops new symbols after each part (owner,
+2026-11-10): cluster wins -> refill; all Gas Pumps together -> refill; each Scratch Ticket / Gold
+Ticket in turn -> refill after each; each Lighter in turn -> refill after each. So every feature
+acts on a full board. The features that fire in a step are the ones on the board when its feature
+part starts; one that drops in during those refills fires in the next step. Clusters are then
+checked again on the board the step ended on; the spin ends when a step neither pays nor fires.
 
 * **Lighter (ZP)** - lights up its 3x3 area: the 8 cells around it and its own cell double their
   multipliers; paying symbols there burn (clear, feeding their doubled multipliers into any cluster
@@ -87,7 +93,7 @@ Gold Tickets one at a time, then Lighters.
 
 * **FALCOS Token (BS)** - 3 in the base game -> FILL UP; 4 or more -> PREMIUM.
 * **Midnight Token (DS)** - darker, rare. 3 in the base game (or in a FUEL CHANCE spin) -> MIDNIGHT
-  RUN. Cannot be bought.
+  RUN. MIDNIGHT RUN can also be bought (500x).
 
 ## Bonuses
 
@@ -101,8 +107,9 @@ Gold Tickets one at a time, then Lighters.
   capped at the max win.
 * **PREMIUM** (4+ FALCOS Tokens, or buy 300x) - 10 free spins of the base game with sticky cell
   multipliers: a cell that reached x8 keeps x8 into the next spin and keeps growing.
-* **MIDNIGHT RUN** (3 Midnight Tokens only) - 10 free spins with sticky cell multipliers, every cell
-  starting at x4, and Gas Pumps landing far more often. The biggest bonus in the game.
+* **MIDNIGHT RUN** (3 Midnight Tokens, or buy 500x) - 10 free spins with sticky cell multipliers,
+  every cell starting at x4, and Gas Pumps landing far more often. The biggest bonus in the game.
+  The bought one is the same bonus (same strip, same x4 start, same 10 spins).
 
 ## Bet modes
 
@@ -113,7 +120,7 @@ Gold Tickets one at a time, then Lighters.
 | FILL UP | 100x | buys the collection bonus |
 | PREMIUM | 300x | buys the sticky-multiplier free spins |
 | NITRO SPIN | 500x | one spin with every cell preloaded with a multiplier from x16 to x2048 |
-| LUCKY PUMP | 500x | a wheel spins first: PREMIUM (as bought), MIDNIGHT RUN, or nothing (split in Math notes) |
+| MIDNIGHT RUN | 500x | buys MIDNIGHT RUN directly (owner 2026-11-10: replaces the LUCKY PUMP wheel) |
 
 Max win 50,000x the bet in every mode (owner decision 2026-11-09). Every mode's RTP is 96.50%.
 
@@ -127,32 +134,52 @@ harsh or loud.
 * Math phase 2 (7x5 retune, optimisation to 96.50%, RGS checks): see Math notes below.
 * Front-end playback of cell multipliers, burns, Gas Pump grades, Fuel Drops and the fuel gauge.
 
-## Math notes (phase 2, 2026-11-09)
+## Math notes (phase 2, 2026-11-09; re-run 2026-11-10)
 
 Model: `math-sdk/games/falcos/` (`game_config.py`, `reels/gen_reels.py`, `game_optimization.py`,
-`cap_books.py`). Event contract: `math-sdk/games/falcos/EVENTS.md`. Optimised with the Rust
-optimiser; `rgs_verification` and `verify_books.py` run on the published files.
+`cap_books.py`, `trim_chance_tail.py`). Event contract: `math-sdk/games/falcos/EVENTS.md`. Optimised
+with the Rust optimiser; `rgs_verification` and `verify_books.py` run on the published files.
 
-Books: base 100,000, FUEL CHANCE 50,000, FILL UP / PREMIUM / NITRO / LUCKY PUMP 20,000 each.
+2026-11-10 re-run (owner): the board now refills after the cluster pay and after every feature group
+(more symbols drop per spin, so features chain more and the natural bonuses grew: PREMIUM ~410x,
+MIDNIGHT RUN ~1,080x, NITRO ~825x a spin unweighted), and LUCKY PUMP was replaced by the MIDNIGHT
+RUN buy. base, FUEL CHANCE, PREMIUM, NITRO and MIDNIGHT RUN were re-simulated and re-optimised; FILL
+UP has no tumbles and its books and table are unchanged.
 
-| mode | RTP | wins | max win (50,000x) | P(win > 100x) | heaviest book | etl10k | 3-star band |
-|---|---|---|---|---|---|---|---|
-| base | 96.50% | 1 in 2.97 | 1 in 8.0M | 1 in 513 | 1 in 52,700 | 0.02 | pass |
-| FUEL CHANCE | 96.50% | 1 in 2.41 | 1 in 1.6M | 1 in 115 | 1 in 22,700 | 0.04 | **fails etl40b (1.93, limit 0.9)** |
-| FILL UP | 96.50% | always | 1 in 250,000 | 1 in 3 | 1 in 2,000 | 0.54 | pass |
-| PREMIUM | 96.50% | always | 1 in 200,000 | 1 in 2 | 1 in 2,000 | 0.60 | pass |
-| NITRO SPIN | 96.50% | 1 in 1.25 | 1 in 200,000 | 1 in 2 | 1 in 2,000 | 0.60 | pass |
-| LUCKY PUMP | 96.50% | 1 in 1.11 | 1 in 200,000 | 1 in 2 | 1 in 2,000 | 0.60 | pass |
+Books: base 100,000, FUEL CHANCE 50,000, FILL UP / PREMIUM / NITRO / MIDNIGHT RUN 20,000 each.
 
-Bonuses: base FILL UP 1 in 400 (avg 112x), PREMIUM 1 in 2,700 (avg 365x), MIDNIGHT RUN 1 in
-14,000 (avg 968x); FUEL CHANCE 2.2x as often (1 in 182 / 1,227 / 6,364; 5x failed the 3-star etl40b limit, trim_chance_tail.py keeps it at 0.84). Bought FILL UP averages 96.5x,
-PREMIUM 289.5x. LUCKY PUMP wheel: PREMIUM 55.9% (avg 316x), MIDNIGHT RUN 34.1% (avg 897x),
-nothing 10.0%.
+| mode | RTP | wins | max win (50,000x) | P(win >= 100x) | heaviest book | std (bets) | etl10k | etl40b | prob5k | 3-star band |
+|---|---|---|---|---|---|---|---|---|---|---|
+| base | 96.50% | 1 in 2.97 | 1 in 8.0M | 1 in 538 | 1 in 52,700 | 26.8 | 0.01 | 0.60 | 0.000 | pass |
+| FUEL CHANCE | 96.50% | 1 in 2.46 | 1 in 3.6M | 1 in 261 | 1 in 7,446 | 42.3 | 0.03 | 0.84 | 0.000 | pass |
+| FILL UP | 96.50% | always | 1 in 250,000 | 1 in 2.9 | 1 in 2,000 | 179.9 | 0.54 | 0.70 | 0.000 | pass |
+| PREMIUM | 96.50% | always | 1 in 200,000 | 1 in 1.4 | 1 in 2,000 | 368.7 | 0.60 | 0.40 | 0.000 | pass |
+| NITRO SPIN | 96.50% | 1 in 1.25 | 1 in 200,000 | 1 in 1.5 | 1 in 2,000 | 1,182 | 0.60 | 0.42 | 0.009 | pass |
+| MIDNIGHT RUN | 96.50% | always | 1 in 200,000 | 1 in 1.2 | 1 in 2,000 | 1,015 | 0.60 | 0.40 | 0.006 | pass |
 
-Base game as played: a winning spin 1 in 3; base-game wins 5-20x 1 in 75 spins, 20-100x 1 in
-430, 100x+ 1 in 5,100; a Lighter fires 1 in 2.8 spins, a Scratch Ticket 1 in 5.1, a Gold Ticket
-1 in 36, a Gas Pump REGULAR 1 in 6.9 / PLUS 1 in 20 / PREMIUM 1 in 123; two FALCOS Tokens (tease)
-1 in 47, two Midnight Tokens 1 in 242.
+Limits (rgs_verification): RTP <= 0.967, etl10k <= 0.8, etl40b <= 0.9, prob5k <= 0.01, prob10k <=
+0.005, cvar <= 800. Every mode passes; `verify_books.py` replays every book cleanly.
+
+Bonuses: base FILL UP 1 in 400 (avg 112x), PREMIUM 1 in 2,700 (avg 476x), MIDNIGHT RUN 1 in 14,000
+(avg 1,139x); FUEL CHANCE 2.2x as often (1 in 182 / 1,227 / 6,364; 5x failed the 3-star etl40b
+limit). FUEL CHANCE's ordinary spins must return ~4.4x per win (the bonuses carry only ~0.35 of
+its 0.965): trim_chance_tail.py now sets their shape - each board weighted by payout^0.47 (the
+natural pool gently tilted, the optimiser's fence totals and so the hit rate and RTP kept), boards
+paying 120x+ at weight 1 - which keeps etl40b at 0.84 and gives a FUEL CHANCE spin 0.1-1x 17.7%,
+1-2x 4.9%, 2-3x 4.1%, 3-5x 4.7%, 5-20x 6.9%, 20-120x 2.1% (left to itself the optimiser had put
+27% of all chance spins on 3-5x boards). Bought FILL UP averages 96.5x, PREMIUM 289.5x, MIDNIGHT RUN 482.5x.
+
+MIDNIGHT RUN buy (500x): the same bonus as the natural one, unweighted it averages ~1,080x (median
+385x), so the lookup table weights it down to 482.5x: median 210x; under 100x 1 in 5.7, 100-500x
+71%, 500-1,000x 1.2%, 1,000-5,000x 9.2% (1 in 11), 5,000-10,000x 1.2% (1 in 85), 10,000x+ 1 in
+42,900, the max win 1 in 200,000; it pays its price back (500x+) 1 in 8.6 buys. The thin 500-1,000x
+band is the optimiser's (value-weighted buys show the same dip just above cost in PREMIUM and
+NITRO, old and new).
+
+Base game as played: a winning spin 1 in 3.0; base-game wins 5-20x 1 in 74 spins, 20-100x 1 in
+467, 100x+ 1 in 3,860; a Lighter fires 1 in 2.8 spins, a Scratch Ticket 1 in 5.2, a Gold Ticket
+1 in 38, a Gas Pump REGULAR 1 in 7.0 / PLUS 1 in 20 / PREMIUM 1 in 124; two FALCOS Tokens (tease)
+1 in 47, two Midnight Tokens 1 in 239; 1.3 refills (tumbleBoard) per base spin on average.
 
 7x5 retune (strips and tables):
 * Paying-symbol weights skewed harder to the lows (H 3.5/4.5/5.5/6.5, L 12/14.5/17/19.5/23; 7x7
@@ -170,6 +197,6 @@ Base game as played: a winning spin 1 in 3; base-game wins 5-20x 1 in 75 spins, 
   680 / 230 / 60 / 20 / 7 / 2.5 / 1 / 0.4).
 
 Tails: the buys' 50,000x and big wins sit in their own optimiser fences with fixed returns
-(FILL UP: max win 0.2 bets, 4,000x+ 0.5; PREMIUM / NITRO / LUCKY PUMP: max win 0.25, 10,000x+
-0.35; NITRO and LUCKY PUMP also hold 5,000-10,000x at 1.7% / 1.2% of rounds), which keeps etl10k,
-etl40b and prob5k inside the 3-star band.
+(FILL UP: max win 0.2 bets, 4,000x+ 0.5; PREMIUM / NITRO / MIDNIGHT RUN: max win 0.25, 10,000x+
+0.35; NITRO and MIDNIGHT RUN also hold 5,000-10,000x at 1.7% / 1.2% of rounds), which keeps etl10k,
+etl40b and prob5k inside the 3-star band. cap_books.py then keeps every buy board under 1 in 2,000.

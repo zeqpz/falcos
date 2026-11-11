@@ -31,10 +31,10 @@
             "weights": "lookUpTable_nitro_0.csv"
         },
         {
-            "name": "lucky",
+            "name": "midnight",
             "cost": 500.0,
-            "events": "books_lucky.jsonl.zst",
-            "weights": "lookUpTable_lucky_0.csv"
+            "events": "books_midnight.jsonl.zst",
+            "weights": "lookUpTable_midnight_0.csv"
         }
     ]
 }

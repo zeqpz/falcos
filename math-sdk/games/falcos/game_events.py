@@ -171,11 +171,3 @@ def fillup_end_event(gs, reason: str, spins: int, total: float, win: float) -> N
         "boardTotal": total,
         "win": int(round(win * 100)),
     })
-
-
-# ------------------------------------------------------------------------------ buy modes
-def lucky_wheel_event(gs, result: str) -> None:
-    """LUCKY PUMP: the wheel's result, first event of the book. "premium" / "midnight": the
-    bonus follows (enterBonus bought=true); "none": nothing follows but finalWin 0."""
-    gs.book.add_event({"index": len(gs.book.events), "type": "luckyWheel", "result": result})
-
