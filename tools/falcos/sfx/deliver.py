@@ -1,8 +1,12 @@
-"""Copy the built takes to frontend/assets/<stem>_<n>.wav and encode the .ogg (Opus, 48 kHz, 96 kb/s stereo -
-the bitrate tools/encode_sfx.js uses) and .aac (AAC-LC in ADTS, 48 kHz, 128 kb/s stereo - as tools/encode_sfx_aac.js)
-copies with ffmpeg (the imageio-ffmpeg binary in the venv). Never overwrites a file this pass did not make
-(anything not listed in art/falcos/sfx_manifest.json). Writes the manifest.
-  python deliver.py"""
+"""Encode the built takes into frontend/assets/<stem>_<n>.ogg (Opus, 48 kHz, 96 kb/s stereo - the bitrate
+the game's other effects use) and .aac (AAC-LC in ADTS, 48 kHz, 128 kb/s stereo) with ffmpeg
+(the imageio-ffmpeg binary in the venv), and keep the 16-bit WAV master in art/falcos/sfx_masters/ (the game ships
+only the .ogg/.aac; tools/falcos/compress_assets.py moves any frontend/assets/*.wav there too). A single-file sound
+(build.py SINGLES) is <stem>.wav/.ogg/.aac.
+Never overwrites a file this pass did not make (anything not listed in art/falcos/sfx_manifest.json) - except the
+original game's sounds that build.py remakes (REMAKE: report.json "replaces_original"), which it replaces under
+the same names. Writes the manifest (the stems delivered now; every other entry is kept).
+  python deliver.py [stem ...]"""
 import os, sys, json, shutil, subprocess
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import audio as A
@@ -12,6 +16,7 @@ FF = imageio_ffmpeg.get_ffmpeg_exe()
 BUILD = os.path.join(A.RAW, 'build')
 ASSETS = os.path.join(A.ROOT, 'frontend', 'assets')
 MAN = os.path.join(A.ROOT, 'art', 'falcos', 'sfx_manifest.json')
+MASTERS = os.path.join(A.ROOT, 'art', 'falcos', 'sfx_masters')
 
 
 def ff(*args):
@@ -41,17 +46,24 @@ def main():
     rep = json.load(open(os.path.join(BUILD, 'report.json')))
     old = json.load(open(MAN)) if os.path.exists(MAN) else {}
     ours = {f for v in old.values() for f in v.get('takes', []) + v.get('ogg', []) + v.get('aac', [])}
-    man = {}
+    want = sys.argv[1:]
+    man = dict(old)
+    os.makedirs(MASTERS, exist_ok=True)
     for stem, r in rep.items():
+        if want and stem not in want:
+            continue
         wavs, oggs, aacs = [], [], []
         for f in r['files']:
             base = f['file'][:-4]
             for ext in ('.wav', '.ogg', '.aac'):
                 dst = os.path.join(ASSETS, base + ext)
-                if os.path.exists(dst) and base + ext not in ours:
+                if os.path.exists(dst) and base + ext not in ours and not r.get('replaces_original'):
                     raise SystemExit(f'refusing to overwrite {dst} (not made by this pass)')
             src = os.path.join(BUILD, f['file'])
-            shutil.copyfile(src, os.path.join(ASSETS, base + '.wav'))
+            shutil.copyfile(src, os.path.join(MASTERS, base + '.wav'))
+            stray = os.path.join(ASSETS, base + '.wav')        # the game plays the .ogg/.aac; the master lives in sfx_masters
+            if os.path.exists(stray):
+                os.remove(stray)
             po = encode(src, os.path.join(ASSETS, base + '.ogg'), ['-c:a', 'libopus', '-b:a', '96k', '-ar', '48000', '-vbr', 'on', '-application', 'audio'])
             pa = encode(src, os.path.join(ASSETS, base + '.aac'), ['-c:a', 'aac', '-b:a', '128k', '-ar', '48000', '-f', 'adts'])
             f['peak_db_ogg'], f['peak_db_aac'] = round(po, 2), round(pa, 2)
@@ -65,6 +77,10 @@ def main():
             hf_floor_db=[f['hf_floor_db'] for f in fs], source_speech_score=[f['speech'] for f in fs],
             target_lufs=r['target'], purpose=r['purpose'],
             sources=[f['info'].get('src') for f in fs])
+        if r.get('replaces_original'):
+            man[stem]['replaces_original'] = True      # same file names as the forked game's sound it replaced
+        if r.get('loop'):
+            man[stem]['loop'] = True                   # looped by the game: no fades, its end runs on into its start
         print(f'{stem:22s} {len(wavs)} takes')
     json.dump(man, open(MAN, 'w'), indent=1, default=float)
     print(MAN)

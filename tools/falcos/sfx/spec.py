@@ -27,6 +27,24 @@ S = {
     'dial_click':   ('a single soft mechanical click of a small car dashboard dial, close up, quiet room', 6, 'foley'),
     'coin':         ('a single coin landing softly on a wooden counter and settling, close up, quiet room', 8, 'foley'),
     'thud':         ('a deep soft muffled thud of a heavy token landing on felt, low and dark, close up, quiet room', 6, 'foley'),
+    # ---- the original game's sounds, remade for Falcos (2026-11-10): HUD, board foley, ident ----
+    'reg_key':      ('an old cash register key pressed once, a soft round mechanical clack, close up, quiet room', 8, 'foley'),
+    'dash_btn':     ('a soft car dashboard push button pressed once, a gentle muted plastic click, close up, quiet room', 8, 'foley'),
+    'toggle_sw':    ('a small car dashboard toggle switch flicked once, a soft muted click, close up, quiet room', 6, 'foley'),
+    'rubber':       ('a soft rubber mallet hitting a wooden counter once, a short dull rubbery thunk, close up, quiet room', 8, 'foley'),
+    'stamp':        ('a rubber stamp pressed down hard on an ink pad on a wooden desk, one soft heavy thump, close up, quiet room', 6, 'foley'),
+    'coins_pour':   ('a handful of coins poured gently into a cash register tray, a soft warm jingle settling, close up, quiet room', 6, 'foley'),
+    'coin_clink':   ('two coins dropped softly into a cash register drawer, one small gentle clink, close up, quiet room', 6, 'foley'),
+    'key_drop':     ('a single car key on a small ring dropped softly onto a wooden counter, a short gentle metallic clink, close up, quiet room', 12, 'foley'),
+    'nozzle_set':   ('a petrol pump nozzle hung back into its holder, one soft muted metal clunk, close up, quiet room', 6, 'foley'),
+    'can_set':      ('a full drink can set down on a wooden counter, one soft hollow metallic tock, close up, quiet room', 6, 'foley'),
+    'cup_set':      ('a paper cup set down softly on a wooden counter, one soft dull thump, close up, quiet room', 6, 'foley'),
+    'bag_drop':     ('a small bag of potato chips dropped onto a counter, one soft crinkly plop, close up, quiet room', 6, 'noisy'),
+    'card_drop':    ('a lottery scratch card tossed onto a wooden counter, one soft papery slap, close up, quiet room', 6, 'noisy'),
+    'car_pass':     ('a car passing by slowly on a quiet night road, one soft smooth whoosh, distant, no horn', 6, 'whoosh'),
+    'neon_on':      ('a large neon sign switching on at night, a soft heavy relay clunk followed by a warm low electric hum, close up', 6, 'foley'),
+    'pump_start':   ('an old gas pump handle lifted with a soft clunk and the pump motor whirring up briefly, close up, quiet night', 6, 'foley'),
+    'blinker':      ('a car turn signal indicator relay ticking softly four times, tick tock, close up, inside a quiet car', 4, 'foley'),
 }
 
 

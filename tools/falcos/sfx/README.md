@@ -21,13 +21,10 @@ python gen.py            # generate missing raw takes -> art/falcos/sfx_raw/<nam
 python gen.py --cost     # fill in each logged call's real cost (OpenRouter /generation) and print the total
 python analyze.py        # clean + measure every take -> sfx_raw/clean/*.wav, sfx_raw/analysis.json (rejections)
 python build.py          # layer, master and measure every set -> sfx_raw/build/*.wav + build/report.json
-python sheet.py          # spectrogram contact sheet -> art/falcos/previews/sfx_spectrograms.png
-python deliver.py        # copy to frontend/assets, encode .ogg/.aac, write art/falcos/sfx_manifest.json
+python deliver.py        # encode .ogg/.aac into frontend/assets, WAV masters to art/falcos/sfx_masters, write the manifest
 ```
 
-`build.py <stem> ...` and `analyze.py <name> ...` rebuild only those sets or takes. `sheet.py out.png <stem> ...` draws
-a sheet of only those sets. `look.py out.png <name> ...` draws the cleaned raw takes with their detected events, for
-choosing excerpts.
+`build.py <stem> ...`, `analyze.py <name> ...` and `deliver.py <stem> ...` rebuild / deliver only those sets or takes.
 
 ## Files
 
@@ -50,11 +47,27 @@ choosing excerpts.
   Each excerpt ends on a 90 ms fade. Layers are balanced by loudness, and mastering does the rest: trim, a gentle
   -3 dB shelf at 6 kHz, 4 ms fade-in, a 30-80 ms fade-out, a loudness target, and a look-ahead limiter at -6.5 dBFS.
   `EXCLUDE` holds takes rejected by eye.
-- `deliver.py`: copies the WAVs (16-bit) to `frontend/assets` and encodes Opus-in-Ogg (96 kb/s stereo, the
-  bitrate `tools/encode_sfx.js` uses) and AAC-LC ADTS (128 kb/s stereo, as in `tools/encode_sfx_aac.js`). It uses the
+- `deliver.py`: keeps the 16-bit WAV masters in `art/falcos/sfx_masters` (the game ships only the .ogg/.aac) and encodes Opus-in-Ogg (96 kb/s stereo, the
+  bitrate the game's other effects use) and AAC-LC ADTS (128 kb/s stereo). It uses the
   imageio-ffmpeg binary because the machine has no system ffmpeg and no node. If a codec's overshoot pushes a decoded
   peak over -6.2 dBFS, it re-encodes that copy slightly quieter. It never overwrites a file in `frontend/assets` that
-  is not listed in `art/falcos/sfx_manifest.json`.
+  is not listed in `art/falcos/sfx_manifest.json`, except the original game's sounds that `build.py` remakes (below).
+
+## The original game's sounds, remade (2026-11-10)
+
+`build.py` `REMAKE` replaces, under the same file names and take counts, every sound `frontend/index.html` can still
+play that came from the game Falcos was forked from: the FALCOS ident (intro_*, land_brick), the win presentation
+(line, glow_pulse, shine, sparkle, glint, win_text, count_*, mult_slam, float_away, medium_win, trophy, coins_rain,
+money_tick), the board (reels, reel_stop, cascade, pop, land_*), the HUD (spin, skip, bet, toggle, ui_*, slider_tick,
+swish_*, menu_*, auto_*, hover_loop, buy_confirm, fs_tick) and bonus_end / bust_a. UI ticks, chimes, whooshes and the
+three loops are synthesised (`whoosh`, `thump`, `sparkles`, `circ_noise`; every synth layer ends on a fade); board foley
+and a few HUD moments use generated takes (`spec.py`: reg_key ... blinker). `SINGLES` are one file, `<stem>.wav`
+(index.html's `SFX`); `LOOPS` (reels, money_tick, hover_loop) are mastered by `master_loop` - loudness gain only, no
+trim, fade or limiter, every partial a whole number of cycles - so the last sample runs on into the first. The AAC
+copies of a loop carry 20-40 ms of encoder priming/padding (ADTS has no gapless info); the Opus copies are exact.
+`glint` is tuned to D6 / 0.92: `winFxSound` plays it at `GLINT_SCALE` x .92, so the run climbs D6 E6 F#6 G6 A6 B6.
+The original game's sounds index.html can no longer reach were not remade (jackpot_a/b, jackpot_alert_a/b,
+scatter_land, multi_hit, bonus_start, coins, bell, bust_b, intro_rise, land_bag, land_box).
 
 ## Targets and checks
 

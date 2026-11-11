@@ -136,16 +136,6 @@
     font-display: swap;
   }
   /* the trigger line: the fill cut and its outline cut, laid one over the other */
-  @font-face {
-    font-family: "Smashed Graffiti";
-    src: url("assets/smashed_graffiti_fill.woff2") format("woff2");   /* the Fill cut: it shares the Outline cut's widths */
-    font-display: swap;
-  }
-  @font-face {
-    font-family: "Smashed Graffiti Outline";
-    src: url("assets/smashed_graffiti_outline.woff2") format("woff2");
-    font-display: swap;
-  }
   * { box-sizing: border-box; }
   /* The game frame never scrolls: fitToScreen() scales #app to the window instead.
      touch-action: manipulation is what turns off double-tap-to-zoom on phones. */
@@ -209,8 +199,7 @@
   /* the balance figure is set in Timegoing, which does not need the graffiti face's tracking */
   #balance { font-family: var(--num); font-size: 19px; letter-spacing: .04em; font-weight: 400; }
   /* the win only exists while there is one, and it announces itself when it arrives */
-  .chip.winchip { display: none !important; }   /* the popup over the icons is the only win text now */
-  .chip.winchip .val { color: var(--gold); font-family: var(--num); font-size: 19px; letter-spacing: .04em; font-weight: 400; }
+/* the popup over the icons is the only win text now */
   @keyframes winchip {
     0%   { transform: scale(.35); opacity: 0; }
     58%  { transform: scale(1.14); opacity: 1; }
@@ -218,7 +207,7 @@
     100% { transform: scale(1); }
   }
   .chip.juris .val { font-size: 11px; letter-spacing: .08em; color: #9C94A8; font-weight: 400; }   /* the HUD keeps its own paint */
-  @media (prefers-reduced-motion: reduce) { .chip.winchip { animation: none; } }
+
   .stat .val.up { color: var(--green); } .stat .val.down { color: #F0568B; }   /* the HUD keeps its own paint */
   /* the figure shakes itself as it rolls; anchored right so the number's edge stays put */
   .stat .val.bump { animation: cashbump .5s cubic-bezier(.25,.8,.35,1); transform-origin: 100% 50%; }
@@ -328,7 +317,7 @@
   .bonusintro .bhow {
     max-width: min(780px, 86vw); margin-top: 2.4vh; padding: 1.2vh 1.6vw;
     background: none; border: 20px solid transparent;
-    border-image: url("assets/info_panel.webp") 4.9% 6.25% fill / 20px stretch;
+    border-image: none 4.9% 6.25% fill / 20px stretch;
     box-shadow: 0 14px 34px rgba(0, 0, 0, .6);
     /* the info panel's lettering (owner, 2026-10-26): white Fredoka with a black outline */
     font-family: "Fredoka", var(--read); font-weight: 500; font-size: clamp(14px, 2.05vh, 19px); line-height: 1.5; letter-spacing: .01em;
@@ -762,12 +751,10 @@
      over them, and nothing scrolls. The disclosure under the loading bar shrinks to fit. */
   @media (max-height: 520px) {
     .intro { padding: 3vh 6vw; }
-    .intrologo { max-height: 36vh; width: auto; }
     .intromsg { font-size: clamp(6.5px, 2.4vh, 9.5px); line-height: 1.45; margin-top: 1.4vh; max-width: 92vw; }
   }
   @media (prefers-reduced-motion: reduce) {
     .intro, .intrologo, .intromsg, .introbar, .introfill { transition: none !important; }
-    .intrologo { animation: none !important; }
     .popover { animation: none !important; }
   }
 
@@ -778,7 +765,6 @@
   }
   .info:hover, .info.open { background: var(--orange); color: #16130f; }
   /* small panels that pop up over a bottom-bar button instead of covering the screen */
-  .popanchor { position: relative; display: inline-flex; }
   .popover {
     position: absolute; bottom: calc(100% + 12px); left: 50%; transform: translateX(-50%);
     z-index: 30; min-width: 250px; background: var(--panel); border: 2px solid var(--orange);
@@ -814,28 +800,10 @@
   .popover .infoclose { font-size: 13px; padding: 10px 20px 9px; }
   .popover .infoclose.ghost { background: transparent; color: #9C94A8; border-color: #3A3444; }
   /* --- sound, music and information: sprayed boxes, each audio one opening a drag bar --- */
-  .uibtn {
-    position: relative; width: 38px; height: 38px; padding: 0; border: 0; font-size: 0;
-    background: url("assets/ui_box.webp") center / 100% 100% no-repeat;
-    transition: transform .12s cubic-bezier(.3,.8,.4,1), filter .12s linear;
-  }
   /* this box is sprayed without a drip, so unlike the bet stepper its painted panel really
      is centred and the glyph can sit dead middle */
-  .uibtn::before {
-    content: ""; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-    background: center / contain no-repeat;
-    filter: drop-shadow(0 1.5px 0 rgba(0,0,0,.6)) drop-shadow(0 0 3px rgba(0,0,0,.45));
-  }
-  .uibtn.snd::before { width: 60%; height: 60%; background-image: url("assets/icon_sound.webp"); }
-  .uibtn.mus::before { width: 56%; height: 56%; background-image: url("assets/icon_music.webp"); }
-  .uibtn.nfo::before { width: 56%; height: 56%; background-image: url("assets/icon_info.webp"); }
-  .uibtn:hover:not(:disabled) { transform: scale(1.07); filter: brightness(1.12); }
-  .uibtn:active:not(:disabled) { transform: scale(.93); }
-  .uibtn.open { filter: brightness(1.18) saturate(1.08); }
   /* greyed while a round runs, the same as the bet stepper: the paint and the glyph both dull */
-  .uibtn:disabled { filter: grayscale(.95) brightness(.7); opacity: .6; cursor: default; }
-  .uibtn:disabled::before { filter: grayscale(1) drop-shadow(0 1.5px 0 rgba(0,0,0,.6)); }
-  .uibtn.off::before { filter: grayscale(1) brightness(.5); }   /* that bus is at zero */
+/* that bus is at zero */
 
   /* The volume panel (HUD v3, 2026-11-03): one panel over the speaker tab with a plain slider per
      bus - Sound and Music - each with its name and its level, in the HUD's paint (.hudpop). Placed
@@ -874,15 +842,12 @@
   @media (prefers-reduced-motion: reduce) { .vfill, .vknob { transition: none; } }
   @media (max-width: 620px) {
     .bottom { gap: 10px; padding: 12px 12px; }
-    .uibtn { width: 34px; height: 34px; }
     .sidebtn { width: 36px; height: 36px; }
-    .betbox button { width: 38px; height: 38px; }
     #betVal { min-width: 104px; font-size: 14px; }
     .stat .val { font-size: 14px; }
   }
   @media (prefers-reduced-motion: reduce) {
     .vpop { animation: none !important; }
-    .uibtn { transition: none !important; }
   }
   /* Required disclosure — has to be reachable from inside the game, not just the lobby. */
   .infowrap {
@@ -903,7 +868,7 @@
   .infopanel {
     max-width: 780px; width: 100%; max-height: 86vh; overflow: auto;
     padding: 24px 28px; background: none; border: 20px solid transparent;
-    border-image: url("assets/info_panel.webp") 4.9% 6.25% fill / 20px stretch;
+    border-image: none 4.9% 6.25% fill / 20px stretch;
     box-shadow: 0 14px 34px rgba(0, 0, 0, .6);
     color: var(--ink);                  /* whatever has no colour of its own inherits from here,
                                            not from the dark game underneath */
@@ -933,8 +898,7 @@
   .prow { display: grid; grid-template-columns: 48px 1fr; gap: 4px 10px; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--line); font-family: var(--legible); font-size: 13px; }
   .prow .ptext { grid-column: 1 / -1; color: var(--ink); line-height: 1.55; font-family: var(--read); font-size: 13.5px; }
   .ptile { width: 48px; height: 48px; object-fit: contain; border: 1px solid var(--line); background: var(--panel2); display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: var(--disp); box-sizing: border-box; }
-  .ptile.wild { color: var(--spray); }  .ptile.char { color: var(--teal); }
-  .ptile.multi { background: var(--panel2) url("assets/flat/GP.webp") center / 86% no-repeat; color: var(--amber); text-shadow: 0 1px 0 #000, 0 0 4px #000; }
+  .ptile.wild { color: var(--spray); }  .ptile.multi { background: var(--panel2) url("assets/flat/GP.webp") center / 86% no-repeat; color: var(--amber); text-shadow: 0 1px 0 #000, 0 0 4px #000; }
   .ptile.multi small { color: var(--ink); text-shadow: 0 1px 0 #000, 0 0 3px #000; }
   .ptile span { font-size: 14px; }  .ptile small { font-size: 8px; letter-spacing: .14em; color: var(--ink-soft); }
   .pname { font-weight: 600; }  .pname small { display: block; color: var(--ink-soft); font-weight: 400; font-size: 10px; letter-spacing: .12em; }
@@ -1095,7 +1059,6 @@
   body.replay .betbox, body.replay #bonusBtn, body.replay #autoBtn, body.replay #spinBtn { display: none; }
   .replaymeta { font-family: var(--legible); font-size: 13px; color: var(--ink); margin: 0 0 10px; line-height: 1.6; }
   .replayres { font-family: var(--mono); font-size: 17px; letter-spacing: .08em; color: var(--gold); margin: 0 0 16px; line-height: 1.7; }
-  .meter[hidden] { display: none; }
   .infopanel h3 {
     margin: 0 0 12px; font-family: var(--disp); font-size: 22px; letter-spacing: .06em;
     text-transform: uppercase; color: var(--spray);
@@ -1121,7 +1084,7 @@
   /* Close is a dismissal, not a go: the lime box, its corners kept by slicing */
   #infoClose {
     background: none; border: 16px solid transparent;
-    border-image: url("assets/skip_btn.webp") 22% fill / 16px stretch;
+    border-image: none 22% fill / 16px stretch;
     padding: 2px 16px; color: #152300; text-shadow: 0 2px 0 rgba(255, 255, 255, .25);
   }
   .infoclose.ghost { background: transparent; color: var(--ink-soft); border-color: var(--line); margin-left: 10px; }
@@ -1130,7 +1093,6 @@
   /* a ten-figure balance (ARS, IDR...) must never push the header off the popout */
   .stat .val.long { font-size: 17px; letter-spacing: .1em; }
   .stat .val.vlong { font-size: 13px; letter-spacing: .06em; }
-  .meter .big { font-family: var(--mono); font-size: 18px; font-weight: 700; letter-spacing: .14em; color: var(--gold); line-height: 1.1; }
   table.hist { width: 100%; border-collapse: collapse; font-family: var(--legible); font-size: 12px; margin-bottom: 6px; }
   table.hist td, table.hist th { padding: 4px 6px; border-bottom: 1px solid var(--line); text-align: left; white-space: nowrap; font-variant-numeric: tabular-nums; }
   table.hist th { color: var(--ink-soft); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; }
@@ -1138,7 +1100,6 @@
   table.hist td.zero { color: var(--ink-soft); }
   .banner.mega .big { color: #FF2A3D; text-shadow: 0 4px 0 rgba(0,0,0,.75), 0 0 22px rgba(0,0,0,.9), 0 0 34px rgba(255,42,61,.55); }
   .banner.lastchance .big { color: #FF2A3D; text-shadow: 0 4px 0 rgba(0,0,0,.75), 0 0 22px rgba(0,0,0,.9), 0 0 34px rgba(255,42,61,.7); }
-  .banner.epic .big { color: #fff; text-shadow: 0 4px 0 rgba(0,0,0,.75), 0 0 22px rgba(0,0,0,.9), 0 0 40px rgba(91,140,255,1), 0 0 70px rgba(91,140,255,.8); }
 
   /* main — slots front and center, info cards beneath */
   .main { flex: 1; display: flex; flex-direction: column; gap: 18px; padding: 64px 14px 22px; align-items: center; }
@@ -1195,7 +1156,6 @@
   @keyframes frameFlash { 0%, 100% { opacity: 0; } 12%, 40% { opacity: .9; } 26% { opacity: 1; } }
   @media (prefers-reduced-motion: reduce) { .board.flash .frameglow { animation: none; } }
   /* the win popup's plate wanders on --p*: its outline goes with it */
-  .winpop > .sprayrim.winbox { translate: var(--px, 0) var(--py, 0); rotate: var(--pr, 0deg); scale: var(--ps, 1); }
   /* frame_sq.webp (the squarer 7x5 frame: slim chrome bezel, red neon, the FALCOS sign on top; built by
      tools/falcos/compress_assets.py, its opening in frame_sq.json -> --fo-*): it fills the board's box, whose
      padding is its bands, so its opening sits 6px round the icon grid; the grid's own shape stretches it a
@@ -1250,12 +1210,6 @@
                        inset 0 0 0 1px rgba(91, 140, 255, .9), inset 0 0 16px rgba(91, 140, 255, .5); }
   }
   @media (prefers-reduced-motion: reduce) { .reel.antic, .reel.antic.anticburst, .reel.antic::before { animation: none; } }
-  .spincol {
-    position: absolute; top: 3px; left: 3px; width: calc(100% - 6px); z-index: 2;
-    display: flex; flex-direction: column; gap: var(--cell-gap); will-change: transform, filter;
-  }
-  .spincol .cell { flex: none; width: 100%; }
-  .reel.painted { border-color: var(--spray); box-shadow: 0 0 14px rgba(255,42,61,.35) inset; }
   .cell {
     width: var(--cell-w); height: var(--cell-h); background: transparent; border: 2px solid transparent;
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
@@ -1291,7 +1245,6 @@
     width: calc(var(--rw) * 1px); height: calc(var(--rh) * 1px);
     transform: translate(-50%, -50%) scale(min(calc(var(--boxw, 97) / var(--rw)), calc(var(--boxh, 82) / var(--rh))));
   }
-  .cell .rigin { position: absolute; inset: 0; }
   .cell .rig .part { position: absolute; left: 0; top: 0; transform-origin: 0 0; background-repeat: no-repeat; }
   .cell .rig .symc { position: absolute; pointer-events: none; }   /* Blender's frames, on the clip's own box */
   /* The paying tiers wear a neon glow round the sticker (art/STYLE.md, "Symbol tiers"): the top
@@ -1311,7 +1264,6 @@
      the resting outline these pictures show, so while one plays (.perf, rigPlay) they fade out and
      the win's own glow, drawn round the moving parts (.winhit .rigin), stands in. */
   .cell .tglows { position: absolute; inset: 0; pointer-events: none; transition: opacity calc(.15s * var(--tempo, 1)) ease-out; }
-  .cell.perf .tglows { opacity: 0; }
   .cell .tglow.halo { animation: tglowHalo var(--tg-p, 3s) ease-in-out var(--tg-d, 0s) infinite; }
   .cell .tglow.tube { animation: tglowTube var(--tg-p2, 6s) linear var(--tg-d2, 0s) infinite; }
   .cell.t2 .tglow.halo { animation-name: tglowHalo2; }
@@ -1339,17 +1291,11 @@
   .multlayer .gmult { scale: var(--sx, 1) var(--sy, 1); rotate: var(--sr, 0deg); }
   .cell.low   { color: var(--ink-soft); }
   .cell.high  { color: var(--ink); }
-  .cell.char  { color: var(--teal); }
   /* the multiplier IS the character tile now */
   .multface {
     font-family: var(--disp); font-size: 38px; letter-spacing: .04em; line-height: 1;
     color: var(--teal);
     text-shadow: 0 3px 0 rgba(0,0,0,.7), 0 0 20px rgba(63,191,178,.75);
-  }
-  .cell.char img  { filter: drop-shadow(0 0 7px rgba(63, 191, 178, .8)); }
-  .cell.char .badge {
-    position: absolute; top: -2px; right: -2px; background: var(--teal); color: #08201d;
-    font-size: 10px; padding: 0 4px; font-weight: 700; z-index: 1;
   }
   .cell.wild  { background: var(--spray-deep); border-color: var(--spray); color: #fff; }
   /* The two scatters are hand-painted FS and XFS. They glow in their own colour and the
@@ -1393,15 +1339,9 @@
   /* the spray can, its mist and its puffs: over everything on the board, in the way of nothing */
   .spraylayer { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
   .spraylayer > * { position: absolute; left: 0; top: 0; user-select: none; }
-  .spraylayer .smist {
-    width: 52px; height: 52px; margin: -26px 0 0 -26px; border-radius: 50%;
-    background: radial-gradient(circle, hsl(var(--hue) 100% 72% / .95) 0, hsl(var(--hue) 100% 56% / .55) 34%, hsl(var(--hue) 100% 50% / 0) 70%);
-  }
-  .spraylayer .spuff { width: 46px; height: auto; margin: -18px 0 0 -23px; }
   /* it blows out: the Multi itself, then the four cells it hits */
   /* every part of a Multi's show - the spray, the blow-out, the value landing - runs
      --multi-rate times as fast as it was first timed (MULTI_RATE in the script) */
-  .cell.boom { animation: multiboom calc(.55s * var(--tempo, 1) / var(--multi-rate, 1)) cubic-bezier(.2,.9,.3,1.4); z-index: 2; }
   .cell.hit  { animation: multihit calc(.5s * var(--tempo, 1) / var(--multi-rate, 1)) cubic-bezier(.25,.85,.35,1); }
   @keyframes multiboom {
     0%   { transform: scale(1); }
@@ -1578,12 +1518,6 @@
      bottom tile up - the one that hits the floor first settles first, like a stack landing */
   /* --i is the cell's row, set in buildBoard(), so the ripple covers however many rows the
      board has rather than a fixed list of nth-children */
-  .reel.impact > .cell {
-    animation: impact calc(.36s * var(--tempo, 1)) cubic-bezier(.22,.9,.3,1.2) both; transform-origin: 50% 100%;
-    /* --ib counts rows from the BOTTOM: the tile that hits the floor first settles first and
-       the shake runs up the column, the way a stack lands */
-    animation-delay: calc(var(--ib, 0) * 45ms * var(--tempo, 1));
-  }
   @keyframes impact {
     0%   { transform: translateY(-2px) scaleY(1.04) scaleX(.985); }
     38%  { transform: translateY(3.5px) scaleY(.92) scaleX(1.03); }
@@ -1604,7 +1538,6 @@
   .cell.winhit img, .cell.winhit .rigin { filter: drop-shadow(0 0 12px rgba(255, 255, 255, .5)) drop-shadow(0 3px 5px rgba(0, 0, 0, .6)); }
   /* the neon tiers glow in their own colours while lit (tools/make_tier_glow.py): the tube's light
      close in, the halo's further out, round the moving parts themselves */
-  .cell.t1.winhit img, .cell.t1.winhit .rigin { filter: drop-shadow(0 0 1.5px rgb(255, 42, 61)) drop-shadow(0 0 5px rgba(255, 42, 61, .9)) drop-shadow(0 0 14px rgba(91, 140, 255, .9)); }
   .cell.t2.winhit img, .cell.t2.winhit .rigin { filter: drop-shadow(0 0 1.5px rgb(143, 176, 255)) drop-shadow(0 0 5px rgba(143, 176, 255, .9)) drop-shadow(0 0 14px rgba(34, 53, 122, .9)); }
   /* ...and the icon itself comes alive inside the punch: it lands squashed, springs up stretched
      and wobbles back to shape on its base, while its own win clip plays on its parts (rigPlay). */
@@ -1632,7 +1565,6 @@
   /* A Multi going off is spotlit like a cluster (booster()): the Multi itself punches up
      harder and longer than a cluster tile, and the four cells it lands on take the cluster pop
      drawn out a little; both come to rest at the lit 1.2 */
-  .cell.winhit.boom { animation: multiboomlit calc(.8s * var(--tempo, 1) / var(--multi-rate, 1)) cubic-bezier(.2,.9,.3,1.3); z-index: 2; }
   .cell.winhit.hit  { animation: winpop calc(1.05s * var(--tempo, 1) / var(--multi-rate, 1)) cubic-bezier(.25,.85,.35,1); }
   @keyframes multiboomlit {
     0%   { transform: scale(1); }
@@ -1650,7 +1582,6 @@
      (winFx) and drawn only while .winhit; transform and opacity only, around and over the
      symbol's own frames, never on them. */
   .cell { --fxc: 255, 236, 190; }
-  .cell.t1 { --fxc: 140, 252, 84; }
   .cell.t2 { --fxc: 143, 176, 255; }
   .cell .wfxb, .cell .wfx { position: absolute; inset: 0; pointer-events: none; display: none; }
   .cell.winhit .wfxb, .cell.winhit .wfx { display: block; }
@@ -1691,17 +1622,6 @@
   /* the win chip - the cluster's amount (and its multiplier, when it has one) punched over
      the cluster's middle tile while the cluster is lit. placeWinChip() sets left/top from the
      cells' layout, the same offset walk placeMultLayer() does, never from a rect. */
-  .winchip {
-    position: absolute; z-index: 4; pointer-events: none; white-space: nowrap; text-align: center;
-    transform: translate(-50%, -50%);   /* base state, so it stays centred with animation off */
-    transform-origin: center center;
-    font-family: var(--disp); font-size: 17px; line-height: 1.05; color: var(--gold);
-    padding: 5px 12px 4px; border-radius: 999px;
-    background: rgba(18, 13, 22, .9);   /* plate, or the chip is unreadable over the symbols */
-    border: 2px solid var(--gold);
-    box-shadow: 0 4px 14px rgba(0,0,0,.6), 0 0 18px rgba(245,197,24,.3);
-    text-shadow: 0 2px 0 rgba(0,0,0,.6);
-  }
   /* The win amount (owner, 2026-11-03): no plate, no currency sign - just the cluster's amount in
      bold, glowing in its own colour, punched in over the cluster's middle tile. It counts up from
      nothing to what the cluster is worth, its colour running from amber to neon red as it climbs
@@ -1840,8 +1760,6 @@
   .banner .sub2 .num { font-family: "Fredoka", var(--num); font-weight: 700; font-size: 26px; letter-spacing: .04em; color: var(--gold); vertical-align: -1px; }
   .banner.gold .big { color: var(--gold); text-shadow: 0 4px 0 rgba(0,0,0,.75), 0 0 22px rgba(0,0,0,.9), 0 0 34px rgba(245,197,24,.55); }
   .banner .muralimg { display: none; max-width: 94%; max-height: 46%; object-fit: contain; margin-top: 14px; border: 2px solid var(--gold); }
-  .banner.muralshow .muralimg { display: block; }
-  .banner.purple .big { color: #FF2A3D; text-shadow: 0 4px 0 rgba(0,0,0,.75), 0 0 22px rgba(0,0,0,.9), 0 0 34px rgba(255,42,61,.55); }
 
   /* info cards under the board */
   .rail { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; max-width: 920px; }
@@ -1857,14 +1775,6 @@
     border-color: var(--spray); filter: none;
     box-shadow: inset 0 0 0 100px rgba(255, 42, 61, .55);
   }
-  .wall.muralwall span { background-size: cover; background-position: center; }
-  .wall.muralwall span.done { box-shadow: none; }
-  .kv { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 12.5px; margin-top: 6px; color: var(--ink-soft); }
-  .kv b { color: var(--ink); }
-  #chars { display: flex; flex-direction: column; gap: 5px; font-family: var(--mono); font-size: 13px; }
-  #chars .chip { display: flex; justify-content: space-between; border: 1px solid var(--teal); color: var(--teal); padding: 3px 8px; }
-  #chars .total { border-color: var(--spray); color: var(--spray); font-weight: 700; }
-  #chars .none { color: var(--ink-soft); font-size: 12px; }
   /* The free-spin counter under the board (owner, 2026-10-27): a plate of its own - the bar's
      charcoal slab with its live rim - carrying FREE SPINS, the spin it is on over the spins it
      has, and the bonus's running win in the Total Win numerals; lime for the Bonus, violet for
@@ -1884,7 +1794,7 @@
        figures sat on the bottom one (2026-11-03 QA) */
     position: relative; display: inline-flex; align-items: center; height: 86px; box-sizing: border-box;
     padding: 0 30px; border: 0 solid transparent; border-width: 0 20px;
-    border-image: url("assets/hud_bar.webp") 0 6% 0 6% fill / 0 20px stretch;
+    border-image: none 0 6% 0 6% fill / 0 20px stretch;
   }
   .fscount, .fswinbox { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 0 18px; line-height: 1; }
   .fswinbox { border-left: 2px solid rgba(var(--glow), .35); min-width: 150px; }
@@ -1949,15 +1859,8 @@
     display: flex; align-items: flex-end; justify-content: space-between; gap: 18px;
     flex-wrap: wrap; padding: 14px 20px;   /* transparent — the wall shows straight through */
   }
-  .bside { display: flex; flex-direction: column; gap: 9px; }
-  .bside.left { align-items: flex-start; }
   /* taken out of the flow so it is centred on the bar itself - the clusters either side are
      never the same width, so a flex middle would sit off-centre */
-  .bside.mid {
-    position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%);
-    align-items: center;
-  }
-  .bside.right { align-items: flex-end; }
   /* While a win is up the bar gets out of its way: a little hop, then it drops off the bottom
      of the screen (--hud-drop = far enough to clear it, measured by hudAway), and when the win
      goes it springs back up past its place and settles. On `translate`, so nothing it carries
@@ -1977,13 +1880,11 @@
     100% { translate: 0 0; rotate: 0deg; }
   }
   @media (prefers-reduced-motion: reduce) { .bottom.away, .bottom.back { animation: none; } }
-  .brow { display: flex; align-items: center; gap: 9px; }
 
   /* the two square controls stack down the left of the spin plate, as in the reference */
-  .sidestack { display: flex; flex-direction: column; gap: 7px; }
   .sidebtn {
     position: relative; width: 42px; height: 42px; padding: 0; border: 0; font-size: 0;
-    background: url("assets/ui_box.webp") center / 100% 100% no-repeat;
+    background: none center / 100% 100% no-repeat;
     transition: transform .12s cubic-bezier(.3,.8,.4,1), filter .12s linear;
   }
   .sidebtn::before {
@@ -1991,8 +1892,8 @@
     background: center / contain no-repeat;
     filter: drop-shadow(0 1.5px 0 rgba(0,0,0,.6)) drop-shadow(0 0 3px rgba(0,0,0,.45));
   }
-  .sidebtn.auto::before  { width: 58%; height: 58%; background-image: url("assets/icon_auto.webp"); }
-  .sidebtn.rapid::before { width: 34%; height: 64%; background-image: url("assets/icon_rapid.webp"); }
+  .sidebtn.auto::before  { width: 58%; height: 58%; background-image: none; }
+  .sidebtn.rapid::before { width: 34%; height: 64%; background-image: none; }
   .sidebtn:hover:not(:disabled) { transform: scale(1.07); filter: brightness(1.12); }
   .sidebtn:active:not(:disabled) { transform: scale(.93); }
   /* armed: the box brightens and the glyph lights up in its own paint */
@@ -2015,45 +1916,18 @@
   .sidebtn #autoN[hidden] { display: none; }
 
   /* sound, music and information live behind the three-line button */
-  .menuslot { display: inline-flex; }
-  .menupop {
-    /* left and bottom come from JS, the same way the volume bars are placed */
-    position: absolute; bottom: calc(100% + 10px); z-index: 28;
-    display: flex; gap: 8px; transform: translateX(-50%); transform-origin: 50% 100%;
-    animation: menupopin .32s cubic-bezier(.2,.9,.3,1.35);
-  }
-  .menupop[hidden] { display: none; }
   @keyframes menupopin {
     0%   { transform: translateX(-50%) scale(.4); opacity: 0; }
     60%  { transform: translateX(-50%) scale(1.07); opacity: 1; }
     100% { transform: translateX(-50%) scale(1); }
   }
   /* three sprayed bars, drawn rather than painted — there is no art for this one */
-  .uibtn.menu::before {
-    width: 52%; height: 34%;
-    background:
-      linear-gradient(var(--fs-green) 0 0) top / 100% 3px no-repeat,
-      linear-gradient(var(--fs-green) 0 0) center / 100% 3px no-repeat,
-      linear-gradient(var(--fs-green) 0 0) bottom / 100% 3px no-repeat;
-  }
-  @media (prefers-reduced-motion: reduce) { .menupop { animation: none !important; } }
-  .betbox {
-    display: flex; align-items: center; gap: 8px;
-    /* the characters stand behind the bar, so the figure needs its own ground to read on */
-    background: rgba(14, 12, 18, .88); border-radius: 12px; padding: 5px 9px;
-    box-shadow: 0 2px 10px rgba(0,0,0,.35);
-  }
+
   .betbox #betVal, #betVal { font-family: var(--num) !important; letter-spacing: .06em; text-indent: 0; font-weight: 400; font-size: 19px; }
   /* The stepper is hand-sprayed art, not type: the cyan-on-magenta box is the button and
      the glyph is painted inside it. font-size:0 drops the - and + characters the markup
      still carries for anything that reads the DOM without the stylesheet; the buttons keep
      their aria-labels, so nothing is lost. */
-  .betbox button {
-    position: relative;
-    width: 46px; height: 46px; padding: 0; border: 0; font-size: 0;
-    background: url("assets/bet_box.webp") center / 100% 100% no-repeat;
-    transition: transform .12s cubic-bezier(.3,.8,.4,1), filter .12s linear;
-  }
   /* The buttons still carry their - and + characters for anything reading the DOM without
      the stylesheet. Laying the glyph out in flow made that hidden text a second grid row,
      which pinned the art to the top half of the box and resolved its percentage height
@@ -2061,23 +1935,12 @@
      The sprayed box has a drip hanging off its bottom edge, so the painted panel's own
      centre sits a touch above the middle of the image - the glyph follows the panel, not
      the image. Measured off the magenta: centre at 47.7% down, 50.4% across. */
-  .betbox button::before {
-    content: ""; position: absolute;
-    left: 50.4%; top: 47.7%; transform: translate(-50%, -50%);
-    background: center / contain no-repeat;
-    /* the glyph is neon green on the box's magenta, so it needs a hard edge under it to
-       separate the two saturated colours at button size */
-    filter: drop-shadow(0 1.5px 0 rgba(0,0,0,.6)) drop-shadow(0 0 3px rgba(0,0,0,.45));
-  }
   /* the bar and the cross are nothing like the same shape, so each gets its own box and
      `contain` letterboxes the art inside it - the bar reads heavy at matching size, so it
      runs smaller than the cross */
-  #betDown::before { width: 43%; height: 24%; background-image: url("assets/bet_minus.webp"); }
-  #betUp::before   { width: 37%; height: 37%; background-image: url("assets/bet_plus.webp"); }
+  #betDown::before { width: 43%; height: 24%; background-image: none; }
+  #betUp::before   { width: 37%; height: 37%; background-image: none; }
   /* the can presses into the wall and bounces back */
-  .betbox button:hover:not(:disabled) { transform: scale(1.07); filter: brightness(1.12); }
-  .betbox button:active:not(:disabled) { transform: scale(.93); }
-  .betbox button:disabled { filter: grayscale(.7); }
   /* same treatment as the header figures: the graffiti face sets numerals tight enough to
      read as one blob, so tracking them apart is what makes the amount legible. The trailing
      letter-space would pull centred text left, so half of it comes back as an indent. */
@@ -2108,7 +1971,6 @@
     font-family: var(--mono); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em;
     background: var(--panel2); color: var(--gold); border: 2px solid var(--gold); padding: 10px 14px;
   }
-  .buy.purple { color: var(--purple); border-color: var(--purple); }
 
   /* Bonus chooser — a card in the middle of the screen that drifts very slightly, so it
      reads as floating over the game rather than pinned to it. The pop-in lives on the
@@ -2119,15 +1981,6 @@
     58%  { transform: scale(1.05) translateY(-4px); opacity: 1; }
     80%  { transform: scale(.985); }
     100% { transform: scale(1); }
-  }
-  .bonuspanel {
-    /* the panel is a sprayed plate: magenta at the top, a darker band across the bottom.
-       Stretched rather than tiled, because a painted frame reads fine stretched and the
-       content inside is what sets the height. */
-    width: min(560px, 92vw); border: 0; position: relative;
-    background: url("assets/bonus_panel.webp") center / 100% 100% no-repeat;
-    padding: 36px 46px 86px; filter: drop-shadow(0 18px 44px rgba(0,0,0,.6));   /* the foot clears PLAY of the frayed rim (2026-11-03 QA) */
-    animation: bonusdrift 9s ease-in-out infinite;
   }
   @keyframes bonusdrift {   /* a few px of wander, never enough to be hard to click */
     0%   { transform: translate(0, 0) rotate(0deg); }
@@ -2140,23 +1993,8 @@
      so a screen reader still announces the dialog; only the eye gets the art. */
   /* the heading wears the Bonus button's pink box, the lettering sitting on it the same way, and
      its neon too: the plate's cyan tube lit and flickering like the button's (.bglow, below) */
-  .bonuspanel h3 {
-    position: relative; width: 186px; height: 120px; margin: -6px auto 10px;
-    font-size: 0; color: transparent;
-  }
   /* the plate and its shadow on a layer of their own: a filter on the heading itself would shade
      the tube's glow and keep it from screening onto the panel the way the button's does */
-  .bonuspanel h3::before {
-    content: ""; position: absolute; inset: 0;
-    background: url("assets/bonus_btn_bg.webp") center / contain no-repeat;
-    filter: drop-shadow(0 4px 7px rgba(0,0,0,.55));
-  }
-  .bonuspanel h3::after {
-    content: ""; position: absolute; inset: 5% 6%; z-index: 1;
-    background: url("assets/bonus_btn_text.webp") center / contain no-repeat;
-    filter: drop-shadow(0 3px 5px rgba(0,0,0,.45));
-  }
-  .bonusgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 4px 4px 0; }
   /* The feature-buy cards (owner, 2026-10-27): each is a plate of its own - a title plate, its
      scatter big, the spins it gives, and its price as the x-cost over the money, both large
      (Stake wants the price plain to see). The chosen card burns with a neon tube in its own
@@ -2184,25 +2022,11 @@
       rgba(255,255,255,.26) 0%, rgba(255,255,255,.08) 28%, rgba(255,255,255,0) 60%);
     opacity: var(--glare);
   }
-  .bonuscard.purple { --acc: #5B8CFF; --acchi: #BFD3FF; --accd: #1B2547; --glow: 91, 140, 255; }
   /* the card not chosen is dimmed - its title, its scatter and its spins, never its price, which
      stays as plain to read as the chosen one's - until the pointer or the keyboard is on it */
   .bonuscard .ttl, .bonuscard .cardart, .bonuscard .spins { transition: filter .25s ease, opacity .25s ease; }
   .bonuscard:not(.on):not(:hover):not(:focus-visible) :is(.ttl, .spins) { filter: brightness(.55) saturate(.55); opacity: .85; }
-  .bonuscard:not(.on):not(:hover):not(:focus-visible) .cardart { filter: brightness(.55) saturate(.55) drop-shadow(0 4px 6px rgba(0,0,0,.6)); opacity: .85; }
   /* the title plate, in the card's paint */
-  .bonuscard .ttl {
-    max-width: 100%; padding: 4px 13px 5px; border-radius: 999px; white-space: nowrap;
-    background: linear-gradient(180deg, var(--acchi), var(--acc) 46%, var(--accd));
-    border: 2px solid #0b0a0d; box-shadow: inset 0 2px 0 rgba(255, 255, 255, .5), 0 3px 0 rgba(0, 0, 0, .55);
-    font-family: "Fredoka", var(--disp); font-weight: 700; font-size: 15px; line-height: 1.1; letter-spacing: .07em; text-transform: uppercase;
-    color: #fff; -webkit-text-stroke: 3.5px #0b0a0d; paint-order: stroke fill; text-shadow: 0 2px 0 rgba(0, 0, 0, .45);
-  }
-  .bonuscard .cardart {
-    display: block; width: 100%; height: clamp(64px, 13vh, 118px); object-fit: contain;
-    filter: drop-shadow(0 4px 6px rgba(0,0,0,.6));
-    translate: calc(var(--mx) * 8px) calc(var(--my) * 7px);   /* the art sits above the card */
-  }
   /* the spins it gives: the figures large in white, FREE SPINS under them in the card's paint */
   .bonuscard .spins {
     display: flex; flex-direction: column; align-items: center; line-height: 1.05;
@@ -2232,18 +2056,6 @@
     overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;
   }
   /* the neon, lit on the chosen card only: a tube hugging the card and a halo spilling off it */
-  .bonuscard .ntube, .bonuscard .nhalo { position: absolute; pointer-events: none; opacity: 0; transition: opacity .3s ease; }
-  .bonuscard .nhalo {
-    inset: -12px; border-radius: 26px; z-index: -1;
-    border: 12px solid rgba(var(--glow), .42); filter: blur(9px);
-  }
-  .bonuscard .ntube {
-    inset: -6px; border-radius: 21px; z-index: 1; border: 3px solid var(--acchi);
-    box-shadow: 0 0 3px rgba(var(--glow), 1), 0 0 10px rgba(var(--glow), .9), 0 0 22px rgba(var(--glow), .55),
-      inset 0 0 4px rgba(var(--glow), .9), inset 0 0 12px rgba(var(--glow), .4);
-  }
-  .bonuscard.on .nhalo { opacity: 1; animation: ncardHalo 3.1s ease-in-out infinite; }
-  .bonuscard.on .ntube { opacity: 1; animation: ncardTube 5.3s linear infinite; }
   @keyframes ncardHalo { 0%, 100% { opacity: .6; transform: scale(.985); } 50% { opacity: 1; transform: scale(1.02); } }
   @keyframes ncardTube {
     0%, 100% { opacity: .95; } 37% { opacity: 1; } 38% { opacity: .25; } 39% { opacity: 1; }
@@ -2253,43 +2065,11 @@
   .bonuscard:disabled::after { display: none; }
   /* bet stepper inside the panel — same control as the bar, driving the same bet, on a dark well
      of its own with the bar's own - and + plates (and their live rims) a size up */
-  .bonusbet {
-    display: flex; align-items: center; justify-content: center; gap: 10px; margin: 18px auto 6px;
-    width: fit-content; max-width: 100%; padding: 6px 10px 6px 18px; border-radius: 16px;
-    background: rgba(0, 0, 0, .45); border: 2px solid #0b0a0d; box-shadow: inset 0 2px 0 rgba(255, 255, 255, .06);
-  }
   /* the words and figures in the info panel's lettering (owner, 2026-10-26) */
-  .bonusbet .lbl {
-    font-family: "Fredoka", var(--label); font-weight: 700; font-size: 14px; letter-spacing: .12em; text-transform: uppercase;
-    color: #fff; -webkit-text-stroke: 3.5px #000; paint-order: stroke fill; text-shadow: 0 2px 0 rgba(0,0,0,.55);
-  }
-  .bonusbet .amt { color: #fff; -webkit-text-stroke: 4px #000; paint-order: stroke fill; text-shadow: 0 2px 0 rgba(0,0,0,.55); }
   /* the same two the bar's stepper uses, a size up for the panel */
-  .bonusbet button {
-    position: relative; width: 50px; height: 50px; padding: 0; border: 0; font-size: 0; color: transparent;
-    background: center / contain no-repeat; cursor: pointer;
-    filter: drop-shadow(0 2px 3px rgba(0,0,0,.5));
-    transition: transform .12s cubic-bezier(.3,.8,.4,1), filter .12s linear;
-  }
-  .bonusbet button::before { content: none; }   /* the glyph is in the art */
-  #bonusBetUp   { background-image: url("assets/hud_plus.webp"); }
-  #bonusBetDown { background-image: url("assets/hud_minus.webp"); }
-  .bonusbet button:hover:not(:disabled) { transform: scale(1.1); filter: drop-shadow(0 2px 3px rgba(0,0,0,.5)) brightness(1.15); }
-  .bonusbet button:active:not(:disabled) { transform: scale(.9); }
-  .bonusbet button:disabled { filter: grayscale(.9) brightness(.7); opacity: .6; cursor: default; }
-  .bonusbet .amt {
-    font-family: "Fredoka", var(--num); font-size: 26px; font-weight: 700; min-width: 124px; text-align: center;
-    letter-spacing: .06em; font-variant-numeric: tabular-nums;
-  }
-  .bonustotal {
-    text-align: center; font-family: "Fredoka", var(--plain); font-weight: 700; font-size: 14px; letter-spacing: .14em; text-transform: uppercase;
-    color: #fff; -webkit-text-stroke: 3.5px #000; paint-order: stroke fill; text-shadow: 0 2px 0 rgba(0,0,0,.55); margin: 10px 0 14px;
-  }
-  .bonustotal b {
-    font-family: "Fredoka", var(--num); font-weight: 700; font-size: 34px; letter-spacing: .06em; text-transform: none; line-height: 1.1;
-    color: var(--gold); -webkit-text-stroke: 6px #000; display: block; margin-top: 2px;
-    text-shadow: 0 3px 0 rgba(0, 0, 0, .6), 0 0 18px rgba(245, 197, 24, .35);
-  }
+/* the glyph is in the art */
+  #bonusBetUp   { background-image: none; }
+  #bonusBetDown { background-image: none; }
   /* The lettered buttons - the Bonus panel's PLAY, the auto play picker's START: the word itself,
      lettered like BONUS in white with black ink and drips (art/letters/, tools/letter_art/make.py
      play start), on a dark card like the FS and XFS cards. The sprayed yellow plate they sat on
@@ -2319,10 +2099,7 @@
   .wordbtn.art:hover:not(:disabled)::after { scale: 1.06; }
   .wordbtn:active:not(:disabled) { transform: scale(.96); }
   .wordbtn:disabled { opacity: .6; cursor: default; }
-  .bonusgo { width: min(100%, 330px); }
-  .bonusgo { --b1: #FF9AA4; --b2: #FF2A3D; --b3: #8E0A1C; --glow: 255, 42, 61; }
   #autoPop #autoYes { --b1: #E4FC84; --b2: #9CE424; --b3: #4a840a; --glow: 108, 252, 84; }   /* the HUD keeps its own paint */
-  .bonusgo.purple { --b1: #D6E2FF; --b2: #5B8CFF; --b3: #22357A; --glow: 91, 140, 255; }
   /* PLAY (owner, 2026-10-27): a real button - a fat sticker slab in the chosen card's paint, lime
      for the Bonus and violet for the Extreme Bonus (paintBonus switches .purple), lit from the
      upper left with a lower lip to press, glowing, a band of light sweeping across it now and
@@ -2355,64 +2132,31 @@
   /* PLAY and START are set in type now, in LLambozy (the "Not enough balance" state keeps its own face) */
   .bonusgo:not(:disabled), #autoPop #autoYes { font-family: "LLambozy", var(--label); font-size: 46px; letter-spacing: .06em; line-height: 1; padding: 0; justify-content: center; }
   #autoPop #autoYes { font-size: 34px; }
-  .bonusnote {
-    text-align: center; font-family: "Fredoka", var(--legible); font-weight: 500; font-size: 12.5px; letter-spacing: .01em; color: #fff;
-    -webkit-text-stroke: 2.5px #000; paint-order: stroke fill; text-shadow: 0 1px 0 rgba(0,0,0,.6); margin-top: 12px;
-  }
   /* a phone keeps the two cards side by side, each a size down, so the whole buy fits one screen
      (upright only: a narrow window lying on its side, like the 400x225 popout, takes the sideways
      layout below instead) */
   @media (max-width: 560px) and (orientation: portrait) {
-    .bonuspanel { padding: 28px 24px 58px; }   /* the note's second line clear of the plate's dripping bottom rim */
-    .bonusgrid { gap: 12px; margin: 2px 2px 0; }
+/* the note's second line clear of the plate's dripping bottom rim */
     .bonuscard { padding: 9px 6px; gap: 5px; border-radius: 14px; }
-    .bonuscard .ttl { font-size: 11.5px; padding: 3px 9px 4px; letter-spacing: .04em; -webkit-text-stroke-width: 3px; }
     .bonuscard .spins { font-size: 10.5px; letter-spacing: .1em; }
     .bonuscard .spins b { -webkit-text-stroke-width: 3.5px; }   /* its size follows the card (10cqw) */
     .bonuscard .mult b { font-size: 21px; }
     .bonuscard .mult span { font-size: 14px; }
-    .bonusbet { gap: 6px; padding: 5px 8px 5px 12px; }
-    .bonusbet .lbl { font-size: 11px; letter-spacing: .08em; }
-    .bonusbet .amt { font-size: 21px; min-width: 88px; }
-    .bonusbet button { width: 42px; height: 42px; }
-    .bonustotal b { font-size: 28px; }
   }
   /* a short window: the heading and the scatters give up some height first */
-  @media (max-height: 760px) {
-    .bonuspanel { padding-top: 26px; padding-bottom: 66px; }
-    .bonuspanel h3 { width: 150px; height: 96px; margin-bottom: 6px; }
-    .bonustotal { margin: 6px 0 10px; }
-  }
+
   /* ...but a short upright phone (an iPhone SE's 375x667) keeps the phone's room under the note */
-  @media (max-width: 560px) and (orientation: portrait) and (max-height: 760px) {
-    .bonuspanel { padding-bottom: 58px; }
-  }
+
   /* The note stands inside the plate, between the total it speaks of and PLAY (2026-11-03 QA: under
      PLAY it printed over the plate's frayed bottom rim on desktop and phone - the rim is drawn to
      the plate's height, so no fixed padding clears it everywhere). The sideways layout below is a
      grid with its own places and keeps the note across the foot. */
-  .bonuspanel { display: flex; flex-direction: column; }
-  .bonuspanel > .bonusnote { order: 1; margin: 0 0 12px; }
-  .bonuspanel > .bonusgo { order: 2; }
   /* A short, wide window - a laptop's 576-680 px, the 800x450 and 400x225 popouts, a phone on its
      side - lays the buy out sideways (2026-10-27): the two cards on the left; the bet, the total and
      PLAY on the right; the heading over both and the note under both. It needs half the height, so
      it is drawn near full size where the upright panel was shrunk to a quarter. The panel keeps one
      design width here and fitBonus scales it to the window, width and height both. */
-  @media (max-height: 680px) and (min-aspect-ratio: 4/3) {
-    .bonuspanel {
-      width: 820px; padding: 30px 64px 68px;   /* inside the frayed rim on every side (owner, 2026-11-03: the cards and PLAY sat on it) */
-      display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); column-gap: 24px; align-items: center;
-      grid-template-areas: "head head" "cards bet" "cards total" "cards note" "cards go";   /* the note over PLAY, inside the plate */
-    }
-    .bonuspanel h3 { grid-area: head; width: 132px; height: 86px; margin: -10px auto 4px; }
-    .bonusgrid { grid-area: cards; margin: 0; align-self: stretch; }
-    .bonusbet { grid-area: bet; flex-wrap: wrap; justify-content: center; row-gap: 4px; margin: 0 auto; padding: 8px 12px; }
-    .bonusbet .lbl { flex: 1 0 100%; text-align: center; }
-    .bonustotal { grid-area: total; margin: 8px 0; }
-    .bonusgo { grid-area: go; width: 100%; }
-    .bonusnote { grid-area: note; margin-top: 14px; }
-  }
+
   @media (prefers-reduced-motion: reduce) {
     .bonuspop, .bonuspanel, .bonuscard .nhalo, .bonuscard .ntube, .bonusgo::before, #autoPop #autoYes::before { animation: none !important; }
   }
@@ -2427,12 +2171,12 @@
   }
   .spinbtn::before {
     content: ""; position: absolute; inset: 0;
-    background: url("assets/spin_plate.webp") center/contain no-repeat;
+    background: none center/contain no-repeat;
     transition: scale .18s ease;
   }
   .spinbtn::after {
     content: ""; position: absolute; inset: 20% 35%;
-    background: url("assets/spin_btn_arrows.webp") center/contain no-repeat;
+    background: none center/contain no-repeat;
     filter: drop-shadow(0 3px 5px rgba(0,0,0,.45));
     animation: btnFloat 3.8s ease-in-out infinite;
     transition: scale .18s cubic-bezier(.3,.9,.4,1.3);
@@ -2498,7 +2242,6 @@
   @keyframes btnBounce2 { 0% { scale: 1; } 30% { scale: .9; } 65% { scale: 1.07; } 100% { scale: 1; } }
   @media (prefers-reduced-motion: reduce) {
     .spinbtn::after, .bonusbtn::after, .bonusbtn { animation: none !important; }
-    .skipbtn { transition: opacity .12s ease !important; }
   }
   /* ---------- the bar (HUD v3, 2026-11-03) ----------
      The owner's reference, made simple: one long bar with a pointed left end and the spin hexagon
@@ -2833,46 +2576,8 @@
   .bshopx::before, .bshopx::after { content: ""; position: absolute; left: 50%; top: 50%; width: 18px; height: 3px; border-radius: 2px; background: currentColor; translate: -50% -50%; rotate: 45deg; }
   .bshopx::after { rotate: -45deg; }
   .bshopx:hover { border-color: #fff; }
-  .bshoprow { display: flex; gap: 18px; justify-content: center; align-items: stretch; }
-  .bscard {
-    --acc: #FF2A3D;
-    position: relative; width: 260px; display: flex; flex-direction: column; overflow: hidden;
-    background: rgba(28, 26, 32, .92); border: 2px solid #000; border-radius: 18px;
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, .07) inset, 0 14px 30px rgba(0, 0, 0, .55);
-    transition: transform .2s cubic-bezier(.2, .9, .3, 1.3), box-shadow .2s ease;
-  }
-  .bscard:hover { transform: translateY(-4px); }
-  .bscard.on { box-shadow: 0 0 0 2px var(--acc) inset, 0 0 26px color-mix(in srgb, var(--acc) 55%, transparent), 0 14px 30px rgba(0, 0, 0, .55); }
-  .bsban { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-bottom: 2px solid #000; background: #18171c; }
-  .bsban > img.bsart { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .bsban .bsico { position: absolute; left: 50%; top: 52%; height: 70%; translate: -50% -50%; filter: drop-shadow(0 6px 8px rgba(0, 0, 0, .6)); }
-  .bsban.art .bsico { display: none; }   /* the banner art carries its own icon */
-  .bsbody { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 10px 14px 6px; text-align: center; flex: 1; }
-  .bspips { display: flex; gap: 4px; }
-  .bspips i {
-    width: 18px; height: 22px; background: rgba(255, 255, 255, .16);
-    -webkit-mask: var(--drip) center / contain no-repeat; mask: var(--drip) center / contain no-repeat;
-  }
-  .bspips i.on { background: var(--acc); }
-  .bsttl { font-weight: 700; font-size: 25px; line-height: 1.05; letter-spacing: .03em; text-transform: uppercase; color: #fff; text-shadow: 0 2px 0 rgba(0, 0, 0, .45); }
-  .bsdesc { font-weight: 500; font-size: 15px; line-height: 1.3; color: #c4bcd2; min-height: 2.6em; }
-  .bsmax { display: flex; justify-content: center; align-self: stretch; margin-top: auto; padding-top: 8px; font-size: 13px; letter-spacing: .12em; color: #9a92a8; font-weight: 600; text-transform: uppercase; }
-  .bsfoot { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 10px 14px 14px; border-top: 2px solid rgba(0, 0, 0, .6); background: rgba(0, 0, 0, .22); }
-  .bsprice { font-weight: 700; font-size: 30px; line-height: 1.1; color: #F5C518; font-variant-numeric: tabular-nums; text-shadow: 0 2px 0 rgba(0, 0, 0, .45); white-space: nowrap; }
-  .bsx { font-weight: 600; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: #9a92a8; }
-  .bsget {
-    margin-top: 10px; width: 100%; padding: 10px 0 12px; border: 0; border-radius: 14px; cursor: pointer;
-    font-family: "Fredoka", var(--num); font-weight: 700; font-size: 26px; letter-spacing: .06em; color: #15131a; text-transform: uppercase;
-    background: linear-gradient(#FFB3BA, #FF2A3D); box-shadow: 0 5px 0 #6E0614, 0 8px 14px rgba(0, 0, 0, .4);
-    transition: transform .1s ease, filter .15s ease, box-shadow .1s ease;
-  }
-  .bscard.x .bsget { background: linear-gradient(#D6E2FF, #5B8CFF); box-shadow: 0 5px 0 #1B2547, 0 8px 14px rgba(0, 0, 0, .4); }
-  .bsget:hover:not(:disabled) { filter: brightness(1.08); }
-  .bsget:active:not(:disabled) { transform: translateY(4px); box-shadow: 0 1px 0 #6E0614, 0 3px 8px rgba(0, 0, 0, .4); }
-  .bsget:disabled { filter: grayscale(.8) brightness(.6); cursor: default; }
-  .bsget.armed { animation: bsArm .8s ease-in-out infinite alternate; font-size: 22px; }
+/* the banner art carries its own icon */
   @keyframes bsArm { to { filter: brightness(1.18); transform: scale(1.03); } }
-  .bsget:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
   /* the bar under the cards: what you have, and what each spin plays */
   .bshopbar {
     display: flex; align-items: center; gap: 22px; padding: 10px 26px; border-radius: 16px;
@@ -2899,38 +2604,15 @@
   /* Bonus Boost (bet mode "boost"): a switch, not a buy. Its banner is the "1.6x" mark itself, sprayed
      on the dark ground in vector (crisp at any size); ACTIVATE is an outlined button that fills lime
      and reads ON while every spin is boosted. */
-  .bsban.boostban {
-    display: grid; place-items: center;
-    background: radial-gradient(120% 90% at 50% 60%, #2a3a17 0%, #18171c 62%);
-  }
-  .bsban .bs16 { width: 86%; height: 92%; overflow: visible; filter: drop-shadow(0 6px 8px rgba(0, 0, 0, .6)); }
-  .bs16 text { font-family: "Fredoka", var(--num); font-weight: 700; paint-order: stroke fill; stroke-linejoin: round; }
-  .bscard.on .bs16 .glow { opacity: 1; }
-  .bsban.art .bs16 { display: none; }   /* the banner art (bonus_v2/build.py) carries the mark */
+/* the banner art (bonus_v2/build.py) carries the mark */
   /* the banner sits a little dim while Boost is off and lights up, glowing lime, while it is on */
-  .bscard.tog .bsban > img.bsart { filter: brightness(.78) saturate(.85); transition: filter .25s ease; }
-  .bscard.tog.on .bsban > img.bsart { filter: brightness(1.1) saturate(1.1); }
-  .bscard.tog .bsban::after {
-    content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .25s ease;
-    box-shadow: inset 0 0 28px rgba(255, 181, 71, .55);
-  }
-  .bscard.tog.on .bsban::after { opacity: 1; }
-  .bs16 .glow { opacity: .35; transition: opacity .25s ease; }
   /* ACTIVATE / ON: Fredoka's pair kerning pulls VA and AT in and leaves CT open - set without it,
      evenly tracked (the trailing track balanced by the left pad) */
-  .bscard.tog .bsget { font-kerning: none; font-feature-settings: "kern" 0; letter-spacing: .09em; padding-left: .09em; padding-right: 0; font-size: 22px; white-space: nowrap; }
-  @media (max-width: 1100px) and (orientation: portrait) { .bscard.tog .bsget { font-size: 17px; } }
-  .bscard.tog .bsget:not(.lit) {
-    background: rgba(0, 0, 0, .35); color: var(--acc); box-shadow: 0 0 0 2px var(--acc) inset, 0 5px 0 rgba(0, 0, 0, .5);
-  }
-  .bscard.tog .bsget.lit { background: linear-gradient(#FFB3BA, #FF2A3D); box-shadow: 0 5px 0 #6E0614, 0 0 18px rgba(255, 181, 71, .55); }
+
   /* the HUD's bet while Bonus Boost is on: what a spin really costs, labelled BOOST */
   .hudstat.bet.boost .lbl, .hudstat.bet.boost .val { color: var(--hud-on); }
   /* upright screens: the cards side by side, a size down (three wrap to two rows) */
-  @media (max-width: 1100px) and (orientation: portrait) {
-    .bshoprow { gap: 12px; flex-wrap: wrap; }
-    .bscard { width: min(250px, 44vw); }
-  }
+
   /* ---------- Falcos playback (2026-11-10) ---------- */
   /* the heat glow under a cell at x2 or more (the number itself is the badge over the symbol) */
   .multlayer .gmult { opacity: .55; }
@@ -3577,15 +3259,12 @@ const MULTI_RATE = 1.5;
 // When several Multis go off on one board, the next starts this long (ms, at tempo 1) after the
 // one before instead of waiting for it to finish (owner, 2026-10-24: "make the time in between
 // multipliers shorter when multiple pop up on the board").
-const MULTI_STAGGER = 320;
 document.documentElement.style.setProperty("--multi-rate", MULTI_RATE);
 // a landing tile's note: the higher up the pile it lands, the higher it rings
-const dropPitch = row => .85 + .09 * (ROWS - 1 - row);
 // Every falling icon keeps its own pace, a touch either side of the usual - a duration
 // multiplier from .9 (quicker) to 1.1 (slower), set on the tile as --droptime - and its landing
 // note goes with it: a quicker fall lands sooner and rings a shade higher and brisker.
 const dropPace = () => .9 + Math.random() * .2;
-const landRate = (row, pace) => dropPitch(row) / Math.sqrt(pace);
 function syncTempo() { document.documentElement.style.setProperty("--tempo", String(tempo())); }
 function delay(ms) {
   return new Promise(r => setTimeout(r, ms * tempo()));
@@ -3958,7 +3637,6 @@ function setCell(r, y, sym) {
 // leaves the rest pose showing, and a new one cuts the one running.
 const SYM_DENSITY = [1.0, 1.2, 1.6, 2.4];   // sheet px per rig unit (an icon is 100 across); the manifest's list wins (pack_frames.py)
 const SYM_HEADROOM = 1.25;            // sheet px per screen px at rest: crisp at rest, through the lit pop and the hit
-const SYM_IDLE_STAGGER = 2400;        // ms over which a resting board's idles start up, each symbol at its own moment
 const SYM_IDLE_REST = [8000, 20000];   // ms an icon rests between its idle cycles, at random (the first 0 to the most after it lands)
 const SYM_IDLE_MAX_SHARE = .12;       // at most this share of the board mid-idle at once: a start over it waits a moment
 const SYM_IDLE_RATE = .575;             // the idles play at this share of their frame rate: slow and barely noticed (owner, 2026-11-04); land/hit/multi at their own speed
@@ -4182,11 +3860,6 @@ function rigPlay(cell, clip, { loop = false, speed = 1 } = {}) {
   if (!symRaf) symRaf = requestAnimationFrame(symStep);
   return el;
 }
-function rigStop(el) {
-  if (!el) return;
-  symPlaying.delete(el);
-  if (el._clip) { el._clip = null; symRest(el); }
-}
 // A tile starts performing the moment it lands - its own landing, out of the drop; in the air it is a blur.
 // Every drop-in sends it, timed to its landing (dropIn: the reveal, a skipped reveal, a tumble's refill), at
 // most a handful per frame, so a whole board landing at once never piles into one long frame. A tile already
@@ -4310,13 +3983,6 @@ function heatHueRaw(v) {
     if (x <= v1) { const t = Math.log(x / v0) / Math.log(v1 / v0); hue = h0 + (h1 - h0) * t; break; }
   }
   return hue;
-}
-// The board's neon frame flashes with the moment: a win in the sign's red, a multiplier in its value's
-// heat colour, a bonus in red and amber (.board.flash, in the stylesheet: a glow on the chrome frame).
-function hueRgb(h) {   // a fully saturated colour of hue h (degrees), as 0..1 rgb
-  h = ((h % 360) + 360) % 360;
-  const f = n => { const k = (n + h / 30) % 12; return .5 - .5 * Math.max(-1, Math.min(k - 3, 9 - k, 1)); };
-  return [f(0), f(8), f(4)];
 }
 function boardFlash(kind, v = 1) {
   const b = $("board");
@@ -4740,7 +4406,6 @@ function burstStep() {
   if (bursts.length) burstRaf = requestAnimationFrame(burstStep);
   else { burstRaf = 0; burstLast = 0; ctx.clearRect(0, 0, shardCanvas.width, shardCanvas.height); }
 }
-function resetGrid() { state.grid = emptyGrid(); paintGrid(); }
 // Each slot sits exactly where its cell is laid out. Offsets, not rects: a rect includes
 // whatever transform the cell is animating through, an offset is the resting slot.
 function placeMultLayer() {
@@ -4848,7 +4513,6 @@ function boardThud(r) {
 // of the moves it was tuned with - the scene breathes with a win rather than being filmed.
 // Skip: no new moves; Rapid: a little quicker; a phone: smaller; reduced motion: no camera at all.
 const CAM_DEPTH = { far: .45, near: 1.12 };   // the wall and the figures, against the board's 1
-const CAM_PUNCH_MIN = 5;                      // a Multi worth a camera move: 5x and up
 const CAM_STRENGTH = .25;                     // how much it moves at all, of the moves below (1: as tuned)
 const Cam = (() => {
   const REST = { x: 0, y: 0, z: 1, r: 0 };
@@ -5480,7 +5144,6 @@ function paintFsCount(cur, total, quiet) {
     plate.append(plus);
     plus.addEventListener("animationend", () => plus.remove());
     sparkBurst(plate, { n: 18, reach: .7, colors: ["#ffffff", getComputedStyle($("fsCard")).getPropertyValue("--acc").trim() || "#FF2A3D", "#F5C518"] });
-    sfx("bell", 1.15);
   }
 }
 // A cluster's figure, done counting on the board, is pulled down into the bar's WIN (owner, 2026-11-05,
@@ -5553,25 +5216,19 @@ function setRoundWin(v) {
 /* ---------- sound ---------- */
 const SFX = {
   spin: "assets/sfx_spin.wav", bet: "assets/sfx_bet.wav", reels: "assets/sfx_reels.wav",
-  jackpotA: "assets/sfx_jackpot_a.wav", jackpotB: "assets/sfx_jackpot_b.wav",
-  skip: "assets/sfx_skip.wav", line: "assets/sfx_line.wav",
-  bonusStart: "assets/sfx_bonus_start.wav", bonusEnd: "assets/sfx_bonus_end.wav",
-  coins: "assets/sfx_coins.wav", bell: "assets/sfx_bell.wav",
+  skip: "assets/sfx_skip.wav", line: "assets/sfx_line.wav", bonusEnd: "assets/sfx_bonus_end.wav",
   // the total win screen: the counter ticks under the figure and each mark rings higher
   moneyTick: "assets/sfx_money_tick.wav", mediumWin: "assets/sfx_medium_win.wav",
   trophy: "assets/sfx_trophy.wav", coinsRain: "assets/sfx_coins_rain.wav",   // the total's own arrival
-  // Casino Machines pack: each one is named for the moment it belongs to
-  scatterLand: "assets/sfx_scatter_land.wav",   // a bonus symbol lands (Wild Symbol Reveal)
-  pop: "assets/sfx_pop.wav",                     // one icon popping off the board (Symbol Pop)
-  multiHit: "assets/sfx_multi_hit.wav",          // a Multi going off (Scatter Symbol Hit)
-  alertA: "assets/sfx_jackpot_alert_a.wav", alertB: "assets/sfx_jackpot_alert_b.wav",   // a run of Multis
-  bustA: "assets/sfx_bust_a.wav", bustB: "assets/sfx_bust_b.wav",   // Multis landed, nothing used them
-  winText: "assets/sfx_win_text.wav",            // the win amount popping up (Flashy Win Text)
+  pop: "assets/sfx_pop.wav",                     // a symbol popping off the board
+  bustA: "assets/sfx_bust_a.wav",                // LUCKY PUMP's wheel landing on EMPTY
+  winText: "assets/sfx_win_text.wav",            // the win amount popping up
   hoverLoop: "assets/sfx_hover_loop.wav",        // looped under the pointer on the Bonus button
   autoStart: "assets/sfx_auto_start.wav", autoStop: "assets/sfx_auto_stop.wav",
   menuOpen: "assets/sfx_menu_open.wav", menuClose: "assets/sfx_menu_close.wav",
   toggle: "assets/sfx_toggle.wav",               // rapid, sound and music switches
 };
+
 // avoids repeating the last pick, so back-to-back takes in one round never double up
 function pickSfx(list, memo) {
   const options = list.length > 1 ? list.filter(n => n !== memo.last) : list;
@@ -5579,18 +5236,14 @@ function pickSfx(list, memo) {
   memo.last = choice;
   return choice;
 }
-const jackpotMemo = { last: null };
 const SFX_VOL = {
-  spin: .5, bet: .45, reels: .3, jackpotA: .55, jackpotB: .55, skip: .45, line: .4,
-  bonusStart: .55, bonusEnd: .55, coins: .4, bell: .55,
-  scatterLand: .55, pop: .42, multiHit: .55, alertA: .55, alertB: .55, bustA: .5, bustB: .5,
-  winText: .5, hoverLoop: .28, autoStart: .45, autoStop: .45, menuOpen: .4, menuClose: .4, toggle: .4,
+  spin: .5, bet: .45, reels: .3, skip: .45, line: .4,
+  bonusEnd: .55, pop: .42, bustA: .5, winText: .5, hoverLoop: .28, autoStart: .45, autoStop: .45, menuOpen: .4, menuClose: .4, toggle: .4,
   moneyTick: .4, mediumWin: .55, trophy: .6, coinsRain: .45,
 };
 // Each paying symbol's own soft win sound (sfx_win_<id>, three takes - SFX_SETS), played as its cluster
 // lights up, on top of the shared cluster note. Keyed by the Falcos id (artOf maps an old board id).
 const SYM_WIN_SFX = { H1: "winH1", H2: "winH2", H3: "winH3", H4: "winH4", L1: "winL1", L2: "winL2", L3: "winL3", L4: "winL4", L5: "winL5" };
-const bustMemo = { last: null };
 // Each name is a set of takes, sfx_<stem>_1..n (Opus + AAC), loudness-matched. sfx(name) plays one of
 // them - never the same take twice running - a hair off pitch, so a run of them never sounds like a loop.
 // [file stem, takes, level, pitch wobble (the whole spread; .05 when left out)]. The Falcos stems
@@ -5598,8 +5251,7 @@ const bustMemo = { last: null };
 // play them at rate 1.
 const FALCOS_WOBBLE = .006;
 const SFX_SETS = {
-  // the FALCOS studio ident, in order (each plays once per load)
-  introRise: ["sfx_intro_rise", 3, .5],         // 1.6 s rising tension; ends at its peak, into the hit
+  // the FALCOS studio ident, in order (each plays once per load)         // 1.6 s rising tension; ends at its peak, into the hit
   introWhoosh: ["sfx_intro_whoosh", 3, .45],    // 0.5-0.9 s swoosh: the light sweeping across
   introHit: ["sfx_intro_hit", 2, .72],          // the logo landing: boom + bright crack, clean 2.6 s decay to zero (transient 4 ms in)
   introShimmer: ["sfx_intro_shimmer", 3, .42],  // 1.3 s glassy sheen over the letters
@@ -5615,9 +5267,9 @@ const SFX_SETS = {
   countWhoosh: ["sfx_count_whoosh", 2, .4],     // the figure counting up again after the slam: a rising whoosh
   floatAway: ["sfx_float_away", 2, .36],        // the figure floating away
   // board foley: what each symbol is made of, as it lands (landFoley)
-  landSoft: ["sfx_land_soft", 3, .26], landBag: ["sfx_land_bag", 3, .28], landCan: ["sfx_land_can", 3, .26],
+  landSoft: ["sfx_land_soft", 3, .26], landCan: ["sfx_land_can", 3, .26],
   landChain: ["sfx_land_chain", 3, .24], landCoin: ["sfx_land_coin", 2, .24], landBaggie: ["sfx_land_baggie", 3, .24],
-  landBrick: ["sfx_land_brick", 3, .34], landBox: ["sfx_land_box", 2, .28],
+  landBrick: ["sfx_land_brick", 3, .34],
   landMetal: ["sfx_land_metal", 3, .24], landCard: ["sfx_land_card", 2, .24],
   cascade: ["sfx_cascade", 2, .3],              // a tumble's refill starting to fall
   reelStop: ["sfx_reel_stop", 3, .3],           // a column's last tile down
@@ -5891,8 +5543,6 @@ const REEL_CURVE = rateCurve(spinPos, REEL_RATE.min, REEL_RATE.max);
 // counter's tick rises with it
 const COUNT_CURVE = rateCurve(p => p * p, .72, 1.95);
 // the payout tally accelerates then eases out; the coin rush is pitched to follow it
-const tallyPos = p => (p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2);
-const TALLY_CURVE = rateCurve(tallyPos, .75, 1.55, 64);
 
 function audio() {
   const Ctx = window.AudioContext || window.webkitAudioContext;
@@ -5945,15 +5595,6 @@ function sfx(name, rate = 1) {
   src.start();
   src._gain = g;   // so sfxFade can take it out softly
   return src;   // the caller can stop it: some of these clips run for ten seconds
-}
-// stops a playing clip (what sfx() returned) with a short fade rather than a click
-function sfxFade(src, ms = 120) {
-  if (!src) return;
-  try {
-    const ctx = audio();
-    if (ctx && src._gain) { src._gain.gain.setTargetAtTime(0, ctx.currentTime, ms / 3000); src.stop(ctx.currentTime + ms / 1000 + .05); }
-    else src.stop();
-  } catch (e) { /* already stopped */ }
 }
 
 // The same clip can't be allowed to fire seven times in one frame (seven reels landing on a
@@ -6052,25 +5693,6 @@ function loopSfx(name, ms, curve, gainMul = 1) {   // gainMul: a caller's own tr
 }
 const reelSfx = ms => loopSfx("reels", ms, REEL_CURVE);
 
-// Bonus payout tally: the figure pops up and rolls 0 -> total with a coin rush pitched to the
-// count's own speed, then the bell lands on the total.
-async function tallyUp(amount) {
-  const el = $("tally");
-  if (!el) return;
-  const quiet = REDUCED_MOTION;
-  const ms = quiet ? 0 : 1600 * tempo();
-  el.textContent = fmt(0);
-  el.classList.remove("pop");
-  restyle(el);                 // restart the pop on a repeat bonus
-  el.classList.add("on", "pop");
-  const hush = ms > 0 ? loopSfx("coins", ms, TALLY_CURVE) : () => {};
-  countTo(el, 0, amount, ms);          // same tween as the money readouts: always lands exact
-  await new Promise(r => setTimeout(r, ms + 80));
-  hush();
-  if (!quiet) sfx("bell");
-  await new Promise(r => setTimeout(r, quiet ? 120 : 900));
-  el.classList.remove("on", "pop");
-}
 
 /* ---------- Falcos playback helpers (2026-11-10) ----------
    Every number on screen comes from the events (math-sdk/games/falcos/EVENTS.md): the client never
@@ -7434,7 +7056,6 @@ async function presentRound(round, { settle = true } = {}) {
     // a bonus was actually on the table - a near miss above, or a bonus that failed to clear
     // its own cost in freeSpinEnd. Multis that went off with nothing to multiply are their
     // own small tragedy, though: that gets the bust.
-    if (state.multiTotal > 0) sfx(pickSfx(["bustA", "bustB"], bustMemo));
     tick("No win — run it back.");
   }
 }
@@ -8024,38 +7645,6 @@ document.addEventListener("keydown", e => {
   $("spinBtn").click();
 });
 
-/* ---------- icon sprites ---------- */
-// Every kind of icon baked once into a sprite, and its soft shadow into one of its own (at half
-// the pixels - it is only a blur), so the icons drifting round the loading screen and the ones
-// raining down behind a big win are nothing but drawImage calls on a canvas, however many.
-const ICON_SPRITE = 208;   // px square: the biggest icon either draws, at twice its size, for sharp 2x screens
-let iconKinds = null;
-function iconSprites() {
-  if (iconKinds) return iconKinds;
-  const S = ICON_SPRITE, HALF = S / 2, BLUR = 15, PAD = 2 * BLUR;
-  iconKinds = [...new Set(Object.values(SYM).map(s => s.img).filter(Boolean))].map(src => {
-    const kind = { icon: null, shade: null };   // both stay null until the art has loaded
-    const img = new Image();
-    img.onload = () => {
-      const fit = S / Math.max(img.naturalWidth, img.naturalHeight);
-      const w = img.naturalWidth * fit, h = img.naturalHeight * fit;
-      const icon = document.createElement("canvas");
-      icon.width = icon.height = S;
-      icon.getContext("2d").drawImage(img, (S - w) / 2, (S - h) / 2, w, h);
-      // the icon is drawn far off its canvas, so only the shadow it throws lands on it
-      const shade = document.createElement("canvas");
-      shade.width = shade.height = HALF + 2 * PAD;
-      const g = shade.getContext("2d");
-      g.shadowColor = "rgba(0,0,0,.55)"; g.shadowBlur = BLUR; g.shadowOffsetX = 4096;
-      g.drawImage(icon, PAD - 4096, PAD, HALF, HALF);
-      kind.icon = icon; kind.shade = shade;
-    };
-    img.src = src;
-    return kind;
-  });
-  return iconKinds;
-}
-if (!REDUCED_MOTION) iconSprites();   // baked while the game loads, for the loading screen and the first big win
 
 /* ---------- opening sequence ---------- */
 // Logo fades up on black, fades out, the required disclosure fades in, then the whole
@@ -8165,176 +7754,6 @@ function preloadAll(onProgress) {
   if (document.fonts && document.fonts.forEach) document.fonts.forEach(f => waits.push(one(f.load())));
   tick();
   return Promise.all(waits);
-}
-// Icons drifting slowly round the loading screen, bouncing off its edges, off each other, and
-// off the block in the middle - the logo, the bar and the words, which they never cross - so
-// they wander the corners while the game loads. No gravity: every icon cruises at its own easy
-// pace and turns at its own slow spin, and a knock only throws it off both for a moment before
-// it settles back. Drawn from the same sprites as the win screen's rain; an icon whose art is
-// still on its way fades in when it arrives. It stops by itself once the screen has gone.
-// They are cards in 3D as well: each one turns slowly about its own upright and its own
-// side-to-side axis (yaw and pitch, on top of the flat spin), so it narrows to an edge and
-// comes round showing its back - drawn darker - and a knock, from a wall, the block or another
-// icon, flips it harder for a moment. Drawn as a flat affine of the card's two axes (an
-// orthographic view), which is all a 100px card needs to read as turning in space.
-function startIntroIcons(canvas, avoid) {
-  if (REDUCED_MOTION || !canvas) return;
-  const kinds = iconSprites();
-  if (!kinds.length) return;
-  const ctx = canvas.getContext("2d");
-  const SPIN_KICK = 0.25;   // how much of a glancing knock turns into spin
-  const FLIP_KICK = 1.4;    // degrees/s of flip per px/s of a knock's normal speed
-  const SETTLE = 0.8;       // per second: how quickly a knocked icon eases back to its own pace and spin
-  const RAD = Math.PI / 180;
-  // the back of a card: the same art, darkened, baked once per kind the first time it shows
-  const backOf = kind => {
-    if (kind.back || !kind.icon) return kind.back;
-    const c = document.createElement("canvas");
-    c.width = c.height = ICON_SPRITE;
-    const g = c.getContext("2d");
-    g.drawImage(kind.icon, 0, 0);
-    g.globalCompositeOperation = "source-atop";   // only where the art is
-    g.fillStyle = "rgba(14, 10, 22, .58)";
-    g.fillRect(0, 0, ICON_SPRITE, ICON_SPRITE);
-    kind.back = c;
-    return c;
-  };
-  const size = () => [canvas.clientWidth || innerWidth, canvas.clientHeight || innerHeight];
-  // the block in the middle: one box round everything it holds, a little padded, in the
-  // canvas's own pixels (the logo breathes, so it is measured afresh every frame)
-  const block = () => {
-    const c = canvas.getBoundingClientRect();
-    let l = Infinity, t = Infinity, r = -Infinity, b = -Infinity;
-    for (const el of avoid) {
-      const e = el && el.getBoundingClientRect();
-      if (!e || !e.width || !e.height) continue;
-      l = Math.min(l, e.left); t = Math.min(t, e.top); r = Math.max(r, e.right); b = Math.max(b, e.bottom);
-    }
-    if (l === Infinity) return null;
-    const pad = 14;
-    return { l: l - c.left - pad, t: t - c.top - pad, r: r - c.left + pad, b: b - c.top + pad };
-  };
-  const [W, H] = size();
-  const grow = Math.min(1, Math.max(0.5, Math.min(W, H) / 900));   // a small screen, smaller icons
-  const start = block();
-  const free = W * H - (start ? (start.r - start.l) * (start.b - start.t) : 0);
-  const count = Math.max(8, Math.min(30, Math.round(free / 60000)));
-  const order = kinds.map((_, i) => i);   // every kind once before any comes round again
-  for (let i = order.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [order[i], order[j]] = [order[j], order[i]]; }
-  const bodies = [];
-  for (let i = 0; i < count; i++) {
-    const s = (80 + Math.random() * 40) * grow, r = s * 0.4;
-    let x = 0, y = 0;
-    for (let tries = 0; tries < 60; tries++) {   // a spot clear of the block and of every icon placed so far
-      x = r + Math.random() * Math.max(1, W - 2 * r);
-      y = r + Math.random() * Math.max(1, H - 2 * r);
-      const inBlock = start && x > start.l - r && x < start.r + r && y > start.t - r && y < start.b + r;
-      if (!inBlock && bodies.every(o => Math.hypot(o.x - x, o.y - y) > o.r + r + 6)) break;
-    }
-    const cruise = (60 + Math.random() * 60) * grow, dir = Math.random() * Math.PI * 2;   // px/s: an easy drift
-    const spin = (Math.random() * 2 - 1) * 22;
-    // its own slow turn in space: about one axis mostly, so it reads as a flip rather than a wobble
-    const flipY = (Math.random() < .5 ? -1 : 1) * (14 + Math.random() * 30), flipX = (Math.random() * 2 - 1) * 12;
-    bodies.push({
-      kind: kinds[order[i % order.length]], size: s, r, m: r * r, x, y,
-      vx: Math.cos(dir) * cruise, vy: Math.sin(dir) * cruise, cruise,
-      a: Math.random() * 360, va: spin, spin, fade: 0,
-      yaw: Math.random() * 360, pitch: Math.random() * 360, vyaw: flipY, vpitch: flipX, flipY, flipX,
-    });
-  }
-  let last = performance.now();
-  const tick = now => {
-    if (!canvas.isConnected) return;   // the loading screen has gone, and these with it
-    const real = (now - last) / 1000, dt = Math.min(1 / 30, real);
-    last = now;
-    const [w, h] = size();
-    const box = block();
-    const ease = Math.min(1, SETTLE * dt);
-    for (const b of bodies) {
-      const sp = Math.hypot(b.vx, b.vy) || 1, k = 1 + (b.cruise - sp) / sp * ease;
-      b.vx *= k; b.vy *= k;
-      b.va += (b.spin - b.va) * ease;
-      b.vyaw += (b.flipY - b.vyaw) * ease; b.vpitch += (b.flipX - b.vpitch) * ease;   // a knock's flip eases back to its own turn
-      b.x += b.vx * dt; b.y += b.vy * dt; b.a += b.va * dt;
-      b.yaw += b.vyaw * dt; b.pitch += b.vpitch * dt;
-      // the four edges, corners and all: a side wall flips it about its upright, the floor
-      // and ceiling about its side-to-side axis, each on in the direction it already turns
-      if (b.x < b.r) { b.x = b.r; b.vyaw += FLIP_KICK * Math.abs(b.vx) * Math.sign(b.vyaw || 1); b.vx = Math.abs(b.vx); }
-      else if (b.x > w - b.r) { b.x = w - b.r; b.vyaw += FLIP_KICK * Math.abs(b.vx) * Math.sign(b.vyaw || 1); b.vx = -Math.abs(b.vx); }
-      if (b.y < b.r) { b.y = b.r; b.vpitch += FLIP_KICK * Math.abs(b.vy) * Math.sign(b.vpitch || 1); b.vy = Math.abs(b.vy); }
-      else if (b.y > h - b.r) { b.y = h - b.r; b.vpitch += FLIP_KICK * Math.abs(b.vy) * Math.sign(b.vpitch || 1); b.vy = -Math.abs(b.vy); }
-      if (!box) continue;
-      // the block, with rounded corners so an icon glances off them rather than catching
-      const R = Math.min(40, (box.b - box.t) / 2, (box.r - box.l) / 2);
-      const cx = Math.max(box.l + R, Math.min(box.r - R, b.x)), cy = Math.max(box.t + R, Math.min(box.b - R, b.y));
-      const dx = b.x - cx, dy = b.y - cy, d = Math.hypot(dx, dy);
-      if (d >= b.r + R) continue;
-      if (d === 0) {   // right inside it (the window changed under it): out through the nearest side
-        const gaps = [b.x - box.l, box.r - b.x, b.y - box.t, box.b - b.y], side = gaps.indexOf(Math.min(...gaps));
-        if (side === 0) { b.x = box.l - b.r; b.vx = -Math.abs(b.vx); }
-        else if (side === 1) { b.x = box.r + b.r; b.vx = Math.abs(b.vx); }
-        else if (side === 2) { b.y = box.t - b.r; b.vy = -Math.abs(b.vy); }
-        else { b.y = box.b + b.r; b.vy = Math.abs(b.vy); }
-        continue;
-      }
-      const nx = dx / d, ny = dy / d;
-      b.x = cx + nx * (b.r + R); b.y = cy + ny * (b.r + R);
-      const vn = b.vx * nx + b.vy * ny;
-      if (vn < 0) {
-        b.vx -= 2 * vn * nx; b.vy -= 2 * vn * ny;
-        b.vyaw += FLIP_KICK * -vn * Math.abs(nx) * Math.sign(b.vyaw || 1);     // the block flips it too,
-        b.vpitch += FLIP_KICK * -vn * Math.abs(ny) * Math.sign(b.vpitch || 1); // by the side it hit
-      }
-    }
-    // icon on icon: round bodies, overlap shared out by mass, a clean springy knock that
-    // loses nothing, and the glancing part of it turned into spin
-    for (let i = 0; i < bodies.length; i++) {
-      const p = bodies[i];
-      for (let j = i + 1; j < bodies.length; j++) {
-        const q = bodies[j];
-        const dx = q.x - p.x, dy = q.y - p.y, reach = p.r + q.r, d2 = dx * dx + dy * dy;
-        if (d2 >= reach * reach || d2 === 0) continue;
-        const d = Math.sqrt(d2), nx = dx / d, ny = dy / d;
-        const ip = 1 / p.m, iq = 1 / q.m, share = (reach - d) / (ip + iq);
-        p.x -= nx * share * ip; p.y -= ny * share * ip;
-        q.x += nx * share * iq; q.y += ny * share * iq;
-        const rvx = q.vx - p.vx, rvy = q.vy - p.vy, vn = rvx * nx + rvy * ny;
-        if (vn >= 0) continue;
-        const jn = -2 * vn / (ip + iq);
-        p.vx -= jn * nx * ip; p.vy -= jn * ny * ip;
-        q.vx += jn * nx * iq; q.vy += jn * ny * iq;
-        const vt = -rvx * ny + rvy * nx;
-        p.va -= vt * SPIN_KICK; q.va += vt * SPIN_KICK;
-        // and each flips over by how hard it was hit, about the axis the hit came in on
-        p.vyaw += FLIP_KICK * jn * ip * Math.abs(nx) * Math.sign(p.vyaw || 1); p.vpitch += FLIP_KICK * jn * ip * Math.abs(ny) * Math.sign(p.vpitch || 1);
-        q.vyaw += FLIP_KICK * jn * iq * Math.abs(nx) * Math.sign(q.vyaw || 1); q.vpitch += FLIP_KICK * jn * iq * Math.abs(ny) * Math.sign(q.vpitch || 1);
-      }
-    }
-    const dpr = Math.min(2, devicePixelRatio || 1);
-    const cw = Math.round(w * dpr), ch = Math.round(h * dpr);
-    if (canvas.width !== cw || canvas.height !== ch) { canvas.width = cw; canvas.height = ch; }   // (clears it too)
-    else { ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, cw, ch); }
-    for (const b of bodies) {
-      if (!b.kind.icon) continue;                  // its art is still on its way
-      b.fade = Math.min(1, b.fade + real * 2.5);   // on the clock, so a slow first frame never leaves it dim
-      const s = dpr * b.size / ICON_SPRITE;
-      // the card's two axes, turned in space (yaw about its upright, then pitch about its
-      // side-to-side axis) and seen flat: its across-axis is (cos yaw, sin yaw sin pitch), its
-      // down-axis (0, cos pitch); the flat spin then turns both in the screen plane. Their
-      // cross product's sign (cos yaw cos pitch) says which face is toward us.
-      const cy = Math.cos(b.yaw * RAD), sy = Math.sin(b.yaw * RAD), cp = Math.cos(b.pitch * RAD), spn = Math.sin(b.pitch * RAD);
-      const ax = cy, ay = sy * spn, bx = 0, by = cp;
-      const turn = b.a * RAD, ct = Math.cos(turn), st = Math.sin(turn);
-      const facing = cy * cp;
-      const back = facing < 0 ? backOf(b.kind) : null;
-      ctx.globalAlpha = b.fade * (facing < 0 ? .92 : 1);
-      ctx.setTransform((ax * ct - ay * st) * s, (ax * st + ay * ct) * s, (bx * ct - by * st) * s, (bx * st + by * ct) * s, b.x * dpr, b.y * dpr);
-      ctx.drawImage(back || b.kind.icon, -ICON_SPRITE / 2, -ICON_SPRITE / 2);
-    }
-    ctx.globalAlpha = 1;
-    requestAnimationFrame(tick);
-  };
-  requestAnimationFrame(tick);
 }
 // The loading screen (owner, 2026-11-03): the black-and-white FALCOS ident (see .intro). It starts
 // once its wordmark is decoded and its five sounds are ready (the sounds 400 ms at the most) - plays its beats with
@@ -9019,7 +8438,6 @@ introDone.then(() => setTimeout(releaseGonePics, 1500));   // its plates are gon
 // again, then the bonus board with its spin counter. It waits for the click - Rapid and
 // Skip quicken animations, they never skip a screen - though Space and Enter count as one.
 // The three bonuses' screens: the lettering, the name and the lines on how it plays (FALCOS_DESIGN.md).
-const EXTREME_DIRECT_SPINS = 10;          // MIDNIGHT RUN's spins, should a trigger not say
 const BONUS_KINDS = {
   fillup: { name: "FILL UP", logo: "assets/menu/logo_fillup.webp", x: false, noSpins: true,
     how: [`<b>Fuel Drops</b> stick where they land - green, amber and red, worth up to <b>x500</b> each - and change colour as they grow.`,

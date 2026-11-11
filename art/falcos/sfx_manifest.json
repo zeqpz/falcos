@@ -1972,5 +1972,2733 @@
    "synth",
    "synth"
   ]
+ },
+ "sfx_land_brick": {
+  "takes": [
+   "sfx_land_brick_1.wav",
+   "sfx_land_brick_2.wav",
+   "sfx_land_brick_3.wav"
+  ],
+  "ogg": [
+   "sfx_land_brick_1.ogg",
+   "sfx_land_brick_2.ogg",
+   "sfx_land_brick_3.ogg"
+  ],
+  "aac": [
+   "sfx_land_brick_1.aac",
+   "sfx_land_brick_2.aac",
+   "sfx_land_brick_3.aac"
+  ],
+  "seconds": [
+   0.311,
+   0.311,
+   0.307
+  ],
+  "lufs": [
+   -24.18,
+   -24.0,
+   -24.0
+  ],
+  "peak_db": [
+   -6.5,
+   -8.76,
+   -7.83
+  ],
+  "peak_db_ogg": [
+   -6.62,
+   -8.83,
+   -7.84
+  ],
+  "peak_db_aac": [
+   -7.07,
+   -8.17,
+   -7.39
+  ],
+  "tail_floor_db": [
+   -91.2,
+   -90.4,
+   -84.9
+  ],
+  "centroid_hz": [
+   147,
+   114,
+   184
+  ],
+  "hf_floor_db": [
+   -107.9,
+   -107.7,
+   -107.9
+  ],
+  "source_speech_score": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "target_lufs": -24,
+  "purpose": "Ident: each FALCOS letter landing - soft rubbery thunk with a low D body",
+  "sources": [
+   "rubber_6",
+   "rubber_7",
+   "rubber_4"
+  ],
+  "replaces_original": true
+ },
+ "sfx_line": {
+  "takes": [
+   "sfx_line.wav"
+  ],
+  "ogg": [
+   "sfx_line.ogg"
+  ],
+  "aac": [
+   "sfx_line.aac"
+  ],
+  "seconds": [
+   0.894
+  ],
+  "lufs": [
+   -27.0
+  ],
+  "peak_db": [
+   -10.83
+  ],
+  "peak_db_ogg": [
+   -10.81
+  ],
+  "peak_db_aac": [
+   -10.84
+  ],
+  "tail_floor_db": [
+   -92.8
+  ],
+  "centroid_hz": [
+   359
+  ],
+  "hf_floor_db": [
+   -107.9
+  ],
+  "source_speech_score": [
+   0.0
+  ],
+  "target_lufs": -27,
+  "purpose": "Shared cluster note under each symbol chime: low warm D4/A4 pluck, soft D3",
+  "sources": [
+   "synth"
+  ],
+  "replaces_original": true
+ },
+ "sfx_glow_pulse": {
+  "takes": [
+   "sfx_glow_pulse_1.wav",
+   "sfx_glow_pulse_2.wav"
+  ],
+  "ogg": [
+   "sfx_glow_pulse_1.ogg",
+   "sfx_glow_pulse_2.ogg"
+  ],
+  "aac": [
+   "sfx_glow_pulse_1.aac",
+   "sfx_glow_pulse_2.aac"
+  ],
+  "seconds": [
+   0.901,
+   0.895
+  ],
+  "lufs": [
+   -27.0,
+   -27.01
+  ],
+  "peak_db": [
+   -16.49,
+   -16.7
+  ],
+  "peak_db_ogg": [
+   -16.63,
+   -16.52
+  ],
+  "peak_db_aac": [
+   -16.54,
+   -16.63
+  ],
+  "tail_floor_db": [
+   -91.2,
+   -92.0
+  ],
+  "centroid_hz": [
+   399,
+   300
+  ],
+  "hf_floor_db": [
+   -107.3,
+   -107.1
+  ],
+  "source_speech_score": [
+   0.0,
+   0.0
+  ],
+  "target_lufs": -27,
+  "purpose": "Winning symbol lighting up: soft neon pad swell on D with a faint A2 hum",
+  "sources": [
+   "synth",
+   "synth"
+  ],
+  "replaces_original": true
+ },
+ "sfx_shine": {
+  "takes": [
+   "sfx_shine_1.wav",
+   "sfx_shine_2.wav"
+  ],
+  "ogg": [
+   "sfx_shine_1.ogg",
+   "sfx_shine_2.ogg"
+  ],
+  "aac": [
+   "sfx_shine_1.aac",
+   "sfx_shine_2.aac"
+  ],
+  "seconds": [
+   0.517,
+   0.52
+  ],
+  "lufs": [
+   -26.0,
+   -26.0
+  ],
+  "peak_db": [
+   -16.1,
+   -16.19
+  ],
+  "peak_db_ogg": [
+   -16.45,
+   -16.41
+  ],
+  "peak_db_aac": [
+   -16.2,
+   -16.27
+  ],
+  "tail_floor_db": [
+   -93.2,
+   -93.5
+  ],
+  "centroid_hz": [
+   1959,
+   2158
+  ],
+  "hf_floor_db": [
+   -104.8,
+   -105.2
+  ],
+  "source_speech_score": [
+   0.0,
+   0.0
+  ],
+  "target_lufs": -26,
+  "purpose": "Shine across a symbol: soft airy sweep left to right, two glass tings",
+  "sources": [
+   "synth",
+   "synth"
+  ],
+  "replaces_original": true
+ },
+ "sfx_sparkle": {
+  "takes": [
+   "sfx_sparkle_1.wav",
+   "sfx_sparkle_2.wav",
+   "sfx_sparkle_3.wav"
+  ],
+  "ogg": [
+   "sfx_sparkle_1.ogg",
+   "sfx_sparkle_2.ogg",
+   "sfx_sparkle_3.ogg"
+  ],
+  "aac": [
+   "sfx_sparkle_1.aac",
+   "sfx_sparkle_2.aac",
+   "sfx_sparkle_3.aac"
+  ],
+  "seconds": [
+   0.712,
+   0.769,
+   0.873
+  ],
+  "lufs": [
+   -27.0,
+   -27.0,
+   -27.0
+  ],
+  "peak_db": [
+   -18.31,
+   -17.63,
+   -16.12
+  ],
+  "peak_db_ogg": [
+   -18.37,
+   -17.59,
+   -16.14
+  ],
+  "peak_db_aac": [
+   -18.32,
+   -17.64,
+   -15.96
+  ],
+  "tail_floor_db": [
+   -92.4,
+   -92.5,
+   -89.6
+  ],
+  "centroid_hz": [
+   1771,
+   1733,
+   1602
+  ],
+  "hf_floor_db": [
+   -107.4,
+   -107.6,
+   -107.9
+  ],
+  "source_speech_score": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "target_lufs": -27,
+  "purpose": "Glitter: soft scattered glass plinks in D pentatonic",
+  "sources": [
+   "synth",
+   "synth",
+   "synth"
+  ],
+  "replaces_original": true
+ },
+ "sfx_glint": {
+  "takes": [
+   "sfx_glint_1.wav",
+   "sfx_glint_2.wav",
+   "sfx_glint_3.wav",
+   "sfx_glint_4.wav"
+  ],
+  "ogg": [
+   "sfx_glint_1.ogg",
+   "sfx_glint_2.ogg",
+   "sfx_glint_3.ogg",
+   "sfx_glint_4.ogg"
+  ],
+  "aac": [
+   "sfx_glint_1.aac",
+   "sfx_glint_2.aac",
+   "sfx_glint_3.aac",
+   "sfx_glint_4.aac"
+  ],
+  "seconds": [
+   0.782,
+   0.782,
+   0.785,
+   0.784
+  ],
+  "lufs": [
+   -28.01,
+   -28.0,
+   -28.01,
+   -28.01
+  ],
+  "peak_db": [
+   -16.46,
+   -18.02,
+   -13.81,
+   -14.58
+  ],
+  "peak_db_ogg": [
+   -16.46,
+   -18.05,
+   -13.93,
+   -14.55
+  ],
+  "peak_db_aac": [
+   -16.69,
+   -15.85,
+   -13.87,
+   -12.01
+  ],
+  "tail_floor_db": [
+   -92.5,
+   -87.1,
+   -88.2,
+   -88.9
+  ],
+  "centroid_hz": [
+   1338,
+   1322,
+   1349,
+   1335
+  ],
+  "hf_floor_db": [
+   -108.0,
+   -107.8,
+   -107.9,
+   -108.1
+  ],
+  "source_speech_score": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "target_lufs": -28,
+  "purpose": "One soft glass ting per lit symbol (tuned so the game's GLINT_SCALE x .92 lands on D6 E6 F#6 G6 A6 B6)",
+  "sources": [
+   "synth",
+   "synth",
+   "synth",
+   "synth"
+  ],
+  "replaces_original": true
+ },
+ "sfx_win_text": {
+  "takes": [
+   "sfx_win_text.wav"
+  ],
+  "ogg": [
+   "sfx_win_text.ogg"
+  ],
+  "aac": [
+   "sfx_win_text.aac"
+  ],
+  "seconds": [
+   0.843
+  ],
+  "lufs": [
+   -25.01
+  ],
+  "peak_db": [
+   -11.52
+  ],
+  "peak_db_ogg": [
+   -11.52
+  ],
+  "peak_db_aac": [
+   -7.15
+  ],
+  "tail_floor_db": [
+   -84.5
+  ],
+  "centroid_hz": [
+   1193
+  ],
+  "hf_floor_db": [
+   -107.8
+  ],
+  "source_speech_score": [
+   0.0
+  ],
+  "target_lufs": -25,
+  "purpose": "Win figure popping up: soft rising blip D5-A5, glass D6, faint neon hum",
+  "sources": [
+   "synth"
+  ],
+  "replaces_original": true
+ },
+ "sfx_count_tick": {
+  "takes": [
+   "sfx_count_tick_1.wav",
+   "sfx_count_tick_2.wav",
+   "sfx_count_tick_3.wav"
+  ],
+  "ogg": [
+   "sfx_count_tick_1.ogg",
+   "sfx_count_tick_2.ogg",
+   "sfx_count_tick_3.ogg"
+  ],
+  "aac": [
+   "sfx_count_tick_1.aac",
+   "sfx_count_tick_2.aac",
+   "sfx_count_tick_3.aac"
+  ],
+  "seconds": [
+   0.045,
+   0.044,
+   0.044
+  ],
+  "lufs": [
+   -28.1,
+   -29.05,
+   -27.98
+  ],
+  "peak_db": [
+   -7.77,
+   -7.47,
+   -6.74
+  ],
+  "peak_db_ogg": [
+   -7.73,
+   -7.52,
+   -6.77
+  ],
+  "peak_db_aac": [
+   -7.78,
+   -7.55,
+   -6.79
+  ],
+  "tail_floor_db": [
+   -90.9,
+   -93.6,
+   -92.7
+  ],
+  "centroid_hz": [
+   1333,
+   1451,
+   1503
+  ],
+  "hf_floor_db": [
+   -104.5,
+   -96.3,
+   -98.3
+  ],
+  "source_speech_score": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "target_lufs": -27,
+  "purpose": "Win figure counting: one tiny soft tick",
+  "sources": [
+   "synth",
+   "synth",
+   "synth"
+  ],
+  "replaces_original": true
+ },
+ "sfx_mult_slam": {
+  "takes": [
+   "sfx_mult_slam_1.wav",
+   "sfx_mult_slam_2.wav",
+   "sfx_mult_slam_3.wav"
+  ],
+  "ogg": [
+   "sfx_mult_slam_1.ogg",
+   "sfx_mult_slam_2.ogg",
+   "sfx_mult_slam_3.ogg"
+  ],
+  "aac": [
+   "sfx_mult_slam_1.aac",
+   "sfx_mult_slam_2.aac",
+   "sfx_mult_slam_3.aac"
+  ],
+  "seconds": [
+   0.389,
+   0.358,
+   0.355
+  ],
+  "lufs": [
+   -23.28,
+   -23.14,
+   -23.11
+  ],
+  "peak_db": [
+   -6.5,
+   -6.5,
+   -6.5
+  ],
+  "peak_db_ogg": [
+   -6.61,
+   -6.59,
+   -6.45
+  ],
+  "peak_db_aac": [
+   -6.51,
+   -6.56,
+   -6.27
+  ],
+  "tail_floor_db": [
+   -89.5,
+   -140.0,
+   -79.5
+  ],
+  "centroid_hz": [
+   158,
+   197,
+   263
+  ],
+  "hf_floor_db": [
+   -108.0,
+   -108.1,
+   -107.9
+  ],
+  "source_speech_score": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "target_lufs": -23,
+  "purpose": "x<N> slamming onto the figure: rubber stamp thump, soft low D boom",
+  "sources": [
+   "stamp_2",
+   "stamp_3",
+   "stamp_4"
+  ],
+  "replaces_original": true
+ },
+ "sfx_count_whoosh": {
+  "takes": [
+   "sfx_count_whoosh_1.wav",
+   "sfx_count_whoosh_2.wav"
+  ],
+  "ogg": [
+   "sfx_count_whoosh_1.ogg",
+   "sfx_count_whoosh_2.ogg"
+  ],
+  "aac": [
+   "sfx_count_whoosh_1.aac",
+   "sfx_count_whoosh_2.aac"
+  ],
+  "seconds": [
+   1.312,
+   1.314
+  ],
+  "lufs": [
+   -26.0,
+   -25.99
+  ],
+  "peak_db": [
+   -14.97,
+   -13.73
+  ],
+  "peak_db_ogg": [
+   -14.53,
+   -13.9
+  ],
+  "peak_db_aac": [
+   -15.16,
+   -13.76
+  ],
+  "tail_floor_db": [
+   -93.3,
+   -93.4
+  ],
+  "centroid_hz": [
+   1253,
+   1312
+  ],
+  "hf_floor_db": [
+   -108.1,
+   -107.9
+  ],
+  "source_speech_score": [
+   0.0,
+   0.0
+  ],
+  "target_lufs": -26,
+  "purpose": "Figure climbing after the slam: soft rising whoosh and D4-D5 glide",
+  "sources": [
+   "synth",
+   "synth"
+  ],
+  "replaces_original": true
+ },
+ "sfx_count_end": {
+  "takes": [
+   "sfx_count_end_1.wav"
+  ],
+  "ogg": [
+   "sfx_count_end_1.ogg"
+  ],
+  "aac": [
+   "sfx_count_end_1.aac"
+  ],
+  "seconds": [
+   1.612
+  ],
+  "lufs": [
+   -25.0
+  ],
+  "peak_db": [
+   -9.61
+  ],
+  "peak_db_ogg": [
+   -9.58
+  ],
+  "peak_db_aac": [
+   -9.95
+  ],
+  "tail_floor_db": [
+   -87.5
+  ],
+  "centroid_hz": [
+   391
+  ],
+  "hf_floor_db": [
+   -108.1
+  ],
+  "source_speech_score": [
+   0.007
+  ],
+  "target_lufs": -25,
+  "purpose": "Figure lands: cash register ka-chunk and one soft A5/D5 bell",
+  "sources": [
+   "reg_drawer_1"
+  ],
+  "replaces_original": true
+ },
+ "sfx_float_away": {
+  "takes": [
+   "sfx_float_away_1.wav",
+   "sfx_float_away_2.wav"
+  ],
+  "ogg": [
+   "sfx_float_away_1.ogg",
+   "sfx_float_away_2.ogg"
+  ],
+  "aac": [
+   "sfx_float_away_1.aac",
+   "sfx_float_away_2.aac"
+  ],
+  "seconds": [
+   1.53,
+   1.546
+  ],
+  "lufs": [
+   -27.0,
+   -27.0
+  ],
+  "peak_db": [
+   -15.86,
+   -16.3
+  ],
+  "peak_db_ogg": [
+   -16.13,
+   -16.05
+  ],
+  "peak_db_aac": [
+   -15.79,
+   -16.37
+  ],
+  "tail_floor_db": [
+   -90.0,
+   -87.3
+  ],
+  "centroid_hz": [
+   1212,
+   1195
+  ],
+  "hf_floor_db": [
+   -107.8,
+   -107.7
+  ],
+  "source_speech_score": [
+   0.0,
+   0.0
+  ],
+  "target_lufs": -27,
+  "purpose": "Figure floating down into the bar: soft falling whoosh with three fading glass notes",
+  "sources": [
+   "synth",
+   "synth"
+  ],
+  "replaces_original": true
+ },
+ "sfx_medium_win": {
+  "takes": [
+   "sfx_medium_win.wav"
+  ],
+  "ogg": [
+   "sfx_medium_win.ogg"
+  ],
+  "aac": [
+   "sfx_medium_win.aac"
+  ],
+  "seconds": [
+   2.967
+  ],
+  "lufs": [
+   -24.0
+  ],
+  "peak_db": [
+   -12.75
+  ],
+  "peak_db_ogg": [
+   -12.63
+  ],
+  "peak_db_aac": [
+   -12.12
+  ],
+  "tail_floor_db": [
+   -80.4
+  ],
+  "centroid_hz": [
+   1168
+  ],
+  "hf_floor_db": [
+   -107.8
+  ],
+  "source_speech_score": [
+   0.0
+  ],
+  "target_lufs": -24,
+  "purpose": "Win screen mark ring: forecourt driveway bell ding-ding and a warm D major shimmer",
+  "sources": [
+   "synth"
+  ],
+  "replaces_original": true
+ },
+ "sfx_trophy": {
+  "takes": [
+   "sfx_trophy.wav"
+  ],
+  "ogg": [
+   "sfx_trophy.ogg"
+  ],
+  "aac": [
+   "sfx_trophy.aac"
+  ],
+  "seconds": [
+   2.391
+  ],
+  "lufs": [
+   -25.0
+  ],
+  "peak_db": [
+   -12.47
+  ],
+  "peak_db_ogg": [
+   -12.5
+  ],
+  "peak_db_aac": [
+   -12.64
+  ],
+  "tail_floor_db": [
+   -80.3
+  ],
+  "centroid_hz": [
+   448
+  ],
+  "hf_floor_db": [
+   -107.7
+  ],
+  "source_speech_score": [
+   0.0
+  ],
+  "target_lufs": -25,
+  "purpose": "TOTAL WIN arrival: warm D major fanfare-pad bloom",
+  "sources": [
+   "synth"
+  ],
+  "replaces_original": true
+ },
+ "sfx_coins_rain": {
+  "takes": [
+   "sfx_coins_rain.wav"
+  ],
+  "ogg": [
+   "sfx_coins_rain.ogg"
+  ],
+  "aac": [
+   "sfx_coins_rain.aac"
+  ],
+  "seconds": [
+   3.981
+  ],
+  "lufs": [
+   -25.0
+  ],
+  "peak_db": [
+   -7.91
+  ],
+  "peak_db_ogg": [
+   -8.07
+  ],
+  "peak_db_aac": [
+   -7.82
+  ],
+  "tail_floor_db": [
+   -77.8
+  ],
+  "centroid_hz": [
+   3061
+  ],
+  "hf_floor_db": [
+   -104.5
+  ],
+  "source_speech_score": [
+   0.001
+  ],
+  "target_lufs": -25,
+  "purpose": "TOTAL WIN arrival: soft register coins pouring and settling, in-key glints",
+  "sources": [
+   "coins_pour_6"
+  ],
+  "replaces_original": true
+ },
+ "sfx_money_tick": {
+  "takes": [
+   "sfx_money_tick.wav"
+  ],
+  "ogg": [
+   "sfx_money_tick.ogg"
+  ],
+  "aac": [
+   "sfx_money_tick.aac"
+  ],
+  "seconds": [
+   2.7
+  ],
+  "lufs": [
+   -24.1
+  ],
+  "peak_db": [
+   -9.7
+  ],
+  "peak_db_ogg": [
+   -9.69
+  ],
+  "peak_db_aac": [
+   -8.89
+  ],
+  "tail_floor_db": [
+   -97.1
+  ],
+  "centroid_hz": [
+   1091
+  ],
+  "hf_floor_db": [
+   -98.1
+  ],
+  "source_speech_score": [
+   0.023
+  ],
+  "target_lufs": -24,
+  "purpose": "Counter ticker loop (win screen, balance, bonus win): pump number wheels, a tiny bell every 10th tick",
+  "sources": [
+   [
+    "dial_click_3",
+    "ratchet_7",
+    "ratchet_3",
+    "ratchet_3"
+   ]
+  ],
+  "replaces_original": true,
+  "loop": true
+ },
+ "sfx_reels": {
+  "takes": [
+   "sfx_reels.wav"
+  ],
+  "ogg": [
+   "sfx_reels.ogg"
+  ],
+  "aac": [
+   "sfx_reels.aac"
+  ],
+  "seconds": [
+   0.68
+  ],
+  "lufs": [
+   -31.07
+  ],
+  "peak_db": [
+   -20.38
+  ],
+  "peak_db_ogg": [
+   -20.59
+  ],
+  "peak_db_aac": [
+   -20.47
+  ],
+  "tail_floor_db": [
+   -140.0
+  ],
+  "centroid_hz": [
+   401
+  ],
+  "hf_floor_db": [
+   -107.9
+  ],
+  "source_speech_score": [
+   0.0
+  ],
+  "target_lufs": -31,
+  "purpose": "Reveal loop under the falling reels: soft rolling whir with a low D3/A3 hum (seamless 0.68 s)",
+  "sources": [
+   "synth"
+  ],
+  "replaces_original": true,
+  "loop": true
+ },
+ "sfx_reel_stop": {
+  "takes": [
+   "sfx_reel_stop_1.wav",
+   "sfx_reel_stop_2.wav",
+   "sfx_reel_stop_3.wav"
+  ],
+  "ogg": [
+   "sfx_reel_stop_1.ogg",
+   "sfx_reel_stop_2.ogg",
+   "sfx_reel_stop_3.ogg"
+  ],
+  "aac": [
+   "sfx_reel_stop_1.aac",
+   "sfx_reel_stop_2.aac",
+   "sfx_reel_stop_3.aac"
+  ],
+  "seconds": [
+   0.17,
+   0.208,
+   0.204
+  ],
+  "lufs": [
+   -25.0,
+   -25.0,
+   -25.11
+  ],
+  "peak_db": [
+   -7.85,
+   -7.93,
+   -6.5
+  ],
+  "peak_db_ogg": [
+   -7.95,
+   -7.89,
+   -6.52
+  ],
+  "peak_db_aac": [
+   -7.9,
+   -7.07,
+   -6.51
+  ],
+  "tail_floor_db": [
+   -88.4,
+   -92.5,
+   -87.4
+  ],
+  "centroid_hz": [
+   175,
+   203,
+   218
+  ],
+  "hf_floor_db": [
+   -106.9,
+   -107.6,
+   -107.5
+  ],
+  "source_speech_score": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "target_lufs": -25,
+  "purpose": "A column landing: soft rubbery thunk with a low body",
+  "sources": [
+   "rubber_5",
+   "rubber_2",
+   "rubber_3"
+  ],
+  "replaces_original": true
+ },
+ "sfx_cascade": {
+  "takes": [
+   "sfx_cascade_1.wav",
+   "sfx_cascade_2.wav"
+  ],
+  "ogg": [
+   "sfx_cascade_1.ogg",
+   "sfx_cascade_2.ogg"
+  ],
+  "aac": [
+   "sfx_cascade_1.aac",
+   "sfx_cascade_2.aac"
+  ],
+  "seconds": [
+   0.753,
+   0.753
+  ],
+  "lufs": [
+   -28.01,
+   -28.01
+  ],
+  "peak_db": [
+   -17.16,
+   -16.47
+  ],
+  "peak_db_ogg": [
+   -17.19,
+   -16.21
+  ],
+  "peak_db_aac": [
+   -17.28,
+   -16.41
+  ],
+  "tail_floor_db": [
+   -87.6,
+   -89.9
+  ],
+  "centroid_hz": [
+   1159,
+   1136
+  ],
+  "hf_floor_db": [
+   -107.9,
+   -107.7
+  ],
+  "source_speech_score": [
+   0.0,
+   0.0
+  ],
+  "target_lufs": -28,
+  "purpose": "A tumble refill starting to fall: soft falling whoosh, A4-D4 glide",
+  "sources": [
+   "synth",
+   "synth"
+  ],
+  "replaces_original": true
+ },
+ "sfx_pop": {
+  "takes": [
+   "sfx_pop.wav"
+  ],
+  "ogg": [
+   "sfx_pop.ogg"
+  ],
+  "aac": [
+   "sfx_pop.aac"
+  ],
+  "seconds": [
+   0.631
+  ],
+  "lufs": [
+   -25.29
+  ],
+  "peak_db": [
+   -6.5
+  ],
+  "peak_db_ogg": [
+   -6.54
+  ],
+  "peak_db_aac": [
+   -6.29
+  ],
+  "tail_floor_db": [
+   -79.7
+  ],
+  "centroid_hz": [
+   761
+  ],
+  "hf_floor_db": [
+   -88.9
+  ],
+  "source_speech_score": [
+   0.0
+  ],
+  "target_lufs": -25,
+  "purpose": "An icon popping off the board: soft round boop and a puff of air",
+  "sources": [
+   "pop_1"
+  ],
+  "replaces_original": true
+ },
+ "sfx_land_soft": {
+  "takes": [
+   "sfx_land_soft_1.wav",
+   "sfx_land_soft_2.wav",
+   "sfx_land_soft_3.wav"
+  ],
+  "ogg": [
+   "sfx_land_soft_1.ogg",
+   "sfx_land_soft_2.ogg",
+   "sfx_land_soft_3.ogg"
+  ],
+  "aac": [
+   "sfx_land_soft_1.aac",
+   "sfx_land_soft_2.aac",
+   "sfx_land_soft_3.aac"
+  ],
+  "seconds": [
+   0.131,
+   0.132,
+   0.136
+  ],
+  "lufs": [
+   -25.26,
+   -25.51,
+   -25.0
+  ],
+  "peak_db": [
+   -6.5,
+   -6.5,
+   -9.23
+  ],
+  "peak_db_ogg": [
+   -6.34,
+   -6.6,
+   -9.19
+  ],
+  "peak_db_aac": [
+   -6.61,
+   -6.32,
+   -9.24
+  ],
+  "tail_floor_db": [
+   -140.0,
+   -95.6,
+   -140.0
+  ],
+  "centroid_hz": [
+   273,
+   316,
+   237
+  ],
+  "hf_floor_db": [
+   -98.4,
+   -105.3,
+   -105.2
+  ],
+  "source_speech_score": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "target_lufs": -25,
+  "purpose": "Slushie / hot dog / donut land: soft paper-cup thump on the counter",
+  "sources": [
+   "cup_set_6",
+   "cup_set_2",
+   "cup_set_4"
+  ],
+  "replaces_original": true
+ },
+ "sfx_land_can": {
+  "takes": [
+   "sfx_land_can_1.wav",
+   "sfx_land_can_2.wav",
+   "sfx_land_can_3.wav"
+  ],
+  "ogg": [
+   "sfx_land_can_1.ogg",
+   "sfx_land_can_2.ogg",
+   "sfx_land_can_3.ogg"
+  ],
+  "aac": [
+   "sfx_land_can_1.aac",
+   "sfx_land_can_2.aac",
+   "sfx_land_can_3.aac"
+  ],
+  "seconds": [
+   0.197,
+   0.168,
+   0.304
+  ],
+  "lufs": [
+   -25.01,
+   -25.0,
+   -25.0
+  ],
+  "peak_db": [
+   -9.83,
+   -7.88,
+   -6.66
+  ],
+  "peak_db_ogg": [
+   -9.96,
+   -7.88,
+   -6.65
+  ],
+  "peak_db_aac": [
+   -9.83,
+   -7.89,
+   -6.56
+  ],
+  "tail_floor_db": [
+   -93.0,
+   -86.0,
+   -78.6
+  ],
+  "centroid_hz": [
+   408,
+   332,
+   452
+  ],
+  "hf_floor_db": [
+   -94.1,
+   -99.0,
+   -104.6
+  ],
+  "source_speech_score": [
+   0.016,
+   0.014,
+   0.0
+  ],
+  "target_lufs": -25,
+  "purpose": "Jerry can / energy drink land: soft hollow can tock",
+  "sources": [
+   "can_set_4",
+   "can_set_6",
+   "can_set_2"
+  ],
+  "replaces_original": true
+ },
+ "sfx_land_chain": {
+  "takes": [
+   "sfx_land_chain_1.wav",
+   "sfx_land_chain_2.wav",
+   "sfx_land_chain_3.wav"
+  ],
+  "ogg": [
+   "sfx_land_chain_1.ogg",
+   "sfx_land_chain_2.ogg",
+   "sfx_land_chain_3.ogg"
+  ],
+  "aac": [
+   "sfx_land_chain_1.aac",
+   "sfx_land_chain_2.aac",
+   "sfx_land_chain_3.aac"
+  ],
+  "seconds": [
+   0.429,
+   0.486,
+   0.505
+  ],
+  "lufs": [
+   -27.09,
+   -27.0,
+   -27.0
+  ],
+  "peak_db": [
+   -6.5,
+   -10.28,
+   -7.66
+  ],
+  "peak_db_ogg": [
+   -6.28,
+   -10.39,
+   -7.79
+  ],
+  "peak_db_aac": [
+   -6.63,
+   -10.64,
+   -7.64
+  ],
+  "tail_floor_db": [
+   -83.9,
+   -84.5,
+   -86.5
+  ],
+  "centroid_hz": [
+   362,
+   472,
+   670
+  ],
+  "hf_floor_db": [
+   -99.5,
+   -106.8,
+   -98.8
+  ],
+  "source_speech_score": [
+   0.002,
+   0.0,
+   0.0
+  ],
+  "target_lufs": -27,
+  "purpose": "Gold key lands: small key ring clink on the counter",
+  "sources": [
+   "key_drop_1",
+   "key_drop_12",
+   "key_drop_11"
+  ],
+  "replaces_original": true
+ },
+ "sfx_land_coin": {
+  "takes": [
+   "sfx_land_coin_1.wav",
+   "sfx_land_coin_2.wav"
+  ],
+  "ogg": [
+   "sfx_land_coin_1.ogg",
+   "sfx_land_coin_2.ogg"
+  ],
+  "aac": [
+   "sfx_land_coin_1.aac",
+   "sfx_land_coin_2.aac"
+  ],
+  "seconds": [
+   0.314,
+   0.435
+  ],
+  "lufs": [
+   -26.0,
+   -26.12
+  ],
+  "peak_db": [
+   -8.33,
+   -6.5
+  ],
+  "peak_db_ogg": [
+   -8.23,
+   -6.66
+  ],
+  "peak_db_aac": [
+   -8.41,
+   -6.96
+  ],
+  "tail_floor_db": [
+   -86.6,
+   -84.7
+  ],
+  "centroid_hz": [
+   2674,
+   1930
+  ],
+  "hf_floor_db": [
+   -74.3,
+   -72.2
+  ],
+  "source_speech_score": [
+   0.003,
+   0.003
+  ],
+  "target_lufs": -26,
+  "purpose": "Cash register lands: two coins clinking into the drawer",
+  "sources": [
+   "coin_clink_5",
+   "coin_clink_1"
+  ],
+  "replaces_original": true
+ },
+ "sfx_land_baggie": {
+  "takes": [
+   "sfx_land_baggie_1.wav",
+   "sfx_land_baggie_2.wav",
+   "sfx_land_baggie_3.wav"
+  ],
+  "ogg": [
+   "sfx_land_baggie_1.ogg",
+   "sfx_land_baggie_2.ogg",
+   "sfx_land_baggie_3.ogg"
+  ],
+  "aac": [
+   "sfx_land_baggie_1.aac",
+   "sfx_land_baggie_2.aac",
+   "sfx_land_baggie_3.aac"
+  ],
+  "seconds": [
+   0.23,
+   0.233,
+   0.23
+  ],
+  "lufs": [
+   -28.57,
+   -26.01,
+   -26.18
+  ],
+  "peak_db": [
+   -6.5,
+   -6.75,
+   -6.5
+  ],
+  "peak_db_ogg": [
+   -6.51,
+   -6.74,
+   -6.29
+  ],
+  "peak_db_aac": [
+   -6.65,
+   -7.57,
+   -6.54
+  ],
+  "tail_floor_db": [
+   -93.1,
+   -98.4,
+   -92.3
+  ],
+  "centroid_hz": [
+   832,
+   851,
+   863
+  ],
+  "hf_floor_db": [
+   -84.0,
+   -70.4,
+   -104.4
+  ],
+  "source_speech_score": [
+   0.0,
+   0.005,
+   0.0
+  ],
+  "target_lufs": -26,
+  "purpose": "Chips bag lands: soft crinkly plop",
+  "sources": [
+   "bag_drop_3",
+   "bag_drop_5",
+   "bag_drop_2"
+  ],
+  "replaces_original": true
+ },
+ "sfx_land_metal": {
+  "takes": [
+   "sfx_land_metal_1.wav",
+   "sfx_land_metal_2.wav",
+   "sfx_land_metal_3.wav"
+  ],
+  "ogg": [
+   "sfx_land_metal_1.ogg",
+   "sfx_land_metal_2.ogg",
+   "sfx_land_metal_3.ogg"
+  ],
+  "aac": [
+   "sfx_land_metal_1.aac",
+   "sfx_land_metal_2.aac",
+   "sfx_land_metal_3.aac"
+  ],
+  "seconds": [
+   0.182,
+   0.283,
+   0.283
+  ],
+  "lufs": [
+   -26.02,
+   -26.0,
+   -26.0
+  ],
+  "peak_db": [
+   -6.76,
+   -8.63,
+   -10.26
+  ],
+  "peak_db_ogg": [
+   -6.91,
+   -8.48,
+   -10.04
+  ],
+  "peak_db_aac": [
+   -6.94,
+   -8.66,
+   -10.17
+  ],
+  "tail_floor_db": [
+   -92.3,
+   -85.1,
+   -92.4
+  ],
+  "centroid_hz": [
+   300,
+   301,
+   419
+  ],
+  "hf_floor_db": [
+   -71.7,
+   -99.9,
+   -106.9
+  ],
+  "source_speech_score": [
+   0.006,
+   0.0,
+   0.0
+  ],
+  "target_lufs": -26,
+  "purpose": "Fuel nozzle / Zippo / Gas Pump land: soft muted metal clunk",
+  "sources": [
+   "nozzle_set_5",
+   "nozzle_set_6",
+   "nozzle_set_2"
+  ],
+  "replaces_original": true
+ },
+ "sfx_land_card": {
+  "takes": [
+   "sfx_land_card_1.wav",
+   "sfx_land_card_2.wav"
+  ],
+  "ogg": [
+   "sfx_land_card_1.ogg",
+   "sfx_land_card_2.ogg"
+  ],
+  "aac": [
+   "sfx_land_card_1.aac",
+   "sfx_land_card_2.aac"
+  ],
+  "seconds": [
+   0.193,
+   0.193
+  ],
+  "lufs": [
+   -26.45,
+   -26.0
+  ],
+  "peak_db": [
+   -6.5,
+   -8.92
+  ],
+  "peak_db_ogg": [
+   -6.52,
+   -8.6
+  ],
+  "peak_db_aac": [
+   -6.58,
+   -9.11
+  ],
+  "tail_floor_db": [
+   -93.0,
+   -93.0
+  ],
+  "centroid_hz": [
+   1490,
+   1704
+  ],
+  "hf_floor_db": [
+   -77.9,
+   -75.5
+  ],
+  "source_speech_score": [
+   0.0,
+   0.0
+  ],
+  "target_lufs": -26,
+  "purpose": "Scratch tickets land: soft papery slap",
+  "sources": [
+   "card_drop_3",
+   "card_drop_1"
+  ],
+  "replaces_original": true
+ },
+ "sfx_spin": {
+  "takes": [
+   "sfx_spin.wav"
+  ],
+  "ogg": [
+   "sfx_spin.ogg"
+  ],
+  "aac": [
+   "sfx_spin.aac"
+  ],
+  "seconds": [
+   0.889
+  ],
+  "lufs": [
+   -27.0
+  ],
+  "peak_db": [
+   -10.81
+  ],
+  "peak_db_ogg": [
+   -10.88
+  ],
+  "peak_db_aac": [
+   -10.19
+  ],
+  "tail_floor_db": [
+   -89.1
+  ],
+  "centroid_hz": [
+   297
+  ],
+  "hf_floor_db": [
+   -108.2
+  ],
+  "source_speech_score": [
+   0.001
+  ],
+  "target_lufs": -27,
+  "purpose": "Spin: gas pump handle lifted, the pump whirring up, soft D4-A4 rise",
+  "sources": [
+   "pump_start_4"
+  ],
+  "replaces_original": true
+ },
+ "sfx_skip": {
+  "takes": [
+   "sfx_skip.wav"
+  ],
+  "ogg": [
+   "sfx_skip.ogg"
+  ],
+  "aac": [
+   "sfx_skip.aac"
+  ],
+  "seconds": [
+   0.296
+  ],
+  "lufs": [
+   -28.0
+  ],
+  "peak_db": [
+   -12.29
+  ],
+  "peak_db_ogg": [
+   -12.27
+  ],
+  "peak_db_aac": [
+   -12.44
+  ],
+  "tail_floor_db": [
+   -89.4
+  ],
+  "centroid_hz": [
+   1209
+  ],
+  "hf_floor_db": [
+   -107.3
+  ],
+  "source_speech_score": [
+   0.0
+  ],
+  "target_lufs": -28,
+  "purpose": "Skip: dashboard click and a quick soft downward whoosh",
+  "sources": [
+   "dash_btn_3"
+  ],
+  "replaces_original": true
+ },
+ "sfx_bet": {
+  "takes": [
+   "sfx_bet.wav"
+  ],
+  "ogg": [
+   "sfx_bet.ogg"
+  ],
+  "aac": [
+   "sfx_bet.aac"
+  ],
+  "seconds": [
+   0.27
+  ],
+  "lufs": [
+   -26.0
+  ],
+  "peak_db": [
+   -8.3
+  ],
+  "peak_db_ogg": [
+   -8.15
+  ],
+  "peak_db_aac": [
+   -7.12
+  ],
+  "tail_floor_db": [
+   -83.5
+  ],
+  "centroid_hz": [
+   726
+  ],
+  "hf_floor_db": [
+   -107.7
+  ],
+  "source_speech_score": [
+   0.0
+  ],
+  "target_lufs": -26,
+  "purpose": "Bet +/- and (at half speed) each reel landing: soft cash register key clack",
+  "sources": [
+   "reg_key_4"
+  ],
+  "replaces_original": true
+ },
+ "sfx_toggle": {
+  "takes": [
+   "sfx_toggle.wav"
+  ],
+  "ogg": [
+   "sfx_toggle.ogg"
+  ],
+  "aac": [
+   "sfx_toggle.aac"
+  ],
+  "seconds": [
+   0.259
+  ],
+  "lufs": [
+   -26.0
+  ],
+  "peak_db": [
+   -6.65
+  ],
+  "peak_db_ogg": [
+   -6.59
+  ],
+  "peak_db_aac": [
+   -6.84
+  ],
+  "tail_floor_db": [
+   -76.7
+  ],
+  "centroid_hz": [
+   411
+  ],
+  "hf_floor_db": [
+   -107.6
+  ],
+  "source_speech_score": [
+   0.001
+  ],
+  "target_lufs": -26,
+  "purpose": "Rapid / sound switches: soft dashboard toggle and a tiny E6",
+  "sources": [
+   "toggle_sw_4"
+  ],
+  "replaces_original": true
+ },
+ "sfx_ui_click": {
+  "takes": [
+   "sfx_ui_click_1.wav",
+   "sfx_ui_click_2.wav",
+   "sfx_ui_click_3.wav"
+  ],
+  "ogg": [
+   "sfx_ui_click_1.ogg",
+   "sfx_ui_click_2.ogg",
+   "sfx_ui_click_3.ogg"
+  ],
+  "aac": [
+   "sfx_ui_click_1.aac",
+   "sfx_ui_click_2.aac",
+   "sfx_ui_click_3.aac"
+  ],
+  "seconds": [
+   0.06,
+   0.072,
+   0.071
+  ],
+  "lufs": [
+   -27.0,
+   -27.0,
+   -27.01
+  ],
+  "peak_db": [
+   -7.13,
+   -7.51,
+   -9.97
+  ],
+  "peak_db_ogg": [
+   -7.23,
+   -7.62,
+   -9.94
+  ],
+  "peak_db_aac": [
+   -6.9,
+   -7.53,
+   -6.73
+  ],
+  "tail_floor_db": [
+   -86.5,
+   -98.1,
+   -140.0
+  ],
+  "centroid_hz": [
+   680,
+   526,
+   388
+  ],
+  "hf_floor_db": [
+   -78.6,
+   -60.7,
+   -88.6
+  ],
+  "source_speech_score": [
+   0.0,
+   0.005,
+   0.0
+  ],
+  "target_lufs": -27,
+  "purpose": "Any button: soft dashboard push-button click",
+  "sources": [
+   "dash_btn_3",
+   "dash_btn_6",
+   "dash_btn_5"
+  ],
+  "replaces_original": true
+ },
+ "sfx_ui_hover": {
+  "takes": [
+   "sfx_ui_hover_1.wav",
+   "sfx_ui_hover_2.wav"
+  ],
+  "ogg": [
+   "sfx_ui_hover_1.ogg",
+   "sfx_ui_hover_2.ogg"
+  ],
+  "aac": [
+   "sfx_ui_hover_1.aac",
+   "sfx_ui_hover_2.aac"
+  ],
+  "seconds": [
+   0.037,
+   0.037
+  ],
+  "lufs": [
+   -30.38,
+   -30.63
+  ],
+  "peak_db": [
+   -11.25,
+   -12.21
+  ],
+  "peak_db_ogg": [
+   -11.27,
+   -12.2
+  ],
+  "peak_db_aac": [
+   -11.24,
+   -12.23
+  ],
+  "tail_floor_db": [
+   -75.5,
+   -73.9
+  ],
+  "centroid_hz": [
+   1775,
+   1499
+  ],
+  "hf_floor_db": [
+   -85.7,
+   -87.8
+  ],
+  "source_speech_score": [
+   0.0,
+   0.0
+  ],
+  "target_lufs": -30,
+  "purpose": "Pointer arriving on a button: faint glassy tick",
+  "sources": [
+   "synth",
+   "synth"
+  ],
+  "replaces_original": true
+ },
+ "sfx_slider_tick": {
+  "takes": [
+   "sfx_slider_tick_1.wav",
+   "sfx_slider_tick_2.wav"
+  ],
+  "ogg": [
+   "sfx_slider_tick_1.ogg",
+   "sfx_slider_tick_2.ogg"
+  ],
+  "aac": [
+   "sfx_slider_tick_1.aac",
+   "sfx_slider_tick_2.aac"
+  ],
+  "seconds": [
+   0.046,
+   0.046
+  ],
+  "lufs": [
+   -28.42,
+   -28.59
+  ],
+  "peak_db": [
+   -6.7,
+   -7.99
+  ],
+  "peak_db_ogg": [
+   -6.63,
+   -8.08
+  ],
+  "peak_db_aac": [
+   -6.73,
+   -8.03
+  ],
+  "tail_floor_db": [
+   -93.3,
+   -93.7
+  ],
+  "centroid_hz": [
+   1374,
+   1483
+  ],
+  "hf_floor_db": [
+   -78.7,
+   -83.2
+  ],
+  "source_speech_score": [
+   0.0,
+   0.0
+  ],
+  "target_lufs": -28,
+  "purpose": "Volume bar notch: tiny soft tick",
+  "sources": [
+   "synth",
+   "synth"
+  ],
+  "replaces_original": true
+ },
+ "sfx_swish_in": {
+  "takes": [
+   "sfx_swish_in_1.wav",
+   "sfx_swish_in_2.wav"
+  ],
+  "ogg": [
+   "sfx_swish_in_1.ogg",
+   "sfx_swish_in_2.ogg"
+  ],
+  "aac": [
+   "sfx_swish_in_1.aac",
+   "sfx_swish_in_2.aac"
+  ],
+  "seconds": [
+   0.341,
+   0.411
+  ],
+  "lufs": [
+   -27.01,
+   -27.0
+  ],
+  "peak_db": [
+   -13.84,
+   -15.28
+  ],
+  "peak_db_ogg": [
+   -14.27,
+   -15.56
+  ],
+  "peak_db_aac": [
+   -13.85,
+   -15.3
+  ],
+  "tail_floor_db": [
+   -93.9,
+   -93.3
+  ],
+  "centroid_hz": [
+   1179,
+   1228
+  ],
+  "hf_floor_db": [
+   -107.5,
+   -107.6
+  ],
+  "source_speech_score": [
+   0.0,
+   0.0
+  ],
+  "target_lufs": -27,
+  "purpose": "Under every menu opening: soft rising whoosh",
+  "sources": [
+   "synth",
+   "synth"
+  ],
+  "replaces_original": true
+ },
+ "sfx_swish_out": {
+  "takes": [
+   "sfx_swish_out_1.wav",
+   "sfx_swish_out_2.wav"
+  ],
+  "ogg": [
+   "sfx_swish_out_1.ogg",
+   "sfx_swish_out_2.ogg"
+  ],
+  "aac": [
+   "sfx_swish_out_1.aac",
+   "sfx_swish_out_2.aac"
+  ],
+  "seconds": [
+   0.44,
+   0.386
+  ],
+  "lufs": [
+   -27.01,
+   -27.07
+  ],
+  "peak_db": [
+   -15.82,
+   -14.87
+  ],
+  "peak_db_ogg": [
+   -15.78,
+   -14.27
+  ],
+  "peak_db_aac": [
+   -15.87,
+   -14.91
+  ],
+  "tail_floor_db": [
+   -87.3,
+   -92.6
+  ],
+  "centroid_hz": [
+   1163,
+   1205
+  ],
+  "hf_floor_db": [
+   -107.6,
+   -107.7
+  ],
+  "source_speech_score": [
+   0.0,
+   0.0
+  ],
+  "target_lufs": -27,
+  "purpose": "Under every menu closing: soft falling whoosh",
+  "sources": [
+   "synth",
+   "synth"
+  ],
+  "replaces_original": true
+ },
+ "sfx_menu_open": {
+  "takes": [
+   "sfx_menu_open.wav"
+  ],
+  "ogg": [
+   "sfx_menu_open.ogg"
+  ],
+  "aac": [
+   "sfx_menu_open.aac"
+  ],
+  "seconds": [
+   0.64
+  ],
+  "lufs": [
+   -25.99
+  ],
+  "peak_db": [
+   -7.29
+  ],
+  "peak_db_ogg": [
+   -6.84
+  ],
+  "peak_db_aac": [
+   -7.35
+  ],
+  "tail_floor_db": [
+   -86.5
+  ],
+  "centroid_hz": [
+   868
+  ],
+  "hf_floor_db": [
+   -107.9
+  ],
+  "source_speech_score": [
+   0.0
+  ],
+  "target_lufs": -27,
+  "purpose": "Menu opens: dashboard click and a rising A5-D6 glass pair",
+  "sources": [
+   "dash_btn_3"
+  ],
+  "replaces_original": true
+ },
+ "sfx_menu_close": {
+  "takes": [
+   "sfx_menu_close.wav"
+  ],
+  "ogg": [
+   "sfx_menu_close.ogg"
+  ],
+  "aac": [
+   "sfx_menu_close.aac"
+  ],
+  "seconds": [
+   0.776
+  ],
+  "lufs": [
+   -27.0
+  ],
+  "peak_db": [
+   -7.97
+  ],
+  "peak_db_ogg": [
+   -7.38
+  ],
+  "peak_db_aac": [
+   -7.5
+  ],
+  "tail_floor_db": [
+   -85.5
+  ],
+  "centroid_hz": [
+   960
+  ],
+  "hf_floor_db": [
+   -107.9
+  ],
+  "source_speech_score": [
+   0.0
+  ],
+  "target_lufs": -27,
+  "purpose": "Menu closes: dashboard click and a falling D6-A5 pair",
+  "sources": [
+   "dash_btn_3"
+  ],
+  "replaces_original": true
+ },
+ "sfx_auto_start": {
+  "takes": [
+   "sfx_auto_start.wav"
+  ],
+  "ogg": [
+   "sfx_auto_start.ogg"
+  ],
+  "aac": [
+   "sfx_auto_start.aac"
+  ],
+  "seconds": [
+   0.772
+  ],
+  "lufs": [
+   -25.0
+  ],
+  "peak_db": [
+   -10.24
+  ],
+  "peak_db_ogg": [
+   -10.2
+  ],
+  "peak_db_aac": [
+   -10.34
+  ],
+  "tail_floor_db": [
+   -80.5
+  ],
+  "centroid_hz": [
+   488
+  ],
+  "hf_floor_db": [
+   -107.9
+  ],
+  "source_speech_score": [
+   0.0
+  ],
+  "target_lufs": -25,
+  "purpose": "Autoplay on: two soft turn-signal ticks, rising D5-A5",
+  "sources": [
+   [
+    "blinker_3",
+    "blinker_3"
+   ]
+  ],
+  "replaces_original": true
+ },
+ "sfx_auto_stop": {
+  "takes": [
+   "sfx_auto_stop.wav"
+  ],
+  "ogg": [
+   "sfx_auto_stop.ogg"
+  ],
+  "aac": [
+   "sfx_auto_stop.aac"
+  ],
+  "seconds": [
+   0.719
+  ],
+  "lufs": [
+   -25.0
+  ],
+  "peak_db": [
+   -10.01
+  ],
+  "peak_db_ogg": [
+   -10.17
+  ],
+  "peak_db_aac": [
+   -10.15
+  ],
+  "tail_floor_db": [
+   -90.6
+  ],
+  "centroid_hz": [
+   573
+  ],
+  "hf_floor_db": [
+   -107.8
+  ],
+  "source_speech_score": [
+   0.0
+  ],
+  "target_lufs": -25,
+  "purpose": "Autoplay off: one turn-signal tick, falling A5-D5",
+  "sources": [
+   [
+    "blinker_3"
+   ]
+  ],
+  "replaces_original": true
+ },
+ "sfx_hover_loop": {
+  "takes": [
+   "sfx_hover_loop.wav"
+  ],
+  "ogg": [
+   "sfx_hover_loop.ogg"
+  ],
+  "aac": [
+   "sfx_hover_loop.aac"
+  ],
+  "seconds": [
+   4.0
+  ],
+  "lufs": [
+   -26.09
+  ],
+  "peak_db": [
+   -19.88
+  ],
+  "peak_db_ogg": [
+   -19.76
+  ],
+  "peak_db_aac": [
+   -19.71
+  ],
+  "tail_floor_db": [
+   -140.0
+  ],
+  "centroid_hz": [
+   121
+  ],
+  "hf_floor_db": [
+   -108.0
+  ],
+  "source_speech_score": [
+   0.0
+  ],
+  "target_lufs": -26,
+  "purpose": "Bonus button hover: faint neon hum on A2 with in-key harmonics, seamless 4 s loop",
+  "sources": [
+   "synth"
+  ],
+  "replaces_original": true,
+  "loop": true
+ },
+ "sfx_buy_confirm": {
+  "takes": [
+   "sfx_buy_confirm_1.wav"
+  ],
+  "ogg": [
+   "sfx_buy_confirm_1.ogg"
+  ],
+  "aac": [
+   "sfx_buy_confirm_1.aac"
+  ],
+  "seconds": [
+   1.368
+  ],
+  "lufs": [
+   -24.0
+  ],
+  "peak_db": [
+   -7.32
+  ],
+  "peak_db_ogg": [
+   -7.57
+  ],
+  "peak_db_aac": [
+   -7.3
+  ],
+  "tail_floor_db": [
+   -78.6
+  ],
+  "centroid_hz": [
+   653
+  ],
+  "hf_floor_db": [
+   -107.6
+  ],
+  "source_speech_score": [
+   0.006
+  ],
+  "target_lufs": -24,
+  "purpose": "Bonus bought: pump nozzle clunk, rising D major arpeggio, soft pad",
+  "sources": [
+   "nozzle_set_5"
+  ],
+  "replaces_original": true
+ },
+ "sfx_fs_tick": {
+  "takes": [
+   "sfx_fs_tick_1.wav",
+   "sfx_fs_tick_2.wav"
+  ],
+  "ogg": [
+   "sfx_fs_tick_1.ogg",
+   "sfx_fs_tick_2.ogg"
+  ],
+  "aac": [
+   "sfx_fs_tick_1.aac",
+   "sfx_fs_tick_2.aac"
+  ],
+  "seconds": [
+   0.115,
+   0.116
+  ],
+  "lufs": [
+   -26.0,
+   -26.0
+  ],
+  "peak_db": [
+   -7.31,
+   -8.02
+  ],
+  "peak_db_ogg": [
+   -7.34,
+   -8.25
+  ],
+  "peak_db_aac": [
+   -6.45,
+   -8.27
+  ],
+  "tail_floor_db": [
+   -93.7,
+   -94.8
+  ],
+  "centroid_hz": [
+   1013,
+   1363
+  ],
+  "hf_floor_db": [
+   -100.2,
+   -101.4
+  ],
+  "source_speech_score": [
+   0.0,
+   0.023
+  ],
+  "target_lufs": -26,
+  "purpose": "Free spins counter turning over: soft register key and an A5/B5 ting",
+  "sources": [
+   "reg_key_4",
+   "reg_key_2"
+  ],
+  "replaces_original": true
+ },
+ "sfx_bonus_end": {
+  "takes": [
+   "sfx_bonus_end.wav"
+  ],
+  "ogg": [
+   "sfx_bonus_end.ogg"
+  ],
+  "aac": [
+   "sfx_bonus_end.aac"
+  ],
+  "seconds": [
+   1.549
+  ],
+  "lufs": [
+   -24.0
+  ],
+  "peak_db": [
+   -12.74
+  ],
+  "peak_db_ogg": [
+   -12.68
+  ],
+  "peak_db_aac": [
+   -12.5
+  ],
+  "tail_floor_db": [
+   -92.0
+  ],
+  "centroid_hz": [
+   403
+  ],
+  "hf_floor_db": [
+   -107.8
+  ],
+  "source_speech_score": [
+   0.0
+  ],
+  "target_lufs": -24,
+  "purpose": "FILL UP summary: D major arpeggio walking down onto a warm low D",
+  "sources": [
+   "synth"
+  ],
+  "replaces_original": true
+ },
+ "sfx_bust_a": {
+  "takes": [
+   "sfx_bust_a.wav"
+  ],
+  "ogg": [
+   "sfx_bust_a.ogg"
+  ],
+  "aac": [
+   "sfx_bust_a.aac"
+  ],
+  "seconds": [
+   1.437
+  ],
+  "lufs": [
+   -25.0
+  ],
+  "peak_db": [
+   -14.0
+  ],
+  "peak_db_ogg": [
+   -13.98
+  ],
+  "peak_db_aac": [
+   -14.0
+  ],
+  "tail_floor_db": [
+   -92.3
+  ],
+  "centroid_hz": [
+   345
+  ],
+  "hf_floor_db": [
+   -107.8
+  ],
+  "source_speech_score": [
+   0.0
+  ],
+  "target_lufs": -25,
+  "purpose": "LUCKY PUMP lands on nothing: three soft bells walking down A4 F#4 D4",
+  "sources": [
+   "synth"
+  ],
+  "replaces_original": true
+ },
+ "sfx_intro_whoosh": {
+  "takes": [
+   "sfx_intro_whoosh_1.wav",
+   "sfx_intro_whoosh_2.wav",
+   "sfx_intro_whoosh_3.wav"
+  ],
+  "ogg": [
+   "sfx_intro_whoosh_1.ogg",
+   "sfx_intro_whoosh_2.ogg",
+   "sfx_intro_whoosh_3.ogg"
+  ],
+  "aac": [
+   "sfx_intro_whoosh_1.aac",
+   "sfx_intro_whoosh_2.aac",
+   "sfx_intro_whoosh_3.aac"
+  ],
+  "seconds": [
+   0.703,
+   0.842,
+   0.55
+  ],
+  "lufs": [
+   -24.0,
+   -23.86,
+   -23.89
+  ],
+  "peak_db": [
+   -13.61,
+   -11.78,
+   -13.35
+  ],
+  "peak_db_ogg": [
+   -13.45,
+   -11.82,
+   -13.38
+  ],
+  "peak_db_aac": [
+   -13.65,
+   -11.81,
+   -13.61
+  ],
+  "tail_floor_db": [
+   -93.0,
+   -91.5,
+   -94.0
+  ],
+  "centroid_hz": [
+   663,
+   465,
+   655
+  ],
+  "hf_floor_db": [
+   -107.0,
+   -106.3,
+   -105.7
+  ],
+  "source_speech_score": [
+   0.001,
+   0.002,
+   0.001
+  ],
+  "target_lufs": -24,
+  "purpose": "Ident: the swash sweeping in - a car passing on the night road, panned left to right",
+  "sources": [
+   "car_pass_4",
+   "car_pass_6",
+   "car_pass_1"
+  ],
+  "replaces_original": true
+ },
+ "sfx_intro_hit": {
+  "takes": [
+   "sfx_intro_hit_1.wav",
+   "sfx_intro_hit_2.wav"
+  ],
+  "ogg": [
+   "sfx_intro_hit_1.ogg",
+   "sfx_intro_hit_2.ogg"
+  ],
+  "aac": [
+   "sfx_intro_hit_1.aac",
+   "sfx_intro_hit_2.aac"
+  ],
+  "seconds": [
+   2.596,
+   2.6
+  ],
+  "lufs": [
+   -22.08,
+   -22.16
+  ],
+  "peak_db": [
+   -6.5,
+   -6.5
+  ],
+  "peak_db_ogg": [
+   -6.31,
+   -6.21
+  ],
+  "peak_db_aac": [
+   -6.85,
+   -6.96
+  ],
+  "tail_floor_db": [
+   -72.2,
+   -69.9
+  ],
+  "centroid_hz": [
+   241,
+   220
+  ],
+  "hf_floor_db": [
+   -107.9,
+   -108.0
+  ],
+  "source_speech_score": [
+   0.021,
+   0.007
+  ],
+  "target_lufs": -22,
+  "purpose": "Ident: the logo landing - neon sign relay clunk, soft low D boom and a D major bell chord decaying to zero",
+  "sources": [
+   "neon_on_4",
+   "neon_on_5"
+  ],
+  "replaces_original": true
+ },
+ "sfx_intro_shimmer": {
+  "takes": [
+   "sfx_intro_shimmer_1.wav",
+   "sfx_intro_shimmer_2.wav",
+   "sfx_intro_shimmer_3.wav"
+  ],
+  "ogg": [
+   "sfx_intro_shimmer_1.ogg",
+   "sfx_intro_shimmer_2.ogg",
+   "sfx_intro_shimmer_3.ogg"
+  ],
+  "aac": [
+   "sfx_intro_shimmer_1.aac",
+   "sfx_intro_shimmer_2.aac",
+   "sfx_intro_shimmer_3.aac"
+  ],
+  "seconds": [
+   1.226,
+   1.231,
+   1.228
+  ],
+  "lufs": [
+   -26.01,
+   -26.0,
+   -26.0
+  ],
+  "peak_db": [
+   -16.54,
+   -16.92,
+   -17.12
+  ],
+  "peak_db_ogg": [
+   -16.57,
+   -16.92,
+   -17.09
+  ],
+  "peak_db_aac": [
+   -16.29,
+   -15.37,
+   -16.07
+  ],
+  "tail_floor_db": [
+   -88.2,
+   -88.7,
+   -87.7
+  ],
+  "centroid_hz": [
+   1355,
+   1509,
+   1558
+  ],
+  "hf_floor_db": [
+   -107.8,
+   -107.2,
+   -107.2
+  ],
+  "source_speech_score": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "target_lufs": -26,
+  "purpose": "Ident: soft glassy pentatonic run over the letters, panned across",
+  "sources": [
+   "synth",
+   "synth",
+   "synth"
+  ],
+  "replaces_original": true
+ },
+ "sfx_intro_out": {
+  "takes": [
+   "sfx_intro_out_1.wav",
+   "sfx_intro_out_2.wav"
+  ],
+  "ogg": [
+   "sfx_intro_out_1.ogg",
+   "sfx_intro_out_2.ogg"
+  ],
+  "aac": [
+   "sfx_intro_out_1.aac",
+   "sfx_intro_out_2.aac"
+  ],
+  "seconds": [
+   0.858,
+   0.858
+  ],
+  "lufs": [
+   -25.01,
+   -25.01
+  ],
+  "peak_db": [
+   -13.97,
+   -12.5
+  ],
+  "peak_db_ogg": [
+   -13.84,
+   -12.53
+  ],
+  "peak_db_aac": [
+   -14.1,
+   -12.55
+  ],
+  "tail_floor_db": [
+   -93.7,
+   -92.0
+  ],
+  "centroid_hz": [
+   1216,
+   941
+  ],
+  "hf_floor_db": [
+   -107.7,
+   -107.6
+  ],
+  "source_speech_score": [
+   0.0,
+   0.0
+  ],
+  "target_lufs": -25,
+  "purpose": "Ident: reversed D chord swelling with a rising whoosh, out to the game",
+  "sources": [
+   "synth",
+   "synth"
+  ],
+  "replaces_original": true
  }
 }
