@@ -1,7 +1,7 @@
 """Small idle motion for the people in the night scene (owner, 2026-11-10: "make the girl with the coffee move her
 arms a little bit ... make the two people inside the gas station have small animations nothing too crazy").
 
-    .venv/bin/python tools/falcos/scene_idle.py      -> frontend/assets/scene/fx_arm_0.webp, fx_people_0.webp (+ scene.json)
+    .venv/bin/python tools/falcos/scene_idle.py      -> frontend/assets/scene/fx_people_0.webp (+ scene.json)  (fx_arm: retired 2026-11-12, remove_girl.py)
 
 No new drawing: each loop is the plate itself (art/falcos/scene/plate_lit.png), gently warped frame by frame - a smooth
 displacement field that is strongest on the moving part and fades to nothing around it, so the background stays put
@@ -105,7 +105,7 @@ def people(X, Y, t):
 if __name__ == '__main__':
     sp = os.path.join(OUT, 'scene.json')
     cfg = json.load(open(sp))
-    arm_l = render('fx_arm', (520, 792, 196, 336), .67, arm)        # the desktop plate's own scale (2560 / 3840)
+    # fx_arm (her coffee arm) is no longer made: she and the car are gone from the plates (remove_girl.py, 2026-11-12)
     ppl_l = render('fx_people', (3060, 850, 760, 545), .62, people)   # a phone decodes it smaller (scenefx)
     layers = {}
     for k, v in cfg['layers'].items():
@@ -113,8 +113,7 @@ if __name__ == '__main__':
             layers['fx_people'] = ppl_l
         if k not in ('fx_people', 'fx_arm'):
             layers[k] = v
-    layers['fx_arm'] = arm_l
     cfg['layers'] = layers
     json.dump(cfg, open(sp, 'w'), indent=1)
-    for n in ('fx_arm', 'fx_people'):
+    for n in ('fx_people',):
         print(n, os.path.getsize(os.path.join(OUT, n + '_0.webp')) // 1024, 'KB', cfg['layers'][n]['w'], 'x', cfg['layers'][n]['h'], 'x', N)

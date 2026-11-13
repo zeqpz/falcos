@@ -12,14 +12,6 @@
     768
    ]
   },
-  "blink_woman": {
-   "rect": [
-    381,
-    826,
-    178,
-    108
-   ]
-  },
   "blink_cashier": {
    "rect": [
     3152,
@@ -60,23 +52,6 @@
    "per_sheet": 391,
    "sheets": [
     "fx_cashier_0.webp"
-   ]
-  },
-  "fx_arm": {
-   "rect": [
-    520,
-    792,
-    196,
-    336
-   ],
-   "frames": 48,
-   "fps": 12,
-   "w": 131,
-   "h": 225,
-   "cols": 31,
-   "per_sheet": 48,
-   "sheets": [
-    "fx_arm_0.webp"
    ]
   }
  },

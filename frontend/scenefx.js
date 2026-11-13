@@ -1,8 +1,8 @@
 // The Falcos scene's life, laid exactly over the night plate (#bgwall's background, bonus_wall.webp):
-// the canopy's FALCOS neon now and then stuttering off (sign_off), the woman by the Tahoe and the
-// cashier in the window each blinking on a clock of their own (blink_woman / blink_cashier), and
-// the Blender loop of the window's glass reflection and the coin glints at the till (fx_cashier). (Her
-// cigarette smoke loop, fx_woman, is gone: no smoking in the scene, 2026-11-10.)
+// the canopy's FALCOS neon now and then stuttering off (sign_off), the cashier in the window
+// blinking on a clock of his own (blink_cashier), the people in the window breathing (fx_people), and
+// the Blender loop of the window's glass reflection and the coin glints at the till (fx_cashier). (The
+// woman by the car and the car are gone from the plates, with her blink and arm loop: 2026-11-12.)
 //
 // Everything is described by assets/scene/scene.json in PLATE pixels (the plate is 3840x2160).
 // The layer (#scenefx) is put inside #bgwall and sized to the plate exactly as the browser draws
@@ -26,7 +26,7 @@
   // the neon: mostly on, now and then a stutter (art/falcos/previews/showcase reference)
   const NEON_GAP = [1800, 6000];                                  // ms between stutters
   const NEON_SHORT = [90, 70], NEON_LONG = [70, 60, 50, 120, 40, 260], NEON_LONG_ODDS = .3;
-  const BLINK_MS = 130, BLINKS = { blink_woman: [2500, 5200], blink_cashier: [3000, 6000] };
+  const BLINK_MS = 130, BLINKS = { blink_cashier: [3000, 6000] };
 
   let host = null, root = null, cfg = null, rect = null;
   const els = {}, loops = [], timers = new Set();

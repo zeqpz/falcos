@@ -151,8 +151,8 @@
   /* The scene: the Falcos gas station at night (bonus_wall.webp, the same plate the bonus intro
      stands on), fitted like a picture - contain on a screen wider than 16:9, cover on anything
      narrower (--wall-scale) - and placed by --wall-x / --wall-y (an upright phone slides it to
-     the left, onto the FALCOS canopy and the woman by the Tahoe). Its life - the canopy neon
-     stuttering, the blinks, her smoke, the window's glints - is laid over it by scenefx.js in
+     the left, onto the FALCOS canopy and the pump). Its life - the canopy neon stuttering, the
+     cashier's blink, the people in the window, the window's glints - is laid over it by scenefx.js in
      #scenefx, which reads this element's own computed background size and position, so it always
      sits exactly on the picture and rides the lean, the hop and the camera with it. The dim
      (::after) lies over the overlays too, so they match the plate under them. */
@@ -2504,7 +2504,7 @@
      sides instead. Wider than 16:9 keeps the whole picture in view, pavement at the foot. */
   @media (max-aspect-ratio: 16/9) { :root { --wall-scale: cover; } }
   @media (max-width: 1100px) and (orientation: portrait) {
-    :root { --wall-x: 6%; }   /* the canopy's FALCOS neon and the woman by the Tahoe, over the board */
+    :root { --wall-x: 6%; }   /* the canopy's FALCOS neon and the pump, over the board */
     .main { justify-content: flex-end; }
     .bottom { padding-bottom: calc(12vh / max(var(--fit, 1), .2)); }   /* bounded: a tiny scale must never blow it up */
     /* The Bonus button stands in the band between the bar and the foot of the screen, a little
@@ -7448,8 +7448,8 @@ function refreshBet() {
 }
 
 /* ---------- character ---------- */
-// The base game's two animated figures are gone: the Falcos scene has its own people (the woman by
-// the Tahoe and the cashier in the window, scenefx.js). The game's reaction hooks stay as no-ops,
+// The base game's two animated figures are gone: the Falcos scene has its own people (the cashier
+// and the customer in the window, scenefx.js). The game's reaction hooks stay as no-ops,
 // so the event code can keep cueing them (a later pass can give the scene reactions of its own).
 let charReact = () => {}, charEnter = () => {}, charExit = () => {};
 const charsLoaded = Promise.resolve([]);
