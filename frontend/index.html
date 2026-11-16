@@ -3171,10 +3171,10 @@
 </div>
 
 <div class="intro" id="intro">
-  <!-- the studio ident (runIntro): FALCOS dropped in letter by letter, a trademark line, the loading bar -->
+  <!-- the studio ident (runIntro): SMUKIEZ dropped in letter by letter (zeqpz/orleans' Fredoka letters), a trademark line, the loading bar -->
   <div class="introstage">
     <i class="introflash" aria-hidden="true"></i>
-    <div class="introword" id="introWord" role="img" aria-label="Falcos">
+    <div class="introword" id="introWord" role="img" aria-label="Smukiez">
       <img class="iwglow" src="assets/intro_letters/glow.webp" alt="" draggable="false">
     </div>
     <div class="introtm" aria-hidden="true"><span>&copy; 2026 Smukiez &middot; All rights reserved</span></div>
@@ -7901,7 +7901,10 @@ const INTRO_SFX = ["introWhoosh", "introHit", "introShimmer", "introOut", "landB
 // [x, y, w, h] on the 2736x1160 wordmark, the letters in the order they drop
 // (2026-11-13, owner: "make this say SMUKIEZ like how the other games are") the studio ident: SMUKIEZ, the
 // studio's own wordmark, as its other games open (the FALCOS letters are kept in art/falcos/intro_falcos/)
-const INTRO_SIZE = [2736, 1160], INTRO_PIECES = {"S":[26,302,401,549],"M":[380,282,499,533],"U":[841,321,412,509],"K":[1220,246,358,532],"i":[1531,431,103,355],"E":[1606,306,424,515],"Z":[1993,220,567,622],"swash":[420,705,2180,360],"tm":[2578,230,144,94],"seal":[2481,950,139,140],"glow":[-110,-110,2956,1380]};
+// (2026-11-16, owner: "copy just the black and white smukiez introduction from [zeqpz/orleans] it has a more simple font"):
+// the Fredoka Bold SMUKIEZ the studio's other games now open with - even caps and spacing, the slash in the same
+// rounded stroke, no seal - copied from zeqpz/orleans (frontend/assets/intro_letters + its INTRO_PIECES)
+const INTRO_SIZE = [2736, 1160], INTRO_PIECES = {"S":[322,236,275,372],"M":[615,246,388,362],"U":[1021,240,325,368],"K":[1364,236,283,372],"i":[1665,245,119,363],"E":[1802,245,292,363],"Z":[2112,244,301,364],"swash":[532,656,1877,184],"tm":[2417,242,125,73],"glow":[-110,-110,2956,1380]};
 const INTRO_DROP = ["S", "M", "U", "K", "i", "E", "Z"];
 function runIntro() {
   const wrap = $("intro"), fill = $("introFill");
@@ -8017,13 +8020,13 @@ function runIntro() {
       sw.animate([{ clipPath: "inset(0 100% 0 0)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1 }],
                  { duration: 420, easing: "cubic-bezier(.5, 0, .2, 1)", fill: "both" }).finished.then(() => sw.classList.add("flat"), () => {});
     });
-    after(landed + 520, () => {   // the seal stamps on
+    after(landed + 520, () => {   // the seal stamps on (when the wordmark has one), and the glow comes up behind the word
+      word.querySelector(".iwglow").classList.add("up");
       const se = pieceEl.seal;
       if (!se) return;
       se.style.transformOrigin = "50% 50%";
       se.animate([{ transform: "scale(2.2) rotate(-14deg)", opacity: 0 }, { transform: "scale(.9) rotate(3deg)", opacity: 1, offset: .6 }, { transform: "none", opacity: 1 }],
                  { duration: 340, easing: "cubic-bezier(.3, 0, .2, 1)", fill: "both" }).finished.then(() => se.classList.add("flat"), () => {});
-      word.querySelector(".iwglow").classList.add("up");
     });
     after(landed + 760, () => {   // the trademark rolls up underneath, and the TM pops on by the arrow
       const line = wrap.querySelector(".introtm span"), tm = pieceEl.tm;
