@@ -39,7 +39,7 @@ JOBS = int(next((a.split('=')[1] for a in sys.argv if a.startswith('--jobs=')), 
 Q, AQ = 80, 85                 # UI art
 SYM_Q, SYM_AQ = 78, 80         # symbol sheets (checked at 3x zoom: no visible change; aq < 75 rings the glow)
 PLATE_Q = 78
-DROP_DENSITIES = ['d24', 'd16']   # d16 too (owner, 2026-11-13: "compress the files to reduce lag"): the flat comic art is sharp at d12
+DROP_DENSITIES = ['d24']   # d16 is back, with d20 (owner, 2026-11-16: "why does the symbol look so blurry"): d12 was soft on a full screen and in the bonus
 PLATES = ['bonus_wall.webp', 'scene/plate_nitro.webp', 'scene/plate_zombie.webp', 'scene/plate_midnight.webp']
 PLATE_W, PLATE_W_M = 2560, 1600
 FRAME_MAX = 1600               # the board frame is drawn ~700-1100 px wide
