@@ -407,7 +407,9 @@ class Replay:
                 check(max(abs(p[0] - pos[0]), abs(p[1] - pos[1])) == 1, "scratch collected beyond its neighbours")
             got += x["value"]
             del self.fill[p]
-        check(abs(round(me["value"] + got, 2) - e["total"]) < 1e-6, "collector total")
+        mult = 2 if (e["kind"] == "gold" and e["collected"]) else 1      # GT doubles what it collected (2026-11-13)
+        check(e.get("mult", 1) == mult, "collect mult")
+        check(abs(round(round(me["value"] + got, 2) * mult, 2) - e["total"]) < 1e-6, "collector total")
         check(e["removed"] == (not e["collected"]), "removed flag")
         if e["removed"]:
             del self.fill[pos]

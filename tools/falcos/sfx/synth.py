@@ -39,6 +39,8 @@ def bell(f, dur=1.2, att=.006, tau=.45, bright=.5, warm=True, detune=.0015, seed
     out += .18 * np.sin(2 * np.pi * 2 * f * t) * np.exp(-t / (tau * .4))
     if warm:
         out += .12 * np.sin(2 * np.pi * f / 2 * t) * np.exp(-t / (tau * 1.2))
+    # sparkle (2026-11-13: brighter, more rewarding): the 3rd and 5th partials, gone within a few tens of ms
+    out += .16 * np.sin(2 * np.pi * 3 * f * t) * np.exp(-t / (tau * .12)) + .07 * np.sin(2 * np.pi * 5.01 * f * t) * np.exp(-t / (tau * .07))
     return out * adsr(len(t), att, tau)
 
 
@@ -62,7 +64,8 @@ def pad(freqs, dur, att=.15, rel=.3, cutoff=1800, saw=.5, detune=.004, seed=0):
             s = 2 * ((f * (1 + dt) * t + ph) % 1) - 1
             out += saw * s + (1 - saw) * np.sin(2 * np.pi * (f * (1 + dt) * t + ph))
     out /= 3 * len(freqs)
-    sos = signal.butter(2, cutoff, 'lowpass', fs=SR, output='sos')
+    # (2026-11-13: "they sound muffled / underwater") every pad opened up: about twice its recipe's cutoff, 2.5 kHz at least
+    sos = signal.butter(2, min(9000, max(2500, cutoff * 2.2)), 'lowpass', fs=SR, output='sos')
     out = signal.sosfilt(sos, out)
     n = len(t); a, r = int(att * SR), int(rel * SR)
     e = np.ones(n)

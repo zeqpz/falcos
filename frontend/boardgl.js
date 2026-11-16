@@ -138,6 +138,31 @@
     }
   }
 
+  // A radial glow behind a winning symbol (owner, 2026-11-12): one soft disc (white core, orange, a blue edge), made once, drawn additively
+  // behind the symbol while it plays its win ("hit") clip, swelling up and fading with it.
+  let glowTex = null;
+  function glowTexture() {
+    if (glowTex) return glowTex;
+    const N = 256, cv = document.createElement("canvas");
+    cv.width = cv.height = N;
+    const g = cv.getContext("2d"), rg = g.createRadialGradient(N / 2, N / 2, 0, N / 2, N / 2, N / 2);
+    rg.addColorStop(0, "rgba(255, 246, 236, 1)");      // white core,
+    rg.addColorStop(.28, "rgba(255, 150, 50, .75)");   // orange,
+    rg.addColorStop(.62, "rgba(70, 130, 255, .22)");   // a blue edge (the palette: white, orange, blue)
+    rg.addColorStop(1, "rgba(50, 100, 255, 0)");
+    g.fillStyle = rg; g.fillRect(0, 0, N, N);
+    return (glowTex = PIXI.Texture.from(cv));
+  }
+  function winGlow(c, rig, b) {
+    const cl = rig._gclip === "hit" && rig._m.clips.hit;
+    if (!cl) { if (c.gw.visible) c.gw.visible = false; return; }
+    const p = cl.frames > 1 ? rig._gf / (cl.frames - 1) : 0;
+    c.gw.x = b.w / 2; c.gw.y = b.h / 2;
+    c.gw.width = c.gw.height = Math.max(b.cw, b.ch) * (1.25 + .3 * Math.sin(Math.PI * p));
+    c.gw.alpha = Math.sin(Math.PI * Math.min(1, p * 1.15)) * .85 * c.op * c.ico;
+    c.gw.visible = true;
+  }
+
   function smearTexture(cell) {
     const bg = cell.smear && cell.smear.style.backgroundImage;
     const u = bg && /url\("?([^")]+)"?\)/.exec(bg);
@@ -192,10 +217,12 @@
         let c = C[r][y];
         if (!c) {
           const cont = new PIXI.Container(), sm = new PIXI.Sprite(), spr = new PIXI.Sprite(), sh = new PIXI.Sprite();
-          sm.visible = false; spr.visible = false; sh.visible = false;
+          const gw = new PIXI.Sprite(glowTexture());
+          sm.visible = false; spr.visible = false; sh.visible = false; gw.visible = false;
           sh.tint = 0x000000;   // the symbol's soft drop shadow: its own frame in black, a little down and right (same batch)
-          cont.addChild(sm, sh, spr);
-          c = C[r][y] = { cell, cont, spr, sh, sm, cls: null, m: null, op: 1, ico: 1, z: 0, act: 0, aCell: 0, aIco: 0, aSm: 0, reread: true, at: 0, order: r * 100 + y, smop: 0, smm: null, tex: null };
+          gw.anchor.set(.5); gw.blendMode = "add";   // the win's radial glow behind the symbol (winGlow)
+          cont.addChild(sm, gw, sh, spr);
+          c = C[r][y] = { cell, cont, spr, sh, sm, gw, cls: null, m: null, op: 1, ico: 1, z: 0, act: 0, aCell: 0, aIco: 0, aSm: 0, reread: true, at: 0, order: r * 100 + y, smop: 0, smm: null, tex: null };
           cell._gl = c;
           root.addChild(cont);
         }
@@ -278,7 +305,7 @@
         const tex = g && g.atlas ? g.atlas.frames[rig._gf] : null;
         const show = !!tex && !hiddenReel && c.op * c.ico > .003;
         if (tex !== c.tex) { c.tex = tex; dirty = true; }
-        if (!show) { if (c.spr.visible || c.sm.visible) { c.spr.visible = false; c.sh.visible = false; c.sm.visible = false; dirty = true; } continue; }
+        if (!show) { if (c.spr.visible || c.sm.visible) { c.spr.visible = false; c.sh.visible = false; c.sm.visible = false; c.gw.visible = false; dirty = true; } continue; }
         // the cell in the board, as CSS has it now
         const b = c.box, mm = new PIXI.Matrix();
         if (c.m) mm.set(c.m.a, c.m.b, c.m.c, c.m.d, c.m.e + PAD + b.x, c.m.f + PAD + b.y);
@@ -303,6 +330,7 @@
         c.sh.width = c.spr.width; c.sh.height = c.spr.height;
         c.sh.alpha = .38 * c.spr.alpha;
         c.sh.visible = true;
+        winGlow(c, rig, b);
         // the motion blur behind a falling tile (.smear: left 6%, 88% wide, its foot 6% up, 2.1 boxes tall)
         const st = c.smop > .005 ? smearTexture(cell) : null;
         if (st) {

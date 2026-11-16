@@ -507,7 +507,8 @@ class GameExecutables(GameCalculations):
 
     def fill_collect(self, r: int, c: int, item: dict) -> None:
         """ST: collects every drop in its 8 neighbours plus any collector there that collected on
-        an earlier spin. GT: the same over the whole board."""
+        an earlier spin. GT: the same over the whole board, and then doubles its total - it collects
+        everything AND 2x everything (owner, 2026-11-13). A collector that found nothing leaves."""
         kind = "scratch" if item["name"] == "ST" else "gold"
         if kind == "scratch":
             area = [(x, y) for x in range(r - 1, r + 2) for y in range(c - 1, c + 2) if (x, y) != (r, c)]
@@ -522,13 +523,15 @@ class GameExecutables(GameCalculations):
                 collected.append((pos[0], pos[1], other["name"], other["value"]))
                 del self.fill_board[pos]
         total = round(item["value"] + sum(v for _, _, _, v in collected), 2)
+        mult = 2 if (kind == "gold" and collected) else 1
+        total = round(total * mult, 2)
         removed = not collected
         if removed:
             del self.fill_board[(r, c)]
         else:
             item["value"] = total
         self.stat(f"fill_{kind}")
-        collect_event(self, (r, c), kind, collected, total, removed)
+        collect_event(self, (r, c), kind, collected, total, removed, mult)
 
     def fill_zippo(self, r: int, c: int) -> None:
         burned = []

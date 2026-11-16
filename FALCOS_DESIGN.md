@@ -102,7 +102,8 @@ checked again on the board the step ended on; the spin ends when a step neither 
   something new (a drop or a feature) refills it to 3. The bonus ends when the gauge is empty and
   nothing new lands. Fuel Drops are sticky: green x0.2/x0.5/x1/x2/x3, amber x5/x10/x15/x20, red
   x50/x100/x250/x500, and a drop that grows changes colour (green under x5, amber from x5, red from
-  x50). Lighters burn drops, Scratch Tickets and Gold Tickets collect them, Gas Pumps multiply them.
+  x50). Lighters burn drops, Scratch Tickets collect their 8 neighbours, Gold Tickets collect the
+  whole board and then double what they collected (2026-11-13), Gas Pumps multiply them.
   At the end you win the total of every drop left plus every collector's total, times the bet,
   capped at the max win.
 * **PREMIUM** (4+ FALCOS Tokens, or buy 300x) - 10 free spins of the base game with sticky cell

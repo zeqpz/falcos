@@ -176,7 +176,8 @@ def fade_in(x, t):
 
 
 def soft(x, f=6500):
-    return A.lp(x, f, SR, 2)
+    # (2026-11-13) a gentle roll-off far above where it was: every call's own cutoff is raised to at least 11 kHz
+    return A.lp(x, max(f, 11000), SR, 2)
 
 
 # ------------------------------------------------------------------ the sets
@@ -1120,11 +1121,10 @@ REMAKE = {   # stem -> (builder, target LUFS, fade-out s, purpose)
     'sfx_buy_confirm': (buy_confirm, -24, .1, 'Bonus bought: pump nozzle clunk, rising D major arpeggio, soft pad'),
     'sfx_fs_tick': (fs_tick, -26, .02, 'Free spins counter turning over: soft register key and an A5/B5 ting'),
     'sfx_bonus_end': (bonus_end, -24, .1, 'FILL UP summary: D major arpeggio walking down onto a warm low D'),
-    'sfx_bust_a': (bust_a, -25, .1, 'LUCKY PUMP lands on nothing: three soft bells walking down A4 F#4 D4'),
 }
 SETS.update(REMAKE)
 SINGLES.update({'sfx_spin', 'sfx_bet', 'sfx_reels', 'sfx_skip', 'sfx_line', 'sfx_bonus_end', 'sfx_money_tick', 'sfx_medium_win',
-                'sfx_trophy', 'sfx_coins_rain', 'sfx_pop', 'sfx_bust_a', 'sfx_win_text', 'sfx_hover_loop', 'sfx_auto_start',
+                'sfx_trophy', 'sfx_coins_rain', 'sfx_pop', 'sfx_win_text', 'sfx_hover_loop', 'sfx_auto_start',
                 'sfx_auto_stop', 'sfx_menu_open', 'sfx_menu_close', 'sfx_toggle'})
 LOOPS.update({'sfx_reels', 'sfx_money_tick', 'sfx_hover_loop'})
 

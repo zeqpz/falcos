@@ -127,7 +127,7 @@ def pump_boost_event(gs, cell, mult: int, boosted: list) -> None:
     })
 
 
-def collect_event(gs, cell, kind: str, collected: list, total: float, removed: bool) -> None:
+def collect_event(gs, cell, kind: str, collected: list, total: float, removed: bool, mult: int = 1) -> None:
     r, c = cell
     gs.book.add_event({
         "index": len(gs.book.events),
@@ -137,6 +137,7 @@ def collect_event(gs, cell, kind: str, collected: list, total: float, removed: b
         "row": c + PAD,
         "collected": [{"reel": a, "row": b + PAD, "name": n, "value": v} for a, b, n, v in collected],
         "total": total,
+        "mult": mult,
         "removed": removed,
         "boardTotal": gs.fill_total(),
     })

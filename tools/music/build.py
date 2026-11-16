@@ -305,9 +305,9 @@ def build(cue, wav=False):  # noqa: C901
     g = 10 ** ((MASTER_LUFS - lufs(np.vstack([loop, loop]))) / 20)
     pre, loop = pre * g, loop * g
     peak = max(np.abs(loop).max(), np.abs(pre).max() if len(pre) else 0)
-    if peak > .98:                                       # never clip: take the whole cue down a little
-        pre, loop = pre * .98 / peak, loop * .98 / peak
-        g *= .98 / peak
+    if peak > .9:                                        # never clip: take the whole cue down a little (to .9: Opus
+        pre, loop = pre * .9 / peak, loop * .9 / peak    # overshoots the source peak by a few %, 2026-11-13)
+        g *= .9 / peak
     cue_pcm = np.vstack([pre, loop])
     ogg, aac = os.path.join(OUT, f"music_{cue}.ogg"), os.path.join(OUT, f"music_{cue}.aac")
     encode(cue_pcm, ogg, "ogg", "libopus", OPUS_RATE, "flt")
@@ -327,7 +327,7 @@ def build(cue, wav=False):  # noqa: C901
         entry.update(head=info["head"], headLen=info["head_len"])
     entry.update(aacStart=aac_start, aacFrames=len(ya), bpm=round(info["bpm"], 3), bars=spec["bars"], level=round(level, 3))
     print(f"  {cue}: {os.path.getsize(ogg) // 1024} KB ogg, {os.path.getsize(aac) // 1024} KB aac, "
-          f"peak {peak * (g if peak <= .98 else 1):.2f}, {len(cue_pcm) / SR:.1f}s")
+          f"peak {peak * (g if peak <= .9 else 1):.2f}, {len(cue_pcm) / SR:.1f}s")
     if wav:
         os.makedirs(WAVS, exist_ok=True)
         demo = np.vstack([pre, loop, loop])

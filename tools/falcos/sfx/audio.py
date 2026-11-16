@@ -340,11 +340,11 @@ def fades(x, sr, fin=.004, fout=.05):
 
 
 def master(x, sr, target_lufs, ceil_db=-6.5, fout=.05, fin=.004, soften=True):
-    """Trim, warm shelf, loudness to target, peak limiter under ceil_db, fades. Iterates the gain so
+    """Trim, air shelf, loudness to target, peak limiter under ceil_db, fades. Iterates the gain so
     the limited result lands on target."""
     x = trim(x, sr)
     if soften:
-        x = shelf_soften(x, sr, 6000, -3)
+        x = shelf_soften(x, sr, 7500, +2.5)   # air, not a cut (2026-11-13: the -3 dB at 6 kHz made them sound underwater)
     x = fades(x, sr, fin, fout)
     g = target_lufs - lufs(x, sr)
     y = x

@@ -16,11 +16,10 @@ every output, so a re-run only touches newly installed art and never re-encodes 
   5. everything else (never the HUD's own art: HUD) - downscaled to MAX_SIDE (2x the largest size it is ever drawn at 1600x900; the
                       app is scaled to fit, so this is 1600x900 at DPR 2 / 3200x1800 at DPR 1) and
                       re-encoded as lossy WebP (alpha kept where the picture has any)
-  6. the board frame - art/falcos/raw/board_frame_sq_small.png (shrink_topper.py: the sign at 60%) or
-                      board_frame_sq.png (when it exists) trimmed to frame_sq.webp and its
+  6. the board frame - art/falcos/raw/board_frame_flat_sq.png (flat_frame.py) trimmed to frame_sq.webp and its
                       glass opening measured into frame_sq.json; otherwise frame_sq is built from
                       board_frame_v3.png's slim bezel + topper at the board's squarer shape
-                      + frame_wide.webp/json from board_frame_wide.png (widen_frame.py), for landscape
+                      + frame_wide.webp/json from board_frame_flat_wide.png, for landscape
   7. FILL UP art    - art/falcos/raw/fillup_{backing,cell2,gauge}.png (when they exist) -> assets/fillup/
 """
 import hashlib, io, json, os, shutil, sys
@@ -40,7 +39,7 @@ JOBS = int(next((a.split('=')[1] for a in sys.argv if a.startswith('--jobs=')), 
 Q, AQ = 80, 85                 # UI art
 SYM_Q, SYM_AQ = 78, 80         # symbol sheets (checked at 3x zoom: no visible change; aq < 75 rings the glow)
 PLATE_Q = 78
-DROP_DENSITIES = ['d24']
+DROP_DENSITIES = ['d24', 'd16']   # d16 too (owner, 2026-11-13: "compress the files to reduce lag"): the flat comic art is sharp at d12
 PLATES = ['bonus_wall.webp', 'scene/plate_nitro.webp', 'scene/plate_zombie.webp', 'scene/plate_midnight.webp']
 PLATE_W, PLATE_W_M = 2560, 1600
 FRAME_MAX = 1600               # the board frame is drawn ~700-1100 px wide
@@ -61,7 +60,7 @@ MAX_SIDE = {
     'num/': 240, 'flat/': 320, 'frame_sq.webp': 1600, 'fillup/': 1400,
 }
 # the HUD (bottom bar, its buttons and icons, the Buy Bonus button) is never touched (owner rule)
-HUD = ('hud_', 'icon_', 'bet_', 'skip_btn', 'spin_plate', 'spin_btn_arrows', 'ui_box', 'bonus_btn_')
+HUD = ('hud_', 'icon_', 'bet_', 'skip_btn', 'spin_plate', 'spin_btn_arrows', 'ui_box', 'bonus_btn_', 'fx/')   # fx/: the Blender effect sheets keep their frame size (blender_pack.py --fx)
 # drawn as they are (scene overlays are placed in plate px by scene.json)
 KEEP_SIZE = ('scene/', 'intro_letters/tm')
 
@@ -308,50 +307,14 @@ def opening(a):
     return [(l + 1) / w, (t + 1) / h, r / w, b / h]
 
 
-def build_frame_from_v3(aspect):
-    """A squarer frame from board_frame_v3 (slim chrome bezel + FALCOS topper): the bezel 9-sliced to an
-    opening of the given w/h, the topper put back on top at its own size."""
-    src = Image.open(os.path.join(RAW, 'board_frame_v3.png')).convert('RGBA')
-    a = np.array(src.getchannel('A'))
-    H, W = a.shape
-    # the bezel's box: the topper sits above it in the middle; at 10% across only the bezel is solid
-    col = a[:, int(W * .1)] > 40
-    top = int(np.argmax(col))
-    bez = src.crop((0, top, W, H))
-    o = opening(np.array(bez.getchannel('A')))
-    ow, oh = (o[2] - o[0]) * W, (o[3] - o[1]) * bez.height
-    corner = int(max(o[0] * W, o[1] * bez.height) + 70)          # the rounded corners plus the neon's bend
-    new_w = W
-    new_oh = ow / aspect
-    new_h = int(round(bez.height - oh + new_oh))
-    out = Image.new('RGBA', (new_w, new_h), (0, 0, 0, 0))
-    cut = lambda box: bez.crop(box)
-    c = corner
-    # corners
-    out.alpha_composite(cut((0, 0, W, c)), (0, 0))
-    out.alpha_composite(cut((0, bez.height - c, W, bez.height)), (0, new_h - c))
-    mid = cut((0, c, W, bez.height - c)).resize((W, new_h - 2 * c), Image.LANCZOS)
-    out.alpha_composite(mid, (0, c))
-    # the topper: everything above the bezel's top, plus the part of it overlapping the bezel band
-    band = int(o[1] * bez.height) + top
-    tx0 = int(np.argmax(a[:top + 5].max(axis=0) > 40)); tx1 = W - int(np.argmax(a[:top + 5].max(axis=0)[::-1] > 40))
-    topper = src.crop((tx0, 0, tx1, band))
-    full = Image.new('RGBA', (new_w, new_h + top), (0, 0, 0, 0))
-    full.alpha_composite(out, (0, top))
-    full.alpha_composite(topper, (tx0, 0))
-    return full
-
-
 def step_frame():
-    # frame_sq: the phone's (portrait) frame - the smaller sign (shrink_topper.py) when it is built
-    sq = os.path.join(RAW, 'board_frame_sq_small.png')
-    if not os.path.exists(sq):
-        sq = os.path.join(RAW, 'board_frame_sq.png')
-    one_frame('frame_sq', sq, FRAME_MAX)
-    # frame_wide: the landscape frame, square cells (widen_frame.py)
-    wide = os.path.join(RAW, 'board_frame_wide.png')
-    if os.path.exists(wide):
-        one_frame('frame_wide', wide, FRAME_WIDE_MAX)
+    # the flat frame (owner, 2026-11-13: simple, not a neon sign; flat_frame.py) when it is built
+    flat = os.path.join(RAW, 'board_frame_flat_sq.png'), os.path.join(RAW, 'board_frame_flat_wide.png')
+    if all(os.path.exists(p) for p in flat):
+        one_frame('frame_sq', flat[0], FRAME_MAX)
+        one_frame('frame_wide', flat[1], FRAME_WIDE_MAX)
+        return
+    print('frame: art/falcos/raw/board_frame_flat_{sq,wide}.png missing - run tools/falcos/flat_frame.py')
 
 
 def one_frame(name, sq, fmax):
@@ -364,7 +327,7 @@ def one_frame(name, sq, fmax):
         bb = im.getchannel('A').point(lambda v: 255 if v > 10 else 0).getbbox()
         im = im.crop(bb)
     else:
-        im = build_frame_from_v3(1.16)
+        raise SystemExit(f'{sq}: missing')
     o = opening(np.array(im.getchannel('A')))
     if max(im.size) > fmax:
         k = fmax / max(im.size)
@@ -387,6 +350,8 @@ def step_fillup():
         rel = f'fillup/{n[7:].rstrip("2")}.webp'
         if not os.path.exists(src):
             continue
+        if os.path.exists(os.path.join(ROOT, 'art', 'falcos', 'ui_glossy', rel)):
+            continue    # redrawn flat (restyle.py / flat_fillup_cell.py, 2026-11-13): never re-installed from the glossy raw
         tag = sha(src)
         if state.get(rel + '.src') == tag and done(rel):
             continue

@@ -13,19 +13,19 @@
     --line: #2A3560;
     --ink: #EDEAE4;
     --ink-soft: #9AA3BD;
-    --neon: #FF2A3D; --neon-tube: #E0102A; --neon-core: #FF9AA4; --neon-shade: #6E0614;
+    --neon: #FF7A1A; --neon-tube: #D9530A; --neon-core: #FFC08A; --neon-shade: #6E2A06;
     --amber: #FFB547; --amber-deep: #E07A12; --amber-hi: #FFE2A8;
     --chrome: #D9DEE8; --chrome-deep: #7C8496;
     --midnight: #5B8CFF;
-    --spray: #FF2A3D;
-    --spray-deep: #E0102A;
-    --gold: #F5C518;
+    --spray: #FF7A1A;
+    --spray-deep: #D9530A;
+    --gold: #FFA640;
     /* the two free-spin scatters glow in their own paint, not in the UI palette */
     --fs-green: #FF2A3D;
     --fs-purple: #4F7BFF;
     --purple: #8FB0FF;
-    --teal: #3FBFB2;
-    --green: #4ADE80;
+    --teal: #4F9BFF;
+    --green: #4F9BFF;
     --orange: #FF8A2A;       /* the bottom-bar icon buttons and their pop-ups */
     --mono: "Jraot Hollow", "IBM Plex Mono", ui-monospace, Consolas, monospace;
     --disp: "Jraot Hollow", "Archivo Black", "Archivo", sans-serif;
@@ -77,7 +77,7 @@
     --sym-fit: .92;    /* a symbol fills this share of its tile (SYM_FIT in the script, boardgl.js) */
     /* frame_sq.webp's glass opening, as fractions of the picture (frame_sq.json, measured by
        compress_assets.py - keep these in step with it): left, top, width, height */
-    --fo-l: .0504; --fo-t: .14627; --fo-w: .90118; --fo-h: .79088;
+    --fo-l: .03402; --fo-t: .13833; --fo-w: .93196; --fo-h: .82313;
   }
   /* A wider board on a landscape screen (owner, 2026-11-10: "make it wider"): there the board is as tall as it
      can be, so it grows sideways - square cells in frame_wide.webp, whose glass is cut for that grid (1.475:1,
@@ -85,7 +85,7 @@
      art on this same query. A phone held upright is fitted by its width, where wider cells would only make
      the symbols smaller: it keeps the 106 px cells and frame_sq. */
   @media (orientation: landscape) and (min-aspect-ratio: 4/3) {
-    :root { --cell-w: 134px; --fo-l: .04441; --fo-t: .14627; --fo-w: .91293; --fo-h: .79088; }
+    :root { --cell-w: 134px; --fo-l: .03402; --fo-t: .15494; --fo-w: .93196; --fo-h: .80189; }
   }
   @media (max-width: 900px) and (max-height: 1000px), (max-height: 500px) {
     :root { --wall-img: url("assets/bonus_wall_m.webp"); --zombie-img: url("assets/scene/plate_zombie_m.webp"); }
@@ -151,8 +151,8 @@
   /* The scene: the Falcos gas station at night (bonus_wall.webp, the same plate the bonus intro
      stands on), fitted like a picture - contain on a screen wider than 16:9, cover on anything
      narrower (--wall-scale) - and placed by --wall-x / --wall-y (an upright phone slides it to
-     the left, onto the FALCOS canopy and the pump). Its life - the canopy neon stuttering, the
-     cashier's blink, the people in the window, the window's glints - is laid over it by scenefx.js in
+     the left, onto the FALCOS canopy and the pump). Its life - the canopy neon stuttering - is
+     laid over it by scenefx.js in
      #scenefx, which reads this element's own computed background size and position, so it always
      sits exactly on the picture and rides the lean, the hop and the camera with it. The dim
      (::after) lies over the overlays too, so they match the plate under them. */
@@ -178,7 +178,7 @@
   button { font-family: inherit; cursor: pointer; }
   button:disabled { opacity: .45; cursor: default; }
   :focus-visible { outline: 2px solid var(--fs-green); outline-offset: 2px; }
-  .bottom :focus-visible { outline-color: #A8F000; }   /* the HUD keeps its own focus ring */
+  .bottom :focus-visible { outline-color: #4F9BFF; }   /* the HUD keeps its own focus ring */
 
   /* The header is gone. Balance and Win are chips on the bottom bar now, but they are still
      .stat/.val elements because cashFx() drives .up/.down/.bump on them. */
@@ -208,7 +208,7 @@
   }
   .chip.juris .val { font-size: 11px; letter-spacing: .08em; color: #9C94A8; font-weight: 400; }   /* the HUD keeps its own paint */
 
-  .stat .val.up { color: var(--green); } .stat .val.down { color: #F0568B; }   /* the HUD keeps its own paint */
+  .stat .val.up { color: var(--green); } .stat .val.down { color: #FF7A1A; }   /* the HUD keeps its own paint */
   /* the figure shakes itself as it rolls; anchored right so the number's edge stays put */
   .stat .val.bump { animation: cashbump .5s cubic-bezier(.25,.8,.35,1); transform-origin: 100% 50%; }
   @keyframes cashbump {
@@ -330,7 +330,7 @@
   .bonusintro .bcont {
     position: relative; margin-top: 2.2vh; text-align: center; z-index: 2;
     font-family: var(--disp); font-size: clamp(14px, 2.3vh, 22px); letter-spacing: .12em; text-transform: uppercase;
-    color: #fff; text-shadow: 0 3px 0 rgba(0,0,0,.85), 0 0 14px rgba(255,42,61,.5);
+    color: #fff; text-shadow: 0 3px 0 rgba(0,0,0,.85), 0 0 14px rgba(255, 122, 26,.5);
     opacity: 0; transition: opacity .4s ease .9s; animation: bcont 1.5s ease-in-out infinite; pointer-events: none;
   }
   .bonusintro.up .bcont { opacity: 1; }
@@ -614,32 +614,33 @@
   .lcard .ltitle { position: absolute; left: 8%; right: 8%; top: 73.5%; height: 20%; width: 84%; object-fit: contain; pointer-events: none;
                    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, .35)); }
   .lcard .lmax { position: absolute; left: 10%; right: 10%; bottom: 31.5%; height: 8%; display: flex; justify-content: center; align-items: flex-end;
-                 filter: drop-shadow(0 3px 0 rgba(0, 0, 0, .85)) drop-shadow(0 0 10px rgba(255, 42, 61, .8)); }
+                 filter: drop-shadow(0 3px 0 rgba(0, 0, 0, .85)) drop-shadow(0 0 10px rgba(255, 122, 26, .8)); }
   .lcard .lmax img { height: 100%; width: auto; margin: 0 -.4%; }
   .lcard .lmax img[alt="x"] { height: 78%; }
   .lcard .lmax img[alt=","] { height: 34%; }
-  /* the fuel gauge: bar_frame.webp, whose tube runs 21.5-91.5% across and 22.7-61.5% down; the fuel
+  /* the fuel gauge: bar_frame.webp, whose tube runs 24-86.5% across and 28-62.5% down (the flat frame); the fuel
      (bar_fill.webp) fills it from E to F, its surface rolling sideways and gently sloshing */
   .lbar { position: relative; width: min(54vw, 640px, 70vh); aspect-ratio: 1787 / 317; flex: none; margin-top: .6vh; }
   .lbar .lbframe { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
-  .lbar .lbtube { position: absolute; left: 21.4%; width: 70.3%; top: 23.5%; height: 37.6%; border-radius: 999px; overflow: hidden; z-index: 1;
-                  background: linear-gradient(#1a0d06, #2a160b); box-shadow: inset 0 3px 8px rgba(0, 0, 0, .8); }
+  /* the tube: the flat frame's window (tools/falcos/bar_window.py measures it), a touch larger so its edge hides under the ink */
+  .lbar .lbtube { position: absolute; left: 23.6%; width: 63.3%; top: 27.4%; height: 35.8%; border-radius: 999px; overflow: hidden; z-index: 1;
+                  background: #0C0C12; }
   .lbar .lbfuel {
     position: absolute; left: 0; top: 0; bottom: 0; width: 0%; border-radius: 999px;
-    background: url("assets/load/bar_fill.webp") 0 30% / 220px auto repeat-x;
-    box-shadow: 0 0 14px rgba(255, 160, 40, .9), inset 0 -4px 8px rgba(120, 30, 0, .5);
+    /* gasoline, one colour (owner, 2026-11-13: "make it look how gas would look but one color"): amber fuel with its
+       surface a lighter flat band of the same amber, cartoon-style - hard stops, no gradient, no bubbles */
+    background: linear-gradient(180deg, #FFC15A 0 24%, #F29A1F 24% 100%);   /* (no dark line between: 2026-11-13) */
     transition: width .35s ease-out;
-    animation: fuelRoll 3.2s linear infinite, fuelSlosh 1.9s ease-in-out infinite alternate;
   }
-  .lbar .lbfuel::after {   /* the bright meniscus riding the fuel's leading edge */
-    content: ""; position: absolute; right: 0; top: 8%; bottom: 8%; width: 14px; border-radius: 50%;
+  .lbar .lbfuel::after {   /* (retired 2026-11-13: one solid colour, nothing riding on it) */
+    content: none; position: absolute; right: 0; top: 8%; bottom: 8%; width: 14px; border-radius: 50%;
     background: radial-gradient(closest-side, rgba(255, 245, 200, .95), rgba(255, 180, 60, .4) 60%, transparent);
     animation: fuelEdge 1.1s ease-in-out infinite alternate;
   }
   @keyframes fuelRoll { to { background-position-x: -220px; } }
-  @keyframes fuelSlosh { from { background-position-y: 20%; } to { background-position-y: 48%; } }
+  @keyframes fuelSlosh { from { background-position-y: 78%; } to { background-position-y: 94%; } }
   @keyframes fuelEdge { from { transform: scaleY(.8) translateX(1px); opacity: .7; } to { transform: scaleY(1.05) translateX(-2px); opacity: 1; } }
-  .lbar .lbpct { position: absolute; left: 21.4%; width: 70.3%; top: 23.5%; height: 37.6%; z-index: 3; display: grid; place-items: center;
+  .lbar .lbpct { position: absolute; left: 23.6%; width: 63.3%; top: 27.4%; height: 35.8%; z-index: 3; display: grid; place-items: center;
                  font-family: "Fredoka", var(--num); font-weight: 700; font-size: clamp(10px, 1.6vh, 15px); letter-spacing: .2em; color: #fff;
                  text-shadow: 0 1px 2px rgba(0, 0, 0, .9); }
   .features .fcont {
@@ -1041,7 +1042,7 @@
     text-transform: uppercase; color: var(--hud-soft);
   }
   .autoopts button:hover:not(:disabled) { background: rgba(255, 255, 255, .1); border-color: var(--hud-hi); }
-  .autoopts button.on, .autoopts button.on:hover:not(:disabled) { border-color: var(--hud-on); background: rgba(184, 242, 58, .14); color: #fff; }
+  .autoopts button.on, .autoopts button.on:hover:not(:disabled) { border-color: var(--hud-on); background: rgba(79, 155, 255, .14); color: #fff; }
   .autoopts button.on small { color: var(--hud-on); }
   .autoopts button:active:not(:disabled) { transform: scale(.95); }
   .autoopts button:disabled { opacity: .4; cursor: default; }
@@ -1098,8 +1099,8 @@
   table.hist th { color: var(--ink-soft); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; }
   table.hist td.win { color: var(--green); font-weight: 600; }
   table.hist td.zero { color: var(--ink-soft); }
-  .banner.mega .big { color: #FF2A3D; text-shadow: 0 4px 0 rgba(0,0,0,.75), 0 0 22px rgba(0,0,0,.9), 0 0 34px rgba(255,42,61,.55); }
-  .banner.lastchance .big { color: #FF2A3D; text-shadow: 0 4px 0 rgba(0,0,0,.75), 0 0 22px rgba(0,0,0,.9), 0 0 34px rgba(255,42,61,.7); }
+  .banner.mega .big { color: #FF7A1A; text-shadow: 0 4px 0 rgba(0,0,0,.75), 0 0 22px rgba(0,0,0,.9), 0 0 34px rgba(255, 122, 26,.55); }
+  .banner.lastchance .big { color: #FF7A1A; text-shadow: 0 4px 0 rgba(0,0,0,.75), 0 0 22px rgba(0,0,0,.9), 0 0 34px rgba(255, 122, 26,.7); }
 
   /* main — slots front and center, info cards beneath */
   .main { flex: 1; display: flex; flex-direction: column; gap: 18px; padding: 64px 14px 22px; align-items: center; }
@@ -1111,7 +1112,7 @@
   }
 
   /* the board: an opaque dark backing (.boardplate) and a glass tile per cell (#tileLayer) inside the
-     slim chrome frame (frame_sq) - the shop front never shows through the board */
+     flat frame (frame_sq) - the shop front never shows through the board */
   .board {
     position: relative; display: flex; gap: var(--cell-gap);
     /* the icon grid (7 reels of cell + 10px padding/border, 5 rows + the reel's 10px) and the frame drawn
@@ -1144,6 +1145,16 @@
     background: radial-gradient(ellipse at 50% 30%, #161a30, #0a0c18 70%), #0a0c18;
     box-shadow: inset 0 0 40px rgba(0, 0, 0, .75);
   }
+  /* the reel window's glass (owner, 2026-11-12: "a glossy glass overlay effect to the reel window"): over the symbols
+     and under the frame - a soft sheen from the top, two diagonal streaks of reflected light and a thin bright lip
+     on the top edge; screen-blended, so it only ever lightens, and it never takes a click */
+  .glassfx {
+    position: absolute; z-index: 2; pointer-events: none; border-radius: 24px; mix-blend-mode: screen;
+    left: calc(var(--bpx) - 10px); right: calc(var(--bpx) - 10px); top: calc(var(--bpt) - 10px); bottom: calc(var(--bpb) - 10px);
+    /* (no diagonal streaks: owner, 2026-11-13 "make it to where lines dont go accross the symbol") */
+    background: linear-gradient(180deg, rgba(200,230,255,.06), rgba(200,230,255,0) 18%);
+    box-shadow: inset 0 0 36px rgba(120,210,255,.06);   /* (no lip line: 2026-11-13) */
+  }
   /* the glass tiles, one canvas drawn once per layout and when the high symbols move (paintTiles) */
   .tilelayer { position: absolute; left: 0; top: 0; z-index: 0; pointer-events: none; }
   /* the board's neon frame flashes with a win, a multiplier or a bonus (boardFlash) */
@@ -1151,12 +1162,13 @@
      for 1.2 s on every win; now a glow ring of its own (.frameglow) only fades in and out */
   .frameglow { position: absolute; z-index: 3; pointer-events: none; opacity: 0; border-radius: 30px;
     left: calc(var(--bpx) - 10px); right: calc(var(--bpx) - 10px); top: calc(var(--bpt) - 10px); bottom: calc(var(--bpb) - 10px);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--flash, #FF2A3D) 70%, #fff), 0 0 22px 4px var(--flash, #FF2A3D), inset 0 0 26px var(--flash, #FF2A3D); }
+    box-shadow: 0 0 26px 6px var(--flash, #FF7A1A), inset 0 0 30px var(--flash, #FF7A1A); }   /* soft, no ring line (2026-11-13) */
   .board.flash .frameglow { animation: frameFlash var(--flashms, 1.2s) ease-out; }
   @keyframes frameFlash { 0%, 100% { opacity: 0; } 12%, 40% { opacity: .9; } 26% { opacity: 1; } }
   @media (prefers-reduced-motion: reduce) { .board.flash .frameglow { animation: none; } }
   /* the win popup's plate wanders on --p*: its outline goes with it */
-  /* frame_sq.webp (the squarer 7x5 frame: slim chrome bezel, red neon, the FALCOS sign on top; built by
+  /* frame_sq.webp (the squarer 7x5 frame: a flat orange band with ink outlines, a FALCOS badge on top -
+     tools/falcos/flat_frame.py, 2026-11-13; built by
      tools/falcos/compress_assets.py, its opening in frame_sq.json -> --fo-*): it fills the board's box, whose
      padding is its bands, so its opening sits 6px round the icon grid; the grid's own shape stretches it a
      few percent at most. */
@@ -1174,7 +1186,7 @@
     40% { transform: scale(calc(1 + .035 * var(--bounce))); }
     100% { transform: none; }
   }
-  .board::after { content: ""; position: absolute; inset: 0; pointer-events: none; box-shadow: 0 0 26px rgba(255,42,61,.35); opacity: 0; }
+  .board::after { content: ""; position: absolute; inset: 0; pointer-events: none; box-shadow: 0 0 26px rgba(255, 122, 26,.35); opacity: 0; }
   .board.pop::after { animation: boardglow .38s cubic-bezier(.2,.9,.3,1.35); }
   @keyframes boardglow { 0%, 100% { opacity: 0; } 40% { opacity: 1; } }
   .reel { position: relative; display: flex; flex-direction: column; gap: var(--cell-gap); padding: 3px; border: 2px solid transparent; transition: border-color .3s, box-shadow .3s; }
@@ -1411,9 +1423,9 @@
   .shardlayer { position: absolute; z-index: 4; pointer-events: none; }   /* the icon's pieces fly over everything */
   /* a paying cluster's tiles glow behind their symbols (glowTiles): a neon rim and a warm pool of light, ~1 s */
   .tileglows { position: absolute; left: 0; top: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+  /* soft light only, no rim (owner, 2026-11-13: "our glows are leaving outlines / lines on the screen") */
   .tglowbox { position: absolute; border-radius: 14%; pointer-events: none; opacity: 0;
-    box-shadow: 0 0 0 2px rgba(255, 214, 140, .95), 0 0 16px 3px rgba(255, 170, 60, .85), 0 0 34px 6px rgba(255, 90, 40, .45),
-                inset 0 0 22px 4px rgba(255, 190, 90, .6);
+    box-shadow: 0 0 20px 4px rgba(255, 170, 60, .55), 0 0 38px 8px rgba(255, 90, 40, .25);
     background: radial-gradient(closest-side, rgba(255, 210, 130, .42), rgba(255, 140, 40, .16) 70%, transparent);
     animation: tileGlow calc(1.1s * var(--tempo, 1)) ease-out forwards; }
   @keyframes tileGlow { 0% { opacity: 0; transform: scale(.94); } 18% { opacity: 1; transform: scale(1.03); } 30% { transform: none; } 72% { opacity: 1; } 100% { opacity: 0; } }
@@ -1424,15 +1436,15 @@
      would paint a booming or exploding tile that overhangs its neighbour UNDER that reel. */
   @media (prefers-reduced-motion: reduce) { .cell.boom, .cell.hit { animation: none; } }
   @keyframes scatglow {
-    0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 42, 61, .9)) drop-shadow(0 0 14px rgba(255, 42, 61, .45)); }
-    50%      { filter: drop-shadow(0 0 9px rgba(255, 42, 61, 1)) drop-shadow(0 0 28px rgba(255, 42, 61, .8)); }
+    0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 122, 26, .9)) drop-shadow(0 0 14px rgba(255, 122, 26, .45)); }
+    50%      { filter: drop-shadow(0 0 9px rgba(255, 122, 26, 1)) drop-shadow(0 0 28px rgba(255, 122, 26, .8)); }
   }
   @keyframes escatglow {
     0%, 100% { filter: drop-shadow(0 0 5px rgba(79, 123, 255, .9)) drop-shadow(0 0 14px rgba(79, 123, 255, .5)); }
     50%      { filter: drop-shadow(0 0 9px rgba(79, 123, 255, 1)) drop-shadow(0 0 28px rgba(79, 123, 255, .85)); }
   }
   @media (prefers-reduced-motion: reduce) {
-    .cell.scat img  { animation: none; filter: drop-shadow(0 0 7px rgba(255, 42, 61, .95)); }
+    .cell.scat img  { animation: none; filter: drop-shadow(0 0 7px rgba(255, 122, 26, .95)); }
     .cell.escat img { animation: none; filter: drop-shadow(0 0 7px rgba(79, 123, 255, .95)); }
     .cell.scatland img { animation: none !important; }
   }
@@ -1690,7 +1702,7 @@
   .notice {
     position: fixed; left: 50%; bottom: max(15vh, 84px); z-index: 45;
     max-width: min(92vw, 520px); padding: 9px 18px 8px; border-radius: 12px;
-    background: rgba(10, 8, 14, .93); border: 2px solid #FF2A3D;
+    background: rgba(10, 8, 14, .93); border: 2px solid #FF7A1A;
     box-shadow: 0 8px 24px rgba(0, 0, 0, .55);
     font-family: var(--legible); font-size: clamp(11px, 2vh, 16px); line-height: 1.35; color: #f4f0ea;
     text-align: center; pointer-events: none;
@@ -1725,7 +1737,7 @@
     position: absolute; inset: 0; display: none; align-items: center; justify-content: center;
     z-index: 6; pointer-events: none;
     font-family: var(--num); font-size: 62px; letter-spacing: .04em; color: var(--gold);
-    text-shadow: 0 5px 0 rgba(0,0,0,.75), 0 0 26px rgba(0,0,0,.9), 0 0 54px rgba(245,197,24,.5);
+    text-shadow: 0 5px 0 rgba(0,0,0,.75), 0 0 26px rgba(0,0,0,.9), 0 0 54px rgba(255, 166, 64,.5);
   }
   .tally.on { display: flex; }
   .tally.pop { animation: tallypop .42s cubic-bezier(.2,.85,.3,1.2); }
@@ -1758,7 +1770,7 @@
   }
   /* the figures in the line - the amount, the multiplier - take the number font */
   .banner .sub2 .num { font-family: "Fredoka", var(--num); font-weight: 700; font-size: 26px; letter-spacing: .04em; color: var(--gold); vertical-align: -1px; }
-  .banner.gold .big { color: var(--gold); text-shadow: 0 4px 0 rgba(0,0,0,.75), 0 0 22px rgba(0,0,0,.9), 0 0 34px rgba(245,197,24,.55); }
+  .banner.gold .big { color: var(--gold); text-shadow: 0 4px 0 rgba(0,0,0,.75), 0 0 22px rgba(0,0,0,.9), 0 0 34px rgba(255, 166, 64,.55); }
   .banner .muralimg { display: none; max-width: 94%; max-height: 46%; object-fit: contain; margin-top: 14px; border: 2px solid var(--gold); }
 
   /* info cards under the board */
@@ -1773,7 +1785,7 @@
   }
   .wall span.done {
     border-color: var(--spray); filter: none;
-    box-shadow: inset 0 0 0 100px rgba(255, 42, 61, .55);
+    box-shadow: inset 0 0 0 100px rgba(255, 122, 26, .55);
   }
   /* The free-spin counter under the board (owner, 2026-10-27): a plate of its own - the bar's
      charcoal slab with its live rim - carrying FREE SPINS, the spin it is on over the spins it
@@ -1783,7 +1795,7 @@
      (paintFsCount), and it drops away as the bonus ends (.leaving, from totalWinScreen). The
      plate wanders slightly on a random path of its own (hoverWin, started at boot); the jumps
      are on scale, so the two never fight. */
-  #fsCard { display: none; --acc: #FF2A3D; --glow: 255, 42, 61; text-align: center; }
+  #fsCard { display: none; --acc: #FF7A1A; --glow: 255, 42, 61; text-align: center; }
   #fsCard.x { --acc: #5B8CFF; --glow: 91, 140, 255; }
   #fsCard.on { display: block; animation: fsIn .62s cubic-bezier(.2, 1.35, .35, 1) .35s both; }
   #fsCard.leaving { animation: fsOut .36s cubic-bezier(.5, 0, .9, .5) forwards; }
@@ -1898,7 +1910,7 @@
   .sidebtn:active:not(:disabled) { transform: scale(.93); }
   /* armed: the box brightens and the glyph lights up in its own paint */
   .sidebtn.on { filter: brightness(1.22) saturate(1.12); }
-  .sidebtn.on::before { filter: drop-shadow(0 0 8px rgba(255, 42, 61, .95)) drop-shadow(0 1.5px 0 rgba(0,0,0,.6)); }
+  .sidebtn.on::before { filter: drop-shadow(0 0 8px rgba(255, 122, 26, .95)) drop-shadow(0 1.5px 0 rgba(0,0,0,.6)); }
   /* greyed while a round runs, armed or not: the choice is kept, only the press is off */
   .sidebtn:disabled, .sidebtn.on:disabled { filter: grayscale(.95) brightness(.7); opacity: .6; cursor: default; }
   .sidebtn:disabled::before, .sidebtn.on:disabled::before { filter: grayscale(1) drop-shadow(0 1.5px 0 rgba(0,0,0,.6)); }
@@ -1911,7 +1923,7 @@
     font-family: var(--num); font-size: calc(15px * var(--hs, 1)); font-weight: 400; line-height: 1;
     color: #16130f; background: var(--gold);
     border: 2px solid #000; border-radius: 999px;
-    box-shadow: 0 2px 0 rgba(0, 0, 0, .6), 0 0 10px rgba(245, 197, 24, .8);
+    box-shadow: 0 2px 0 rgba(0, 0, 0, .6), 0 0 10px rgba(255, 166, 64, .8);
   }
   .sidebtn #autoN[hidden] { display: none; }
 
@@ -2002,7 +2014,7 @@
      like the symbols' .tglow and its halo breathes - and the other one is dimmed until the
      pointer is on it. The description stays in the markup for assistive tech, out of sight. */
   .bonuscard {
-    --acc: #FF2A3D; --acchi: #FF9AA4; --accd: #6E0614; --glow: 255, 42, 61;
+    --acc: #FF7A1A; --acchi: #FFC08A; --accd: #6E2A06; --glow: 255, 42, 61;
     container-type: inline-size;   /* the spins figure is sized to the card (cqw), so "10, 12, 15 or 17" always fits */
     position: relative; display: flex; flex-direction: column; align-items: center; gap: 7px; width: 100%;
     background: linear-gradient(180deg, rgba(58, 54, 66, .96), rgba(24, 22, 30, .97) 56%, rgba(14, 13, 18, .98));
@@ -2254,12 +2266,14 @@
      every piece's box in % of the frame, so the whole HUD scales as one and stays crisp. The pop-ups
      it opens (.hudpop: auto play, volume) and the rules panel rise out of it in the same paint. */
   :root {
-    --hud-fill: rgba(38, 37, 41, .5);   /* a slightly greyish black, half see-through (owner, 2026-11-03) */
-    --hud-line: #000;           /* the outline: black */
+    /* flat TV-cartoon (owner, 2026-11-13: "change any realistic / shaded graphics"): a solid blue bar with a thick ink
+       outline and a hard offset shadow, like the symbols; orange for what is on */
+    --hud-fill: #1F45B8;
+    --hud-line: #0C0C12;        /* the outline: ink */
     --hud-hi: #fff;             /* the outline under the pointer, or with its pop-up open: white (owner, 2026-11-03) */
-    --hud-on: #B8F23A;          /* Rapid / Auto on, the chosen option (the spin's pressed ring is white) */
+    --hud-on: #FF7A1A;          /* Rapid / Auto on, the chosen option (the spin's pressed ring is white) */
     --hud-ink: #f4f1f8;
-    --hud-soft: #c4bcd2;
+    --hud-soft: #CFE0FF;
     --hud-font: "Fredoka", "Segoe UI", Roboto, Arial, sans-serif;
     /* the glyphs, drawn as masks so they take the button's colour */
     --i-menu: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.8' stroke-linecap='round'><path d='M4 6.5h16M4 12h16M4 17.5h16'/></svg>");
@@ -2272,8 +2286,8 @@
     --i-minus: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3.2' stroke-linecap='round'><path d='M5 12h14'/></svg>");
     --i-spin: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><path d='M19.5 12.6A7.6 7.6 0 1 1 17.4 6.6'/><path d='M18.4 2.6v4.6h-4.6'/></svg>");
     /* the spin hexagon's inner ring, and the same lit while a round plays */
-    --spin-hex: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 148 128'><path d='M39 4h70l35 60-35 60H39L4 64z' fill='%23fff' fill-opacity='.05' stroke='%23fff' stroke-opacity='.2' stroke-width='3' stroke-linejoin='round'/></svg>");
-    --spin-hex-on: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 148 128'><path d='M39 4h70l35 60-35 60H39L4 64z' fill='%23fff' fill-opacity='.08' stroke='%23fff' stroke-opacity='.95' stroke-width='3.5' stroke-linejoin='round'/></svg>");   /* pressed: a white outline, glowing (owner, 2026-11-03) */
+    --spin-hex: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 148 128'><path d='M39 4h70l35 60-35 60H39L4 64z' fill='%23FF7A1A' stroke='%230C0C12' stroke-width='5' stroke-linejoin='round'/></svg>");
+    --spin-hex-on: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 148 128'><path d='M39 4h70l35 60-35 60H39L4 64z' fill='%23FF9A40' stroke='%23fff' stroke-width='5' stroke-linejoin='round'/></svg>");   /* pressed: a white outline, glowing (owner, 2026-11-03) */
   }
   .bottom { justify-content: center; padding: 10px 16px 16px; }
   .hud { display: flex; justify-content: center; width: 100%; }
@@ -2296,10 +2310,11 @@
     aspect-ratio: var(--hud-fw, 790) / var(--hud-fh, 136);
   }
   .hudframe > * { position: absolute; }   /* every piece is placed by buildHud(), in % of the frame */
-  .hudshape, .tabshape { inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+  .hudshape, .tabshape { inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none;
+    filter: drop-shadow(3px 4px 0 rgba(8, 8, 14, .9)); }   /* the cartoon's hard shadow, no blur */
   .tabshape { position: absolute; }
   .hudshape path, .tabshape path {
-    fill: var(--hud-fill); stroke: var(--hud-line); stroke-width: 3; stroke-linejoin: round;
+    fill: var(--hud-fill); stroke: var(--hud-line); stroke-width: 4.5; stroke-linejoin: round;
     transition: fill .15s ease, stroke .15s ease;
   }
   /* the four tabs: the shape, and the glyph in the middle of it */
@@ -2328,11 +2343,11 @@
   /* Rapid armed, Auto running: the glyph and the outline in lime */
   .hudframe .sidebtn.on, .hudframe .sidebtn.on:disabled { color: var(--hud-on); }
   .hudframe .sidebtn.on .tabshape path { stroke: var(--hud-on); }
-  .hudframe .sidebtn.on::before { filter: drop-shadow(0 0 5px rgba(184, 242, 58, .75)); }
+  .hudframe .sidebtn.on::before { filter: drop-shadow(0 0 5px rgba(79, 155, 255, .75)); }
   /* nothing greys during a round: a button that cannot act simply does not act */
   .hudframe button:disabled, .hudframe .sidebtn:disabled, .hudframe .sidebtn.on:disabled, .hudframe .hudbtn:disabled { opacity: 1; cursor: default; filter: none; }
   .hudframe .sidebtn:disabled::before { filter: none; }
-  .hudframe .sidebtn.on:disabled::before { filter: drop-shadow(0 0 5px rgba(184, 242, 58, .75)); }
+  .hudframe .sidebtn.on:disabled::before { filter: drop-shadow(0 0 5px rgba(79, 155, 255, .75)); }
   .hud button:focus { outline: none; }
   .hud button:focus-visible { outline: none; }
   .hudframe :is(.hudbtn, .sidebtn):focus-visible .tabshape path { stroke: #fff; }
@@ -2368,7 +2383,7 @@
   .hudstat.bet { align-items: flex-end; }
   .hudstat.bet .val, #betVal { text-align: right; }
   /* the balance flashes green on the way up and red on the way down */
-  #balance.up   { color: #A8F000; text-shadow: 0 0 10px rgba(168, 240, 0, .55); }
+  #balance.up   { color: #4F9BFF; text-shadow: 0 0 10px rgba(79, 155, 255, .55); }
   #balance.down { color: #ff4d4d;         text-shadow: 0 0 10px rgba(255, 59, 59, .55); }
   .hudbar .chip.juris { background: rgba(255, 255, 255, .06); border: 1px solid var(--hud-line); box-shadow: none; padding: 4px 9px; }
   .hudbet { display: flex; align-items: center; gap: calc(12px * var(--hs, 1)); }
@@ -2459,7 +2474,7 @@
     transition: transform .12s ease, filter .15s ease, box-shadow .15s ease;
   }
   #autoPop #autoYes:not(:disabled)::before { content: none; animation: none; }
-  #autoPop #autoYes:hover:not(:disabled) { transform: none; filter: brightness(1.08); border-color: rgba(0, 0, 0, .35); box-shadow: 0 0 0 3px rgba(184, 242, 58, .25); }
+  #autoPop #autoYes:hover:not(:disabled) { transform: none; filter: brightness(1.08); border-color: rgba(0, 0, 0, .35); box-shadow: 0 0 0 3px rgba(79, 155, 255, .25); }
   #autoPop #autoYes:active:not(:disabled) { transform: scale(.97); box-shadow: none; }
   #autoPop #autoYes:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
   /* The rules panel rises out of the bar too, standing just over the HUD's top edge (--hud-top,
@@ -2539,7 +2554,7 @@
   .hudstat.win .lbl { color: var(--hud-on); }
   .hudstat.win .val, #roundWin {
     color: #fff; text-align: center;
-    text-shadow: 0 2px 0 rgba(0, 0, 0, .35), 0 0 14px rgba(184, 242, 58, .4);
+    text-shadow: 0 2px 0 rgba(0, 0, 0, .35), 0 0 14px rgba(79, 155, 255, .4);
     transition: opacity .3s ease;
   }
   .hudstat.win.zero .val { opacity: .4; text-shadow: none; }
@@ -2644,12 +2659,12 @@
     box-shadow: 0 0 10px color-mix(in srgb, var(--heat) 75%, transparent), 0 3px 6px rgba(0, 0, 0, .6);
     text-shadow: 0 0 6px var(--heat), 0 1px 0 rgba(0, 0, 0, .8);
   }
-  .badgelayer .badge.max > span { color: #2a1600; background: linear-gradient(180deg, #FFF1B8, #F5C518 45%, #B8860B); border-color: #FFF6CF;
-    text-shadow: 0 1px 0 rgba(255, 255, 255, .6); box-shadow: 0 0 16px #F5C518, 0 0 30px rgba(245, 197, 24, .6); }
+  .badgelayer .badge.max > span { color: #2a1600; background: linear-gradient(180deg, #FFF1B8, #FFA640 45%, #B8860B); border-color: #FFF6CF;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, .6); box-shadow: 0 0 16px #FFA640, 0 0 30px rgba(255, 166, 64, .6); }
   /* FILL UP: the drop's value, big and centred low on the drop */
   .badgelayer .badge.val { align-items: flex-end; justify-content: center; padding: 0 0 4px; }
   .badgelayer .badge.val > span { font-size: 24px; padding: 3px 10px 2px; }
-  .badgelayer .badge.val.coll > span { font-size: 26px; color: #2a1600; background: linear-gradient(180deg, #FFF1B8, #F5C518 50%, #B8860B); border-color: #FFF6CF; text-shadow: none; }
+  .badgelayer .badge.val.coll > span { font-size: 26px; color: #2a1600; background: linear-gradient(180deg, #FFF1B8, #FFA640 50%, #B8860B); border-color: #FFF6CF; text-shadow: none; }
   .badgelayer .badge.bump > span { animation: badgeBump calc(.42s * var(--tempo, 1)) cubic-bezier(.2, .9, .3, 1.4); }
   @keyframes badgeBump { 0% { scale: .5; opacity: .4; } 50% { scale: 1.35; opacity: 1; } 100% { scale: 1; } }
   @media (max-width: 760px) and (orientation: portrait) {
@@ -2660,11 +2675,11 @@
   .fxlayer > * { position: absolute; }
   /* a column lit by a Gas Pump (and a FILL UP pump) */
   .colglow { border-radius: 16px; background: linear-gradient(90deg, color-mix(in srgb, var(--c) 22%, transparent), transparent 22%, transparent 78%, color-mix(in srgb, var(--c) 22%, transparent));
-    box-shadow: 0 0 0 3px var(--c), 0 0 24px var(--c), inset 0 0 30px color-mix(in srgb, var(--c) 60%, transparent);
+    box-shadow: 0 0 24px var(--c), inset 0 0 30px color-mix(in srgb, var(--c) 60%, transparent);   /* soft, no outline (2026-11-13) */
     opacity: 0; transition: opacity .25s ease; }
   .colglow.on { opacity: 1; animation: colPulse .5s ease-in-out infinite alternate; }
   @keyframes colPulse { from { opacity: .62; } to { opacity: 1; } }   /* (perf) opacity, not a filter over a box-shadow */
-  .colglow.fulltank { --c: #F5C518; animation: colPulse .18s ease-in-out infinite alternate; }
+  .colglow.fulltank { --c: #FFA640; animation: colPulse .18s ease-in-out infinite alternate; }
   /* the pump's fuel-grade dial */
   .pumpdial { width: 230px; height: 150px; margin: -75px 0 0 -115px; scale: 1.3; filter: drop-shadow(0 8px 14px rgba(0, 0, 0, .7)); animation: dialIn calc(.35s * var(--tempo, 1)) cubic-bezier(.2, .9, .3, 1.4) both; }
   .pumpdial.out { animation: dialOut calc(.3s * var(--tempo, 1)) ease-in both; }
@@ -2677,7 +2692,10 @@
     padding: 4px 14px; border-radius: 999px; background: #0a0710; border: 2px solid var(--c, #fff); box-shadow: 0 0 16px var(--c, #fff);
     text-shadow: 0 0 8px var(--c, #fff); opacity: 0; scale: .5; transition: opacity .15s, scale .3s cubic-bezier(.2, .9, .3, 1.5); }
   .pumpdial.landed .grade { opacity: 1; scale: 1; }
-  .pumpdial.fulltank .grade { font-size: 26px; color: #2a1600; background: linear-gradient(180deg, #FFF1B8, #F5C518 50%, #B8860B); text-shadow: none; }
+  .pumpdial.fulltank .grade { font-size: 26px; color: #2a1600; background: linear-gradient(180deg, #FFF1B8, #FFA640 50%, #B8860B); text-shadow: none; }
+  /* the Blender effect sprites (spriteFx): a frame of a grid sheet, stepped by script */
+  .fxsprite { position: absolute; display: block; pointer-events: none; background-repeat: no-repeat; }
+  .twburst { left: 50%; top: 50%; width: max(100vw, 177.78vh); aspect-ratio: 16 / 9; translate: -50% -50%; z-index: 0; }
   /* fire over a Zippo's 3x3 */
   .firebox { border-radius: 20px; opacity: 0;
     background: radial-gradient(closest-side at 50% 55%, rgba(255, 245, 200, .95), rgba(255, 170, 40, .85) 35%, rgba(255, 60, 20, .5) 70%, transparent 100%);
@@ -2690,9 +2708,9 @@
   @keyframes flameLick { from { transform: scaleY(.9) skewX(-3deg); } to { transform: scaleY(1.12) skewX(3deg); } }
   /* the Scratch Ticket's card: a foil scratched away (a canvas) over what it reveals */
   .scratchcard { width: 170px; height: 120px; margin: -60px 0 0 -85px; border-radius: 14px; overflow: hidden;
-    background: linear-gradient(160deg, #f6eedd, #e4d6b8); border: 3px solid #fff; box-shadow: 0 0 0 3px #FF2A3D, 0 10px 24px rgba(0, 0, 0, .7), 0 0 26px rgba(255, 42, 61, .6);
+    background: linear-gradient(160deg, #f6eedd, #e4d6b8); border: 3px solid #fff; box-shadow: 0 0 0 3px #FF7A1A, 0 10px 24px rgba(0, 0, 0, .7), 0 0 26px rgba(255, 122, 26, .6);
     display: grid; place-items: center; animation: dialIn calc(.3s * var(--tempo, 1)) cubic-bezier(.2, .9, .3, 1.4) both; }
-  .scratchcard.gold { box-shadow: 0 0 0 3px #F5C518, 0 10px 24px rgba(0, 0, 0, .7), 0 0 30px rgba(245, 197, 24, .8); background: linear-gradient(160deg, #fff6d0, #f0d27a); }
+  .scratchcard.gold { box-shadow: 0 0 0 3px #FFA640, 0 10px 24px rgba(0, 0, 0, .7), 0 0 30px rgba(255, 166, 64, .8); background: linear-gradient(160deg, #fff6d0, #f0d27a); }
   .scratchcard img { width: 70%; height: 82%; object-fit: contain; filter: drop-shadow(0 3px 4px rgba(0, 0, 0, .5)); }
   .scratchcard .all { font-family: "Fredoka", var(--num); font-weight: 700; font-size: 34px; letter-spacing: .06em; color: #8a5a00; line-height: 1; text-align: center; }
   .scratchcard canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
@@ -2701,7 +2719,7 @@
   @keyframes cardPop { 50% { transform: scale(1.18); filter: brightness(1.3); } }
   /* a cell called out by a feature (the scratched symbol, a pump's column): it flashes white-hot */
   .cell.tflash::after { content: ""; position: absolute; inset: 4%; border-radius: 18%; pointer-events: none; z-index: 1;
-    box-shadow: 0 0 0 3px #fff, 0 0 18px var(--fc, #FF2A3D), inset 0 0 18px var(--fc, #FF2A3D);
+    box-shadow: 0 0 22px 2px var(--fc, #FF7A1A), inset 0 0 20px var(--fc, #FF7A1A);   /* soft, no rim line (2026-11-13) */
     animation: tflash calc(.32s * var(--tempo, 1)) ease-in-out 3 alternate; }
   @keyframes tflash { from { opacity: .2; } to { opacity: 1; } }
   /* the Gold Ticket's sweep of light across the whole board */
@@ -2745,8 +2763,8 @@
   #board.fillup .badgelayer .badge.val.coll { padding-bottom: 7px; }
   #board.fillup .badgelayer .badge.val.coll > span {
     font-size: 34px; padding: 4px 12px 3px; border-radius: 10px; color: #2a1600; -webkit-text-stroke: 0;
-    background: linear-gradient(180deg, #FFF6CF, #F5C518 45%, #C08A0E); border: 2px solid #FFF6CF;
-    box-shadow: 0 0 0 2px #6b3f00, 0 0 18px rgba(245, 197, 24, .8); text-shadow: 0 1px 0 rgba(255, 255, 255, .6);
+    background: linear-gradient(180deg, #FFF6CF, #FFA640 45%, #C08A0E); border: 2px solid #FFF6CF;
+    box-shadow: 0 0 0 2px #6b3f00, 0 0 18px rgba(255, 166, 64, .8); text-shadow: 0 1px 0 rgba(255, 255, 255, .6);
   }
   .badgelayer .badge.val.tick > span { animation: badgeTick .16s ease-out; }
   @keyframes badgeTick { 0% { scale: 1.18; } 100% { scale: 1; } }
@@ -2770,6 +2788,9 @@
   .flydrop.lead::after { content: ""; position: absolute; inset: -18%; border-radius: 50%; z-index: -1;
     background: radial-gradient(closest-side, color-mix(in srgb, var(--dc, #FFB547) 75%, transparent), transparent); }
   /* a Zippo: a sheet of flame sweeps its 3x3, then the drops in it crumble (their burn clip) */
+  /* No effect draws a line across the symbols (owner, 2026-11-13: "make it to where lines dont go accross the symbol
+     ... like just the effects"): the gold ticket's and the lighter's sweeping bands and the spark streaks are off */
+  .goldsweep::before, .flamesweep::before, .sparks i.streak { display: none; }
   .flamesweep { overflow: hidden; border-radius: 16px; pointer-events: none; }
   .flamesweep::before { content: ""; position: absolute; top: -10%; bottom: -10%; left: -60%; width: 60%;
     background: linear-gradient(90deg, transparent, rgba(255, 90, 20, .55) 25%, rgba(255, 220, 120, .95) 55%, rgba(255, 120, 30, .6) 80%, transparent);
@@ -2846,8 +2867,8 @@
   #bgalt { position: absolute; inset: 0; z-index: 1; opacity: 0; transition: opacity .9s ease; pointer-events: none;
     background: #070B18 var(--alt, none) var(--wall-x, 50%) var(--wall-y, 50%) / var(--wall-scale) no-repeat; }
   #bgalt.on { opacity: 1; }
-  #bgalt .zsign { position: absolute; opacity: 0; mix-blend-mode: screen;
-    background: radial-gradient(ellipse at 45% 45%, rgba(140, 255, 90, .75), rgba(80, 220, 60, .35) 45%, transparent 72%); }
+  #bgalt .zsign { position: absolute; pointer-events: none; }   /* the failing letters' off states (Scene) */
+  #bgalt .zsign img { display: block; }
   /* PREMIUM's drifting clouds: over the plate's sky band, fading out toward the treeline and rooftops; two copies
      of the seamless strip, each twice the band's width, sliding left by half their width on a loop (transform only),
      the far one slower and fainter for depth */
@@ -2880,13 +2901,13 @@
   #bonusWrap .bonuspop.fit { max-height: none; overflow: visible; }
   #bonusWrap .bshop { position: relative; display: flex; flex-direction: column; align-items: stretch; gap: 14px; width: min(980px, calc(100vw - 36px));
     padding: 18px 20px 16px; border-radius: 22px; background: linear-gradient(180deg, rgba(22, 16, 30, .96), rgba(10, 8, 16, .97));
-    border: 1px solid rgba(255, 255, 255, .1); box-shadow: 0 24px 60px rgba(0, 0, 0, .7), 0 0 0 1px rgba(255, 42, 61, .15); font-family: "Fredoka", var(--num); color: #f4f1f8; }
+    border: 1px solid rgba(255, 255, 255, .1); box-shadow: 0 24px 60px rgba(0, 0, 0, .7), 0 0 0 1px rgba(255, 122, 26, .15); font-family: "Fredoka", var(--num); color: #f4f1f8; }
   #bonusWrap .bshoptitle { text-align: center; font-size: 20px; letter-spacing: .26em; margin: 0 0 2px; }
   #bonusWrap .bshopx { top: 12px; right: 12px; z-index: 3; }
   #bonusWrap .bsrow { display: grid; gap: 14px; }
   #bonusWrap .bsrow.wide { grid-template-columns: 1fr 1fr; }
   #bonusWrap .bsrow.tall { grid-template-columns: 1fr 1fr 1fr; }
-  #bonusWrap .bc { --acc: #FF2A3D; position: relative; overflow: hidden; border-radius: 18px; background: #120d18; isolation: isolate;
+  #bonusWrap .bc { --acc: #FF7A1A; position: relative; overflow: hidden; border-radius: 18px; background: #120d18; isolation: isolate;
     border: 1px solid rgba(255, 255, 255, .09); box-shadow: 0 10px 24px rgba(0, 0, 0, .5); display: flex; transition: transform .2s ease, box-shadow .2s ease; }
   #bonusWrap .bc:hover { transform: translateY(-3px); box-shadow: 0 16px 30px rgba(0, 0, 0, .6), 0 0 0 1px color-mix(in srgb, var(--acc) 60%, transparent), 0 0 24px color-mix(in srgb, var(--acc) 30%, transparent); }
   #bonusWrap .bc.armed { box-shadow: 0 0 0 2px var(--acc), 0 0 30px color-mix(in srgb, var(--acc) 50%, transparent); }
@@ -2908,7 +2929,7 @@
   #bonusWrap .bc.tall .bcfoot { flex-direction: column; gap: 8px; }
   #bonusWrap .bcprice { display: flex; flex-direction: column; line-height: 1.05; }
   #bonusWrap .bc.tall .bcprice { align-items: center; }
-  #bonusWrap .bcprice b { font-size: 24px; font-weight: 700; color: #F5C518; text-shadow: 0 0 12px rgba(245, 197, 24, .35); white-space: nowrap; }
+  #bonusWrap .bcprice b { font-size: 24px; font-weight: 700; color: #FFA640; text-shadow: 0 0 12px rgba(255, 166, 64, .35); white-space: nowrap; }
   #bonusWrap .bcprice small { font-size: 12px; letter-spacing: .12em; color: rgba(244, 241, 248, .55); text-transform: uppercase; }
   #bonusWrap .bcbtn { flex: none; min-width: 132px; padding: 11px 22px; border-radius: 999px; border: 0; cursor: pointer;
     font-family: "Fredoka", var(--num); font-weight: 700; font-size: 16px; letter-spacing: .14em; text-transform: uppercase; color: #fff;
@@ -2937,6 +2958,28 @@
   #bonusWrap .bshop #bonusBetDown:hover:not(:disabled), #bonusWrap .bshop #bonusBetUp:hover:not(:disabled) { background: #2a2036; border-color: #FFB547; color: #FFB547; }
   #bonusWrap .bshop #bonusBetDown::before, #bonusWrap .bshop #bonusBetUp::before { content: ""; }
   #bonusWrap .bshopbar { background: transparent; border: 0; border-top: 1px solid rgba(255, 255, 255, .08); border-radius: 0; box-shadow: none; }
+  /* The buy panel, flat TV-cartoon like the HUD and the symbols (owner, 2026-11-13: "all the graphics in the buy
+     bonus hud" - no gloss, no gradient-lit buttons, no glows): solid blue and navy, thick ink outlines and hard
+     offset shadows; PLAY orange, ACTIVATE white, the bet arrows orange. */
+  #bonusWrap .bshop { background: #1F45B8; border: 4px solid #0C0C12; box-shadow: 7px 9px 0 #0C0C12; }
+  #bonusWrap .bshoptitle { color: #fff; text-shadow: 2px 3px 0 #0C0C12; }
+  #bonusWrap .bc { background: #14245E; border: 3px solid #0C0C12; box-shadow: 4px 6px 0 #0C0C12; }
+  #bonusWrap .bc:hover { box-shadow: 4px 6px 0 #0C0C12, 0 0 0 3px var(--acc); }
+  #bonusWrap .bc.armed, #bonusWrap .bc.on { box-shadow: 4px 6px 0 #0C0C12, 0 0 0 4px var(--acc); }
+  #bonusWrap .bc.wide .bcbody { background: linear-gradient(90deg, #14245E 62%, transparent); }
+  #bonusWrap .bclogo { filter: drop-shadow(3px 4px 0 #0C0C12); }
+  #bonusWrap .bcdesc { color: #fff; }
+  #bonusWrap .bcprice b { color: #FF9A40; text-shadow: 2px 2px 0 #0C0C12; }
+  #bonusWrap .bcprice small, #bonusWrap .bsstat .lbl { color: #CFE0FF; }
+  #bonusWrap .bcbtn { background: #FF7A1A; color: #fff; border: 3px solid #0C0C12; box-shadow: 3px 4px 0 #0C0C12; text-shadow: 2px 2px 0 #0C0C12; }
+  #bonusWrap .bcbtn.amber { background: #fff; color: #1F45B8; border: 3px solid #0C0C12; box-shadow: 3px 4px 0 #0C0C12; text-shadow: none; }
+  #bonusWrap .bcbtn:hover:not(:disabled) { filter: none; background: #FF9A40; }
+  #bonusWrap .bcbtn.amber:hover:not(:disabled) { background: #FFE9D6; }
+  #bonusWrap .bcbtn:active:not(:disabled) { transform: translate(2px, 3px); box-shadow: 1px 1px 0 #0C0C12; }
+  #bonusWrap .bshop #bonusBetDown, #bonusWrap .bshop #bonusBetUp { background: #FF7A1A; border: 3px solid #0C0C12; box-shadow: 2px 3px 0 #0C0C12; color: #fff; }
+  #bonusWrap .bshop #bonusBetDown:hover:not(:disabled), #bonusWrap .bshop #bonusBetUp:hover:not(:disabled) { background: #FF9A40; border-color: #0C0C12; color: #fff; }
+  #bonusWrap .bshopbar { border-top: 3px solid #0C0C12; }
+  #bonusWrap .bshopx { background: #FF7A1A; border: 3px solid #0C0C12; box-shadow: 2px 3px 0 #0C0C12; color: #fff; }
   #bonusWrap .bsbet .val { min-width: 110px; text-align: center; }
   #bonusWrap .bssep { width: 1px; height: 34px; background: rgba(255, 255, 255, .12); }
   /* A phone (owner, 2026-11-10: no scrolling): the two special spins as compact rows, the three bonuses side
@@ -3007,7 +3050,7 @@
 <div id="app">
 <div class="main">
   <div class="stage">
-    <div class="board" id="board"><div class="boardplate" aria-hidden="true"></div><div class="frameglow" aria-hidden="true"></div><picture style="display: contents"><source media="(orientation: landscape) and (min-aspect-ratio: 4/3)" srcset="assets/frame_wide.webp"><img id="paintframe" src="assets/frame_sq.webp" alt="" draggable="false"></picture></div>
+    <div class="board" id="board"><div class="boardplate" aria-hidden="true"></div><div class="glassfx" aria-hidden="true"></div><div class="frameglow" aria-hidden="true"></div><picture style="display: contents"><source media="(orientation: landscape) and (min-aspect-ratio: 4/3)" srcset="assets/frame_wide.webp"><img id="paintframe" src="assets/frame_sq.webp" alt="" draggable="false"></picture></div>
     <div class="ticker" id="ticker"></div>
     <div class="banner" id="banner"><div class="big" id="bannerBig"></div><div class="sub2" id="bannerSub"></div><img id="bannerMural" class="muralimg" alt=""></div>
     <div class="tally" id="tally">0.00</div>
@@ -3115,7 +3158,7 @@
     <div class="introword" id="introWord" role="img" aria-label="Falcos">
       <img class="iwglow" src="assets/intro_letters/glow.webp" alt="" draggable="false">
     </div>
-    <div class="introtm" aria-hidden="true"><span>&copy; 2026 Falcos &middot; All rights reserved</span></div>
+    <div class="introtm" aria-hidden="true"><span>&copy; 2026 Smukiez &middot; All rights reserved</span></div>
   </div>
   <div class="introfoot">
     <div class="introbar" id="introBar"><i class="introfill" id="introFill"></i></div>
@@ -3619,6 +3662,10 @@ const shownSym = [];
 function setCell(r, y, sym) {
   const el = cellEls[r][y];
   el._spray = null;   // a new symbol: any spray this cell was waiting for was for the old one
+  // ...and any burn still running on it (burnCells) is over: its timer would blank the new symbol. Its clip
+  // runs in real time while the tumble's waits shrink with tempo(), so in Rapid / after a skip the refill lands
+  // first - and the burned cells (the ones a feature just gave a multiplier) were left empty under their badges.
+  if (el._burnT) { clearTimeout(el._burnT); el._burnT = 0; el.classList.remove("burning"); }
   el.className = cellClass(sym);
   fillCell(el, sym);
   smearOn(el, sym.name);
@@ -3988,7 +4035,7 @@ function heatHueRaw(v) {
 function boardFlash(kind, v = 1) {
   const b = $("board");
   if (!b || REDUCED_MOTION) return;
-  const c = kind === "multi" ? heatColour(v) : kind === "fs" ? "#FFB547" : "#FF2A3D";
+  const c = kind === "multi" ? heatColour(v) : kind === "fs" ? "#FFB547" : "#FF7A1A";
   b.style.setProperty("--flash", c);
   b.style.setProperty("--flashms", Math.round((kind === "fs" ? 1800 : kind === "multi" ? 1500 : 1200 + 250 * Math.min(4, v)) * tempo()) + "ms");
   b.classList.remove("flash"); restyle(b); b.classList.add("flash");
@@ -4014,14 +4061,14 @@ function paintCell(r, y) {
     } else if (!state.fill && (max || v >= 2)) {
       b.hidden = false; b.className = "badge" + (max ? " max" : "");
       b.firstChild.textContent = max ? "MAX" : "x" + v;
-      b.style.setProperty("--heat", max ? "#F5C518" : heatColour(v));
+      b.style.setProperty("--heat", max ? "#FFA640" : heatColour(v));
     } else b.hidden = true;
   }
   if (!state.fill && (v >= 2 || max)) {
     clearTimeout(g.fadeTimer); g.classList.remove("gone");
     g.textContent = ""; g.hidden = false;
     g.classList.toggle("max", max);
-    g.style.setProperty("--heat", max ? "#F5C518" : heatColour(v));
+    g.style.setProperty("--heat", max ? "#FFA640" : heatColour(v));
   } else if (!g.hidden && !g.classList.contains("gone")) {
     if (REDUCED_MOTION) { g.hidden = true; return; }
     g.classList.add("gone");
@@ -4077,9 +4124,12 @@ function cellCentre(r, y) {   // the cell's resting spot inside the board, by la
 const BURST_AT = 260;     // ms into cellExplode, at tempo 1: the top of the strain (52%)
 const BURST_SWELL = 1.3;  // how big the tile has swollen by then: its pieces start that size
 const BURST_PX = 240;     // the pieces are cut with the icon this many px across (a tile is ~100 css px, at 2x DPR)
+// the break away (2026-11-16): the chunks hold together, cracked, for BREAK_HOLD ms (each lets go up to
+// BREAK_STAGGER ms later than the first), then fall under BREAK_G (px per 60th of a second, per px of tile width)
+const BREAK_HOLD = 120, BREAK_STAGGER = 110, BREAK_G = .011, BREAK_LIFE = 900;
 // the light each symbol bursts in: its own colour; the grey ones take their tier's neon, or white
 const BURST_COLOUR = {
-  H1: "#F5C518", H2: "#FFE58A", H3: "#FF2A3D", H4: "#E0102A", L1: "#7EC8F2", L2: "#4F8CFF", L3: "#FFB547",
+  H1: "#FFA640", H2: "#FFE58A", H3: "#FF7A1A", H4: "#D9530A", L1: "#7EC8F2", L2: "#4F8CFF", L3: "#FFB547",
   L4: "#FFD23C", L5: "#FF9AA4", ZP: "#FFB547", ST: "#E9DFC9", GT: "#F5C518", GP: "#FF2A3D",
   FDG: "#6CFC54", FDA: "#FFB547", FDR: "#FF2A3D", BS: "#FF2A3D", DS: "#5B8CFF",
 };
@@ -4112,7 +4162,7 @@ function burstKit(name, img, upTo = 3) {
   }
   const { w, h } = kit;
   for (let v = kit.variants.length; v < upTo; v++) {
-    const n = 9 + v * 2, seeds = [];
+    const n = 6 + v, seeds = [];   // big chunks, so the break reads as the symbol itself coming apart
     for (let i = 0; i < n; i++) seeds.push([w * (.14 + .72 * Math.random()), h * (.14 + .72 * Math.random())]);
     const pieces = [];
     for (let i = 0; i < n; i++) {
@@ -4127,9 +4177,9 @@ function burstKit(name, img, upTo = 3) {
       g.translate(-x0, -y0);
       g.beginPath(); poly.forEach(([x, y], q) => q ? g.lineTo(x, y) : g.moveTo(x, y)); g.closePath();
       g.save(); g.clip(); g.drawImage(img, 0, 0, w, h); g.restore();
-      // the torn edge shows the vinyl's white - stroked over the piece's own pixels only
+      // the crack is inked like the art's own outlines - stroked over the piece's own pixels only
       g.globalCompositeOperation = "source-atop";
-      g.lineWidth = BURST_PX * .02; g.strokeStyle = "rgba(255, 255, 255, .95)"; g.stroke();
+      g.lineWidth = BURST_PX * .03; g.strokeStyle = "rgba(12, 12, 18, .95)"; g.stroke();
       const a = g.getImageData(0, 0, cw, ch).data;
       let on = 0;
       for (let p = 3; p < a.length; p += 16) if (a[p] > 40) on++;
@@ -4289,18 +4339,22 @@ function burstIcon(m) {
 const BURST_FLING = .42;
 function blow(b, variant, f) {
   const W = b.W * BURST_FLING, t = b.t, crowd = bursts.length > 8, mob = bursts.length > 16;
+  // the break away: every chunk where it sat, cracked apart a hair (gap, out from the centre), until it lets go -
+  // the lower chunks first, as if the symbol crumbles from under itself - then a small push out and up, and down
+  // it drops, turning, off the cell (no fade until the last third of its fall)
+  const lowest = Math.max(...variant.map(p => p.oy));
   b.pieces = variant.map(p => {
-    const a = Math.atan2(p.oy, p.ox) + (Math.random() - .5) * .8, sp = W * (.07 + Math.random() * .11) / t;
-    return { c: p.c, x: b.x + p.ox * f, y: b.y + p.oy * f, w: p.c.width * f, h: p.c.height * f,
-      vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - W * .07 / t, rot: 0, vrot: (Math.random() - .5) * .34 / t,
-      flip: Math.random() * 6.3, vflip: (.1 + Math.random() * .2) / t, life: (420 + Math.random() * 180) * t };
+    const d = Math.hypot(p.ox, p.oy) || 1, ux = p.ox / d, uy = p.oy / d;
+    const sp = b.W * (.025 + Math.random() * .03) / t;
+    return { c: p.c, x0: b.x + p.ox * f, y0: b.y + p.oy * f, x: b.x + p.ox * f, y: b.y + p.oy * f, ux, uy,
+      w: p.c.width * f, h: p.c.height * f,
+      wait: (BREAK_HOLD + BREAK_STAGGER * (1 - (p.oy + lowest) / (2 * lowest || 1)) * (.6 + Math.random() * .4)) * t,
+      vx: ux * sp + (Math.random() - .5) * b.W * .012 / t, vy: -b.W * (.02 + Math.random() * .025) / t,
+      rot: 0, vrot: (Math.random() - .5) * .16 / t, flip: 0, vflip: (.03 + Math.random() * .06) / t,
+      life: (BREAK_LIFE + Math.random() * 200) * t, gone: false };
   });
-  b.sparks = Array.from({ length: mob ? 5 : crowd ? 8 : 14 }, () => {
-    const a = Math.random() * Math.PI * 2, sp = W * (.13 + Math.random() * .2) / t;
-    return { x: b.x + Math.cos(a) * b.W * .12, y: b.y + Math.sin(a) * b.W * .12, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp,
-      life: (200 + Math.random() * 220) * t };
-  });
-  b.flecks = Array.from({ length: mob ? 2 : crowd ? 5 : 10 }, () => {
+  b.sparks = [];
+  b.flecks = Array.from({ length: mob ? 3 : crowd ? 6 : 12 }, () => {   // crumbs of it, in its colour and the ink
     const a = -Math.PI / 2 + (Math.random() - .5) * Math.PI * 1.6, sp = W * (.05 + Math.random() * .1) / t;
     return { x: b.x + (Math.random() - .5) * b.W * .3, y: b.y + (Math.random() - .5) * b.W * .3, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp,
       s: b.W * (.022 + Math.random() * .03), white: Math.random() < .55, rot: Math.random() * 6.3, vrot: (Math.random() - .5) * .5 / t,
@@ -4317,7 +4371,7 @@ function burstStep() {
   // so a burst flies the same on a 60 Hz screen and a 144 Hz one
   const dt = burstLast ? Math.min(3, (now - burstLast) / (1000 / 60)) : 1;
   burstLast = now;
-  bursts = bursts.filter(b => now - b.born < 1100 * b.t);
+  bursts = bursts.filter(b => now - b.born < (BREAK_HOLD + BREAK_STAGGER + BREAK_LIFE + 260) * b.t);
   const blown = bursts.filter(b => b.pieces && now >= b.born);
   // smoke under it all: three soft lumps that swell, rise and thin out
   const puff = smokePuff();
@@ -4342,22 +4396,33 @@ function burstStep() {
       fl.rot += fl.vrot * dt; fl.flut += .3 * dt / b.t;
       const p = age / fl.life;
       ctx.globalAlpha = p < .7 ? 1 : 1 - (p - .7) / .3;
-      ctx.fillStyle = fl.white ? "#f4f1ea" : `rgb(${b.rgb})`;
+      ctx.fillStyle = fl.white ? "#0c0c12" : `rgb(${b.rgb})`;
       // turned, and fluttering (squashed along its own height): the whole transform set in one go
       const co = Math.cos(fl.rot) * D, si = Math.sin(fl.rot) * D, fy = Math.cos(fl.flut);
       ctx.setTransform(co, si, -si * fy, co * fy, fl.x * D, fl.y * D);
       ctx.fillRect(-fl.s / 2, -fl.s * .35, fl.s, fl.s * .7);
     }
     for (const sh of b.pieces) {
-      if (age > sh.life) continue;
-      const drag = Math.pow(.93, dt);
-      sh.x += sh.vx * dt; sh.y += sh.vy * dt;
-      sh.vx *= drag; sh.vy = sh.vy * drag + b.W * .0045 / b.t * dt;
-      sh.rot += sh.vrot * dt; sh.flip += sh.vflip * dt;
-      // it tumbles: turning edge-on and back as it flies (never quite to nothing)
-      const p = age / sh.life, sc = 1 - p * .22;
-      ctx.globalAlpha = p < .6 ? 1 : 1 - (p - .6) / .4;
-      const sx = sc * (.35 + .65 * Math.abs(Math.cos(sh.flip))), co = Math.cos(sh.rot) * D, si = Math.sin(sh.rot) * D;
+      if (sh.gone) continue;
+      let sx = 1, sc = 1;
+      if (age < sh.wait) {   // cracked, holding: parted a hair along the cracks, trembling
+        const k = Math.min(1, age / (60 * b.t)), gap = b.W * .035 * k, jit = b.W * .006 * k;
+        sh.x = sh.x0 + sh.ux * gap + (Math.random() - .5) * jit; sh.y = sh.y0 + sh.uy * gap + (Math.random() - .5) * jit;
+        ctx.globalAlpha = 1;
+      } else {
+        const fall = age - sh.wait;
+        if (fall > sh.life) { sh.gone = true; continue; }
+        const drag = Math.pow(.985, dt);
+        sh.x += sh.vx * dt; sh.y += sh.vy * dt;
+        sh.vx *= drag; sh.vy = sh.vy * drag + b.W * BREAK_G / b.t * dt;
+        sh.rot += sh.vrot * dt; sh.flip += sh.vflip * dt;
+        // it tumbles as it drops: turning, tipping edge-on a little (never to nothing)
+        const p = fall / sh.life;
+        sc = 1 - p * .12;
+        sx = sc * (.55 + .45 * Math.abs(Math.cos(sh.flip)));
+        ctx.globalAlpha = p < .65 ? 1 : 1 - (p - .65) / .35;
+      }
+      const co = Math.cos(sh.rot) * D, si = Math.sin(sh.rot) * D;
       ctx.setTransform(co * sx, si * sx, -si * sc, co * sc, sh.x * D, sh.y * D);
       ctx.drawImage(sh.c, -sh.w / 2, -sh.h / 2, sh.w, sh.h);
     }
@@ -4374,22 +4439,12 @@ function burstStep() {
       continue;
     }
     const age = (now - b.born) / b.t;   // ms at tempo 1
-    if (age < 200) {   // the flash: white-hot, swelling out and gone
-      const p = age / 200, s = b.W * (.9 + .9 * (1 - Math.pow(1 - p, 3)));
-      ctx.globalAlpha = Math.pow(1 - p, 3);
+    if (age < 160) {   // the crack's flash: quick and small
+      const p = age / 160, s = b.W * (.8 + .5 * (1 - Math.pow(1 - p, 3)));
+      ctx.globalAlpha = .55 * Math.pow(1 - p, 3);
       ctx.drawImage(b.glow, b.x - s / 2, b.y - s / 2, s, s);
-      if (age < 90) { const s2 = b.W * .8; ctx.globalAlpha = 1 - age / 90; ctx.drawImage(b.glow, b.x - s2 / 2, b.y - s2 / 2, s2, s2); }
     }
-    if (age < 300) {   // the shock ring, white and sharp
-      const p = age / 300;
-      ctx.globalAlpha = .8 * Math.pow(1 - p, 1.5); ctx.strokeStyle = "#ffffff"; ctx.lineWidth = b.W * .045 * (1 - p) + .6;
-      ctx.beginPath(); ctx.arc(b.x, b.y, b.W * (.22 + .8 * (1 - (1 - p) * (1 - p))), 0, Math.PI * 2); ctx.stroke();
-    }
-    if (age > 20 && age < 320) {   // ... and a wider, softer one in the symbol's colour behind it
-      const p = (age - 20) / 300;
-      ctx.globalAlpha = .3 * (1 - p) * (1 - p); ctx.strokeStyle = `rgb(${b.rgb})`; ctx.lineWidth = b.W * .11 * (1 - p) + 1;
-      ctx.beginPath(); ctx.arc(b.x, b.y, b.W * (.2 + .95 * (1 - Math.pow(1 - p, 2.4))), 0, Math.PI * 2); ctx.stroke();
-    }
+    // (no shock rings: the break away is the chunks, a crack's flash and the crumbs - 2026-11-16)
     // the sparks: streaks drawn out by their speed, the colour round a white core
     const ms = now - b.born, drag = Math.pow(.9, dt);
     let live = false;
@@ -5147,7 +5202,7 @@ function paintFsCount(cur, total, quiet) {
     plus.textContent = "+" + (total - was.total);
     plate.append(plus);
     plus.addEventListener("animationend", () => plus.remove());
-    sparkBurst(plate, { n: 18, reach: .7, colors: ["#ffffff", getComputedStyle($("fsCard")).getPropertyValue("--acc").trim() || "#FF2A3D", "#F5C518"] });
+    sparkBurst(plate, { n: 18, reach: .7, colors: ["#ffffff", getComputedStyle($("fsCard")).getPropertyValue("--acc").trim() || "#FF7A1A", "#FFA640"] });
   }
 }
 // A cluster's figure, done counting on the board, is pulled down into the bar's WIN (owner, 2026-11-05,
@@ -5186,7 +5241,7 @@ function flyWinToHud(chip) {
     dst.animate([
       { color: col, textShadow: `0 0 6px ${col}, 0 0 18px ${col}, 0 2px 0 rgba(0, 0, 0, .35)` },
       { offset: .35, color: col, textShadow: `0 0 6px ${col}, 0 0 18px ${col}, 0 2px 0 rgba(0, 0, 0, .35)` },
-      { color: "#fff", textShadow: "0 2px 0 rgba(0, 0, 0, .35), 0 0 14px rgba(184, 242, 58, .4)" },
+      { color: "#fff", textShadow: "0 2px 0 rgba(0, 0, 0, .35), 0 0 14px rgba(79, 155, 255, .4)" },
     ], { duration: 900 * tempo(), easing: "ease-out" });
   });
 }
@@ -5306,6 +5361,7 @@ const SFX_SETS = {
   tokenLand: ["sfx_token_land", 3, .5, FALCOS_WOBBLE],         // a FALCOS Token lands
   midnightLand: ["sfx_midnight_land", 3, .52, FALCOS_WOBBLE],  // a Midnight Token lands
   bonusTrigger: ["sfx_bonus_trigger", 3, .55, FALCOS_WOBBLE],  // a bonus triggered: a short fanfare in D
+  symBreak: ["sfx_break", 3, .6, .04],                        // a winning symbol cracking and its pieces clattering off
 };
 const SFX_VARS = {}, sfxVarMemo = {};
 const SFX_WOBBLE = {};
@@ -5369,11 +5425,11 @@ function applyVolumes() {
 // game where the old loop sat, the menu under it and the bonus and its screens a little over it,
 // all well under the effects. bpm and bars give the cue's beat, so the free spins can start on one.
 const MUSIC = {
-  base:  { ogg: "assets/music_base.ogg",  aac: "assets/music_base.aac",  frames: 3291251, aacStart: 5824, aacFrames: 3297280, bpm: 112.002, bars: 32, level: .282 },
-  menu:  { ogg: "assets/music_menu.ogg",  aac: "assets/music_menu.aac",  frames: 1675647, aacStart: 5824, aacFrames: 1682432, bpm: 110.002, bars: 16, level: .224 },
-  intro: { ogg: "assets/music_intro.ogg", aac: "assets/music_intro.aac", frames: 669155,  head: 276041, headLen: 304841, aacStart: 5824, aacFrames: 979968,  bpm: 137.73,  bars: 8,  level: .316 },
-  bonus: { ogg: "assets/music_bonus.ogg", aac: "assets/music_bonus.aac", frames: 2635947, aacStart: 5824, aacFrames: 2641920, bpm: 139.849, bars: 32, level: .376 },
-  total: { ogg: "assets/music_total.ogg", aac: "assets/music_total.aac", frames: 864031,  head: 420702, headLen: 478302, aacStart: 5824, aacFrames: 1348608, bpm: 106.643, bars: 8,  level: .355 },
+  base:  { ogg: "assets/music_base.ogg", aac: "assets/music_base.aac", frames: 3052196, aacStart: 5824, aacFrames: 3058688, bpm: 120.779, bars: 32, level: .282 },
+  menu:  { ogg: "assets/music_menu.ogg", aac: "assets/music_menu.aac", frames: 1581614, aacStart: 5824, aacFrames: 1588224, bpm: 116.54, bars: 16, level: .224 },
+  intro: { ogg: "assets/music_intro.ogg", aac: "assets/music_intro.aac", frames: 768000, head: 266754, headLen: 295554, aacStart: 5824, aacFrames: 1070080, bpm: 120.004, bars: 8, level: .316 },
+  bonus: { ogg: "assets/music_bonus.ogg", aac: "assets/music_bonus.aac", frames: 2761515, aacStart: 5824, aacFrames: 2767872, bpm: 133.473, bars: 32, level: .355 },
+  total: { ogg: "assets/music_total.ogg", aac: "assets/music_total.aac", frames: 813608, head: 410059, headLen: 467659, aacStart: 5824, aacFrames: 1287168, bpm: 113.272, bars: 8, level: .398 },
 };
 const MUSIC_RATE = 48000;
 const OPUS_OK = (() => { try { return !!new Audio().canPlayType('audio/ogg; codecs="opus"'); } catch (e) { return false; } })();
@@ -5768,7 +5824,7 @@ function burnCells(list) {
   if (ms) sfxGap("burnClear", 120);
   return ms;
 }
-function flashCells(list, colour = "#FF2A3D") {
+function flashCells(list, colour = "#FF7A1A") {
   for (const p of list) {
     const c = Array.isArray(p) ? cellEls[p[0]][p[1]] : at(p);
     c.style.setProperty("--fc", colour);
@@ -5782,10 +5838,10 @@ const syncMax = cells => { state.max = new Set((cells || []).map(p => rc(p).join
 // REGULAR / PLUS / PREMIUM / FULL TANK on a 180-degree fuel gauge; the needle sweeps, hunts and lands on the
 // grade the event rolled, at the low or high end of its band by the multiplier
 const PUMP_GRADES = {
-  regular: { name: "REGULAR", c: "#6CFC54", lo: -90, sfx: "pumpRegular" },
+  regular: { name: "REGULAR", c: "#4F9BFF", lo: -90, sfx: "pumpRegular" },
   plus: { name: "PLUS", c: "#FFB547", lo: -45, sfx: "pumpPlus" },
-  premium: { name: "PREMIUM", c: "#FF2A3D", lo: 0, sfx: "pumpPremium" },
-  fulltank: { name: "FULL TANK", c: "#F5C518", lo: 45, sfx: "pumpFullTank" },
+  premium: { name: "PREMIUM", c: "#FF7A1A", lo: 0, sfx: "pumpPremium" },
+  fulltank: { name: "FULL TANK", c: "#FFA640", lo: 45, sfx: "pumpFullTank" },
 };
 function dialSvg() {
   const arc = (a0, a1, col) => {
@@ -5801,9 +5857,9 @@ function dialSvg() {
     <path d="M18 112 A97 97 0 0 1 212 112 Z" fill="#0b0a14"/>
     ${arc(-88, -46, "#3fbf2f")}${arc(-44, -1, "#E89520")}${arc(1, 44, "#D81E32")}${arc(46, 88, "#E8B10A")}
     ${ticks}
-    <text x="30" y="104" font-size="13" font-weight="700" fill="#FF2A3D" font-family="Fredoka, sans-serif">E</text>
-    <text x="192" y="104" font-size="13" font-weight="700" fill="#6CFC54" font-family="Fredoka, sans-serif">F</text>
-    <g class="needle"><path d="M112 112 L115 26 L118 112 Z" fill="#FF2A3D" stroke="#fff" stroke-width="1.2"/></g>
+    <text x="30" y="104" font-size="13" font-weight="700" fill="#FF7A1A" font-family="Fredoka, sans-serif">E</text>
+    <text x="192" y="104" font-size="13" font-weight="700" fill="#4F9BFF" font-family="Fredoka, sans-serif">F</text>
+    <g class="needle"><path d="M112 112 L115 26 L118 112 Z" fill="#FF7A1A" stroke="#fff" stroke-width="1.2"/></g>
     <circle cx="115" cy="112" r="11" fill="url(#dchrome)" stroke="#1a1a22" stroke-width="2"/>
   </svg><div class="grade"></div>`;
 }
@@ -5843,14 +5899,16 @@ async function pumpShow(ev) {
   if (full) {
     Cam.quake(1);
     if (window.SceneFX) SceneFX.surge();
-    sparkBurst($("fxLayer"), { x: (pb.x + pb.w / 2) / $("board").offsetWidth, y: .5, n: 34, reach: 1.6, colors: ["#FFF6CF", "#F5C518", "#FF2A3D", "#ffffff"] });
+    sparkBurst($("fxLayer"), { x: (pb.x + pb.w / 2) / $("board").offsetWidth, y: .5, n: 34, reach: 1.6, colors: ["#FFF6CF", "#FFA640", "#FF7A1A", "#ffffff"] });
     tick(`<b>FULL TANK</b> — the whole column is MAX`);
   } else tick(`<b>${g.name} x${ev.mult}</b> on reel ${r + 1}`);
   await hold(full ? 900 : 520);
   // the column takes it: every cell top to bottom, then the column's paying symbols burn
   flashCells(Array.from({ length: ROWS }, (_, y) => [r, y]), g.c);
   if (!full) await applyCells(ev.cells, 70);
-  const burnMs = burnCells(ev.burned);
+  // the pump breaks with the symbols it breaks (owner, 2026-11-12): it is gone in the same tumble (game_executables
+  // fire_pump: explode), so it burns now with them instead of coming apart later in the tumble's burst
+  const burnMs = burnCells([...(ev.burned || []), ev]);
   await hold(full ? 500 : 360);
   dial.classList.add("out");
   return { glow, dial, burnMs, full };
@@ -6049,6 +6107,44 @@ async function fillSummary(ev) {
   el.classList.add("out");
   setTimeout(() => el.remove(), 400 * tempo());
 }
+// Blender-rendered effects (owner, 2026-11-13: "make the fx more aesthetic and detailed ... we want the lighter fx to
+// be better ... make the win animations for dopamine"; tools/falcos/blender/flatfx.py, packed by blender_pack.py --fx):
+// a grid of frames (assets/fx/<name>.webp + .json), stepped on its own clock by spriteFx. Each sheet is fetched and
+// decoded once (fxSheet), early, so the first fire or win never waits for it.
+const FXS = {};
+function fxSheet(name) {
+  return FXS[name] || (FXS[name] = fetch(`assets/fx/${name}.json`).then(r => r.ok ? r.json() : Promise.reject(new Error(name)))
+    .then(m => { const img = new Image(); img.src = `assets/fx/${name}.webp`; return img.decode().then(() => m); }));
+}
+function spriteFx(parent, name, { once = true, cls = "", style = {}, before = null, fadeIn = 0, fadeOut = 0 } = {}) {
+  if (REDUCED_MOTION || !parent) return null;
+  const el = document.createElement("i");
+  el.className = "fxsprite " + cls;
+  el.setAttribute("aria-hidden", "true");
+  Object.assign(el.style, style);
+  parent.insertBefore(el, before);
+  fxSheet(name).then(m => {
+    if (!el.isConnected) return;
+    const rows = Math.ceil(m.frames / m.cols), dur = m.frames / m.fps * 1000, t0 = performance.now();
+    el.style.backgroundImage = `url("assets/fx/${name}.webp")`;
+    el.style.backgroundSize = `${m.cols * 100}% ${rows * 100}%`;
+    const step = now => {
+      if (!el.isConnected) return;
+      const t = now - t0;
+      if (once && t >= dur) { el.remove(); return; }
+      const f = Math.floor((t % dur) / 1000 * m.fps) % m.frames;
+      el.style.backgroundPosition = `${(f % m.cols) / Math.max(1, m.cols - 1) * 100}% ${Math.floor(f / m.cols) / Math.max(1, rows - 1) * 100}%`;
+      if (fadeIn || fadeOut) el.style.opacity = Math.max(0, Math.min(1, fadeIn ? t / fadeIn : 1, fadeOut && once ? (dur - t) / fadeOut : 1)).toFixed(3);
+      requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }).catch(() => el.remove());
+  return el;
+}
+setTimeout(() => { fxSheet("winburst").catch(() => {}); }, 3000);
+// The Lighter's area goes up: the simple fire - a glow over exactly the cells burning (the area's own shape, 2x3 or
+// 2x2 at the board's edge too), two flickering flame layers and a spray of sparks (owner, 2026-11-13: "add back the
+// simple fire fx that we have for our lighter drop" - the Blender fire sprites are retired)
 async function fireBox(cells) {
   if (!cells.length) return;
   const box = cellsBox(cells);
@@ -6063,19 +6159,35 @@ const SMALL_PLATES = matchMedia("(max-width: 900px) and (max-height: 1000px), (m
 const plateUrl = u => SMALL_PLATES ? u.replace(/\.webp$/, "_m.webp") : u;
 // PREMIUM plays on the abandoned station (zombies), MIDNIGHT RUN on the station at midnight, NITRO SPIN on the street race. The alternate plate is
 // laid over the night plate inside #bgwall - which hides scenefx's overlays (they belong to the night plate)
-// - with a short wash of the mode's colour; on the zombie plate the canopy sign flickers a sickly green.
+// - with a short wash of the mode's colour. On the zombie plate the canopy sign is in the base game's colours and
+// flickers like it (owner, 2026-11-16: "make this the color it is during the normal spins. and just make it flicker
+// like the normal one"): its L and S fail on their own clocks through SceneFX's fault episodes, their off states
+// cut by tools/falcos/zombie_sign.py (assets/scene/zsign_off_<l>.webp, rects in scene.json's zombie_layers).
 const Scene = (() => {
   const PLATES = { zombie: { url: plateUrl("assets/scene/plate_zombie.webp"), wash: "rgba(90, 255, 70, .55)" },
                    midnight: { url: plateUrl("assets/scene/plate_midnight.webp"), wash: "rgba(140, 110, 255, .6)" },
                    nitro: { url: plateUrl("assets/scene/plate_nitro.webp"), wash: "rgba(70, 120, 255, .6)" } };
-  let alt = null, now = "normal", flickT = 0;
+  let alt = null, now = "normal", zcfg = null;
+  const zTimers = new Set();
+  const zLater = (ms, fn) => { const id = setTimeout(() => { zTimers.delete(id); fn(); }, ms); zTimers.add(id); };
   const el = () => {
     if (alt) return alt;
     alt = document.createElement("div");
     alt.id = "bgalt"; alt.setAttribute("aria-hidden", "true");
-    const sign = document.createElement("i");
+    const sign = document.createElement("div");
     sign.className = "zsign";
     alt.appendChild(sign);
+    fetch("assets/scene/scene.json").then(r => r.json()).then(c => {
+      zcfg = c.zombie_layers || {};
+      for (const [name, d] of Object.entries(zcfg)) {
+        const im = new Image();
+        im.alt = ""; im.draggable = false; im.className = name; im.src = "assets/scene/" + name + ".webp";
+        Object.assign(im.style, { position: "absolute", opacity: "0", left: d.rect[0] / 1150 * 100 + "%", top: (d.rect[1] - 40) / 520 * 100 + "%",
+          width: d.rect[2] / 1150 * 100 + "%", height: d.rect[3] / 520 * 100 + "%" });
+        sign.appendChild(im);
+      }
+      if (now === "zombie") flicker();
+    }).catch(() => {});
     // the zombie sky's clouds, drifting (owner, 2026-11-10): a band over the plate's sky, two copies of a seamless
     // strip sliding across it on the compositor (tools/falcos/make_clouds.py)
     const clouds = document.createElement("div");
@@ -6099,16 +6211,24 @@ const Scene = (() => {
     // the sky band: the plate's full width, from its top down over the treeline (plate px 0-820)
     Object.assign(alt.querySelector(".zclouds").style, { left: x0 + "px", top: y0 + "px", width: pw + "px", height: (820 * s) + "px" });
   }
-  function flicker() {
-    clearTimeout(flickT);
-    if (now !== "zombie" || REDUCED_MOTION) return;
-    const sign = alt.querySelector(".zsign");
-    // erratic: bursts of quick stutters, now and then a long sick glow
-    const seq = Math.random() < .35 ? [60, 40, 90, 30, 50, 380] : Math.random() < .5 ? [80, 60] : [40, 30, 40, 30, 140];
-    let t = 0;
-    seq.forEach((ms, i) => { setTimeout(() => { if (now === "zombie") sign.style.opacity = i % 2 ? "0" : (.55 + Math.random() * .45).toFixed(2); }, t); t += ms; });
-    setTimeout(() => { sign.style.opacity = "0"; }, t);
-    flickT = setTimeout(flicker, t + 300 + Math.random() * 1600);
+  function stopFlicker() {
+    for (const id of zTimers) clearTimeout(id);
+    zTimers.clear();
+    if (alt) for (const im of alt.querySelectorAll(".zsign img")) im.style.opacity = "0";
+  }
+  function flicker() {   // each failing letter on its own clock, the base game's episodes (scenefx.js)
+    stopFlicker();
+    if (now !== "zombie" || REDUCED_MOTION || !zcfg || !window.SceneFX || !SceneFX.episode) return;
+    const rand = (a, b) => a + Math.random() * (b - a);
+    const fault = name => {
+      const el = alt.querySelector(".zsign ." + name), f = SceneFX.FAULTS[name.replace(/^z/, "")];
+      if (now !== "zombie" || !el || !f) return;
+      const r = Math.random(), kind = r < f.weights[0] ? 0 : r < f.weights[0] + f.weights[1] ? 1 : 2;
+      let t = 0;
+      for (const [op, ms] of SceneFX.episode(kind)) { zLater(t, () => { el.style.opacity = op.toFixed(2); }); t += ms; }
+      zLater(t + (Math.random() < .25 ? rand(300, 1200) : rand(...f.gap)), () => fault(name));
+    };
+    for (const name of Object.keys(zcfg)) { const f = SceneFX.FAULTS[name.replace(/^z/, "")]; if (f) zLater(rand(800, f.gap[0]), () => fault(name)); }
   }
   addEventListener("resize", () => { if (now === "zombie") placeSign(); });
   async function to(name) {
@@ -6124,12 +6244,11 @@ const Scene = (() => {
     if (p) {
       a.style.setProperty("--alt", `url("${p.url}")`);
       a.classList.add("on");
-      if (name === "zombie") { placeSign(); flicker(); } else alt.querySelector(".zsign").style.opacity = "0";
+      if (name === "zombie") { placeSign(); flicker(); } else stopFlicker();
       a.classList.toggle("zombie", name === "zombie");
     } else {
       a.classList.remove("on", "zombie");
-      clearTimeout(flickT);
-      alt.querySelector(".zsign").style.opacity = "0";
+      stopFlicker();
     }
   }
   return { to, get now() { return now; } };
@@ -6240,7 +6359,7 @@ const handlers = {
       tick(`<b>LIGHTER</b> — 3x3 lit`);
       await hold(260);
       await applyCells(ev.cells, 18);
-      const ms = burnCells(ev.burned);
+      const ms = burnCells([...(ev.burned || []), ev]);   // the lighter breaks with what it burns (as the pump: pumpShow)
       await hold(Math.max(450, ms * .8));
     } else if (ev.kind === "scratch" || ev.kind === "gold") {
       const gold = ev.kind === "gold";
@@ -6255,7 +6374,7 @@ const handlers = {
       await hold(420);
       const hits = (ev.cells || []).map(rc);
       if (gold) { const sw = fxEl("goldsweep", cellsBox([[0, 0], [REELS - 1, ROWS - 1]])); setTimeout(() => sw.remove(), 1000 * tempo()); boardFlash("fs"); }
-      flashCells(hits, gold ? "#F5C518" : "#FF2A3D");
+      flashCells(hits, gold ? "#FFA640" : "#FF7A1A");
       await hold(300);
       await applyCells(ev.cells, gold ? 14 : 40);
       const ms = burnCells(ev.burned);
@@ -6289,22 +6408,33 @@ const handlers = {
     const order = [];
     for (let r = 0; r < REELS; r++) for (const y of [...goneByReel[r]].sort((a, b) => a - b)) order.push([r, y]);
     if (!order.length) return;
-    const solid = order.filter(([r, y]) => shownSym[r][y] && shownSym[r][y].name !== "X");
+    // (a cell still burning is already on its way out: it must not burst a second time)
+    const solid = order.filter(([r, y]) => shownSym[r][y] && shownSym[r][y].name !== "X" && !cellEls[r][y]._burnT);
     const gap = Math.min(55, Math.floor(420 / Math.max(1, solid.length))) * tempo();
     const timers = [];
     const geo = solid.map(([r, y]) => burstMeasure(r, y, shownSym[r][y]));
+    // Each symbol breaks its own way (owner, 2026-11-13: "we want icons to break unique for each item they are and
+    // leave food residue / drink residue / soda residue / gasoline residue"): its Blender break clip (burn - the
+    // shatter, its debris and the residue it leaves in the cell; tools/falcos/blender/flatanim.py), played through
+    // burnCells, which empties the cell at the clip's end. The old procedural tear (burstIcon) is the fallback for a
+    // symbol without the clip, or before its sheet has loaded.
+    // ... but in that clip the pieces barely moved before they faded, so a win read as the symbols just disappearing
+    // (owner, 2026-11-16: "whenever the symbols break. make it have a sound and dont just make them disappear. make
+    // the break away"). A winning symbol now breaks away on the burst layer: it strains, cracks into big inked
+    // chunks that hold together for a beat, then the chunks drop off the board under gravity, spinning, with
+    // crumbs in the symbol's colour (burstIcon / blow / burstStep). Each break has its own crack-and-clatter
+    // sound (sfx_break). The Blender burn clip stays for the Zippo's 3x3 burn (burnCells).
     solid.forEach(([r, y], i) => {
       timers.push(setTimeout(() => {
-        burstIcon(geo[i]);
-        cellEls[r][y].classList.add("explode");
-        const rate = .8 + Math.random() * .55 + i * .01;
-        setTimeout(() => { sfx("pop", rate); multEls[r][y].classList.add("bare"); }, BURST_AT * tempo());
+        burstIcon(geo[i]); cellEls[r][y].classList.add("explode");
+        const rate = .94 + Math.random() * .14;
+        setTimeout(() => { sfxGap("symBreak", 38, rate); multEls[r][y].classList.add("bare"); }, BURST_AT * tempo());
       }, i * gap));
     });
     if (solid.length) {
       await new Promise(r => setTimeout(r, gap * (solid.length - 1)));
       timers.forEach(clearTimeout);
-      await delay(BURST_AT + 200);
+      await delay(BURST_AT + BREAK_HOLD + 240);   // the crack reads and the chunks are on their way down
     }
     const numbers = order.some(([r, y]) => ((state.grid[r] || [])[y] || 1) >= 2 || state.max.has(r + "," + y));
     await hold(numbers ? 520 : 240);
@@ -6573,7 +6703,7 @@ const handlers = {
       fillTotal(ev.boardTotal);
       return;
     }
-    flashCells([me], "#F5C518");
+    flashCells([me], "#FFA640");
     if (ev.kind === "gold") { const sw = fxEl("goldsweep", cellsBox([[0, 0], [REELS - 1, ROWS - 1]])); setTimeout(() => sw.remove(), 1000 * tempo()); sfx("goldScratch"); }
     else sfx("scratch");
     tick(`<b>${ev.kind === "gold" ? "GOLD TICKET" : "SCRATCH TICKET"}</b> collects`);
@@ -6596,6 +6726,21 @@ const handlers = {
       await hold(Math.max(40, 120 - i * 6));
     }
     await Promise.all(flights);
+    // a Gold Ticket that collected then doubles its total (owner, 2026-11-13: "the gold scratch off collects
+    // everything have it also 2x everything"; EVENTS.md collect.mult): its own beat - a gold flash, the doubling
+    // chime, the total counting up to twice what it collected
+    if ((ev.mult || 1) > 1) {
+      const collectedSum = Math.round(sum * 100) / 100;
+      state.fill[me[0]][me[1]] = { name: "GT", value: collectedSum };
+      paintCell(...me);
+      await hold(260);
+      tick(`<b>GOLD TICKET</b> — x${ev.mult} EVERYTHING`);
+      flashCells([me], "#F5C518");
+      sfxGap("multDouble", 60);
+      boardFlash("fs");
+      countBadge(...me, collectedSum, ev.total, 520 * tempo());
+      await hold(560);
+    }
     state.fill[me[0]][me[1]] = { name: ev.kind === "gold" ? "GT" : "ST", value: ev.total };
     paintCell(...me); bumpBadge(...me);
     fillTotal(ev.boardTotal);
@@ -6957,8 +7102,7 @@ async function presentRound(round, { settle = true } = {}) {
       await RGS.endRound();
       setBalance(RGS.state.balance, win > 0 ? "up" : null);
     } catch (err) {
-      notice(`<b>${RGS_MESSAGE[err.code] || err.message}</b>`, true, 6000);
-      return;
+      throw err;   // playRound tells it and marks the round failed - so autoplay stops instead of playing on unsettled
     }
   }
 
@@ -6994,8 +7138,8 @@ async function presentRound(round, { settle = true } = {}) {
 const BUYS = [
   { mode: "chance", wide: true, art: "chance", logo: "logo_chance", title: "FUEL CHANCE", desc: "Every spin with about 2.2x the chance of triggering a bonus. Stays on until you turn it off", btn: "Activate", acc: "#FFB547" },
   { mode: "nitro", wide: true, art: "nitro", logo: "logo_nitro", title: "NITRO SPIN", desc: "Every cell preloaded from x16 to x2048 on each spin. Stays on until you turn it off", btn: "Activate", acc: "#5B8CFF" },
-  { mode: "fillup", art: "fillup", logo: "logo_fillup", title: "FILL UP", desc: "Collect sticky Fuel Drops while the 3-bar gauge keeps refilling", btn: "Play", acc: "#FF2A3D" },
-  { mode: "premium", art: "premium", logo: "logo_premium_zombie", title: "PREMIUM", desc: "Zombie night: 10 free spins with sticky multipliers", btn: "Play", acc: "#6CFC54" },
+  { mode: "fillup", art: "fillup", logo: "logo_fillup", title: "FILL UP", desc: "Collect sticky Fuel Drops while the 3-bar gauge keeps refilling", btn: "Play", acc: "#FF7A1A" },
+  { mode: "premium", art: "premium", logo: "logo_premium_zombie", title: "PREMIUM", desc: "Zombie night: 10 free spins with sticky multipliers", btn: "Play", acc: "#4F9BFF" },
   { mode: "midnight", art: "midnight", logo: "logo_midnight", title: "MIDNIGHT RUN", desc: "10 free spins with every cell starting at x4, sticky multipliers", btn: "Play", acc: "#8A6BFF" },
 ];
 // The ACTIVATE spins stay on (owner, 2026-11-10: "you dont have to go back and activate it every time"): once
@@ -7232,6 +7376,10 @@ function setAutoBtn() {
   b.title = b.getAttribute("aria-label");
 }
 let autoStopped = false;   // the press already played the stop; runAuto's exit must not repeat it
+// a round autoplay started is playing (state.auto is already counted down for it, so on the last round it reads
+// 0): the bonus intro and the bonus's TOTAL WIN move on by themselves then, unless the player pressed stop
+let autoRound = false;
+const autoplaying = () => autoRound && !autoStopped;
 // The arrows turn once at the top of a spin. A press does it in the button's own handler; a
 // spin nobody pressed - an autoplay round - asks for it here. While a round is being played
 // out they turn slowly and steadily instead (spinArrows), so a free spin inside a bonus,
@@ -7286,7 +7434,10 @@ async function runAuto(n) {
     if ((MODE_COST[spinMode()] || 1) * bet() > state.balance) { notice(T("<b>Auto play stopped</b> — not enough balance for the next round."), true); break; }
     state.auto--; setAutoBtn();
     turnSpinArrows();   // the round is starting; nobody pressed the button for it
-    if (!(await playRound(spinMode()))) break;
+    autoRound = true;
+    let played;
+    try { played = await playRound(spinMode()); } finally { autoRound = false; }
+    if (!played) break;
     if (state.auto > 0) await delay(450);   // a breath between rounds, so each result can be read
   }
   state.auto = 0; setAutoBtn();
@@ -7448,8 +7599,8 @@ function refreshBet() {
 }
 
 /* ---------- character ---------- */
-// The base game's two animated figures are gone: the Falcos scene has its own people (the cashier
-// and the customer in the window, scenefx.js). The game's reaction hooks stay as no-ops,
+// The base game's two animated figures are gone, and the Falcos scene has no people of its own
+// any more (tools/falcos/clear_scene.py). The game's reaction hooks stay as no-ops,
 // so the event code can keep cueing them (a later pass can give the scene reactions of its own).
 let charReact = () => {}, charEnter = () => {}, charExit = () => {};
 const charsLoaded = Promise.resolve([]);
@@ -7572,12 +7723,14 @@ buildBoard();
 }
 fitToScreen();   // fit once the board exists; `load` and fonts.ready refine it after art settles
 
-// the button doubles as Skip mid-round — only clunk when it actually starts a spin
+// While a round plays the button does nothing at all - no kick, no turn of the arrows, no sound, no new spin - so it
+// can't be spammed (owner, 2026-11-13: "make it where the spin button doesnt respin / animate / make a spin sound
+// until the spin is over"). A round is still fast-forwarded by clicking the board.
 $("spinBtn").addEventListener("click", e => {
+  if (state.playing) { e.stopImmediatePropagation(); return; }
   const b = e.currentTarget;
   b.classList.remove("punch"); restyle(b); b.classList.add("punch");   // restart on every press
-  if (state.playing && state.noSkip) return;   // jurisdiction forbids slam-stopping a round
-  sfx(state.playing ? "skip" : "spin");
+  sfx("spin");
   playRound(spinMode());
 });
 // clicking the board fast-forwards too — same cancel note, but only if a round is running
@@ -7715,8 +7868,10 @@ const INTRO_SFX = ["introWhoosh", "introHit", "introShimmer", "introOut", "landB
 // the wordmark's pieces - each letter, the swash, the seal and the glow made on their own and laid out as
 // one word (tools/falcos/pack_game.py -> assets/intro_letters/pieces.json; the TM is a blank piece):
 // [x, y, w, h] on the 2736x1160 wordmark, the letters in the order they drop
-const INTRO_SIZE = [2736, 1160], INTRO_PIECES = {"F":[145,167,531,788],"A":[478,246,498,680],"L":[945,228,382,676],"C":[1330,223,399,666],"O":[1732,203,430,743],"S":[2144,235,446,714],"swash":[358,760,2180,388],"seal":[2470,985,150,150],"tm":[2578,230,4,4],"glow":[-110,-110,2956,1380]};
-const INTRO_DROP = ["F", "A", "L", "C", "O", "S"];
+// (2026-11-13, owner: "make this say SMUKIEZ like how the other games are") the studio ident: SMUKIEZ, the
+// studio's own wordmark, as its other games open (the FALCOS letters are kept in art/falcos/intro_falcos/)
+const INTRO_SIZE = [2736, 1160], INTRO_PIECES = {"S":[26,302,401,549],"M":[380,282,499,533],"U":[841,321,412,509],"K":[1220,246,358,532],"i":[1531,431,103,355],"E":[1606,306,424,515],"Z":[1993,220,567,622],"swash":[420,705,2180,360],"tm":[2578,230,144,94],"seal":[2481,950,139,140],"glow":[-110,-110,2956,1380]};
+const INTRO_DROP = ["S", "M", "U", "K", "i", "E", "Z"];
 function runIntro() {
   const wrap = $("intro"), fill = $("introFill");
   if (!wrap) { releaseAudio(); return; }
@@ -7972,7 +8127,7 @@ function rollNumerals(el, text, rolling) {
 // given paints, each on its own angle, speed and spin, dropping a little as they go and gone in
 // about a second. Plain elements, removed when they are done; nothing at all with reduced motion.
 // x, y: where in the host it bursts from (0..1); reach scales how far they fly.
-function sparkBurst(host, { x = .5, y = .5, n = 18, colors = ["#ffffff", "#FF9AA4", "#5B8CFF"], reach = 1, size = 1 } = {}) {
+function sparkBurst(host, { x = .5, y = .5, n = 18, colors = ["#ffffff", "#FFC08A", "#5B8CFF"], reach = 1, size = 1 } = {}) {
   if (REDUCED_MOTION || !host) return;
   const box = document.createElement("div");
   box.className = "sparks";
@@ -8001,10 +8156,10 @@ function sparkBurst(host, { x = .5, y = .5, n = 18, colors = ["#ffffff", "#FF9AA
 // lvl: 0 BIG, 1 MEGA, 2 XTREME, 3 TOTAL WIN (in gold, the money's own colour). surge: how hard the
 // FALCOS canopy neon behind the board stutters with it (SceneFX.surge; kept as a level for later).
 const HEAD_FX = [
-  { scale: 1,    sparks: 16, reach: .95, knock: .7,  flash: 0,   surge: .55, glow: "91, 140, 255", colors: ["#ffffff", "#BFD3FF", "#5B8CFF", "#F5C518"] },
-  { scale: 1.07, sparks: 26, reach: 1.15, knock: 1,  flash: .28, surge: .75, glow: "255, 42, 61", colors: ["#FF9AA4", "#FF2A3D", "#ffffff", "#5B8CFF"] },
-  { scale: 1.14, sparks: 40, reach: 1.4, knock: 1.5, flash: .42, surge: 1,   glow: "91, 140, 255", colors: ["#BFD3FF", "#5B8CFF", "#FF2A3D", "#ffffff"] },
-  { scale: 1.08, sparks: 34, reach: 1.3, knock: 1.1, flash: .3,  surge: .85, glow: "245, 197, 24", colors: ["#FFE58A", "#F5C518", "#ffffff", "#5B8CFF"] },
+  { scale: 1,    sparks: 16, reach: .95, knock: .7,  flash: 0,   surge: .55, glow: "91, 140, 255", colors: ["#ffffff", "#BFD3FF", "#5B8CFF", "#FFA640"] },
+  { scale: 1.07, sparks: 26, reach: 1.15, knock: 1,  flash: .28, surge: .75, glow: "255, 42, 61", colors: ["#FFC08A", "#FF7A1A", "#ffffff", "#5B8CFF"] },
+  { scale: 1.14, sparks: 40, reach: 1.4, knock: 1.5, flash: .42, surge: 1,   glow: "91, 140, 255", colors: ["#BFD3FF", "#5B8CFF", "#FF7A1A", "#ffffff"] },
+  { scale: 1.08, sparks: 34, reach: 1.3, knock: 1.1, flash: .3,  surge: .85, glow: "245, 197, 24", colors: ["#FFE58A", "#FFA640", "#ffffff", "#5B8CFF"] },
 ];
 function headFx(wrap, head, lvl) {
   const f = HEAD_FX[lvl] || HEAD_FX[0];
@@ -8017,6 +8172,10 @@ function headFx(wrap, head, lvl) {
   if (window.SceneFX) SceneFX.surge();
   Cam.headline(lvl);   // the scene behind is knocked back by the slam, then creeps in while it counts
   sparkBurst(head, { n: f.sparks, reach: f.reach, colors: f.colors, size: 1 + lvl * .12 });
+  // the payoff (owner, 2026-11-13: "make the win animations for dopamine"): a burst of gold coins fountaining up and
+  // flipping, confetti and sparkles, behind the headline, once each time a tier lands - a burst, not a rain (owner,
+  // 2026-11-10: "remove all the things falling behind it")
+  spriteFx(wrap, "winburst", { cls: "twburst", before: wrap.querySelector(".twin"), fadeIn: 120, fadeOut: 380 });
   const twin = wrap.querySelector(".twin"), flash = wrap.querySelector(".twflash");
   twin.style.setProperty("--knock", f.knock);
   twin.classList.remove("knock"); restyle(twin); twin.classList.add("knock");
@@ -8157,7 +8316,7 @@ function totalWinScreen(amount, { total = true } = {}) {
     // headline climbs with it: every mark the running figure passes swaps the lettering and
     // lands it with a thump, the tier's bright splash under it from the first mark on.
     const amountEl = wrap.querySelector(".twfig");   // the numerals
-    tvGlitch(wrap.querySelector(".twamount"), { strength: 1.1 });   // plate and numerals twitch like a bad TV signal, together
+    // (the TV-glitch twitch is gone: owner, 2026-11-13 "get rid of the glitch fx")
     // Each headline is its own image, decoded now, so a mark shows its own art on the frame it
     // lands - swapping one image's source could show the art before it until the new one loads.
     const logos = [...wrap.querySelectorAll(".twlogo")];
@@ -8241,6 +8400,8 @@ function totalWinScreen(amount, { total = true } = {}) {
             head.classList.remove("hit"); restyle(head); head.classList.add("hit");
             wrap.classList.add("done");         // now the prompt shows, and a press is a dismissal
             done2 = true;
+            // under autoplay nobody is there to press: the total is held long enough to read, then autoplay goes on
+            if (autoplaying()) holdTimer = setTimeout(close, REDUCED_MOTION ? 3000 : Math.max(3000, 5000 * tempo()));
             hushRing();                         // the last mark gives way to the total's own arrival
             arrival = [sfx("trophy"), sfx("coinsRain")].filter(Boolean);
           });
@@ -8392,7 +8553,7 @@ const BONUS_KINDS = {
   fillup: { name: "FILL UP", logo: "assets/menu/logo_fillup.webp", x: false, noSpins: true,
     how: [`<b>Fuel Drops</b> stick where they land - green, amber and red, worth up to <b>x500</b> each - and change colour as they grow.`,
           `The gauge starts full at <b>3</b> bars. Every spin uses one; anything new landing refills it. The bonus ends when the gauge runs dry.`,
-          `Lighters burn drops, Scratch Tickets and Gold Tickets collect them, Gas Pumps multiply them. At the end you win every drop left and every collector's total.`] },
+          `Lighters burn drops, Scratch Tickets collect their neighbours, Gold Tickets collect the whole board and double it, Gas Pumps multiply them. At the end you win every drop left and every collector's total.`] },
   premium: { name: "PREMIUM", logo: "assets/menu/logo_premium_zombie.webp", x: false, z: true,
     how: [`Zombie night at the station. Every cell has its own multiplier, doubling each time a win or a feature hits it, up to <b>x2048</b>.`,
           `In here the cells keep their multipliers for the whole bonus: a cell that reached <b>x8</b> keeps it into the next spin and keeps growing.`] },
@@ -8432,8 +8593,7 @@ function bonusIntro(spins, extreme, kind = extreme ? "midnight" : "premium", und
     // feels alive rather than printed; each stops with the screen
     for (const el of wrap.querySelectorAll(".blogo, .byou, .bnum, .bfs, .bhow")) hoverWin(el, { x: .5, y: .7, r: .5, s: 0, unit: "vh", pace: 2.2 }, 0);
     tiltPlates([wrap.querySelector(".inner")]);   // and the whole screen tips toward the cursor, its pieces at their own depths
-    tvGlitch(wrap.querySelector(".byou"));        // YOU WON and the figure twitch like a bad TV signal now and then
-    tvGlitch(wrap.querySelector(".bfig"), { strength: 1.1 });
+    // (the TV-glitch twitch is gone: owner, 2026-11-13 "get rid of the glitch fx")
     const step = (ms, fn) => setTimeout(fn, REDUCED_MOTION ? 0 : ms);
     let phase = 0;   // 0 fading to black, 1 up and waiting, 2 leaving
     // It waits for the player: a click, or Space / Enter (owner, 2026-10-24: it used to move on by
@@ -8472,12 +8632,12 @@ function bonusIntro(spins, extreme, kind = extreme ? "midnight" : "premium", und
     step(560, () => {                          // then the wall comes up
       wrap.classList.add("up");
       phase = 1;
-      if (state.auto > 0) holdTimer = setTimeout(go, Math.max(2200, 4500 * tempo()));   // quicker in Rapid, never too quick to read
+      if (autoplaying()) holdTimer = setTimeout(go, Math.max(2200, 4500 * tempo()));   // quicker in Rapid, never too quick to read
       // The entrance (owner, 2026-10-27): the lettering slams in and catches like neon (the
       // stylesheet), throwing sparks as it lands; then the spins count up to what was won,
       // ticking, and the figure lands with a pop and a second burst; FREE SPINS flickers on.
       if (REDUCED_MOTION) return;
-      const sparkPaint = K.x ? ["#BFD3FF", "#5B8CFF", "#ffffff", "#FF2A3D"] : ["#FF9AA4", "#FF2A3D", "#ffffff", "#FFB547"];
+      const sparkPaint = K.x ? ["#BFD3FF", "#5B8CFF", "#ffffff", "#FF7A1A"] : ["#FFC08A", "#FF7A1A", "#ffffff", "#FFB547"];
       const logo = wrap.querySelector(".blogo"), fig = wrap.querySelector(".bfig"), num = wrap.querySelector(".bnum");
       if (K.noSpins) { setTimeout(() => { if (wrap.isConnected && stack.offsetHeight) sparkBurst(stack, { y: (logo.offsetTop + logo.offsetHeight / 2) / stack.offsetHeight, n: 26, reach: 1.3, colors: sparkPaint }); }, 600); return; }
       setTimeout(() => {
@@ -9018,24 +9178,30 @@ async function boot() {
   startJurisReadouts();
 
   refreshBet();
-  setButtons(true);
-  tick("Good luck.");
 
   // Every bet is stateless (owner, 2026-11-10): the RGS resolves the whole round in the one /play call, and nothing
   // is saved or resumed mid-round. A round left open by a dropped connection is already decided, so it is simply
-  // settled here (end-round pays it) and its result told in a notice - never replayed, never continued.
+  // settled here (end-round pays it) and its result told in a notice - never replayed, never continued. It is
+  // settled before the buttons come on, so a spin can never reach /play while the RGS still holds it open.
   const open = RGS.state.round;
+  let settled = null;
   if (open && open.active !== false) {
     const amount = open.amount || bet();
     const paid = typeof open.payout === "number" ? open.payout : Math.round((open.payoutMultiplier || 0) * amount);
     try {
       await RGS.endRound();
       setBalance(RGS.state.balance, paid > 0 ? "up" : null);
-      await introDone;
-      notice(paid > 0 ? T(`Your last round was settled: it paid <b>${fmt(paid)}</b>`) : T("Your last round was settled"), false, 5000);
+      settled = { paid };
     } catch (err) {
-      notice(`<b>${RGS_MESSAGE[err.code] || err.message}</b>`, true, 6000);
+      settled = { err };
     }
+  }
+  setButtons(true);
+  tick("Good luck.");
+  if (settled && settled.err) notice(`<b>${RGS_MESSAGE[settled.err.code] || settled.err.message}</b>`, true, 6000);
+  else if (settled) {
+    await introDone;
+    notice(settled.paid > 0 ? T(`Your last round was settled: it paid <b>${fmt(settled.paid)}</b>`) : T("Your last round was settled"), false, 5000);
   }
 }
 boot();
@@ -9046,7 +9212,7 @@ boot();
   var spin = document.getElementById("spinBtn"),
       bonus = document.getElementById("bonusBtn");
   if (spin) {
-    spin.addEventListener("click", function(){ spin.classList.remove("spun"); restyle(spin); spin.classList.add("spun"); });
+    spin.addEventListener("click", function(){ if (state.playing) return; spin.classList.remove("spun"); restyle(spin); spin.classList.add("spun"); });
     spin.addEventListener("animationend", function(e){ if (e.animationName === "spin360") spin.classList.remove("spun"); });
   }
   if (bonus) {

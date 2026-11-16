@@ -10,7 +10,7 @@ import spec
 CLEAN = os.path.join(A.RAW, 'clean')
 OUT = os.path.join(A.RAW, 'analysis.json')
 # per kind: high-pass, low-pass (warmth: nothing bright gets through), gate depth under the peak
-KIND = {'foley': (90, 9000, -52), 'noisy': (150, 6500, -48), 'whoosh': (60, 6000, -50)}
+KIND = {'foley': (90, 11500, -52), 'noisy': (150, 11000, -48), 'whoosh': (60, 11000, -50)}   # (2026-11-13: was 9000/6500/6000 - it muffled them)
 
 
 def main():

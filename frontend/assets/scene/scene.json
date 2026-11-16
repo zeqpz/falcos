@@ -12,48 +12,40 @@
     768
    ]
   },
-  "blink_cashier": {
+  "sign_off_l": {
    "rect": [
-    3152,
-    916,
-    124,
-    80
+    436,
+    199,
+    167,
+    237
    ]
   },
-  "fx_people": {
+  "sign_off_s": {
    "rect": [
-    3060,
-    850,
-    760,
-    545
-   ],
-   "frames": 48,
-   "fps": 12,
-   "w": 471,
-   "h": 338,
-   "cols": 8,
-   "per_sheet": 48,
-   "sheets": [
-    "fx_people_0.webp"
-   ]
-  },
-  "fx_cashier": {
-   "rect": [
-    2880.0,
-    686.0,
-    940.0,
-    698.0
-   ],
-   "frames": 120,
-   "fps": 15.0,
-   "w": 235,
-   "h": 174,
-   "cols": 17,
-   "per_sheet": 391,
-   "sheets": [
-    "fx_cashier_0.webp"
+    755,
+    314,
+    193,
+    208
    ]
   }
  },
- "packed": 2
+ "packed": 2,
+ "zombie_layers": {
+  "zsign_off_l": {
+   "rect": [
+    471,
+    228,
+    120,
+    177
+   ]
+  },
+  "zsign_off_s": {
+   "rect": [
+    795,
+    351,
+    130,
+    145
+   ]
+  }
+ }
 }

@@ -1,5 +1,8 @@
 # Falcos - front-end event contract (math phase 2: 7x5 board, max win 50,000x)
 
+**Change 2026-11-13 (owner):** in FILL UP the Gold Scratch Ticket collects the whole board and then doubles its
+total; `collect` carries a new `mult` (2 for a gold ticket that collected, else 1).
+
 **Changes 2026-11-10 (owner):** (1) the board refills after the cluster pay and after EVERY feature
 group - one `tumbleBoard` after the cluster pay, one after all the step's Gas Pumps, one after each
 Scratch / Gold Ticket, one after each Zippo (it used to be one `tumbleBoard` per board, after every
@@ -223,10 +226,12 @@ and every collector there that collected on an earlier spin, then left. `boosted
 **collect** - a ticket collected. `kind` `scratch` (its 8 neighbours) | `gold` (whole board). It takes
 every drop there plus every collector that collected on an EARLIER spin; `collected` =
 `{reel,row,name,value}` (those cells empty), `total` = the collector's new value. `removed: true` =
-nothing to collect, the ticket left (its cell is empty).
+nothing to collect, the ticket left (its cell is empty). `mult` (2026-11-13): a **gold** ticket that collected
+doubles its total - `total = (its value + the collected values) x mult`, `mult` 2; a scratch ticket (and a gold one
+that found nothing) has `mult` 1.
 ```json
-{"index":5,"type":"collect","kind":"scratch","reel":1,"row":4,"collected":[{"reel":0,"row":4,"name":"FD","value":3}],"total":3,"removed":false,"boardTotal":16}
-{"index":8,"type":"collect","kind":"scratch","reel":3,"row":1,"collected":[],"total":0,"removed":true,"boardTotal":8}
+{"index":5,"type":"collect","kind":"scratch","reel":1,"row":4,"collected":[{"reel":0,"row":4,"name":"FD","value":3}],"total":3,"mult":1,"removed":false,"boardTotal":16}
+{"index":8,"type":"collect","kind":"scratch","reel":3,"row":1,"collected":[],"total":0,"mult":1,"removed":true,"boardTotal":8}
 ```
 
 **zippoBurn** - a Zippo burned every Fuel Drop in its 3x3 (never collectors) and left.
