@@ -71,10 +71,10 @@ def plate(W=950, H=632):
     return im.resize((W, H), Image.LANCZOS)
 
 
-def lettering(W=1140, H=749):
+def lettering(W=1140, H=749, top='BUY'):
     im = Image.new('RGBA', (W * K, H * K))
     d = ImageDraw.Draw(im)
-    for word, size, cy, fill in (('BUY', 186, .30, YELLOW), ('BONUS', 262, .63, WHITE)):
+    for word, size, cy, fill in ((top, 186, .30, YELLOW), ('BONUS', 262, .63, WHITE)):
         f = font(size)
         sw = 24 * K
         bb = d.textbbox((0, 0), word, font=f, stroke_width=sw)
@@ -88,4 +88,6 @@ def lettering(W=1140, H=749):
 if __name__ == '__main__':
     plate().save(os.path.join(A, 'bonus_btn_bg.webp'), 'WEBP', quality=92, method=6)
     lettering().save(os.path.join(A, 'bonus_btn_text.webp'), 'WEBP', quality=92, method=6)
+    # social mode (Stake.US) may not say BUY: GET BONUS (approval guideline [77])
+    lettering(top='GET').save(os.path.join(A, 'bonus_btn_text_social.webp'), 'WEBP', quality=92, method=6)
     print('BUY BONUS drawn')

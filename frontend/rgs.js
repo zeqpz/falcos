@@ -28,6 +28,8 @@ const RGS = (() => {
     CLP: { symbol: "CLP", decimals: 0, after: true },
     ARS: { symbol: "ARS", decimals: 2, after: true },
     PEN: { symbol: "S/", decimals: 2, after: true },
+    // crypto (Engine's table): BTC reads 10.000000 BTC; USDT falls through to the 2-decimal "10.00 USDT"
+    BTC: { symbol: "BTC", decimals: 6, after: true },
     // the social-casino coins read "10.00 SC" / "10.00 GC" - never with a $ in front
     XGC: { symbol: "GC", decimals: 2, after: true },
     XSC: { symbol: "SC", decimals: 2, after: true },
@@ -251,10 +253,12 @@ const RGS = (() => {
       const v = a / UNIT;
       const maxDec = Math.min(6, meta.decimals + Math.max(0, extra));
       const unit = Math.pow(10, 6 - meta.decimals);
-      let s = v.toFixed(meta.decimals);
+      // rounded DOWN to the currency's precision, never up (a balance of 0.005 is 0.00, not 0.01)
+      let s = (Math.floor(a / unit) * unit / UNIT).toFixed(meta.decimals);
       if (extra > 0 && unit > 1 && a % unit !== 0) {
         s = v.toFixed(maxDec).replace(/0+$/, "");
-        if (s.split(".")[1] && s.split(".")[1].length < meta.decimals) s = v.toFixed(meta.decimals);
+        const d = s.split(".")[1] || "";
+        if (d.length < meta.decimals) s = v.toFixed(meta.decimals);   // never a bare "0." (2026-11-16 audit [273])
       }
       s = group(s);
       if (social && !CURRENCY_SOCIAL.has(currency || state.currency)) return `${s} ${currency || state.currency}`;   // social mode: never a $ / € sign

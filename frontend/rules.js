@@ -169,22 +169,23 @@ const RULES = (() => {
 
 <section>
   <h4>${t("Bonuses")}</h4>
-  <p><b>FILL UP</b> — ${t("3 FALCOS Tokens, or bought. A Fuel Drop collection game with a 3-bar fuel gauge; no cell multipliers. The gauge starts full. Every spin uses one bar, and any spin that lands something new (a drop or a feature) refills it to 3. The bonus ends when the gauge is empty and nothing new lands. At the end you win the total of every drop left plus every collector's total, times the bet, capped at the max win.")}</p>
+  <p><b>FILL UP</b> — ${t("3 FALCOS Tokens, or bought. A Fuel Drop collection game with a fuel gauge that counts your spins left; no cell multipliers. It starts with 3 spins. Every spin uses one, and any spin that lands something new (a drop or a feature) sets it back to 3. The bonus ends when no spins are left. At the end you win the total of every drop left plus every collector's total, times the bet, capped at the max win.")}</p>
   <p><b>PREMIUM</b> — ${t("4 or more FALCOS Tokens, or bought. 10 free spins of the base game with sticky cell multipliers: a cell that reached x8 keeps x8 into the next spin and keeps growing.")}</p>
   <p><b>MIDNIGHT RUN</b> — ${t("3 Midnight Tokens, or bought. 10 free spins with sticky cell multipliers, every cell starting at x4, and Gas Pumps landing far more often. The biggest bonus in the game.")}</p>
+  <p>${t("There are no re-triggers: PREMIUM and MIDNIGHT RUN always play exactly 10 free spins, Tokens landing during a bonus award no extra spins, and no bonus can start inside another.")}</p>
   <p class="fine">${t("Bonuses are played at the bet of the triggering spin. Every round is decided in full the moment it is placed: if the connection drops, reload the game and the round is settled and paid.")}</p>
 </section>
 
 <section>
   <h4>${t("How to play")}</h4>
   <table class="guide">
-    <tr><td><b>${t("Spin")}</b></td><td>${t("Plays one round at the current bet. The spacebar does the same. While the reels are turning the button reads Skip and lands them at once (clicking the board also skips); every winning cluster is always shown in full.")}</td></tr>
-    <tr><td><b>− / +</b></td><td>${t("Lowers or raises the bet through every level offered by the server.")}</td></tr>
-    <tr><td><b>${t("Bonus")}</b></td><td>${t("Opens the Bonus panel: buy a bonus (FILL UP, PREMIUM, MIDNIGHT RUN) or turn on a special spin (FUEL CHANCE, NITRO SPIN). The total charge is shown before you confirm; a special spin stays on - the bar shows its price a spin - until you turn it off on its card or the pill over the bar.")}</td></tr>
-    <tr><td><b>${t("Auto")}</b></td><td>${t("Plays a chosen number of rounds one after another at the current bet. You confirm the number before it starts; press it again to stop. It also stops when the balance can't cover the next round.")}</td></tr>
-    <tr><td><b>${t("Rapid")}</b></td><td>${t("Shortens the reel spin and win animations. Results are unaffected.")}</td></tr>
-    <tr><td><b>${t("Info")}</b></td><td>${t("Opens this page: the rules, the paytable and your recent rounds.")}</td></tr>
-    <tr><td><b>${t("Audio")}</b></td><td>${t("Opens the Sound and Music volume sliders. Slide one all the way left to silence it; with both at zero every sound in the game is off. Levels are remembered on this device.")}</td></tr>
+    <tr><td><b>${t("Spin")}</b></td><td>${t("The round arrow button at the right of the bar. Plays one round at the current bet; the spacebar does the same. While a round plays the button is locked, so a round can never be started twice; click the board to hurry the round along (every winning cluster is still shown in full).")}</td></tr>
+    <tr><td><b>− / +</b></td><td>${t("Lowers or raises the bet through every level offered by the server. The Bonus panel has its own − / + for the same bet.")}</td></tr>
+    <tr><td><b>${t("Bonus")}</b></td><td>${t("Opens the Bonus panel: buy a bonus (FILL UP, PREMIUM, MIDNIGHT RUN) or turn on a special spin (FUEL CHANCE, NITRO SPIN). The total charge is shown before you confirm; a special spin stays on - the bar shows its price a spin - until you turn it off on its card or the pill over the bar. The ✕ closes the panel.")}</td></tr>
+    <tr><td><b>${t("Auto")}</b></td><td>${t("The play arrow button. Plays a chosen number of rounds one after another at the current bet (with FUEL CHANCE or NITRO SPIN on, at that spin's price). You confirm the number and the price a round before it starts; press it again to stop. It also stops when the balance can't cover the next round.")}</td></tr>
+    <tr><td><b>${t("Rapid")}</b></td><td>${t("The lightning bolt button. Shortens the reel spin and win animations. Results are unaffected.")}</td></tr>
+    <tr><td><b>${t("Info")}</b></td><td>${t("The three-line button. Opens this page: the rules, the paytable and your recent rounds.")}</td></tr>
+    <tr><td><b>${t("Audio")}</b></td><td>${t("The speaker button. Opens the Sound and Music volume sliders. Slide one all the way left to silence it; with both at zero every sound in the game is off. Levels are remembered on this device.")}</td></tr>
     <tr><td><b>${t("Win / Balance")}</b></td><td>${t("The bar shows your balance in the token you are playing with, and the current round's win while there is one. The balance is always the amount the server reports.")}</td></tr>
   </table>
 </section>

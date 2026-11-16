@@ -1060,6 +1060,15 @@
   body.replay .betbox, body.replay #bonusBtn, body.replay #autoBtn, body.replay #spinBtn { display: none; }
   .replaymeta { font-family: var(--legible); font-size: 13px; color: var(--ink); margin: 0 0 10px; line-height: 1.6; }
   .replayres { font-family: var(--mono); font-size: 17px; letter-spacing: .08em; color: var(--gold); margin: 0 0 16px; line-height: 1.7; }
+  /* a popout S window (400x225): the replay panel's text shrinks and its Play / Play again button stays in view at
+     the panel's foot instead of scrolling out of it (approval [243]) */
+  @media (max-height: 300px) {
+    #replayWrap .infopanel { padding: 8px 14px 10px; max-height: calc(100vh - 12px); display: flex; flex-direction: column; }
+    #replayWrap .infopanel h3 { font-size: 15px; margin: 0 0 4px; }
+    #replayWrap .replaymeta, #replayWrap .fine { font-size: 10px !important; line-height: 1.35 !important; margin: 0 0 4px !important; }
+    #replayWrap .replayres { font-size: 12px; line-height: 1.35; margin: 0 0 6px; }
+    #replayWrap #replayPlay { position: sticky; bottom: 0; margin-top: auto; flex: none; padding: 6px 18px; font-size: 13px; }
+  }
   .infopanel h3 {
     margin: 0 0 12px; font-family: var(--disp); font-size: 22px; letter-spacing: .06em;
     text-transform: uppercase; color: var(--spray);
@@ -2213,6 +2222,7 @@
     background: url("assets/bonus_btn_text.webp") center/contain no-repeat;
     filter: drop-shadow(0 3px 5px rgba(0,0,0,.45));
   }
+  html.social .bonusbtn::after { background-image: url("assets/bonus_btn_text_social.webp"); }   /* GET BONUS: no BUY on Stake.US */
   /* The whole button drifts as one piece - the plate, the lettering and the neon glow together
      (owner, 2026-11-03: the lettering used to float on its own off a plate and a glow that stood
      still) - and only a little, slowly. The pointer lifts the whole of it a touch, too. */
@@ -2817,10 +2827,17 @@
   #fsCard.fill .fuelrow { display: flex; align-items: center; justify-content: center; gap: 22px; }
   .fgauge { position: relative; height: 104px; aspect-ratio: 1200 / 334; flex: none; }
   .fgauge > img { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
-  /* its three glass windows (measured on the art: 28.9-46.5%, 48.75-66.4%, 68.75-86.4% across, 28.7-69.8% down) */
-  .fgauge > i { position: absolute; z-index: 1; top: 28.7%; height: 41.1%; width: 17.6%; border-radius: 12% / 18%; overflow: hidden;
-    background: linear-gradient(180deg, #1a0d06, #2a1408); }
-  .fgauge > i:nth-of-type(1) { left: 28.9%; } .fgauge > i:nth-of-type(2) { left: 48.75%; } .fgauge > i:nth-of-type(3) { left: 68.75%; }
+  /* its three glass windows, one per spin left (owner, 2026-11-16: "make these like how many spins you have"): cut
+     open in the flat art (tools/falcos/gauge_windows.py, which measured them: 30.75 / 48.67 / 66.75% across, 30.5-69.2%
+     down) - each box a touch bigger than its opening so its edge sits under the art's ink */
+  .fgauge > i { position: absolute; z-index: 1; top: 29.6%; height: 40.6%; width: 17.6%; border-radius: 14% / 20%; overflow: hidden;
+    background: linear-gradient(180deg, #120a06, #24140a); }
+  .fgauge > i:nth-of-type(1) { left: 30.1%; } .fgauge > i:nth-of-type(2) { left: 48%; } .fgauge > i:nth-of-type(3) { left: 66.2%; }
+  /* the spins-left count over the gauge: the label and its figure, the free spins counter's paint */
+  .fspins { display: flex; flex-direction: column; align-items: center; gap: 2px; flex: none; }
+  .fspins .fslbl b { display: inline-block; min-width: 1.1em; margin-left: .35em; font-size: 1.5em; line-height: 1; color: #FFD23C;
+    -webkit-text-stroke: .09em #0c0c12; paint-order: stroke fill; vertical-align: -.12em; }
+  .fspins .fslbl b.tick { animation: fmultpop .38s cubic-bezier(.2, .9, .3, 1.3); }
   /* the fuel in a window: a block of amber that fills from the bottom (scaleY) with a sloshing surface */
   .fgauge > i::before { content: ""; position: absolute; left: -10%; right: -10%; bottom: 0; height: 100%; transform-origin: 50% 100%; transform: scaleY(0);
     background: linear-gradient(180deg, #FFF0B0 0, #FFC24A 18%, #FF9A1A 60%, #C25A00); border-radius: 30% 30% 0 0 / 8% 8% 0 0;
@@ -2843,13 +2860,15 @@
      whole fit-to-screen (ResizeObserver) on every frame of it (perf, 2026-11-10) - the figure overflows instead */
   .ftotal { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; width: 330px; height: 92px; flex: none; }
   .ftotal .fuelnum { justify-content: flex-start; }
-  .ftotal .fslbl { font-size: 15px; color: #FFB547; text-shadow: 0 0 10px rgba(255, 150, 40, .7); }
+  .ftotal .fslbl, .fspins .fslbl { font-size: 15px; color: #FFB547; text-shadow: 0 0 10px rgba(255, 150, 40, .7); }
+  .fspins .fslbl { font-size: 20px; }
   .fuelnum { min-height: 64px; }
   .fuelnum img { height: 64px; }
   .fuelnum .sym { font-size: 44px; -webkit-text-stroke-width: 5px; }
   @media (max-width: 760px) and (orientation: portrait) {
     .fgauge { height: 180px; }
-    .ftotal .fslbl { font-size: 28px; -webkit-text-stroke-width: 6px; }
+    .ftotal .fslbl, .fspins .fslbl { font-size: 28px; -webkit-text-stroke-width: 6px; }
+    .fspins .fslbl { font-size: 34px; }
     .fuelnum { min-height: 110px; } .fuelnum img { height: 110px; } .fuelnum .sym { font-size: 76px; -webkit-text-stroke-width: 8px; }
     /* an upright phone: the gauge and the total above the board (the room is there, under the canopy) */
     body.fillmode .rail { order: -1; }
@@ -3057,7 +3076,7 @@
   </div>
 
   <div class="rail">
-    <div class="fsline" id="fsCard"><div class="fsplate"><div class="fscount"><span class="fslbl">Free spins</span><b id="fsNow">—</b></div><div class="fswinbox"><span class="fslbl">Bonus win</span><div class="fswin" id="fsWin" aria-label="Bonus win"></div></div></div><div class="fuelrow"><div class="fgauge" id="fuelGauge" aria-label="Fuel"><i></i><i></i><i></i><img src="assets/fillup/gauge.webp" alt="" draggable="false"></div><div class="ftotal"><span class="fslbl">Fuel total</span><div class="fswin fuelnum" id="fuelNum" aria-label="Fuel total"></div></div></div></div>
+    <div class="fsline" id="fsCard"><div class="fsplate"><div class="fscount"><span class="fslbl">Free spins</span><b id="fsNow">—</b></div><div class="fswinbox"><span class="fslbl">Bonus win</span><div class="fswin" id="fsWin" aria-label="Bonus win"></div></div></div><div class="fuelrow"><div class="fspins"><span class="fslbl">Spins left<b id="fuelSpins">3</b></span><div class="fgauge" id="fuelGauge" aria-label="Spins left"><i></i><i></i><i></i><img src="assets/fillup/gauge.webp" alt="" draggable="false"></div></div><div class="ftotal"><span class="fslbl">Fuel total</span><div class="fswin fuelnum" id="fuelNum" aria-label="Fuel total"></div></div></div></div>
   </div>
 </div>
 
@@ -3281,6 +3300,7 @@ const modeOpen = (mode, b = bet()) => { const mx = RGS.modeMaxBet(mode); return 
 // Social casinos (Stake.us) forbid a list of gambling terms. Every player-facing string
 // goes through T(): a no-op normally, the sweeps vocabulary when the lobby says social=true.
 const SOCIAL = RGS.social;
+if (SOCIAL) document.documentElement.classList.add("social");
 const T = s => RULES.T(s, SOCIAL);
 // the symbols' short names reach the board as alt text and the ticker: they follow the rule too
 if (SOCIAL) for (const d of Object.values(SYM)) { d.label = T(d.label); d.sub = T(d.sub); }
@@ -3295,7 +3315,11 @@ const cents = c => Math.round(c / 100 * bet());
 // reels themselves (spinReel lands them the moment it is pressed): a spin that then hits
 // nothing is over at once, a spin that hits plays its hits at pace.
 const TEMPO_FAST = .3;   // was .4: a losing Rapid spin with a drop took 2.5-4.3 s (approval audit 2026-11-09 wants ~2 s)
-const tempo = () => (state.skip || $("turbo").checked) ? TEMPO_FAST : 1;
+// A bonus plays slower than the base game (owner, 2026-11-16: "slow the game down so much the bonus is way to fast"):
+// every hold, wait and CSS animation of FILL UP, PREMIUM and MIDNIGHT RUN runs at BONUS_PACE (Rapid and Skip still
+// hurry it, at their own pace). The symbols' own Blender clips keep their speed, as always (rigPlay).
+const BONUS_PACE = 1.7;
+const tempo = () => (state.skip || $("turbo").checked) ? TEMPO_FAST : state.bonus ? BONUS_PACE : 1;
 // The Multi's whole show - the can spraying its value on, the blow-out and its neighbours' pops,
 // the value landing - plays this many times faster than it was first timed (owner, 2026-10-22:
 // "speed the pop up time for the multiplier up by 1.5x"). The CSS reads it as --multi-rate.
@@ -6022,6 +6046,9 @@ function gaugeShow(fuel, reason) {
     if (!was && on && reason !== "start") { b.style.setProperty("--gd", (i * 90) + "ms"); b.classList.add("fill"); }
   });
   $("fsCard").classList.toggle("low", fuel <= 1);
+  const n = $("fuelSpins");
+  if (n && n.textContent !== String(fuel)) { n.textContent = String(fuel); n.classList.remove("tick"); restyle(n); n.classList.add("tick"); }
+  $("fuelGauge").setAttribute("aria-label", `${fuel} spin${fuel === 1 ? "" : "s"} left`);
 }
 const DROP_COLOUR = { FDG: "#6CFC54", FDA: "#FFB547", FDR: "#FF2A3D", ST: "#F5C518", GT: "#F5C518", GP: "#FFB547", ZP: "#FF6A1F" };
 // a drop lands on the FILL UP board: a ring and droplets in its colour splash out of it, the tile glows once
@@ -6552,6 +6579,7 @@ const handlers = {
     await bonusIntro(state.fsTotal || 10, kind === "midnight", kind, () => {
       // under the intro's black: the bonus's board and scene
       state.bonus = kind;
+      syncTempo();
       state.grid = emptyGrid(); state.max = new Set();
       clearFx(); paintGrid();
       if (kind === "fillup") fillBegin();
@@ -6585,11 +6613,11 @@ const handlers = {
     gaugeShow(ev.fuel, ev.reason);
     if (ev.reason === "use") {
       sfx("gaugeTick");
-      tick(`<b>FILL UP</b> — ${ev.fuel} bar${ev.fuel === 1 ? "" : "s"} left`);
+      tick(`<b>FILL UP</b> — ${ev.fuel} spin${ev.fuel === 1 ? "" : "s"} left`);
       await hold(ev.fuel >= 2 ? 420 : ev.fuel === 1 ? 560 : 360);
     } else if (ev.reason === "refill") {
       sfx("gaugeRefill");
-      tick(`<b>REFILLED</b> — 3 bars`);
+      tick(`<b>REFILLED</b> — 3 spins`);
       const g = $("fuelGauge");
       if (g && !REDUCED_MOTION) { g.classList.remove("refilled"); restyle(g); g.classList.add("refilled"); }
       await hold(state.fuelWasLow ? 900 : 620);   // saved on the last bars: a longer breath
@@ -6807,6 +6835,7 @@ const handlers = {
 function bonusOver() {
   fillEnd();
   state.bonus = null;
+  syncTempo();
   state.grid = emptyGrid(); state.max = new Set();
   paintGrid();
   if (Scene.now !== "normal" && state.mode !== "nitro") Scene.to("normal");
@@ -7138,7 +7167,7 @@ async function presentRound(round, { settle = true } = {}) {
 const BUYS = [
   { mode: "chance", wide: true, art: "chance", logo: "logo_chance", title: "FUEL CHANCE", desc: "Every spin with about 2.2x the chance of triggering a bonus. Stays on until you turn it off", btn: "Activate", acc: "#FFB547" },
   { mode: "nitro", wide: true, art: "nitro", logo: "logo_nitro", title: "NITRO SPIN", desc: "Every cell preloaded from x16 to x2048 on each spin. Stays on until you turn it off", btn: "Activate", acc: "#5B8CFF" },
-  { mode: "fillup", art: "fillup", logo: "logo_fillup", title: "FILL UP", desc: "Collect sticky Fuel Drops while the 3-bar gauge keeps refilling", btn: "Play", acc: "#FF7A1A" },
+  { mode: "fillup", art: "fillup", logo: "logo_fillup", title: "FILL UP", desc: "Collect sticky Fuel Drops - 3 spins, back to 3 whenever something lands", btn: "Play", acc: "#FF7A1A" },
   { mode: "premium", art: "premium", logo: "logo_premium_zombie", title: "PREMIUM", desc: "Zombie night: 10 free spins with sticky multipliers", btn: "Play", acc: "#4F9BFF" },
   { mode: "midnight", art: "midnight", logo: "logo_midnight", title: "MIDNIGHT RUN", desc: "10 free spins with every cell starting at x4, sticky multipliers", btn: "Play", acc: "#8A6BFF" },
 ];
@@ -7317,7 +7346,7 @@ async function playRound(mode) {
     await presentRound(d.round);
   } catch (err) {
     ok = false;
-    notice(`<b>${RGS_MESSAGE[err.code] || err.message || T("Round failed")}</b>`, true, 5000);
+    notice(`<b>${RGS_MESSAGE[err.code] || T(err.message || "Round failed")}</b>`, true, 5000);
     try { await RGS.balance(); setBalance(RGS.state.balance); } catch (e) { /* offline */ }
   }
 
@@ -7339,7 +7368,9 @@ function confirmAuto() {
   return new Promise(resolve => {
     const pop = $("autoPop"), opts = $("autoOpts");
     let n = Number(opts.querySelector(".on").dataset.n);
-    $("autoBet").textContent = fmt(bet());   // what each round will cost
+    // what each round will really cost: with FUEL CHANCE or NITRO SPIN on, that spin's price (approval [104])
+    const m = spinMode();
+    $("autoBet").textContent = fmt(bet() * (MODE_COST[m] || 1)) + (m !== "base" ? " " + T("a round") + " (" + T(MODE_NAMES[m]) + ")" : "");
     $("autoText").firstChild.textContent = T("Rounds at ");
     closeBars();   // the picker opens over the bar: the volume bars go with it
     openPop("autoPop");
@@ -8552,7 +8583,7 @@ introDone.then(() => setTimeout(releaseGonePics, 1500));   // its plates are gon
 const BONUS_KINDS = {
   fillup: { name: "FILL UP", logo: "assets/menu/logo_fillup.webp", x: false, noSpins: true,
     how: [`<b>Fuel Drops</b> stick where they land - green, amber and red, worth up to <b>x500</b> each - and change colour as they grow.`,
-          `The gauge starts full at <b>3</b> bars. Every spin uses one; anything new landing refills it. The bonus ends when the gauge runs dry.`,
+          `You start with <b>3</b> spins - the gauge shows how many are left. Every spin uses one; anything new landing sets it back to 3. The bonus ends when no spins are left.`,
           `Lighters burn drops, Scratch Tickets collect their neighbours, Gold Tickets collect the whole board and double it, Gas Pumps multiply them. At the end you win every drop left and every collector's total.`] },
   premium: { name: "PREMIUM", logo: "assets/menu/logo_premium_zombie.webp", x: false, z: true,
     how: [`Zombie night at the station. Every cell has its own multiplier, doubling each time a win or a feature hits it, up to <b>x2048</b>.`,
@@ -9160,6 +9191,11 @@ async function boot() {
   let at = state.bets.indexOf(recallBet());
   if (at < 0) at = state.bets.indexOf(def);
   if (at < 0 && def) at = state.bets.reduce((best, v, i) => Math.abs(v - def) < Math.abs(state.bets[best] - def) ? i : best, 0);
+  // a round the RGS still holds open sets the bet: its own amount, or the level nearest it (approval [187])
+  const held = RGS.state.round;
+  if (held && held.active !== false && held.amount > 0 && state.bets.length) {
+    at = state.bets.reduce((best, v, i) => Math.abs(v - held.amount) < Math.abs(state.bets[best] - held.amount) ? i : best, 0);
+  }
   state.betIdx = Math.max(0, at);
   if ($("maxWin")) $("maxWin").textContent = "x" + RULES.MAX_WIN;
   setBalance(RGS.state.balance);
@@ -9198,7 +9234,7 @@ async function boot() {
   }
   setButtons(true);
   tick("Good luck.");
-  if (settled && settled.err) notice(`<b>${RGS_MESSAGE[settled.err.code] || settled.err.message}</b>`, true, 6000);
+  if (settled && settled.err) notice(`<b>${RGS_MESSAGE[settled.err.code] || T(settled.err.message || "")}</b>`, true, 6000);
   else if (settled) {
     await introDone;
     notice(settled.paid > 0 ? T(`Your last round was settled: it paid <b>${fmt(settled.paid)}</b>`) : T("Your last round was settled"), false, 5000);
