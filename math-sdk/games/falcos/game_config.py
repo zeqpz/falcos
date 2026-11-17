@@ -12,7 +12,7 @@ Symbols
                  DS Midnight Token (3 -> MIDNIGHT RUN in base and FUEL CHANCE; MIDNIGHT RUN can also
                  be bought outright - the `midnight` bet mode)
     FILL UP only FD Fuel Drop (carries `value`), X blank; ST/GT are collectors, GP a booster,
-                 ZP a burner there.
+                 BS adds 5 spins; no ZP there (2026-11-17).
 
 Board: 7x5 (7 reels wide, 5 rows tall, 35 cells; owner decision 2026-11-09), clusters of 5+ joined orthogonally, tumbles. Every cell carries a multiplier
 (x1 .. x2048) that doubles each time a win or a feature hits it; a cluster pays the SUM of
@@ -108,7 +108,12 @@ class GameConfig(Config):
             "scatter": list(SCATTERS),
             "feature": list(FEATURES),
         }
-        self.free_spins = 10                       # PREMIUM and MIDNIGHT RUN: 10 free spins, no retriggers
+        self.free_spins = 10                       # PREMIUM and MIDNIGHT RUN: 10 free spins
+        # retriggers (owner, 2026-11-17): 3+ FALCOS Tokens (BS) on the board a PREMIUM / MIDNIGHT RUN spin
+        # ends on add 5 spins; in FILL UP a token that lands adds 5 spins to the gauge
+        self.retrigger_count = 3
+        self.retrigger_spins = 5
+        self.max_free_spins = 60                   # PREMIUM / MIDNIGHT RUN never run past this many spins
         self.midnight_start_mult = 4               # MIDNIGHT RUN: every cell starts at x4
         self.freespin_triggers = {self.basegame_type: {3: self.free_spins}, self.freegame_type: {}}
         self.anticipation_triggers = {self.basegame_type: 2, self.freegame_type: 99}
@@ -157,7 +162,8 @@ class GameConfig(Config):
             "standard": {
                 # 7x5 retune: 35 cells land far fewer drops than 49, so drops, pumps and tickets
                 # land ~1.9x / 2.3x / 1.4x as often (FD 24 -> 45, GP 1.6 -> 3.7, ST 2.2 -> 3.1)
-                "land": {"X": 1000, "FD": 45, "ST": 3.1, "GT": 0.5, "GP": 3.7, "ZP": 1.2},
+                # no Lighter in FILL UP (owner, 2026-11-17: "remove the lighter symbol from the fill up bonus")
+                "land": {"X": 1000, "FD": 45, "ST": 3.1, "GT": 0.5, "GP": 3.7, "BS": 0.6},
                 "drop_values": {
                     0.2: 260, 0.5: 240, 1: 200, 2: 130, 3: 90,
                     5: 60, 10: 32, 15: 15, 20: 10,
@@ -171,7 +177,7 @@ class GameConfig(Config):
             },
             # wincap criteria only: dense, heavy drops and pumps so 50,000x is reachable
             "cap": {
-                "land": {"X": 300, "FD": 60, "ST": 4, "GT": 2, "GP": 8, "ZP": 0.5},
+                "land": {"X": 300, "FD": 60, "ST": 4, "GT": 2, "GP": 8, "BS": 0.3},
                 "drop_values": {50: 2, 100: 2, 250: 2, 500: 2},
                 "gp_mults": {16: 1, 32: 1, 64: 1},
                 "seed_drops": 3,

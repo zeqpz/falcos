@@ -568,7 +568,7 @@
   /* ---------- features screen ---------- */
   /* The load-in screen (2026-11-10, a premium Stake game's): after the black-and-white FALCOS ident, the
      scene itself shows through dimmed and warmed to amber (a backdrop filter over the real #bgwall), the
-     FALCOS title logo, three cards (assets/load: a chrome card frame round a picture, the card's title on
+     three cards (assets/load: a chrome card frame round a picture, the card's title on
      its plate) and a fuel-gauge loading bar - a chrome tube with a pump nozzle at E, filling to F with
      glowing fuel as the game's assets really arrive. When everything is in, CLICK TO PLAY. The game waits,
      faded out, underneath (body.features-up). */
@@ -586,16 +586,6 @@
   .features.up { opacity: 1; }
   .features.ready { cursor: pointer; }
   .features.gone { opacity: 0; pointer-events: none; }
-  .features .ftitle {
-    flex: none; display: block; height: clamp(80px, 24vh, 300px); width: auto; max-width: 80vw; object-fit: contain;
-    pointer-events: none; filter: drop-shadow(0 10px 18px rgba(0, 0, 0, .6)); opacity: 0;
-  }
-  .features.up .ftitle { animation: ftitleIn .8s cubic-bezier(.2, .9, .3, 1.25) .12s both; }
-  @keyframes ftitleIn {
-    0% { opacity: 0; transform: translateY(-3vh) scale(.62) rotate(-3deg); }
-    60% { opacity: 1; transform: translateY(0) scale(1.05) rotate(.6deg); }
-    100% { opacity: 1; transform: none; }
-  }
   .lcards { display: flex; gap: 2.6vw; justify-content: center; align-items: flex-end; }
   /* a card: the picture sits in the frame's window (11.2-89.5% across, 7.7-70.2% down), the frame over it,
      the title on the frame's cream plate below */
@@ -652,18 +642,16 @@
   .features.ready .fcont { opacity: 1; animation: bcont 1.5s ease-in-out infinite; }
   @media (orientation: portrait) {
     .features { gap: 2.6vh; justify-content: center; }
-    .features .ftitle { height: auto; width: min(86vw, 560px); max-width: none; }
     .lcards { gap: 2.4vw; }
     .lcard { width: min(29vw, 220px); }
     .lbar { width: min(88vw, 560px); }
   }
   @media (max-height: 520px) and (orientation: landscape) {
     .features { gap: 1.2vh; padding: 2vh 4vw; }
-    .features .ftitle { height: 18vh; }
     .lcard { width: calc((100vh - 18vh - 30vh) * 760 / 1154); }
   }
   @media (prefers-reduced-motion: reduce) {
-    .features .ftitle, .features .lcard, .features .fcont, .lbar .lbfuel, .lbar .lbfuel::after { animation: none !important; opacity: 1; transform: none; }
+    .features .lcard, .features .fcont, .lbar .lbfuel, .lbar .lbfuel::after { animation: none !important; opacity: 1; transform: none; }
     body.features-fade #app, .features { transition: none !important; }
   }
   /* The loading screen: a black-and-white studio ident (owner, 2026-11-08: an old arcade ident's
@@ -3315,11 +3303,12 @@ const cents = c => Math.round(c / 100 * bet());
 // reels themselves (spinReel lands them the moment it is pressed): a spin that then hits
 // nothing is over at once, a spin that hits plays its hits at pace.
 const TEMPO_FAST = .3;   // was .4: a losing Rapid spin with a drop took 2.5-4.3 s (approval audit 2026-11-09 wants ~2 s)
-// A bonus plays slower than the base game (owner, 2026-11-16: "slow the game down so much the bonus is way to fast"):
-// every hold, wait and CSS animation of FILL UP, PREMIUM and MIDNIGHT RUN runs at BONUS_PACE (Rapid and Skip still
-// hurry it, at their own pace). The symbols' own Blender clips keep their speed, as always (rigPlay).
+// FILL UP plays slower than the base game (owner, 2026-11-16: "slow the game down so much the bonus is way to fast"):
+// its every hold, wait and CSS animation runs at BONUS_PACE (Rapid and Skip still hurry it, at their own pace).
+// PREMIUM and MIDNIGHT RUN play at the base game's pace (owner, 2026-11-17: "the 2nd and 3rd bonus keep those at a
+// normal pace"). The symbols' own Blender clips keep their speed, as always (rigPlay).
 const BONUS_PACE = 1.7;
-const tempo = () => (state.skip || $("turbo").checked) ? TEMPO_FAST : state.bonus ? BONUS_PACE : 1;
+const tempo = () => (state.skip || $("turbo").checked) ? TEMPO_FAST : state.bonus === "fillup" ? BONUS_PACE : 1;
 // The Multi's whole show - the can spraying its value on, the blow-out and its neighbours' pops,
 // the value landing - plays this many times faster than it was first timed (owner, 2026-10-22:
 // "speed the pop up time for the multiplier up by 1.5x"). The CSS reads it as --multi-rate.
@@ -6050,7 +6039,7 @@ function gaugeShow(fuel, reason) {
   if (n && n.textContent !== String(fuel)) { n.textContent = String(fuel); n.classList.remove("tick"); restyle(n); n.classList.add("tick"); }
   $("fuelGauge").setAttribute("aria-label", `${fuel} spin${fuel === 1 ? "" : "s"} left`);
 }
-const DROP_COLOUR = { FDG: "#6CFC54", FDA: "#FFB547", FDR: "#FF2A3D", ST: "#F5C518", GT: "#F5C518", GP: "#FFB547", ZP: "#FF6A1F" };
+const DROP_COLOUR = { BS: "#FF7A1A", FDG: "#6CFC54", FDA: "#FFB547", FDR: "#FF2A3D", ST: "#F5C518", GT: "#F5C518", GP: "#FFB547", ZP: "#FF6A1F" };
 // a drop lands on the FILL UP board: a ring and droplets in its colour splash out of it, the tile glows once
 function fillSplash(r, y, art) {
   if (REDUCED_MOTION) return;
@@ -6603,6 +6592,26 @@ const handlers = {
     await delay(160);
   },
 
+  // A retrigger (owner, 2026-11-17: "make it to where you get 5 extra spins"): 3+ FALCOS Tokens on the board a
+  // PREMIUM / MIDNIGHT RUN spin ended on light up, and the counter's total jumps by the spins they add
+  async freeSpinRetrigger(ev) {
+    const cells = (ev.positions || []).map(at);
+    for (const c of cells) { c.classList.add("pulse"); rigPlay(c, "hit"); }
+    if (cells.length) Cam.trigger(cells);
+    boardFlash("fs");
+    if (window.SceneFX) SceneFX.surge();
+    sfx("bonusTrigger");
+    tick(`<b>+${ev.added} FREE SPINS</b> — ${ev.totalFs} in all`);
+    const shown = banner(`+${ev.added} SPINS`, `${ev.totalFs} free spins`, 1300, "gold");
+    await hold(450);
+    state.fsTotal = ev.totalFs;
+    paintFsCount((state.fsShown || {}).cur ?? 0, ev.totalFs);
+    sparkBurst($("fsCard"), { y: .3, n: 22, colors: ["#ffffff", "#FFC08A", "#FF7A1A"] });
+    await shown;
+    for (const c of cells) c.classList.remove("pulse");
+    Cam.reset();
+  },
+
   /* ---------- FILL UP ---------- */
   // Paced as a hold-and-spin reveal (owner, 2026-11-10: "the first bonus feels too fast ... get the players more
   // engaged"): the gauge takes its bar with a beat of its own, the empty cells roll, then stop a column at a time
@@ -6615,6 +6624,11 @@ const handlers = {
       sfx("gaugeTick");
       tick(`<b>FILL UP</b> — ${ev.fuel} spin${ev.fuel === 1 ? "" : "s"} left`);
       await hold(ev.fuel >= 2 ? 420 : ev.fuel === 1 ? 560 : 360);
+    } else if (ev.reason === "retrigger") {   // a FALCOS Token's 5 spins (fillUpRetrigger) poured in
+      sfx("gaugeRefill");
+      const g = $("fuelGauge");
+      if (g && !REDUCED_MOTION) { g.classList.remove("refilled"); restyle(g); g.classList.add("refilled"); }
+      await hold(500);
     } else if (ev.reason === "refill") {
       sfx("gaugeRefill");
       tick(`<b>REFILLED</b> — 3 spins`);
@@ -6686,6 +6700,19 @@ const handlers = {
     if (tense === 2) boardZoom(false);
     fillTotal(ev.boardTotal);
     await hold(landed.length ? 640 : 300);
+  },
+
+  // a FALCOS Token landed in FILL UP: 5 spins into the gauge (the gauge event after this shows them), then it leaves
+  async fillUpRetrigger(ev) {
+    const me = at(ev), [r, y] = rc(ev);
+    me.classList.add("pulse"); rigPlay(me, "hit");
+    boardFlash("fs");
+    sfx("bonusTrigger");
+    tick(`<b>+${ev.added} SPINS</b> — ${ev.fuel} spins left`);
+    await banner(`+${ev.added} SPINS`, `${ev.fuel} spins left`, 1200, "gold");
+    me.classList.remove("pulse");
+    fillSet(r, y, null);
+    await hold(160);
   },
 
   async pumpBoost(ev) {
@@ -7099,9 +7126,11 @@ async function presentRound(round, { settle = true } = {}) {
   const evs = round.events || [];
   // a new round: every cell back at x1 (NITRO's preload and a bonus's grid arrive as events)
   state.grid = emptyGrid(); state.max = new Set(); paintGrid();
-  if ((round.mode || state.mode) === "nitro") {   // NITRO SPIN: the street race and its logo
+  if ((round.mode || state.mode) === "nitro") {   // NITRO SPIN: the street race, and its logo on the first spin
     Scene.to("nitro");
-    await modeSplash("assets/menu/logo_nitro.webp");
+    // the NITRO SPIN splash only on the first spin after it is switched on (owner, 2026-11-17: "where it says nitro
+    // spin only do that on the first one"); setActive clears nitroShown when NITRO goes off
+    if (!state.nitroShown) { state.nitroShown = true; await modeSplash("assets/menu/logo_nitro.webp"); }
   }
   // a handler may take the events that follow it as well (pumps of one step fire together): state.evi
   state.evs = evs;
@@ -7113,7 +7142,9 @@ async function presentRound(round, { settle = true } = {}) {
     catch (e) { console.error("event", ev.type, e); }
   }
   if (state.bonus) bonusOver();   // (a bonus without its end screen)
-  if (Scene.now === "nitro") Scene.to("normal");
+  // the street race stays up between spins while NITRO SPIN is on (owner, 2026-11-17: "whenever you select it keep it
+  // there until it is turned off"); setActive takes it down when NITRO goes off
+  if (Scene.now === "nitro" && spinMode() !== "nitro") Scene.to("normal");
 
   // teased a bonus and never got there
   if (state.anticipated && !state.bonusHit) charReact("lose");
@@ -7178,6 +7209,10 @@ const ACTIVATE_MODES = ["chance", "nitro"];
 const spinMode = () => state.active && MODE_COST[state.active] > 0 ? state.active : "base";
 function setActive(mode) {
   state.active = mode && ACTIVATE_MODES.includes(mode) ? mode : null;
+  if (spinMode() !== "nitro") {
+    state.nitroShown = false;   // its splash plays again the next time it is switched on
+    if (Scene.now === "nitro" && !state.playing) Scene.to("normal");
+  } else if (!state.playing && !state.bonus && Scene.now === "normal") Scene.to("nitro");   // on: the street race at once
   refreshBet();
 }
 function paintActive() {
@@ -7855,7 +7890,7 @@ function releaseGonePics() {
   const gone = img => {
     const p = new URL(img.src, location.href).pathname, rel = p.replace(/^.*?\/assets\//, "assets/");
     const sels = picRules.get(rel) || [];
-    if (sels.length && sels.every(s => /\.lcard|\.lbar|\.features|\.ftitle/.test(s))) return true;   // the features screen's own
+    if (sels.length && sels.every(s => /\.lcard|\.lbar|\.features/.test(s))) return true;   // the features screen's own
     const rimTwin = p.replace("/assets/", "/assets/rim/");
     if (live && rimTwin !== p && names.has(rimTwin)) return true;   // the live rim's art draws instead of this one
     if (!live && p.includes("/assets/rim/")) return true;            // no live rims: the plain art draws
@@ -8526,7 +8561,6 @@ function runFeatures() {
     `<img class="lframe" src="assets/load/card_frame.webp" alt="" draggable="false">${extra}` +
     `<img class="ltitle" src="assets/load/${title}.webp" alt="${T(alt)}" draggable="false"></div>`;
   wrap.innerHTML =
-    `<img class="ftitle" src="assets/title_logo.webp" alt="${T("Falcos")}" draggable="false">` +
     `<div class="lcards">` +
       card("bonus", "title_bonus", "Big bonuses") +
       card("features", "title_features", "Hot features") +

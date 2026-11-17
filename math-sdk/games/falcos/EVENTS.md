@@ -1,5 +1,13 @@
 # Falcos - front-end event contract (math phase 2: 7x5 board, max win 50,000x)
 
+**Change 2026-11-17 (owner: "let line hits come before any special symbols like the lighter. let the line pay
+play out then the special symbol"):** cluster wins always come first. Each cascade step is now EITHER a cluster pay
+OR one feature group, and a feature fires only when the board holds no cluster: a cluster that a refill makes is
+paid before the next feature, so a feature never burns a cluster already on the board. Events and fields are
+unchanged; `featureFire.step` still numbers steps (now one pay or one feature group each), and the pumps of one
+step still fire together. A real book now reads: reveal -> pay -> refill -> pay -> refill -> pumps -> refill ->
+pay -> refill -> ticket -> refill -> zippo -> refill ...
+
 **Change 2026-11-13 (owner):** in FILL UP the Gold Scratch Ticket collects the whole board and then doubles its
 total; `collect` carries a new `mult` (2 for a gold ticket that collected, else 1).
 
@@ -37,17 +45,20 @@ replay `event` id; regenerate with `python verify_books.py --write-index`).
 ```
 base / chance (FUEL CHANCE)
   reveal
-  repeat per cascade step ("step" 0, 1, 2 ...):
-      winInfo -> updateTumbleWin -> cellMults(reason "win") -> tumbleBoard
-                                         only if clusters paid; the paid cells leave, the refill drops in
-      [wincap]                           cap reached (right after updateTumbleWin): the cascade stops
+  repeat per cascade step ("step" 0, 1, 2 ...) - a step is ONE of these, the first that applies:
+      a) the board holds a cluster:
+         winInfo -> updateTumbleWin -> cellMults(reason "win") -> tumbleBoard
+                                         every cluster on the board pays; the paid cells leave, the refill drops in
+         [wincap]                        cap reached (right after updateTumbleWin): the cascade stops
                                          here - no cellMults, no tumbleBoard, nothing else in this spin
-      featureFire(pump) x every pump [+ maxCells after a FULL TANK] -> tumbleBoard
-                                         all the step's pumps fire together, then ONE refill
-      per Scratch / Gold Ticket:  featureFire(scratch | gold) -> tumbleBoard     a refill after each
-      per Zippo:                  featureFire(zippo) -> tumbleBoard              a refill after each
-      (the step ends; the next one checks clusters on the board it ended on; a spin ends after a
-       step that neither paid nor fired a feature)
+      b) no cluster, Gas Pumps standing:
+         featureFire(pump) x every pump [+ maxCells after a FULL TANK] -> tumbleBoard
+                                         all the pumps fire together, then ONE refill
+      c) no cluster, no pump, a Scratch / Gold Ticket standing:
+         featureFire(scratch | gold) -> tumbleBoard              the first ticket only
+      d) no cluster, no pump, no ticket, a Zippo standing:
+         featureFire(zippo) -> tumbleBoard                       the first zippo only
+      (the spin ends when the board holds neither a cluster nor a feature)
   setWin (only if the spin won; omitted when the cap was hit) -> setTotalWin
   -- bonus, if the final board shows 3+ DS / 4+ BS / 3 BS --
   [freeSpinTrigger] (PREMIUM / MIDNIGHT RUN only) -> enterBonus -> bonus events (below)
@@ -72,31 +83,25 @@ midnight buy (500x) freeSpinTrigger(symbol "DS", positions []) -> enterBonus(rea
 nitro (500x)        cellMults(reason "nitro") -> reveal -> cascade -> setWin/setTotalWin -> finalWin
 ```
 
-Within one step the order is fixed and the board refills after each part, so every feature acts on
-a full board: cluster pays (and their cells double) -> `tumbleBoard` -> all Gas Pumps (consecutive
-`featureFire` kind `pump` events with the same `step` fire **together** - play them at once; pumps
-sit in different columns, so the last one's `gridMults` is the grid after all of them) ->
-`tumbleBoard` -> each Scratch / Gold Ticket, each followed by its `tumbleBoard` -> each Zippo, each
-followed by its `tumbleBoard`. Every `tumbleBoard` removes exactly what paid, or what the feature
-group just before it burned or fired.
-Ties within a group go in reading order: reel 0-6, then row top to bottom.
+Cluster wins always come first (owner, 2026-11-17). After every refill the board is checked for
+clusters again; only a board with no cluster lets the next feature fire. Feature priority on such a
+board: all Gas Pumps together (consecutive `featureFire` kind `pump` events with the same `step` -
+play them at once; pumps sit in different columns, so the last one's `gridMults` is the grid after
+all of them), else the first Scratch / Gold Ticket, else the first Zippo. Ties go in reading order:
+reel 0-6, then row top to bottom. Every `tumbleBoard` removes exactly what paid, or what the
+feature group just before it burned or fired. A spin always ends on a board with no cluster and no
+feature (unless the max win stopped it).
 
-Which features fire in a step: the ones standing on the board when its feature part starts (after
-the cluster refill, or straight after the reveal / previous step when nothing paid). A feature that
-drops in during one of the step's feature refills waits: it fires in the next step (after that
-step's cluster pay, if any). So a spin always ends on a board with no cluster and no feature (unless
-the max win stopped it).
-
-A real base book (`base` book 147, pays 3.4x) - event types in order:
+Example - event types in order:
 ```
 0 reveal
-1 winInfo (L5 x5) -> 2 updateTumbleWin -> 3 cellMults "win" -> 4 tumbleBoard (the 5 paid cells)
-5 featureFire pump (step 0, REGULAR, burns 4)          -> 6 tumbleBoard (its column: pump + 4 burned)
-7 featureFire scratch (step 0, target L4, burns 7)     -> 8 tumbleBoard (ticket + 7 burned)
-9 featureFire zippo (step 0, burns 8)                  -> 10 tumbleBoard (zippo + 8 burned)
-11 winInfo (L2 x6) -> 12 updateTumbleWin -> 13 cellMults "win" -> 14 tumbleBoard        step 1
-15 featureFire zippo (step 1: it dropped in during step 0's refills) -> 16 tumbleBoard
-17 setWin -> 18 setTotalWin -> 19 finalWin
+1 winInfo (L5 x5) -> 2 updateTumbleWin -> 3 cellMults "win" -> 4 tumbleBoard          step 0: pay
+5 winInfo (L2 x6) -> 6 updateTumbleWin -> 7 cellMults "win" -> 8 tumbleBoard          step 1: the refill's cluster pays first
+9 featureFire pump (step 2) -> 10 featureFire pump (step 2) -> 11 tumbleBoard         step 2: both pumps together
+12 featureFire scratch (step 3, target L4) -> 13 tumbleBoard                          step 3: no cluster, the ticket
+14 winInfo (H2 x5) -> ... -> 17 tumbleBoard                                           step 4: a cluster the ticket's refill made
+18 featureFire zippo (step 5) -> 19 tumbleBoard                                       step 5: the lighter, last
+20 setWin -> 21 setTotalWin -> 22 finalWin
 ```
 
 Cell multipliers: base game and NITRO reset at the start of every round (all x1, or the NITRO
@@ -251,14 +256,13 @@ what FILL UP pays: `boardTotal` capped at the max win (minus anything the round 
 * Cluster wins are evaluated through the multipliers the cells hold before the win; the cells of
   every paid cluster then double. Paying symbols burned by a feature simply clear; their cells keep
   the boosted multiplier for whatever tumbles in.
-* Cascade step: cluster pays -> refill -> all Gas Pumps together -> refill -> each Scratch / Gold
-  Ticket -> refill after each -> each Zippo -> refill after each (owner, 2026-11-10: the board
-  drops new symbols after every feature that removes symbols, so no cell sits empty while the next
-  one fires). The features that fire in a step are fixed when its feature part starts (after the
-  cluster refill), in reading order; a tumble keeps that order (symbols only fall within their
-  reel). A feature that drops in during the step's feature refills waits for the next step. The
-  next step evaluates clusters on the board the step ended on; the spin ends after a step that
-  neither paid nor fired. Each feature fires once and leaves in the refill right after its group.
+* Cascade: cluster wins first (owner, 2026-11-17). Each step pays every cluster on the board and
+  refills, or - only on a board with no cluster - fires one feature group and refills: all Gas
+  Pumps together, else the first Scratch / Gold Ticket, else the first Zippo (reading order; a
+  tumble keeps it, since symbols only fall within their reel). The board refills after every pay
+  and every group (owner, 2026-11-10: no cell sits empty while the next one fires), and is checked
+  for clusters again before the next feature. The spin ends on a board with neither a cluster nor
+  a feature. Each feature fires once and leaves in the refill right after its group.
   Features never burn scatters or other features.
 * Scratch Ticket target: uniform among the paying symbol types standing on the (refilled) board.
   Gold Ticket: every paying symbol on the (refilled) board.

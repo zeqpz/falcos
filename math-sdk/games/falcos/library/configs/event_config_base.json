@@ -405,18 +405,18 @@
         ],
         "gridMults": [
             [
-                4,
                 2,
                 1,
-                4,
-                2
+                1,
+                2,
+                1
             ],
             [
                 1,
                 1,
                 1,
-                4,
-                4
+                2,
+                2
             ],
             [
                 4,
@@ -559,175 +559,161 @@
         "removed": false,
         "boardTotal": 71.6
     },
-    "zippoBurn": {
-        "type": "zippoBurn",
-        "reel": 5,
-        "row": 3,
-        "burned": [
-            {
-                "reel": 4,
-                "row": 2,
-                "value": 8
-            },
-            {
-                "reel": 4,
-                "row": 3,
-                "value": 2
-            },
-            {
-                "reel": 4,
-                "row": 4,
-                "value": 3
-            },
-            {
-                "reel": 5,
-                "row": 2,
-                "value": 0.2
-            }
-        ],
-        "boardTotal": 141.3
+    "fillUpRetrigger": {
+        "type": "fillUpRetrigger",
+        "reel": 4,
+        "row": 5,
+        "added": 5,
+        "fuel": 8
     },
     "fillUpEnd": {
         "type": "fillUpEnd",
         "reason": "empty",
-        "spins": 37,
+        "spins": 104,
         "drops": [
             {
                 "reel": 0,
-                "row": 1,
-                "value": 1.0
-            },
-            {
-                "reel": 0,
                 "row": 3,
-                "value": 4
+                "value": 0.5
             },
             {
                 "reel": 0,
                 "row": 4,
-                "value": 4
+                "value": 5
             },
             {
                 "reel": 0,
                 "row": 5,
-                "value": 10
+                "value": 0.5
             },
             {
                 "reel": 1,
                 "row": 2,
-                "value": 0.4
+                "value": 0.5
             },
             {
                 "reel": 1,
                 "row": 3,
-                "value": 1.0
+                "value": 1
             },
             {
                 "reel": 1,
                 "row": 4,
-                "value": 2
+                "value": 0.5
             },
             {
                 "reel": 1,
                 "row": 5,
-                "value": 0.4
-            },
-            {
-                "reel": 2,
-                "row": 1,
                 "value": 3
             },
             {
                 "reel": 2,
-                "row": 2,
-                "value": 0.5
-            },
-            {
-                "reel": 2,
-                "row": 4,
+                "row": 1,
                 "value": 0.2
             },
             {
                 "reel": 2,
-                "row": 5,
+                "row": 2,
+                "value": 3
+            },
+            {
+                "reel": 2,
+                "row": 4,
                 "value": 0.5
             },
             {
-                "reel": 3,
-                "row": 2,
+                "reel": 2,
+                "row": 5,
                 "value": 1
             },
             {
                 "reel": 3,
-                "row": 3,
-                "value": 5
-            },
-            {
-                "reel": 3,
-                "row": 4,
-                "value": 0.5
-            },
-            {
-                "reel": 3,
-                "row": 5,
-                "value": 0.2
-            },
-            {
-                "reel": 4,
                 "row": 1,
-                "value": 240
+                "value": 3
+            },
+            {
+                "reel": 3,
+                "row": 3,
+                "value": 15
+            },
+            {
+                "reel": 3,
+                "row": 5,
+                "value": 3
             },
             {
                 "reel": 4,
-                "row": 5,
-                "value": 2.0
+                "row": 3,
+                "value": 1
+            },
+            {
+                "reel": 5,
+                "row": 1,
+                "value": 0.5
             },
             {
                 "reel": 5,
                 "row": 2,
-                "value": 0.2
-            },
-            {
-                "reel": 5,
-                "row": 3,
-                "value": 0.2
-            },
-            {
-                "reel": 5,
-                "row": 4,
                 "value": 2
             },
             {
-                "reel": 6,
-                "row": 1,
-                "value": 5
+                "reel": 5,
+                "row": 3,
+                "value": 2
+            },
+            {
+                "reel": 5,
+                "row": 4,
+                "value": 0.2
             },
             {
                 "reel": 6,
-                "row": 2,
-                "value": 5
+                "row": 1,
+                "value": 1
+            },
+            {
+                "reel": 6,
+                "row": 3,
+                "value": 0.5
             },
             {
                 "reel": 6,
                 "row": 4,
                 "value": 1
+            },
+            {
+                "reel": 6,
+                "row": 5,
+                "value": 2
             }
         ],
         "collectors": [
             {
-                "reel": 6,
-                "row": 3,
+                "reel": 0,
+                "row": 2,
                 "name": "ST",
-                "value": 3.0
+                "value": 2
+            },
+            {
+                "reel": 3,
+                "row": 2,
+                "name": "ST",
+                "value": 16095.0
+            },
+            {
+                "reel": 3,
+                "row": 4,
+                "name": "ST",
+                "value": 1.0
             }
         ],
-        "boardTotal": 292.1,
-        "win": 29210
+        "boardTotal": 16144.9,
+        "win": 1614490
     },
     "freeSpinEnd": {
         "type": "freeSpinEnd",
-        "amount": 29210,
-        "winLevel": 7
+        "amount": 1614490,
+        "winLevel": 9
     },
     "freeSpinTrigger": {
         "type": "freeSpinTrigger",
@@ -807,5 +793,25 @@
     "wincap": {
         "type": "wincap",
         "amount": 5000000
+    },
+    "freeSpinRetrigger": {
+        "type": "freeSpinRetrigger",
+        "totalFs": 15,
+        "added": 5,
+        "symbol": "BS",
+        "positions": [
+            {
+                "reel": 0,
+                "row": 5
+            },
+            {
+                "reel": 1,
+                "row": 3
+            },
+            {
+                "reel": 6,
+                "row": 1
+            }
+        ]
     }
 }

@@ -70,8 +70,10 @@ class Mode:
 
     def load(self):
         idx = self.jsonl + ".idx"
-        if not (os.path.exists(self.jsonl) and os.path.exists(idx)):
-            src = os.path.join(PUBLISH, f"books_{self.name}.jsonl.zst")
+        src = os.path.join(PUBLISH, f"books_{self.name}.jsonl.zst")
+        # the cache is rebuilt whenever the published books are newer (a stale cache served old math)
+        stale = os.path.exists(idx) and os.path.getmtime(idx) < os.path.getmtime(src)
+        if stale or not (os.path.exists(self.jsonl) and os.path.exists(idx)):
             print(f"[{self.name}] decompressing books (first run)...", flush=True)
             os.makedirs(CACHE, exist_ok=True)
             offsets, pos, buf = {}, 0, b""

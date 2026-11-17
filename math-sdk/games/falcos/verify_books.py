@@ -8,11 +8,11 @@ It tracks the board (reveal + tumbleBoard), the cell-multiplier grid (cellMults 
 MAX cells, the FILL UP board and gauge, and checks that every number the events carry follows
 from the ones before it: cluster pays and multipliers, doublings, pump multipliers, collector
 totals, board totals, setWin/setTotalWin/finalWin and the book's payoutMultiplier. It also checks
-the cascade order (EVENTS.md section 2): the board refills after the cluster pays and after every
-feature group (all pumps together, then each ticket, then each zippo), each tumbleBoard removes
-exactly the cells that paid / burned / fired since the last one, the features of a step are the
-ones standing when its feature part starts, and a spin ends on a board with no cluster and no
-feature left. Any failure is a math bug (or a contract change EVENTS.md has to follow).
+the cascade order (EVENTS.md section 2): cluster wins come first - a feature fires only on a board
+that holds no cluster - and then one feature group at a time (every Gas Pump standing together,
+else the first ticket, else the first zippo, in reading order); the board refills after each pay
+and each group, each tumbleBoard removes exactly the cells that paid / burned / fired since the
+last one, and a spin ends on a board with no cluster and no feature left. Any failure is a math bug (or a contract change EVENTS.md has to follow).
 """
 
 import argparse
@@ -32,9 +32,9 @@ from game_config import GameConfig, PAYING  # noqa: E402
 PUBLISH = os.path.join(HERE, "library", "publish_files")
 CAP = 2048
 FEATURES = ("ZP", "ST", "GT", "GP")
-RANK = {"pump": 0, "scratch": 1, "gold": 1, "zippo": 2}   # feature groups in firing order
 _CFG = GameConfig()
-WINCAP = int(round(_CFG.wincap * 100))   # hundredths (max win 50,000x = 5,000,000)
+WINCAP = int(round(_CFG.wincap * 100))
+MAX_FS = _CFG.max_free_spins   # hundredths (max win 50,000x = 5,000,000)
 NR, NC = _CFG.num_reels, _CFG.num_rows[0]   # 7 reels x 5 rows
 
 
@@ -72,8 +72,12 @@ class Replay:
         self.last_total = 0
         self.last_wins = []
         self.fs_seen = 0
+        self.fs_total = 10
+        self.retrig_at = None       # the free spin a retrigger was given for
         self.fill = None
         self.fuel = None
+        self.fuel_at_land = None
+        self.refilled = False
         self.bonuses = []
         self.uid = None             # a token per visible symbol: survivors keep theirs in a tumble
         self.next_uid = 0
@@ -106,19 +110,14 @@ class Replay:
         return self.next_uid
 
     def close_step(self):
-        """The feature part of a step is over: every feature standing when it started fired."""
+        """A feature step is over: the group it had to fire (every pump standing, or the one
+        ticket / zippo next in line) fired in full."""
         if self.step is not None:
-            st, snap, fired, _ = self.step
-            check(fired == snap, f"step {st}: features {sorted(snap - fired)} on the board never fired")
+            st, want, fired = self.step
+            check(fired == want, f"step {st}: features {sorted(want - fired)} of its group never fired")
             self.step = None
 
-    def end_of_spin(self):
-        """A spin's cascade ends only on a board with no cluster and no feature (or at the cap)."""
-        self.close_step()
-        check(not self.pending, "spin ended with cells waiting for a tumbleBoard")
-        if self.capped:
-            return
-        check(not any(n in FEATURES for col in self.board for n in col), "spin ended with a feature on the board")
+    def has_cluster(self):
         seen = set()
         for r in range(NR):
             for c in range(NC):
@@ -133,7 +132,18 @@ class Replay:
                         if 0 <= nx < NR and 0 <= ny < NC and (nx, ny) not in seen and self.board[nx][ny] == self.board[r][c]:
                             seen.add((nx, ny))
                             stack.append((nx, ny))
-                check(size < 5, "spin ended on a board that still holds a cluster")
+                if size >= 5:
+                    return True
+        return False
+
+    def end_of_spin(self):
+        """A spin's cascade ends only on a board with no cluster and no feature (or at the cap)."""
+        self.close_step()
+        check(not self.pending, "spin ended with cells waiting for a tumbleBoard")
+        if self.capped:
+            return
+        check(not any(n in FEATURES for col in self.board for n in col), "spin ended with a feature on the board")
+        check(not self.has_cluster(), "spin ended on a board that still holds a cluster")
 
     def on_unknown(self, e, tags):
         raise Fail(f"unknown event type {e['type']}")
@@ -243,23 +253,27 @@ class Replay:
         kind = e["kind"]
         sym = {"zippo": "ZP", "scratch": "ST", "gold": "GT", "pump": "GP"}[kind]
         check(self.board[r][c] == sym, f"featureFire {kind} at a cell holding {self.board[r][c]}")
-        # refill order: a feature group fires only once everything before it has tumbled away;
-        # the pumps of a step fire together (one tumbleBoard after the last of them)
+        # order: wins first - a feature fires only once the board is refilled and holds no cluster;
+        # then one group: every pump standing (together, one tumbleBoard after the last of them),
+        # else the first ticket, else the first zippo (reading order: reel by reel, top to bottom)
         if self.step is not None and self.step[0] != e["step"]:
             self.close_step()
         if self.step is None:
             check(not self.pending, f"{kind} fired before the cells that paid/burned were refilled")
-            snap = {self.uid[x][y] for x in range(NR) for y in range(NC) if self.board[x][y] in FEATURES}
-            self.step = [e["step"], snap, set(), -1]
+            check(not self.has_cluster(), f"{kind} fired while the board held an unpaid cluster")
+            standing = [(x, y) for x in range(NR) for y in range(NC) if self.board[x][y] in FEATURES]
+            groups = ([p for p in standing if self.board[p[0]][p[1]] == "GP"],
+                      [p for p in standing if self.board[p[0]][p[1]] in ("ST", "GT")][:1],
+                      [p for p in standing if self.board[p[0]][p[1]] == "ZP"][:1])
+            want = next((g for g in groups if g), [])
+            self.step = [e["step"], {self.uid[x][y] for x, y in want}, set()]
         else:
             together = kind == "pump" and self.pending_kind == "pump"
-            check(not self.pending or together, f"{kind} fired before the previous group's tumbleBoard")
+            check(together, f"{kind} fired in the same step as another group")
         st = self.step
-        check(RANK[kind] >= st[3], f"step {st[0]}: {kind} fired after a later group")
-        check(self.uid[r][c] in st[1], f"step {st[0]}: {kind} at ({r},{c}) dropped in during the step's feature part")
+        check(self.uid[r][c] in st[1], f"step {st[0]}: {kind} at ({r},{c}) is not the feature next in line")
         check(self.uid[r][c] not in st[2], "a feature fired twice")
         st[2].add(self.uid[r][c])
-        st[3] = RANK[kind]
         ch = [(x["reel"], x["row"] - 1, x["from"], x["to"]) for x in e["cells"]]
         burned = [(x["reel"], x["row"] - 1, x["symbol"]) for x in e["burned"]]
         for a, b, s in burned:
@@ -326,6 +340,7 @@ class Replay:
     # -------------------------------------------------------------- bonuses
     def on_freeSpinTrigger(self, e, tags):
         check(e["totalFs"] == 10, "totalFs")
+        self.fs_total = 10
         for p in e["positions"]:
             check(self.board[p["reel"]][p["row"] - 1] == e["symbol"], "trigger position does not hold the scatter")
 
@@ -334,12 +349,32 @@ class Replay:
         self.bonuses.append(e["reason"])
         self.fs_seen = 0
 
+    def owed_retrigger(self):
+        """The free spin just played ended on 3+ FALCOS Tokens: a retrigger must have followed it."""
+        if self.fs_seen and self.board is not None and not self.capped and self.fs_total < MAX_FS:
+            n = sum(n == "BS" for col in self.board for n in col)
+            check(n < 3 or self.retrig_at == self.fs_seen, f"free spin {self.fs_seen} ended on {n} FALCOS Tokens but no retrigger")
+
     def on_updateFreeSpin(self, e, tags):
+        self.owed_retrigger()
         self.fs_seen += 1
-        check(e["amount"] == self.fs_seen and e["total"] == 10, "updateFreeSpin numbering")
+        check(e["amount"] == self.fs_seen and e["total"] == self.fs_total, "updateFreeSpin numbering")
+
+    def on_freeSpinRetrigger(self, e, tags):
+        check(not self.spin_open, "retrigger before the spin's cascade finished")
+        check(self.retrig_at != self.fs_seen, "two retriggers for one spin")
+        tok = sorted((r, c) for r in range(NR) for c in range(NC) if self.board[r][c] == "BS")
+        check(sorted((p["reel"], p["row"] - 1) for p in e["positions"]) == tok and len(tok) >= 3, "retrigger positions != the FALCOS Tokens")
+        check(e["symbol"] == "BS" and e["added"] == min(5, MAX_FS - self.fs_total), "retrigger adds 5 spins")
+        self.fs_total += e["added"]
+        check(e["totalFs"] == self.fs_total and self.fs_total <= MAX_FS, "retrigger totalFs")
+        self.retrig_at = self.fs_seen
+        tags.add("retrigger")
 
     def on_freeSpinEnd(self, e, tags):
-        pass
+        if self.fill is None:
+            self.owed_retrigger()
+            check(self.fs_seen == self.fs_total or self.capped, f"bonus ended after {self.fs_seen} of {self.fs_total} spins")
 
     # -------------------------------------------------------------- FILL UP
     def ftotal(self):
@@ -350,15 +385,36 @@ class Replay:
             check(e["fuel"] == 3, "gauge starts full")
             self.fill = {}
         elif e["reason"] == "use":
+            self.owed_refill()
             check(e["fuel"] == self.fuel - 1, "gauge use must drop one bar")
             self._fresh_clear()     # a collector is "fresh" only on the spin it lands
+        elif e["reason"] == "retrigger":
+            check(e["fuel"] == self.fuel, "retrigger gauge != the fillUpRetrigger's fuel")
         else:
-            check(e["fuel"] == 3, "refill to 3")
+            check(e["fuel"] == 3 and self.fuel < 3, "refill to 3, only from below 3")
             check(self.landed, "refill without anything new")
+            self.refilled = True
         self.fuel = e["fuel"]
+
+    def owed_refill(self):
+        """Anything new landing on a spin refills the gauge to 3 when it was lower."""
+        if self.landed and self.fuel_at_land is not None and self.fuel_at_land < 3:
+            check(self.refilled, "something landed but the gauge was not refilled")
+        self.landed = False
+
+    def on_fillUpRetrigger(self, e, tags):
+        pos = (e["reel"], e["row"] - 1)
+        check(self.fill.get(pos, {}).get("name") == "BS", "fillUpRetrigger from a cell without a FALCOS Token")
+        check(e["added"] == 5 and e["fuel"] == self.fuel + 5, "FILL UP retrigger adds 5 spins")
+        check(self.landed and (self.refilled or self.fuel_at_land >= 3), "retrigger before the refill")
+        del self.fill[pos]
+        self.fuel = e["fuel"]
+        tags.add("fill_retrigger")
 
     def on_fillUpLand(self, e, tags):
         self.landed = False
+        self.refilled = False
+        self.fuel_at_land = self.fuel
         for x in e["cells"]:
             pos = (x["reel"], x["row"] - 1)
             check(pos not in self.fill, "landed on an occupied cell")
@@ -432,6 +488,7 @@ class Replay:
             tags.add("fill_zippo_burn")
 
     def on_fillUpEnd(self, e, tags):
+        self.owed_refill()
         for item in self.fill.values():
             item.pop("fresh", None)
         check(all(v["name"] in ("FD", "ST", "GT") for v in self.fill.values()), "leftover pump/zippo on the board")

@@ -16,33 +16,33 @@
         "cells": [
             {
                 "reel": 1,
-                "row": 2,
-                "name": "FD",
-                "value": 20
-            },
-            {
-                "reel": 3,
                 "row": 5,
                 "name": "FD",
-                "value": 0.5
+                "value": 1
             },
             {
-                "reel": 4,
-                "row": 1,
+                "reel": 2,
+                "row": 5,
                 "name": "FD",
-                "value": 2
+                "value": 1
+            },
+            {
+                "reel": 6,
+                "row": 2,
+                "name": "FD",
+                "value": 0.5
             }
         ],
-        "boardTotal": 22.5
+        "boardTotal": 2.5
     },
     "collect": {
         "type": "collect",
         "kind": "scratch",
-        "reel": 0,
+        "reel": 6,
         "row": 5,
         "collected": [
             {
-                "reel": 0,
+                "reel": 6,
                 "row": 4,
                 "name": "FD",
                 "value": 0.5
@@ -51,27 +51,94 @@
         "total": 0.5,
         "mult": 1,
         "removed": false,
-        "boardTotal": 26.3
+        "boardTotal": 15.6
+    },
+    "pumpBoost": {
+        "type": "pumpBoost",
+        "reel": 6,
+        "row": 4,
+        "mult": 2,
+        "boosted": [
+            {
+                "reel": 6,
+                "row": 1,
+                "name": "FD",
+                "from": 0.2,
+                "to": 0.4
+            },
+            {
+                "reel": 6,
+                "row": 2,
+                "name": "FD",
+                "from": 0.5,
+                "to": 1.0
+            },
+            {
+                "reel": 6,
+                "row": 3,
+                "name": "FD",
+                "from": 0.5,
+                "to": 1.0
+            },
+            {
+                "reel": 6,
+                "row": 5,
+                "name": "ST",
+                "from": 0.5,
+                "to": 1.0
+            }
+        ],
+        "boardTotal": 19.0
     },
     "fillUpEnd": {
         "type": "fillUpEnd",
         "reason": "empty",
-        "spins": 11,
+        "spins": 20,
         "drops": [
+            {
+                "reel": 0,
+                "row": 1,
+                "value": 0.5
+            },
+            {
+                "reel": 0,
+                "row": 3,
+                "value": 1
+            },
+            {
+                "reel": 0,
+                "row": 4,
+                "value": 1
+            },
+            {
+                "reel": 0,
+                "row": 5,
+                "value": 1
+            },
+            {
+                "reel": 1,
+                "row": 1,
+                "value": 0.5
+            },
             {
                 "reel": 1,
                 "row": 2,
-                "value": 20
+                "value": 2
             },
             {
-                "reel": 2,
-                "row": 2,
-                "value": 0.5
+                "reel": 1,
+                "row": 5,
+                "value": 1
             },
             {
                 "reel": 2,
                 "row": 3,
                 "value": 0.5
+            },
+            {
+                "reel": 2,
+                "row": 4,
+                "value": 1
             },
             {
                 "reel": 2,
@@ -79,84 +146,92 @@
                 "value": 1
             },
             {
-                "reel": 3,
-                "row": 1,
+                "reel": 4,
+                "row": 2,
+                "value": 0.5
+            },
+            {
+                "reel": 4,
+                "row": 4,
                 "value": 0.2
             },
             {
-                "reel": 3,
+                "reel": 4,
                 "row": 5,
-                "value": 0.5
-            },
-            {
-                "reel": 4,
-                "row": 1,
-                "value": 2
-            },
-            {
-                "reel": 4,
-                "row": 3,
-                "value": 0.5
+                "value": 1
             },
             {
                 "reel": 5,
                 "row": 1,
+                "value": 0.5
+            },
+            {
+                "reel": 5,
+                "row": 2,
+                "value": 0.5
+            },
+            {
+                "reel": 5,
+                "row": 4,
                 "value": 0.2
             },
             {
                 "reel": 6,
                 "row": 1,
-                "value": 0.2
+                "value": 0.4
             },
             {
                 "reel": 6,
                 "row": 2,
-                "value": 0.2
+                "value": 1.0
+            },
+            {
+                "reel": 6,
+                "row": 3,
+                "value": 1.0
             }
         ],
         "collectors": [
             {
-                "reel": 0,
+                "reel": 3,
+                "row": 2,
+                "name": "ST",
+                "value": 3.2
+            },
+            {
+                "reel": 6,
                 "row": 5,
                 "name": "ST",
-                "value": 0.5
+                "value": 1.0
             }
         ],
-        "boardTotal": 26.3,
-        "win": 2630
+        "boardTotal": 19.0,
+        "win": 1900
     },
     "setWin": {
         "type": "setWin",
-        "amount": 2630,
+        "amount": 1900,
         "winLevel": 6
     },
     "setTotalWin": {
         "type": "setTotalWin",
-        "amount": 2630
+        "amount": 1900
     },
     "freeSpinEnd": {
         "type": "freeSpinEnd",
-        "amount": 2630,
-        "winLevel": 5
+        "amount": 1900,
+        "winLevel": 4
     },
     "finalWin": {
         "type": "finalWin",
-        "amount": 2630
+        "amount": 1900
     },
-    "pumpBoost": {
-        "type": "pumpBoost",
-        "reel": 3,
-        "row": 3,
-        "mult": 2,
-        "boosted": [],
-        "boardTotal": 30.4
-    },
-    "zippoBurn": {
-        "type": "zippoBurn",
-        "reel": 2,
-        "row": 3,
-        "burned": [],
-        "boardTotal": 25.8
+    "fillUpRetrigger": {
+        "type": "fillUpRetrigger",
+        "reel": 5,
+        "row": 5,
+        "added": 5,
+        "fuel": 8
     },
     "wincap": {
         "type": "wincap",

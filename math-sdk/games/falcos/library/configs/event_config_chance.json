@@ -636,18 +636,18 @@
     "pumpBoost": {
         "type": "pumpBoost",
         "reel": 6,
-        "row": 4,
-        "mult": 8,
+        "row": 5,
+        "mult": 2,
         "boosted": [
             {
                 "reel": 6,
                 "row": 3,
                 "name": "FD",
                 "from": 0.5,
-                "to": 4.0
+                "to": 1.0
             }
         ],
-        "boardTotal": 23.5
+        "boardTotal": 19.5
     },
     "fillUpEnd": {
         "type": "fillUpEnd",
@@ -657,7 +657,7 @@
             {
                 "reel": 0,
                 "row": 1,
-                "value": 5
+                "value": 0.5
             },
             {
                 "reel": 0,
@@ -666,33 +666,33 @@
             },
             {
                 "reel": 0,
-                "row": 4,
+                "row": 5,
                 "value": 3
             },
             {
-                "reel": 2,
+                "reel": 1,
                 "row": 2,
-                "value": 1
+                "value": 20
             },
             {
                 "reel": 2,
                 "row": 3,
-                "value": 0.5
-            },
-            {
-                "reel": 2,
-                "row": 4,
                 "value": 1
             },
             {
                 "reel": 2,
-                "row": 5,
+                "row": 4,
                 "value": 1
             },
             {
                 "reel": 3,
-                "row": 4,
-                "value": 0.5
+                "row": 1,
+                "value": 0.2
+            },
+            {
+                "reel": 3,
+                "row": 5,
+                "value": 3
             },
             {
                 "reel": 4,
@@ -701,11 +701,6 @@
             },
             {
                 "reel": 4,
-                "row": 2,
-                "value": 3
-            },
-            {
-                "reel": 4,
                 "row": 3,
                 "value": 5
             },
@@ -716,23 +711,18 @@
             },
             {
                 "reel": 5,
+                "row": 1,
+                "value": 0.5
+            },
+            {
+                "reel": 5,
                 "row": 2,
                 "value": 1
             },
             {
                 "reel": 5,
-                "row": 3,
-                "value": 20
-            },
-            {
-                "reel": 5,
                 "row": 4,
                 "value": 10
-            },
-            {
-                "reel": 5,
-                "row": 5,
-                "value": 0.2
             },
             {
                 "reel": 6,
@@ -746,31 +736,20 @@
             }
         ],
         "collectors": [],
-        "boardTotal": 62.2,
-        "win": 6220
+        "boardTotal": 56.2,
+        "win": 5620
     },
     "freeSpinEnd": {
         "type": "freeSpinEnd",
-        "amount": 6220,
+        "amount": 5620,
         "winLevel": 6
     },
-    "zippoBurn": {
-        "type": "zippoBurn",
+    "fillUpRetrigger": {
+        "type": "fillUpRetrigger",
         "reel": 6,
         "row": 1,
-        "burned": [
-            {
-                "reel": 5,
-                "row": 1,
-                "value": 0.2
-            },
-            {
-                "reel": 5,
-                "row": 2,
-                "value": 1
-            }
-        ],
-        "boardTotal": 4.4
+        "added": 5,
+        "fuel": 8
     },
     "freeSpinTrigger": {
         "type": "freeSpinTrigger",
@@ -799,6 +778,26 @@
         "type": "updateFreeSpin",
         "amount": 1,
         "total": 10
+    },
+    "freeSpinRetrigger": {
+        "type": "freeSpinRetrigger",
+        "totalFs": 15,
+        "added": 5,
+        "symbol": "BS",
+        "positions": [
+            {
+                "reel": 0,
+                "row": 5
+            },
+            {
+                "reel": 4,
+                "row": 3
+            },
+            {
+                "reel": 6,
+                "row": 5
+            }
+        ]
     },
     "maxCells": {
         "type": "maxCells",

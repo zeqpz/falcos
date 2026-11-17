@@ -63,17 +63,18 @@ Each paying symbol has its own land, idle and win animation and its own soft win
 
 ## Feature symbols
 
-Each cascade step resolves in order, and the board drops new symbols after each part (owner,
-2026-11-10): cluster wins -> refill; all Gas Pumps together -> refill; each Scratch Ticket / Gold
-Ticket in turn -> refill after each; each Lighter in turn -> refill after each. So every feature
-acts on a full board. The features that fire in a step are the ones on the board when its feature
-part starts; one that drops in during those refills fires in the next step. Clusters are then
-checked again on the board the step ended on; the spin ends when a step neither pays nor fires.
+Cluster wins always come first (owner, 2026-11-17: "let line hits come before any special symbols
+like the lighter. let the line pay play out then the special symbol"). Whenever the board holds a
+cluster it pays and the board refills; only on a board with no cluster does the next feature fire:
+all Gas Pumps together, else one Scratch Ticket / Gold Ticket, else one Lighter (reading order).
+The board drops new symbols after every pay and every feature (owner, 2026-11-10), so every feature
+acts on a full board, and it is checked for clusters again before the next feature. The spin ends
+when the board holds neither a cluster nor a feature.
 
 * **Lighter (ZP)** - lights up its 3x3 area: the 8 cells around it and its own cell double their
   multipliers; paying symbols there burn (clear, feeding their doubled multipliers into any cluster
-  they were part of). Scatters keep their place but still double. FILL UP: burns every Fuel Drop
-  in its 3x3 area (only drops) and disappears.
+  they were part of). Scatters keep their place but still double. It never lands in FILL UP
+  (owner, 2026-11-17).
 * **Scratch Ticket (ST)** - scratches off one paying symbol that is on the board; every cell holding
   it doubles and burns, and so does the ticket's cell. FILL UP: an area collector - it collects
   every Fuel Drop in its 8 neighbours (adding their values to its own) plus any collector there that
@@ -102,7 +103,7 @@ checked again on the board the step ended on; the spin ends when a step neither 
   something new (a drop or a feature) refills it to 3. The bonus ends when the gauge is empty and
   nothing new lands. Fuel Drops are sticky: green x0.2/x0.5/x1/x2/x3, amber x5/x10/x15/x20, red
   x50/x100/x250/x500, and a drop that grows changes colour (green under x5, amber from x5, red from
-  x50). Lighters burn drops, Scratch Tickets collect their 8 neighbours, Gold Tickets collect the
+  x50). No Lighter lands in FILL UP (owner, 2026-11-17); Scratch Tickets collect their 8 neighbours, Gold Tickets collect the
   whole board and then double what they collected (2026-11-13), Gas Pumps multiply them.
   At the end you win the total of every drop left plus every collector's total, times the bet,
   capped at the max win.

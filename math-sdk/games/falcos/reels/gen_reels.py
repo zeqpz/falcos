@@ -3,8 +3,8 @@
 Strips (STRIP_LEN positions x 7 reels) for the 7x5 cluster board (7 reels x 5 rows):
     BR0   base game (and FUEL CHANCE): paying symbols, the four features, FALCOS Tokens (BS) on
           every reel and Midnight Tokens (DS) on reels 2, 4 and 6 only (index 1, 3, 5)
-    FR0   PREMIUM free spins: no scatters, a little richer in features
-    FRM   MIDNIGHT RUN free spins: no scatters, Gas Pumps far more often
+    FR0   PREMIUM free spins: FALCOS Tokens for the retrigger (3+ add 5 spins), a little richer in features
+    FRM   MIDNIGHT RUN free spins: FALCOS Tokens for the retrigger, Gas Pumps far more often
     NR0   NITRO SPIN: the base strip without scatters (a NITRO spin cannot trigger a bonus)
 
 Symbol counts are per reel (an int applies to all 7 reels, a 7-list sets each reel).
@@ -58,7 +58,8 @@ STRIPS = {
     },
     "FR0": {
         "seed": 2202,
-        "scatters": {},
+        # FALCOS Tokens for the retrigger (owner, 2026-11-17): 16 per 1,400 stops, 3+ on a board ~1 in 100 spins
+        "scatters": {"BS": [2, 2, 3, 2, 3, 2, 2]},
         "pumps": 1,
         # PREMIUM: 23 Zippos / 21 Scratch Tickets per strip set (was 14 / 14) - the bought bonus
         # averages ~0.96x its cost before weighting (it was ~0.2x on 7x5 with the 7x7 counts)
@@ -66,7 +67,7 @@ STRIPS = {
     },
     "FRM": {
         "seed": 3303,
-        "scatters": {},
+        "scatters": {"BS": [2, 2, 3, 2, 3, 2, 2]},   # the retrigger, as FR0
         "pumps": 3,       # MIDNIGHT RUN: "Gas Pumps landing far more often" (3x the base strip)
         # 18 Zippos / 14 Scratch Tickets (was 7 / 7): MIDNIGHT RUN averages ~930x
         "features": {"ZP": [3, 2, 3, 2, 3, 2, 3], "ST": 2, "GT": [0, 0, 0, 0, 0, 0, 0]},

@@ -11,9 +11,11 @@ from game_events import (
     feature_fire_event,
     max_cells_event,
     freespin_trigger_event,
+    freespin_retrigger_event,
     enter_bonus_event,
     gauge_event,
     fillup_land_event,
+    fillup_retrigger_event,
     pump_boost_event,
     collect_event,
     zippo_burn_event,
@@ -82,7 +84,7 @@ class GameExecutables(GameCalculations):
     def draw_falcos_board(self) -> None:
         """Draw the reveal. A base board for a bonus criteria is forced with exact scatter counts;
         otherwise a base board that already shows a trigger is redrawn (the criteria did not ask
-        for a bonus). Free-spin / NITRO strips carry no scatters."""
+        for a bonus). The free-spin strips carry FALCOS Tokens (3+ retrigger +5 spins); NITRO's none."""
         conds = self.get_current_distribution_conditions()
         want = conds.get("bonus")
         if self.gametype == self.config.freegame_type:
@@ -142,30 +144,26 @@ class GameExecutables(GameCalculations):
 
     # ================================================================== tumble pipeline
     def resolve_tumbles(self) -> None:
-        """One spin's cascade, step by step. Each step resolves in the design's order, and the
-        board refills (one tumbleBoard) after every part that removed symbols, so a later
-        feature always acts on a full board:
-            1. cluster wins (through the current cell multipliers), the cells of every paid
-               cluster double -> tumbleBoard (the paid symbols leave, the refill drops in);
-            2. all Gas Pumps together -> tumbleBoard;
-            3. each Scratch Ticket / Gold Scratch Ticket in turn -> tumbleBoard after each;
-            4. each Zippo in turn -> tumbleBoard after each.
-        The features that fire in a step are the ones standing on the board when its feature
-        part starts (after the cluster refill), in reading order (reel by reel, top to bottom;
-        a tumble keeps that order, since symbols only fall within their reel). A feature that
-        drops in during the step's feature refills waits for the next step. The next step
-        evaluates clusters on the board the step ended on. Repeat until a step neither pays nor
-        fires a feature, or the max win is reached (the cascade stops on the paying board)."""
+        """One spin's cascade. Line pays always come first (owner, 2026-11-17: "let line hits come
+        before any special symbols like the lighter. let the line pay play out then the special
+        symbol"): each step either
+            1. pays the board's clusters (through the current cell multipliers), the cells of every
+               paid cluster double -> tumbleBoard (the paid symbols leave, the refill drops in); or,
+               only when the board holds no cluster,
+            2. fires the next feature standing on it -> tumbleBoard: all Gas Pumps together, else
+               the first Scratch / Gold Scratch Ticket, else the first Zippo (reading order: reel
+               by reel, top to bottom).
+        So a cluster a refill makes is paid before any feature fires, and a feature never burns
+        a cluster that is already on the board. Repeat until the board holds neither a cluster
+        nor a feature, or the max win is reached (the cascade stops on the paying board)."""
         step = 0
         while True:
             self.evaluate_falcos_wins()
-            paid = self.pay_board()
-            if self.wincap_triggered:
-                break
-            if paid:
+            if self.pay_board():
+                if self.wincap_triggered:
+                    break
                 self.tumble_flagged()
-            fired = self.fire_features(step)
-            if not paid and not fired:
+            elif not self.fire_next_feature(step):
                 break
             if step >= self.config.max_tumbles_per_spin:
                 self.stat("tumble_cap_hit")
@@ -203,10 +201,9 @@ class GameExecutables(GameCalculations):
                     return r, c
         raise RuntimeError(f"{sym.name} left the board before it fired")
 
-    def fire_features(self, step: int) -> bool:
-        """Fire the features standing on the board in the design's order, refilling the board
-        after each group: all pumps together -> tumble, then each ticket -> tumble, then each
-        zippo -> tumble. Returns True if any fired."""
+    def fire_next_feature(self, step: int) -> bool:
+        """Fire the next feature group standing on the board, then refill: every Gas Pump at once,
+        else the first Scratch / Gold Ticket, else the first Zippo. Returns True if one fired."""
         feats = [s for column in self.board for s in column if s.name in FEATURE_KIND and not s.explode]
         if not feats:
             return False
@@ -216,17 +213,16 @@ class GameExecutables(GameCalculations):
         if pumps:
             for sym in pumps:
                 self.fire_pump(*self.locate(sym), step)
-            self.tumble_flagged()
-        for sym in tickets:
+        elif tickets:
+            sym = tickets[0]
             r, c = self.locate(sym)
             if sym.name == "ST":
                 self.fire_scratch(r, c, step)
             else:
                 self.fire_gold(r, c, step)
-            self.tumble_flagged()
-        for sym in zippos:
-            self.fire_zippo(*self.locate(sym), step)
-            self.tumble_flagged()
+        else:
+            self.fire_zippo(*self.locate(zippos[0]), step)
+        self.tumble_flagged()
         return True
 
     def _burn(self, r: int, c: int, burned: list) -> None:
@@ -386,6 +382,14 @@ class GameExecutables(GameCalculations):
             self.win_manager.reset_spin_win()
             self.win_data = {"totalWin": 0, "wins": []}
             self.run_board_spin()
+            # a retrigger (owner, 2026-11-17): 3+ FALCOS Tokens on the board this spin ended on add 5 spins
+            tokens = self.positions_of("BS")
+            if (len(tokens) >= self.config.retrigger_count and not self.wincap_triggered
+                    and self.tot_fs < self.config.max_free_spins):
+                added = min(self.config.retrigger_spins, self.config.max_free_spins - self.tot_fs)
+                self.tot_fs += added
+                self.stat("retrigger")
+                freespin_retrigger_event(self, tokens, "BS", added)
         freespin_end_event(self)
 
     # ================================================================== FILL UP
@@ -401,8 +405,10 @@ class GameExecutables(GameCalculations):
         * Resolution: Gas Pumps together (x2..x64 on every drop and every collector that
           collected on an earlier spin in their column, then they leave), Scratch / Gold Tickets
           one at a time (collect, then stay with their total or leave if they found nothing),
-          Zippos last (burn every drop in their 3x3, then leave).
-        * Anything new landing refills the gauge to 3. The bonus ends when the gauge is empty
+          Zippos last (burn every drop in their 3x3, then leave) - none land since 2026-11-17
+          (the owner took the Lighter out of FILL UP), the code stays for the event contract.
+        * Anything new landing refills the gauge to 3 (if it is lower); a FALCOS Token landing adds
+          5 spins on top (fillUpRetrigger) and leaves. The bonus ends when the gauge is empty
           and nothing new landed, when no empty cell is left, or at the max win.
         * Win = every drop + every collector total, x bet, capped at the max win.
         """
@@ -439,7 +445,7 @@ class GameExecutables(GameCalculations):
                     item = {"name": "FD", "value": get_random_outcome(prof["drop_values"])}
                 elif name in ("ST", "GT"):
                     item = {"name": name, "value": 0, "fresh": True}
-                elif name in ("GP", "ZP"):
+                elif name in ("GP", "ZP", "BS"):
                     item = {"name": name}
                     if name == "GP":
                         pump_cols.add(r)
@@ -448,9 +454,10 @@ class GameExecutables(GameCalculations):
                     landed.append((r, c))
                 cells.append((r, c, item))
             # drops/collectors join the board now; pumps/zippos are shown in the land event and
-            # resolve below (they never stay)
+            # resolve below (they never stay); a FALCOS Token adds spins and leaves (never on the board)
             for pos, item in fresh.items():
-                self.fill_board[pos] = item
+                if item["name"] != "BS":
+                    self.fill_board[pos] = item
             fillup_land_event(self, spin, cells)
             for (r, c), item in sorted(fresh.items()):
                 if item["name"] == "FD":
@@ -468,9 +475,16 @@ class GameExecutables(GameCalculations):
             for item in self.fill_board.values():
                 item.pop("fresh", None)
 
-            if landed:
+            if landed and fuel < 3:
                 fuel = 3
                 gauge_event(self, fuel, "refill")
+            # a FALCOS Token (owner, 2026-11-17): +5 spins on top of the refill, then it leaves
+            for (r, c), item in sorted(fresh.items()):
+                if item["name"] == "BS":
+                    fuel += self.config.retrigger_spins
+                    self.stat("fill_retrigger")
+                    fillup_retrigger_event(self, r, c, self.config.retrigger_spins, fuel)
+                    gauge_event(self, fuel, "retrigger")
             if self.fill_total() >= self.config.wincap:
                 reason = "wincap"
                 break

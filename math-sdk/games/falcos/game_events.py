@@ -79,6 +79,19 @@ def freespin_trigger_event(gs, positions: list, symbol: str) -> None:
     })
 
 
+def freespin_retrigger_event(gs, positions: list, symbol: str, added: int) -> None:
+    """PREMIUM / MIDNIGHT RUN: 3+ FALCOS Tokens on the board a free spin ended on add `added` spins;
+    `totalFs` is the bonus's new total, `positions` the tokens that did it."""
+    gs.book.add_event({
+        "index": len(gs.book.events),
+        "type": "freeSpinRetrigger",
+        "totalFs": gs.tot_fs,
+        "added": added,
+        "symbol": symbol,
+        "positions": [_pos(r, c) for r, c in positions],
+    })
+
+
 def enter_bonus_event(gs, reason: str, positions: list, bought: bool) -> None:
     gs.book.add_event({
         "index": len(gs.book.events),
@@ -98,8 +111,13 @@ def _cell(r, c, item):
 
 
 def gauge_event(gs, fuel: int, reason: str) -> None:
-    """The 3-bar fuel gauge. reason: start | use | refill."""
+    """The fuel gauge (spins left). reason: start | use | refill (up to 3) | retrigger (+5, fillUpRetrigger)."""
     gs.book.add_event({"index": len(gs.book.events), "type": "gauge", "fuel": fuel, "reason": reason})
+
+
+def fillup_retrigger_event(gs, r: int, c: int, added: int, fuel: int) -> None:
+    """FILL UP: a FALCOS Token landed on (r, c): `added` spins go into the gauge (now `fuel`), and the token leaves."""
+    gs.book.add_event({"index": len(gs.book.events), "type": "fillUpRetrigger", **_pos(r, c), "added": added, "fuel": fuel})
 
 
 def fillup_land_event(gs, spin: int, cells: list) -> None:

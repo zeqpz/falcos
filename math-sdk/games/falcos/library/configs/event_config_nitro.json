@@ -5,50 +5,50 @@
         "changed": [],
         "gridMults": [
             [
-                64,
-                64,
-                16,
-                64,
+                32,
+                32,
+                128,
+                32,
                 16
             ],
             [
-                32,
                 128,
                 16,
                 32,
-                32
-            ],
-            [
-                16,
-                16,
-                16,
-                32,
-                16
-            ],
-            [
-                16,
-                32,
-                16,
                 16,
                 16
             ],
             [
                 16,
-                16,
                 32,
+                16,
                 16,
                 32
             ],
             [
-                16,
-                16,
+                32,
+                32,
                 32,
                 16,
-                32
+                16
             ],
             [
                 16,
+                16,
+                16,
+                16,
+                16
+            ],
+            [
+                64,
+                16,
                 32,
+                16,
+                64
+            ],
+            [
+                32,
+                16,
                 16,
                 16,
                 16
@@ -61,6 +61,13 @@
         "board": [
             [
                 {
+                    "name": "ZP",
+                    "feature": true
+                },
+                {
+                    "name": "L3"
+                },
+                {
                     "name": "L2"
                 },
                 {
@@ -70,27 +77,47 @@
                     "name": "L3"
                 },
                 {
-                    "name": "L2"
+                    "name": "L5"
                 },
                 {
-                    "name": "L1"
-                },
-                {
-                    "name": "L1"
-                },
-                {
-                    "name": "L3"
+                    "name": "H3"
                 }
             ],
             [
                 {
-                    "name": "L3"
+                    "name": "L5"
                 },
                 {
-                    "name": "L3"
+                    "name": "L4"
                 },
                 {
-                    "name": "L3"
+                    "name": "L5"
+                },
+                {
+                    "name": "L5"
+                },
+                {
+                    "name": "L5"
+                },
+                {
+                    "name": "L4"
+                },
+                {
+                    "name": "L4"
+                }
+            ],
+            [
+                {
+                    "name": "L1"
+                },
+                {
+                    "name": "L5"
+                },
+                {
+                    "name": "L5"
+                },
+                {
+                    "name": "L4"
                 },
                 {
                     "name": "L3"
@@ -99,38 +126,58 @@
                     "name": "L4"
                 },
                 {
-                    "name": "H3"
-                },
-                {
-                    "name": "L5"
+                    "name": "L2"
                 }
             ],
             [
                 {
-                    "name": "L2"
+                    "name": "L4"
                 },
-                {
-                    "name": "L5"
-                },
-                {
-                    "name": "L5"
-                },
-                {
-                    "name": "L5"
-                },
-                {
-                    "name": "L5"
-                },
-                {
-                    "name": "L2"
-                },
-                {
-                    "name": "L5"
-                }
-            ],
-            [
                 {
                     "name": "L3"
+                },
+                {
+                    "name": "L3"
+                },
+                {
+                    "name": "L5"
+                },
+                {
+                    "name": "L5"
+                },
+                {
+                    "name": "L5"
+                },
+                {
+                    "name": "H1"
+                }
+            ],
+            [
+                {
+                    "name": "L5"
+                },
+                {
+                    "name": "L2"
+                },
+                {
+                    "name": "L4"
+                },
+                {
+                    "name": "L5"
+                },
+                {
+                    "name": "L5"
+                },
+                {
+                    "name": "L5"
+                },
+                {
+                    "name": "L5"
+                }
+            ],
+            [
+                {
+                    "name": "L5"
                 },
                 {
                     "name": "H4"
@@ -139,30 +186,23 @@
                     "name": "L5"
                 },
                 {
-                    "name": "L4"
-                },
-                {
-                    "name": "L2"
-                },
-                {
-                    "name": "L5"
-                },
-                {
-                    "name": "L5"
-                }
-            ],
-            [
-                {
-                    "name": "L5"
-                },
-                {
-                    "name": "ZP",
-                    "feature": true
-                },
-                {
                     "name": "L3"
                 },
                 {
+                    "name": "L2"
+                },
+                {
+                    "name": "L4"
+                },
+                {
+                    "name": "L4"
+                }
+            ],
+            [
+                {
+                    "name": "L4"
+                },
+                {
                     "name": "L1"
                 },
                 {
@@ -173,63 +213,23 @@
                 },
                 {
                     "name": "L5"
-                }
-            ],
-            [
-                {
-                    "name": "L5"
-                },
-                {
-                    "name": "L4"
-                },
-                {
-                    "name": "L5"
-                },
-                {
-                    "name": "L2"
-                },
-                {
-                    "name": "L5"
-                },
-                {
-                    "name": "L4"
-                },
-                {
-                    "name": "L5"
-                }
-            ],
-            [
-                {
-                    "name": "L2"
-                },
-                {
-                    "name": "L5"
-                },
-                {
-                    "name": "L4"
-                },
-                {
-                    "name": "L2"
                 },
                 {
                     "name": "L1"
                 },
                 {
-                    "name": "L2"
-                },
-                {
-                    "name": "L4"
+                    "name": "L5"
                 }
             ]
         ],
         "paddingPositions": [
-            182,
+            112,
+            65,
+            80,
+            121,
+            164,
             142,
-            33,
-            144,
-            52,
-            199,
-            164
+            35
         ],
         "gameType": "basegame",
         "anticipation": [
@@ -244,13 +244,29 @@
     },
     "winInfo": {
         "type": "winInfo",
-        "totalWin": 2240,
+        "totalWin": 7040,
         "wins": [
             {
                 "symbol": "L5",
-                "kind": 5,
-                "win": 2240,
+                "kind": 6,
+                "win": 4800,
                 "positions": [
+                    {
+                        "reel": 0,
+                        "row": 3
+                    },
+                    {
+                        "reel": 1,
+                        "row": 2
+                    },
+                    {
+                        "reel": 1,
+                        "row": 3
+                    },
+                    {
+                        "reel": 1,
+                        "row": 4
+                    },
                     {
                         "reel": 2,
                         "row": 1
@@ -258,30 +274,63 @@
                     {
                         "reel": 2,
                         "row": 2
-                    },
+                    }
+                ],
+                "meta": {
+                    "clusterSize": 6,
+                    "winWithoutMult": 20,
+                    "multiplier": 240,
+                    "cellMults": [
+                        128,
+                        16,
+                        32,
+                        16,
+                        16,
+                        32
+                    ]
+                }
+            },
+            {
+                "symbol": "L5",
+                "kind": 6,
+                "win": 2240,
+                "positions": [
                     {
-                        "reel": 2,
+                        "reel": 3,
                         "row": 3
                     },
                     {
-                        "reel": 2,
+                        "reel": 3,
                         "row": 4
                     },
                     {
                         "reel": 3,
-                        "row": 2
+                        "row": 5
+                    },
+                    {
+                        "reel": 4,
+                        "row": 3
+                    },
+                    {
+                        "reel": 4,
+                        "row": 4
+                    },
+                    {
+                        "reel": 4,
+                        "row": 5
                     }
                 ],
                 "meta": {
-                    "clusterSize": 5,
+                    "clusterSize": 6,
                     "winWithoutMult": 20,
                     "multiplier": 112,
                     "cellMults": [
-                        16,
-                        16,
-                        16,
                         32,
-                        32
+                        16,
+                        16,
+                        16,
+                        16,
+                        16
                     ]
                 }
             }
@@ -289,37 +338,77 @@
     },
     "updateTumbleWin": {
         "type": "updateTumbleWin",
-        "amount": 2240
+        "amount": 7040
     },
     "tumbleBoard": {
         "type": "tumbleBoard",
         "newSymbols": [
-            [],
-            [],
             [
+                {
+                    "name": "L3"
+                }
+            ],
+            [
+                {
+                    "name": "H1"
+                },
+                {
+                    "name": "L3"
+                },
+                {
+                    "name": "L5"
+                }
+            ],
+            [
+                {
+                    "name": "L3"
+                },
+                {
+                    "name": "L1"
+                }
+            ],
+            [
+                {
+                    "name": "L5"
+                },
                 {
                     "name": "L4"
                 },
                 {
-                    "name": "L5"
-                },
-                {
-                    "name": "L5"
-                },
-                {
-                    "name": "L5"
+                    "name": "L4"
                 }
             ],
             [
                 {
                     "name": "L5"
+                },
+                {
+                    "name": "H3"
+                },
+                {
+                    "name": "L5"
                 }
             ],
-            [],
             [],
             []
         ],
         "explodingSymbols": [
+            {
+                "reel": 0,
+                "row": 3
+            },
+            {
+                "reel": 1,
+                "row": 2
+            },
+            {
+                "reel": 1,
+                "row": 3
+            },
+            {
+                "reel": 1,
+                "row": 4
+            },
             {
                 "reel": 2,
                 "row": 1
@@ -329,86 +418,76 @@
                 "row": 2
             },
             {
-                "reel": 2,
+                "reel": 3,
                 "row": 3
             },
             {
-                "reel": 2,
+                "reel": 3,
                 "row": 4
             },
             {
                 "reel": 3,
-                "row": 2
+                "row": 5
+            },
+            {
+                "reel": 4,
+                "row": 3
+            },
+            {
+                "reel": 4,
+                "row": 4
+            },
+            {
+                "reel": 4,
+                "row": 5
             }
         ]
     },
     "featureFire": {
         "type": "featureFire",
-        "step": 0,
+        "step": 1,
         "kind": "zippo",
-        "reel": 4,
+        "reel": 0,
         "row": 1,
         "cells": [
             {
-                "reel": 3,
+                "reel": 0,
                 "row": 1,
-                "from": 16,
-                "to": 32
+                "from": 32,
+                "to": 64
             },
             {
-                "reel": 3,
+                "reel": 0,
                 "row": 2,
-                "from": 64,
-                "to": 128
+                "from": 32,
+                "to": 64
             },
             {
-                "reel": 4,
+                "reel": 1,
                 "row": 1,
-                "from": 16,
-                "to": 32
+                "from": 128,
+                "to": 256
             },
             {
-                "reel": 4,
+                "reel": 1,
                 "row": 2,
-                "from": 16,
-                "to": 32
-            },
-            {
-                "reel": 5,
-                "row": 1,
-                "from": 16,
-                "to": 32
-            },
-            {
-                "reel": 5,
-                "row": 2,
-                "from": 16,
-                "to": 32
+                "from": 32,
+                "to": 64
             }
         ],
         "burned": [
             {
-                "reel": 3,
-                "row": 1,
-                "symbol": "L3"
-            },
-            {
-                "reel": 3,
-                "row": 2,
-                "symbol": "H4"
-            },
-            {
-                "reel": 4,
+                "reel": 0,
                 "row": 2,
                 "symbol": "L3"
             },
             {
-                "reel": 5,
+                "reel": 1,
                 "row": 1,
-                "symbol": "L4"
+                "symbol": "L3"
             },
             {
-                "reel": 5,
+                "reel": 1,
                 "row": 2,
                 "symbol": "L5"
             }
@@ -417,48 +496,48 @@
             [
                 64,
                 64,
-                16,
-                64,
+                256,
+                32,
                 16
             ],
             [
+                256,
+                64,
+                64,
                 32,
-                128,
-                16,
-                32,
-                32
+                16
             ],
             [
-                32,
-                32,
                 32,
                 64,
-                16
-            ],
-            [
-                32,
-                128,
                 16,
-                16,
-                16
-            ],
-            [
-                32,
-                32,
-                32,
                 16,
                 32
             ],
             [
                 32,
                 32,
+                64,
                 32,
-                16,
                 32
             ],
             [
                 16,
+                16,
                 32,
+                32,
+                32
+            ],
+            [
+                64,
+                16,
+                32,
+                16,
+                64
+            ],
+            [
+                32,
+                16,
                 16,
                 16,
                 16
@@ -467,16 +546,16 @@
     },
     "setWin": {
         "type": "setWin",
-        "amount": 36800,
-        "winLevel": 9
+        "amount": 7040,
+        "winLevel": 8
     },
     "setTotalWin": {
         "type": "setTotalWin",
-        "amount": 36800
+        "amount": 7040
     },
     "finalWin": {
         "type": "finalWin",
-        "amount": 36800
+        "amount": 7040
     },
     "wincap": {
         "type": "wincap",
