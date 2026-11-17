@@ -2989,9 +2989,12 @@
      offset shadows; PLAY orange, ACTIVATE white, the bet arrows orange. */
   #bonusWrap .bshop { background: #1F45B8; border: 4px solid #0C0C12; box-shadow: 7px 9px 0 #0C0C12; }
   #bonusWrap .bshoptitle { color: #fff; text-shadow: 2px 3px 0 #0C0C12; }
-  #bonusWrap .bc { background: #14245E; border: 3px solid #0C0C12; box-shadow: 4px 6px 0 #0C0C12; }
-  #bonusWrap .bc:hover { box-shadow: 4px 6px 0 #0C0C12, 0 0 0 3px var(--acc); }
-  #bonusWrap .bc.armed, #bonusWrap .bc.on { box-shadow: 4px 6px 0 #0C0C12, 0 0 0 4px var(--acc); }
+  /* the orange edge all the way round every card, always (owner, 2026-11-17: "have the orange highlight the whole
+     boarder not just have when it is being hovered over"): a real border, a thin black line outside it, the drop shadow
+     under both; hovering adds a glow, an armed/active card a brighter one */
+  #bonusWrap .bc { background: #14245E; border: 3px solid var(--acc); box-shadow: 0 0 0 2.5px #0C0C12, 4px 6px 0 2.5px #0C0C12; }
+  #bonusWrap .bc:hover { box-shadow: 0 0 0 2.5px #0C0C12, 4px 6px 0 2.5px #0C0C12, 0 0 22px color-mix(in srgb, var(--acc) 65%, transparent); }
+  #bonusWrap .bc.armed, #bonusWrap .bc.on { box-shadow: 0 0 0 2.5px #0C0C12, 4px 6px 0 2.5px #0C0C12, 0 0 30px var(--acc); filter: brightness(1.06); }
   #bonusWrap .bc.wide .bcbody { background: linear-gradient(90deg, #14245E 62%, transparent); }
   #bonusWrap .bclogo { filter: drop-shadow(3px 4px 0 #0C0C12); }
   #bonusWrap .bcdesc { color: #fff; }
