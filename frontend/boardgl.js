@@ -24,6 +24,13 @@
 
   let app = null, board = null, root = null, tried = null;
   let dirty = true, geoDirty = true, res = 1, W = 0, H = 0;
+  // A safety net (owner, 2026-11-17: "the symbols can be invisable sometimes ... it just happened to me like 5 times"):
+  // a cell is only re-read while it animates or when its class changes, so a missed animation event could leave it
+  // drawn from a stale opacity or place - a column of icons gone. Every SWEEP_MS each resting cell is read again in
+  // full, and the board redrawn only if something it shows actually changed.
+  const SWEEP_MS = 250;
+  let lastSweep = 0;
+  const seen = c => `${c.op}|${c.ico}|${c.z}|${c.smop}|${c.m ? [c.m.a, c.m.b, c.m.c, c.m.d, c.m.e, c.m.f].join() : ""}`;
   const C = [];          // C[r][y]: per cell { cell, box, cont, spr, sm, cls, m, op, z, act, reread, at }
   const R = [];          // per reel { el, x, y, w, h, clip, cont, mask }
   const smearTex = new Map();
@@ -279,6 +286,8 @@
     if (geoDirty) layout();
     if (!C.length) return;
     const now = performance.now();
+    const sweep = now - lastSweep > SWEEP_MS;
+    if (sweep) lastSweep = now;
     // the reels' clips while tiles are on the move
     for (const rr of R) {
       if (!rr) continue;
@@ -297,8 +306,9 @@
         if (!c) continue;
         const cell = c.cell;
         if (cell.className !== c.cls) { c.cls = cell.className; c.reread = true; }
-        if (c.act > 0 && now - c.at > 4000 && !cell.getAnimations({ subtree: true }).length) c.act = c.aCell = c.aIco = c.aSm = 0;
+        if (c.act > 0 && now - c.at > 4000 && !cell.getAnimations({ subtree: true }).length) { c.act = c.aCell = c.aIco = c.aSm = 0; c.reread = true; }
         if (c.act > 0 || c.reread) { read(c, c.reread); c.reread = false; dirty = true; }
+        else if (sweep) { const was = seen(c); read(c, true); if (seen(c) !== was) dirty = true; }
         // the symbol: the frame its rig is showing (symDraw), on the clip's box inside the rig
         const ico = cell.ico, rig = ico && ico.firstElementChild;
         const g = rig && rig._gclip ? SYMF.sheets.get(rig._name + "_" + rig._gclip) : null;
