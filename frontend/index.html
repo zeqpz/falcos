@@ -2748,12 +2748,14 @@
   /* a burning symbol: the burn clip plays, its cell glows ember for the length of it */
   .cell.burning .ico { filter: drop-shadow(0 0 10px rgba(255, 120, 30, .9)); }
   /* ---------- FILL UP (redesigned 2026-11-10: premium fuel look) ----------
-     The board: the amber fuel-glow backing (fillup/backing.webp) behind the fuel-window tiles (drawn by
+     The board: one plain navy behind the fuel-window tiles (drawn by
      paintTiles from fillup/cell.webp, tinted by what sits in them); the Fuel Drops big, their values in a
      heavy outlined face in the drop's own colour; the collectors' running totals in a gold ticket badge; the
      3-window chrome fuel gauge (fillup/gauge.webp) and the FUEL TOTAL in the neon numerals under the board
      (#fsCard.fill). Everything that moves does so on transform/opacity. */
-  #board.fillup .boardplate { background: #140902 url("assets/fillup/backing.webp") center / cover no-repeat; }
+  /* one plain colour behind the fuel windows (owner, 2026-11-17: "mke the background a 1 color there is some sort of
+     design going on in the background"): the painted backing (fillup/backing.webp) is retired */
+  #board.fillup .boardplate { background: #0D1640; box-shadow: none; }
   #board.fillup .multlayer { display: none; }
   .cell.fspin::before { content: ""; position: absolute; inset: 8%; border-radius: 16%; pointer-events: none;
     background: radial-gradient(closest-side, rgba(255, 190, 80, .45), transparent); animation: fspin calc(.35s * var(--tempo, 1)) ease-out both; }
