@@ -257,10 +257,9 @@
     position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
     padding: 3vh 8vw; text-align: center;
     opacity: 0; translate: 0 16px; transition: opacity .65s ease .2s, translate .65s ease .2s;
-    /* the screen is a card in space: it tips toward the cursor (tiltPlates, from bonusIntro)
-       and its pieces sit at their own heights above it (--depth), sliding apart as it tips */
-    --mx: 0; --my: 0;
-    transform: perspective(1400px) rotateX(calc(var(--my) * -7deg)) rotateY(calc(var(--mx) * 7deg));
+    /* flat (owner, 2026-11-17: "fix this glitch" - the logo, the figure and the panel thrown off to one side): the
+       screen no longer tips toward the cursor, and its pieces no longer lean in their own perspective - nested 3D
+       that WebKit (the Falcos app, Safari) could lay out wrong. They still drift on their paths (hoverWin). */
   }
   .bonusintro.up .wall, .bonusintro.up .inner { opacity: 1; }
   .bonusintro.up .inner { translate: 0 0; }
@@ -274,16 +273,11 @@
      logo is not shrunk to a sliver next to the taller ones */
   .bonusintro .blogo { width: auto; height: min(19vh, 190px); max-width: min(86vw, 620px); object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,.7)); }
   .bonusintro.x .blogo { height: min(16vh, 160px); }
-  /* every piece of the screen wanders slightly on its own random path (hoverWin, from bonusIntro),
-     slides with the cursor by its height above the screen (--depth), and leans in space as it
-     drifts: the way it floats sets the way it tips, a few degrees either way */
+  /* every piece of the screen wanders slightly on its own random path (hoverWin, from bonusIntro) */
   .bonusintro .blogo, .bonusintro .byou, .bonusintro .bnum, .bonusintro .bfs, .bonusintro .bhow {
-    translate: calc(var(--px, 0px) + var(--mx, 0) * var(--depth, 0px)) calc(var(--py, 0px) + var(--my, 0) * var(--depth, 0px));
+    translate: var(--px, 0px) var(--py, 0px);
     rotate: var(--pr, 0deg);
-    transform: perspective(900px) rotateY(atan2(var(--px, 0px), 5vh)) rotateX(calc(-1 * atan2(var(--py, 0px), 6vh)));
   }
-  .bonusintro .blogo { --depth: 22px; } .bonusintro .bnum { --depth: 12px; }
-  .bonusintro .byou, .bonusintro .bfs { --depth: 9px; } .bonusintro .bhow { --depth: 4px; }
   .bonusintro .byou, .bonusintro .bfs {
     font-size: clamp(24px, 4.8vh, 44px); text-transform: uppercase; line-height: 1;
     color: #fff; text-shadow: 0 4px 0 rgba(0,0,0,.8), 0 0 24px rgba(91,140,255,.85);
@@ -2198,31 +2192,42 @@
   .spinwrap:hover .spinbtn::before { scale: 1.04; }
 
 
+  /* BUY BONUS, built in CSS (owner, 2026-11-17: "make this look more proffecional"): the game's orange in a clean
+     gradient with a dark rim and a light inner edge, a soft gloss on its upper half, real lettering - a small navy BUY
+     over a bold outlined white BONUS - and a slow sheen that sweeps across it now and then. No wobble, no sparkle. */
   .bonusbtn {
-    position: relative; width: calc(146px * var(--hs, 1)); height: calc(74px * var(--hs, 1));
-    background: none !important; border: none !important; padding: 0 !important;
-    overflow: visible; color: transparent; font-size: 0; cursor: pointer;
+    position: relative; width: calc(156px * var(--hs, 1)); height: calc(74px * var(--hs, 1));
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0;
+    padding: 0 !important; overflow: hidden; cursor: pointer; isolation: isolate;
+    border: calc(3px * var(--hs, 1)) solid #0C0C12 !important; border-radius: calc(16px * var(--hs, 1));
+    background: linear-gradient(180deg, #FFB25E 0%, #FF8A2A 40%, #F0640F 72%, #C9480A 100%) !important;
+    box-shadow: inset 0 0 0 calc(2px * var(--hs, 1)) rgba(255, 226, 180, .55), inset 0 calc(-4px * var(--hs, 1)) 0 rgba(120, 30, 0, .35),
+                0 calc(6px * var(--hs, 1)) calc(14px * var(--hs, 1)) rgba(0, 0, 0, .55), 0 0 calc(16px * var(--hs, 1)) rgba(255, 122, 26, .45);
+    font-family: "Fredoka", var(--num); text-transform: uppercase; color: #fff; line-height: 1;
+    transition: scale .18s ease, box-shadow .18s ease, filter .18s ease;
   }
-  .bonusbtn::before {
-    content: ""; position: absolute; inset: 0;
-    background: url("assets/bonus_btn_bg.webp") center/contain no-repeat;
-    transition: scale .18s ease;
+  .bonusbtn::before {   /* the gloss on the upper half */
+    content: ""; position: absolute; inset: 0 0 52% 0; z-index: -1; pointer-events: none;
+    background: linear-gradient(180deg, rgba(255, 255, 255, .22), rgba(255, 255, 255, .04));
+    border-radius: inherit;
   }
-  .bonusbtn::after {
-    content: ""; position: absolute; inset: 5% 6%;
-    background: url("assets/bonus_btn_text.webp") center/contain no-repeat;
-    filter: drop-shadow(0 3px 5px rgba(0,0,0,.45));
+  .bonusbtn::after {    /* the sheen, crossing every few seconds */
+    content: ""; position: absolute; top: -20%; bottom: -20%; left: -60%; width: 38%; z-index: 2; pointer-events: none;
+    background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .38), transparent);
+    transform: skewX(-18deg); animation: bonusSheen 5.5s ease-in-out infinite;
   }
-  html.social .bonusbtn::after { background-image: url("assets/bonus_btn_text_social.webp"); }   /* GET BONUS: no BUY on Stake.US */
-  /* The whole button drifts as one piece - the plate, the lettering and the neon glow together
-     (owner, 2026-11-03: the lettering used to float on its own off a plate and a glow that stood
-     still) - and only a little, slowly. The pointer lifts the whole of it a touch, too. */
-  .bonusbtn { animation: bonusFloat 9s ease-in-out infinite; transition: scale .2s ease; }
-  .bonusbtn:hover:not(:disabled) { scale: 1.04; }
-  @keyframes bonusFloat {
-    0%, 100% { translate: 0 0; rotate: 0deg; } 25% { translate: 1px -1.5px; rotate: .25deg; }
-    50% { translate: -.5px 1px; rotate: -.2deg; } 75% { translate: -1.5px -.5px; rotate: .15deg; }
+  @keyframes bonusSheen { 0%, 62% { left: -60%; } 100% { left: 125%; } }
+  .bonusbtn .bb1 {
+    font-size: calc(14px * var(--hs, 1)); font-weight: 700; letter-spacing: .24em; padding-left: .24em;
+    color: #1a1240; text-shadow: 0 1px 0 rgba(255, 220, 170, .55);
   }
+  .bonusbtn .bb2 {
+    font-size: calc(27px * var(--hs, 1)); font-weight: 700; letter-spacing: .05em; margin-top: calc(1px * var(--hs, 1));
+    color: #fff; -webkit-text-stroke: calc(1.4px * var(--hs, 1)) #0C0C12; paint-order: stroke fill;
+    text-shadow: 0 calc(3px * var(--hs, 1)) 0 #0C0C12;
+  }
+  .bonusbtn:hover:not(:disabled) { scale: 1.04; filter: brightness(1.08); }
+  .bonusbtn:active:not(:disabled) { scale: .97; }
   /* the base game's neon overlay for its old button plate is retired: the Falcos BUY BONUS plate carries
      its own red neon, so the glow layer stays empty (kept so its animation hooks still find it) */
   .bonusbtn .bglow, .bonuspanel h3 .bglow {
@@ -2230,7 +2235,6 @@
     mix-blend-mode: screen; transition: scale .18s ease;
     animation: neonSign 13s infinite;   /* one short stutter a cycle (it was two every 4.3 s: owner, 2026-10-30) */
   }
-  .bonusbtn::after { z-index: 1; }
   @keyframes neonSign {   /* a slow breath through the tube, and once a cycle a short stutter as the gas catches */
     0%, 100% { opacity: .75; filter: brightness(1); }
     35%   { opacity: .9; filter: brightness(1.12); }
@@ -2243,7 +2247,7 @@
   .bonusbtn:disabled .bglow { animation: none; opacity: .3; }
   @media (prefers-reduced-motion: reduce) { .bonusbtn .bglow, .bonuspanel h3 .bglow { animation: none; opacity: .85; } }
   /* the press's bounce rides on the drift (same first name, so the drift carries on unbroken) */
-  .bonusbtn.clicked { animation: bonusFloat 9s ease-in-out infinite, btnBounce2 .34s cubic-bezier(.3,.7,.4,1.4); }
+  .bonusbtn.clicked { animation: btnBounce2 .34s cubic-bezier(.3,.7,.4,1.4); }
   .bonusbtn:disabled { opacity: 1; }   /* nothing greys during a round: the panel itself gates what is affordable */
 
   @keyframes btnFloat {
@@ -2255,6 +2259,7 @@
   @keyframes btnBounce2 { 0% { scale: 1; } 30% { scale: .9; } 65% { scale: 1.07; } 100% { scale: 1; } }
   @media (prefers-reduced-motion: reduce) {
     .spinbtn::after, .bonusbtn::after, .bonusbtn { animation: none !important; }
+    .bonusbtn::after { display: none; }
   }
   /* ---------- the bar (HUD v3, 2026-11-03) ----------
      The owner's reference, made simple: one long bar with a pointed left end and the spin hexagon
@@ -3091,7 +3096,7 @@
        buildHud(); the Bonus button sits apart in the corner. -->
   <div class="hud">
     <button type="button" class="actpill" id="activePill" hidden><b></b><span></span><i aria-hidden="true">✕</i></button>
-    <button class="buy bonusbtn" id="bonusBtn"><i class="bglow" aria-hidden="true"></i>Bonus</button>
+    <button class="buy bonusbtn" id="bonusBtn" aria-label="Buy bonus"><i class="bglow" aria-hidden="true"></i><span class="bb1">Buy</span><span class="bb2">Bonus</span></button>
     <div class="hudframe">
       <svg class="hudshape" aria-hidden="true" focusable="false"><path/></svg>
       <button class="hudbtn menu" id="menuBtn" aria-label="Game information">Info</button>
@@ -3364,9 +3369,10 @@ function startBoardFrame() {
 // per-cell layers. FILL UP draws its fuel windows (fillup/cell.webp when it is in) tinted by the drop's colour.
 const SYM_FIT = .92;   // a symbol fills this share of its tile (--sym-fit, boardgl.js)
 // ...times this for one symbol (boardgl.js asks): FILL UP's Fuel Drops are drawn big, ~80% of the cell's height
-window.symScaleOf = name => state.fill && /^FD/.test(name) ? 1.25 : 1;
+// the Gas Pump drawn bigger than the rest (owner, 2026-11-17: "make the gas pump symbol stand out more")
+window.symScaleOf = name => name === "GP" ? 1.22 : state.fill && /^FD/.test(name) ? 1.25 : 1;
 const TILE_TINT = { H1: "236,176,48", H2: "236,176,48", H3: "232,44,58", H4: "70,110,255",
-                    FDG: "80,220,90", FDA: "255,170,40", FDR: "255,50,60", ST: "255,170,40", GT: "245,197,24", GP: "255,170,40", ZP: "255,110,30" };
+                    FDG: "80,220,90", FDA: "255,170,40", FDR: "255,50,60", ST: "255,170,40", GT: "245,197,24", GP: "255,90,30", ZP: "255,110,30" };
 const tileArt = { cell: null };
 (() => { const im = new Image(); im.onload = () => { tileArt.cell = im; tileStamps.clear(); paintTiles(true); }; im.src = "assets/fillup/cell.webp"; })();
 const tileStamps = new Map();
@@ -3381,7 +3387,8 @@ function tileKindOf(r, y) {
     return "F" + (f ? (f.name === "FD" ? fdArt(f.value) : f.name) : "");
   }
   const s = shownSym[r] && shownSym[r][y], n = s && (typeof artOf === "function" ? artOf(s.name) : s.name);
-  return /^H[1-4]$/.test(n) ? n : "";
+  // the Gas Pump's tile glows on every board (owner, 2026-11-17: "make the gas pump symbol stand out more")
+  return /^H[1-4]$|^GP$/.test(n) ? n : "";
 }
 function tileStamp(kind, w, h, k) {
   const key = kind + w + "x" + h + "@" + k;
@@ -3405,9 +3412,11 @@ function tileStamp(kind, w, h, k) {
     g.fillStyle = lg; g.fill();
   }
   g.save(); rr(0, 0, w, h, rad); g.clip();
-  if (tint) {   // the tier's faint glow, centred a little low (behind the body of the symbol)
+  const pump = kind === "GP" || kind === "FGP";
+  if (tint) {   // the tier's faint glow, centred a little low (behind the body of the symbol); the pump's strong
+    const a0 = pump ? .72 : fuel ? .55 : .34, a1 = pump ? .32 : fuel ? .22 : .12;
     const rg = g.createRadialGradient(w / 2, h * .55, 0, w / 2, h * .55, Math.max(w, h) * .62);
-    rg.addColorStop(0, `rgba(${tint},${fuel ? .55 : .34})`); rg.addColorStop(.55, `rgba(${tint},${fuel ? .22 : .12})`); rg.addColorStop(1, `rgba(${tint},0)`);
+    rg.addColorStop(0, `rgba(${tint},${a0})`); rg.addColorStop(.55, `rgba(${tint},${a1})`); rg.addColorStop(1, `rgba(${tint},0)`);
     g.fillStyle = rg; g.fillRect(0, 0, w, h);
   }
   // the symbol's soft shadow on the glass: a dark pool under its middle
@@ -3419,7 +3428,11 @@ function tileStamp(kind, w, h, k) {
   hl.addColorStop(0, "rgba(255,255,255,.075)"); hl.addColorStop(1, "rgba(255,255,255,0)");
   g.fillStyle = hl; g.fillRect(0, 0, w, h * .5);
   g.restore();
-  if (!(fuel && tileArt.cell)) {   // the faint white inner rim
+  if (pump) {   // the pump's glowing orange rim
+    rr(2, 2, w - 4, h - 4, rad - 2);
+    g.save(); g.shadowColor = "rgba(255,110,30,.95)"; g.shadowBlur = Math.max(4, w * .09);
+    g.lineWidth = Math.max(2.5, w * .035); g.strokeStyle = "rgba(255,150,60,.95)"; g.stroke(); g.stroke(); g.restore();
+  } else if (!(fuel && tileArt.cell)) {   // the faint white inner rim
     rr(1, 1, w - 2, h - 2, rad - 1);
     g.lineWidth = 1.5; g.strokeStyle = fuel ? "rgba(255,214,150,.16)" : "rgba(255,255,255,.15)"; g.stroke();
   }
@@ -5872,24 +5885,66 @@ const PUMP_GRADES = {
   premium: { name: "PREMIUM", c: "#FF7A1A", lo: 0, sfx: "pumpPremium" },
   fulltank: { name: "FULL TANK", c: "#FFA640", lo: 45, sfx: "pumpFullTank" },
 };
+// The dial (owner, 2026-11-17: "make the gauge look way better"): drawn like the game's own art - a chunky orange
+// housing in a bold black outline, a chrome bezel, a dark glass face with a glare, the four grade bands in the grades'
+// own colours with their names on them, ticks, a tapered needle with a counterweight and a chrome hub. The pivot stays
+// at (115, 112) in the 230 x 150 box (.pumpdial .needle's transform-origin, pumpTarget's angles).
+let dialSeq = 0;
 function dialSvg() {
-  const arc = (a0, a1, col) => {
-    const p = a => [115 + 92 * Math.sin(a * Math.PI / 180), 112 - 92 * Math.cos(a * Math.PI / 180)];
-    const [x0, y0] = p(a0), [x1, y1] = p(a1);
-    return `<path d="M${x0.toFixed(1)} ${y0.toFixed(1)} A92 92 0 0 1 ${x1.toFixed(1)} ${y1.toFixed(1)}" stroke="${col}" stroke-width="20" fill="none"/>`;
-  };
-  const ticks = Array.from({ length: 9 }, (_, i) => { const a = (-90 + i * 22.5) * Math.PI / 180;
-    return `<line x1="${(115 + 74 * Math.sin(a)).toFixed(1)}" y1="${(112 - 74 * Math.cos(a)).toFixed(1)}" x2="${(115 + 82 * Math.sin(a)).toFixed(1)}" y2="${(112 - 82 * Math.cos(a)).toFixed(1)}" stroke="#fff" stroke-width="2.5" opacity=".7"/>`; }).join("");
+  const id = "d" + (++dialSeq);   // several pumps can show their dials at once: their defs must not clash
+  const C = [115, 112];
+  const pt = (r, a) => [C[0] + r * Math.sin(a * Math.PI / 180), C[1] - r * Math.cos(a * Math.PI / 180)];
+  const arcD = (r, a0, a1) => { const [x0, y0] = pt(r, a0), [x1, y1] = pt(r, a1);
+    return `M${x0.toFixed(1)} ${y0.toFixed(1)} A${r} ${r} 0 0 1 ${x1.toFixed(1)} ${y1.toFixed(1)}`; };
+  const BAND_R = 74, BAND_W = 19;
+  const bands = [["regular", -90, -45, "REG"], ["plus", -45, 0, "PLUS"], ["premium", 0, 45, "PREM"], ["fulltank", 45, 90, "FULL"]];
+  const bandSvg = bands.map(([k, a0, a1, label], i) => {
+    const col = k === "fulltank" ? `url(#${id}full)` : PUMP_GRADES[k].c;
+    return `<path d="${arcD(BAND_R, a0 + .8, a1 - .8)}" stroke="#0C0C12" stroke-width="${BAND_W + 5}" fill="none"/>` +
+      `<path d="${arcD(BAND_R, a0 + .8, a1 - .8)}" stroke="${col}" stroke-width="${BAND_W}" fill="none"/>` +
+      `<path id="${id}t${i}" d="${arcD(BAND_R - 4, a0 + 2, a1 - 2)}" fill="none"/>` +
+      `<text font-size="10.5" font-weight="800" letter-spacing=".06em" fill="#13101c" font-family="Fredoka, sans-serif">` +
+      `<textPath href="#${id}t${i}" startOffset="50%" text-anchor="middle">${label}</textPath></text>`;
+  }).join("");
+  const ticks = Array.from({ length: 17 }, (_, i) => {
+    const a = -90 + i * 11.25, major = i % 4 === 0, [x0, y0] = pt(major ? 50 : 55, a), [x1, y1] = pt(62, a);
+    return `<line x1="${x0.toFixed(1)}" y1="${y0.toFixed(1)}" x2="${x1.toFixed(1)}" y2="${y1.toFixed(1)}" stroke="#fff" stroke-width="${major ? 3.2 : 1.8}" stroke-linecap="round" opacity="${major ? .95 : .55}"/>`;
+  }).join("");
   return `<svg viewBox="0 0 230 150" aria-hidden="true">
-    <defs><linearGradient id="dchrome" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4f6fa"/><stop offset=".5" stop-color="#8b93a3"/><stop offset="1" stop-color="#e6e9ef"/></linearGradient></defs>
-    <path d="M8 112 A107 107 0 0 1 222 112 L222 122 L8 122 Z" fill="url(#dchrome)" stroke="#1a1a22" stroke-width="3"/>
-    <path d="M18 112 A97 97 0 0 1 212 112 Z" fill="#0b0a14"/>
-    ${arc(-88, -46, "#3fbf2f")}${arc(-44, -1, "#E89520")}${arc(1, 44, "#D81E32")}${arc(46, 88, "#E8B10A")}
+    <defs>
+      <linearGradient id="${id}house" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFB15C"/><stop offset=".55" stop-color="#FF7A1A"/><stop offset="1" stop-color="#C9520A"/></linearGradient>
+      <linearGradient id="${id}chrome" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".45" stop-color="#b9c0cc"/><stop offset=".55" stop-color="#7d8594"/><stop offset="1" stop-color="#e9edf3"/></linearGradient>
+      <radialGradient id="${id}face" cx=".5" cy=".95" r=".85"><stop offset="0" stop-color="#2a3360"/><stop offset=".7" stop-color="#121633"/><stop offset="1" stop-color="#07081a"/></radialGradient>
+      <linearGradient id="${id}full" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFF1B8"/><stop offset=".5" stop-color="#FFC233"/><stop offset="1" stop-color="#E08A00"/></linearGradient>
+      <linearGradient id="${id}needle" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FF4A3A"/><stop offset=".5" stop-color="#FF7A1A"/><stop offset="1" stop-color="#C2280F"/></linearGradient>
+    </defs>
+    <!-- housing: a fat D in the house orange, bold outline -->
+    <path d="M6 116 A109 109 0 0 1 224 116 L224 126 Q224 134 216 134 L14 134 Q6 134 6 126 Z" fill="url(#${id}house)" stroke="#0C0C12" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M12 113 A103 103 0 0 1 218 113" fill="none" stroke="#FFD9A8" stroke-width="2.5" opacity=".7"/>
+    <!-- chrome bezel and the glass face -->
+    <path d="M19 116 A96 96 0 0 1 211 116 Z" fill="url(#${id}chrome)" stroke="#0C0C12" stroke-width="3"/>
+    <path d="M26 116 A89 89 0 0 1 204 116 Z" fill="url(#${id}face)" stroke="#0C0C12" stroke-width="2.5"/>
+    ${bandSvg}
     ${ticks}
-    <text x="30" y="104" font-size="13" font-weight="700" fill="#FF7A1A" font-family="Fredoka, sans-serif">E</text>
-    <text x="192" y="104" font-size="13" font-weight="700" fill="#4F9BFF" font-family="Fredoka, sans-serif">F</text>
-    <g class="needle"><path d="M112 112 L115 26 L118 112 Z" fill="#FF7A1A" stroke="#fff" stroke-width="1.2"/></g>
-    <circle cx="115" cy="112" r="11" fill="url(#dchrome)" stroke="#1a1a22" stroke-width="2"/>
+    <text x="21" y="130.5" font-size="13" font-weight="800" fill="#fff" stroke="#0C0C12" stroke-width="3" paint-order="stroke" font-family="Fredoka, sans-serif">E</text>
+    <text x="200" y="130.5" font-size="13" font-weight="800" fill="#fff" stroke="#0C0C12" stroke-width="3" paint-order="stroke" font-family="Fredoka, sans-serif">F</text>
+    <!-- a little pump on the face, under the needle -->
+    <g transform="translate(106 64)" opacity=".42" fill="#FFD9A8">
+      <rect x="0" y="0" width="12" height="17" rx="2"/><rect x="2" y="2.5" width="8" height="5" rx="1" fill="#121633"/>
+      <path d="M12 4 h3 q2 0 2 2 v8 q0 2 -1.5 2" fill="none" stroke="#FFD9A8" stroke-width="1.8"/><rect x="-1.5" y="17" width="15" height="2.5" rx="1"/>
+    </g>
+    <!-- the needle (rotated about the hub by .needle), its shadow first -->
+    <g class="needle">
+      <path d="M112 112 L116.5 32 L121 112 Z" fill="#000" opacity=".35" transform="translate(3 3)"/>
+      <path d="M109.5 113 L115 30 L120.5 113 L118.5 127 L111.5 127 Z" fill="url(#${id}needle)" stroke="#0C0C12" stroke-width="2.5" stroke-linejoin="round"/>
+      <path d="M113.6 100 L115 42" stroke="#FFD9A8" stroke-width="1.6" stroke-linecap="round" opacity=".8"/>
+    </g>
+    <circle cx="115" cy="112" r="13.5" fill="url(#${id}chrome)" stroke="#0C0C12" stroke-width="3"/>
+    <circle cx="115" cy="112" r="5" fill="#2a2f3d" stroke="#0C0C12" stroke-width="1.5"/>
+    <circle cx="111" cy="107.5" r="3" fill="#fff" opacity=".85"/>
+    <!-- glass glare -->
+    <path d="M40 92 A78 78 0 0 1 98 39" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".16"/>
+    <path d="M50 96 A70 70 0 0 1 64 70" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".22"/>
   </svg><div class="grade"></div>`;
 }
 function pumpTarget(ev) {
@@ -8636,14 +8691,14 @@ introDone.then(() => setTimeout(releaseGonePics, 1500));   // its plates are gon
 const BONUS_KINDS = {
   fillup: { name: "FILL UP", logo: "assets/menu/logo_fillup.webp", x: false, noSpins: true,
     how: [`<b>Fuel Drops</b> stick where they land - green, amber and red, worth up to <b>x500</b> each - and change colour as they grow.`,
-          `You start with <b>3</b> spins - the gauge shows how many are left. Every spin uses one; anything new landing sets it back to 3. The bonus ends when no spins are left.`,
-          `Lighters burn drops, Scratch Tickets collect their neighbours, Gold Tickets collect the whole board and double it, Gas Pumps multiply them. At the end you win every drop left and every collector's total.`] },
+          `You start with <b>3</b> spins - the gauge shows how many are left. Every spin uses one; anything new landing sets it back to 3, and a <b>FALCOS Token</b> adds <b>5</b> more. The bonus ends when no spins are left.`,
+          `Scratch Tickets collect their neighbours, Gold Tickets collect the whole board and double it, Gas Pumps multiply them. At the end you win every drop left and every collector's total.`] },
   premium: { name: "PREMIUM", logo: "assets/menu/logo_premium_zombie.webp", x: false, z: true,
     how: [`Zombie night at the station. Every cell has its own multiplier, doubling each time a win or a feature hits it, up to <b>x2048</b>.`,
-          `In here the cells keep their multipliers for the whole bonus: a cell that reached <b>x8</b> keeps it into the next spin and keeps growing.`] },
+          `In here the cells keep their multipliers for the whole bonus: a cell that reached <b>x8</b> keeps it into the next spin and keeps growing. <b>3</b> or more FALCOS Tokens at the end of a spin add <b>5</b> free spins.`] },
   midnight: { name: "MIDNIGHT RUN", logo: "assets/menu/logo_midnight.webp", x: true,
     how: [`Sticky cell multipliers for the whole bonus, every cell starting at <b>x4</b> and doubling up to <b>x2048</b>.`,
-          `Gas Pumps land far more often - and any cluster touching a <b>FULL TANK</b> column pays the max win. The biggest bonus in the game.`] },
+          `Gas Pumps land far more often - and any cluster touching a <b>FULL TANK</b> column pays the max win. <b>3</b> or more FALCOS Tokens at the end of a spin add <b>5</b> free spins. The biggest bonus in the game.`] },
 };
 function bonusIntroHow(kind) {
   return `<p><strong>${T("How it works")}</strong></p>` + BONUS_KINDS[kind].how.map(l => `<p>${T(l)}</p>`).join("");
@@ -8661,7 +8716,7 @@ function bonusIntro(spins, extreme, kind = extreme ? "midnight" : "premium", und
       `<div class="inner"><div class="bstack">` +
         `<img class="blogo" src="${K.logo}" alt="${T(K.name)}" draggable="false">` +
         `<div class="byou">${T("You won")}</div>` +
-        (K.noSpins ? "" :
+        (K.noSpins ? `<div class="bfs">${T("3 spins to fill the tank")}</div>` :
         `<div class="bnum" aria-label="${spins}"><i class="brays" aria-hidden="true"></i><div class="bfig">${numeralRow(REDUCED_MOTION ? String(spins) : "0")}</div></div>` +
         `<div class="bfs">${T("Free spins")}</div>`) +
         `<div class="bhow">${bonusIntroHow(kind)}</div>` +
@@ -8676,7 +8731,6 @@ function bonusIntro(spins, extreme, kind = extreme ? "midnight" : "premium", und
     // every piece of the screen drifts slightly on a random path of its own, so the whole thing
     // feels alive rather than printed; each stops with the screen
     for (const el of wrap.querySelectorAll(".blogo, .byou, .bnum, .bfs, .bhow")) hoverWin(el, { x: .5, y: .7, r: .5, s: 0, unit: "vh", pace: 2.2 }, 0);
-    tiltPlates([wrap.querySelector(".inner")]);   // and the whole screen tips toward the cursor, its pieces at their own depths
     // (the TV-glitch twitch is gone: owner, 2026-11-13 "get rid of the glitch fx")
     const step = (ms, fn) => setTimeout(fn, REDUCED_MOTION ? 0 : ms);
     let phase = 0;   // 0 fading to black, 1 up and waiting, 2 leaving

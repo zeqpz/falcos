@@ -52,7 +52,7 @@
         await app.init({ backgroundAlpha: 0, antialias: false, autoDensity: true, resolution: resolution(), width: 4, height: 4, preference: "webgl" });
       } catch (e) { console.warn("board canvas unavailable:", e.message); app = null; return false; }
       app.ticker.remove(app.render, app);
-      app.ticker.maxFPS = 63;   // (perf, 2026-11-10) a 120 Hz phone read all 35 cells and redrew twice as often as a 60 Hz one for no visible gain (63, not 60: Pixi floors the frame delta)
+      app.ticker.stop();   // the board runs its own frame loop (below): nothing of ours rides Pixi's ticker
       app.canvas.addEventListener("webglcontextlost", onLost, false);
       app.canvas.addEventListener("webglcontextrestored", onRestored, false);
       app.canvas.className = "boardgl";
@@ -73,7 +73,19 @@
       for (const t of ["animationend", "animationcancel", "transitionend", "transitioncancel"]) board.addEventListener(t, off, true);
       addEventListener("resize", () => { geoDirty = true; });
       if (typeof ResizeObserver === "function") new ResizeObserver(() => { geoDirty = true; }).observe(board);
-      app.ticker.add(tick, null, PIXI.UPDATE_PRIORITY.LOW);
+      // Its own frame loop, not Pixi's ticker (bug, 2026-11-17): with maxFPS set, the ticker could stall from the
+      // start and never call tick - no layout, no cells, a board of empty tiles ("the symbols dont load correctly",
+      // "the symbols can be invisable sometimes"). One requestAnimationFrame callback a frame, at most ~63 a second
+      // (perf, 2026-11-10: a 120 Hz phone redrew twice as often for no visible gain), and an error in one frame
+      // never stops the next.
+      let lastRun = 0;
+      const loop = now => {
+        requestAnimationFrame(loop);
+        if (now - lastRun < 15) return;
+        lastRun = now;
+        try { tick(); } catch (e) { console.warn("board canvas frame:", e); }
+      };
+      requestAnimationFrame(loop);
       document.addEventListener("visibilitychange", () => { dirty = true; geoDirty = true; });
       BoardGL.on = true;
       return true;
@@ -197,9 +209,14 @@
     }
     return { x, y };
   }
+  // A layout that cannot run yet (the board hidden or not built: offsetWidth 0, no cells) is retried every frame.
+  // (bug, 2026-11-17: it used to mark itself done before that check, so a board laid out a moment after the
+  // canvas came up - the first play, a replay - never had its cells registered and drew no symbols at all,
+  // or a column short: "the symbols can be invisable sometimes", "the symbols dont load correctly")
+  const cellsMissing = () => C.length < cellEls.length || cellEls.some((col, r) => !C[r] || C[r].length < col.length);
   function layout() {
+    if (!board.offsetWidth || !cellEls.length || cellEls.some(col => !col.length)) return;   // geoDirty stays: next frame
     geoDirty = false;
-    if (!board.offsetWidth) return;
     W = board.offsetWidth + 2 * PAD; H = board.offsetHeight + 2 * PAD;
     const r2 = resolution();
     if (r2 !== res || app.renderer.width !== Math.round(W * r2) || app.renderer.height !== Math.round(H * r2)) {
@@ -283,7 +300,7 @@
   // ---------------------------------------------------------------- the frame
   function tick() {
     if (document.hidden || !board) return;
-    if (geoDirty) layout();
+    if (geoDirty || cellsMissing()) layout();
     if (!C.length) return;
     const now = performance.now();
     const sweep = now - lastSweep > SWEEP_MS;

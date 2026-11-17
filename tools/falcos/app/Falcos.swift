@@ -106,9 +106,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKUIDelegate {
 
     func open() {
         status.removeFromSuperview()
-        web.load(URLRequest(url: gameURL))
-        // QA: `Falcos --snapshot <file.png> [seconds]` saves what the window shows, then quits
         let args = CommandLine.arguments
+        // QA: `--url <address>` opens another page of the local game (a replay); `--js <code>` runs once it loads
+        var url = gameURL
+        if let i = args.firstIndex(of: "--url"), i + 1 < args.count, let u = URL(string: args[i + 1]) { url = u }
+        web.load(URLRequest(url: url))
+        if let i = args.firstIndex(of: "--js"), i + 1 < args.count {
+            let code = args[i + 1]
+            DispatchQueue.main.asyncAfter(deadline: .now() + 6) { self.web.evaluateJavaScript(code, completionHandler: nil) }
+        }
+        // QA: `Falcos --snapshot <file.png> [seconds]` saves what the window shows, then quits
         if let i = args.firstIndex(of: "--snapshot"), i + 1 < args.count {
             let out = args[i + 1], wait = i + 2 < args.count ? Double(args[i + 2]) ?? 10 : 10
             DispatchQueue.main.asyncAfter(deadline: .now() + wait) {
