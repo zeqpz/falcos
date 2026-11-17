@@ -3377,7 +3377,7 @@ const SYM_FIT = .92;   // a symbol fills this share of its tile (--sym-fit, boar
 // the Gas Pump drawn bigger than the rest (owner, 2026-11-17: "make the gas pump symbol stand out more")
 window.symScaleOf = name => name === "GP" ? 1.22 : state.fill && /^FD/.test(name) ? 1.25 : 1;
 const TILE_TINT = { H1: "236,176,48", H2: "236,176,48", H3: "232,44,58", H4: "70,110,255",
-                    FDG: "80,220,90", FDA: "255,170,40", FDR: "255,50,60", ST: "255,170,40", GT: "245,197,24", GP: "255,90,30", ZP: "255,110,30" };
+                    FDG: "80,220,90", FDA: "255,170,40", FDR: "255,50,60", ST: "255,170,40", GT: "245,197,24", GP: "255,170,40", ZP: "255,110,30" };
 const tileArt = { cell: null };
 (() => { const im = new Image(); im.onload = () => { tileArt.cell = im; tileStamps.clear(); paintTiles(true); }; im.src = "assets/fillup/cell.webp"; })();
 const tileStamps = new Map();
@@ -3392,8 +3392,7 @@ function tileKindOf(r, y) {
     return "F" + (f ? (f.name === "FD" ? fdArt(f.value) : f.name) : "");
   }
   const s = shownSym[r] && shownSym[r][y], n = s && (typeof artOf === "function" ? artOf(s.name) : s.name);
-  // the Gas Pump's tile glows on every board (owner, 2026-11-17: "make the gas pump symbol stand out more")
-  return /^H[1-4]$|^GP$/.test(n) ? n : "";
+  return /^H[1-4]$/.test(n) ? n : "";   // (no glowing tile for the Gas Pump: owner, 2026-11-17)
 }
 function tileStamp(kind, w, h, k) {
   const key = kind + w + "x" + h + "@" + k;
@@ -3417,9 +3416,8 @@ function tileStamp(kind, w, h, k) {
     g.fillStyle = lg; g.fill();
   }
   g.save(); rr(0, 0, w, h, rad); g.clip();
-  const pump = kind === "GP" || kind === "FGP";
-  if (tint) {   // the tier's faint glow, centred a little low (behind the body of the symbol); the pump's strong
-    const a0 = pump ? .72 : fuel ? .55 : .34, a1 = pump ? .32 : fuel ? .22 : .12;
+  if (tint) {   // the tier's faint glow, centred a little low (behind the body of the symbol)
+    const a0 = fuel ? .55 : .34, a1 = fuel ? .22 : .12;
     const rg = g.createRadialGradient(w / 2, h * .55, 0, w / 2, h * .55, Math.max(w, h) * .62);
     rg.addColorStop(0, `rgba(${tint},${a0})`); rg.addColorStop(.55, `rgba(${tint},${a1})`); rg.addColorStop(1, `rgba(${tint},0)`);
     g.fillStyle = rg; g.fillRect(0, 0, w, h);
@@ -3433,11 +3431,7 @@ function tileStamp(kind, w, h, k) {
   hl.addColorStop(0, "rgba(255,255,255,.075)"); hl.addColorStop(1, "rgba(255,255,255,0)");
   g.fillStyle = hl; g.fillRect(0, 0, w, h * .5);
   g.restore();
-  if (pump) {   // the pump's glowing orange rim
-    rr(2, 2, w - 4, h - 4, rad - 2);
-    g.save(); g.shadowColor = "rgba(255,110,30,.95)"; g.shadowBlur = Math.max(4, w * .09);
-    g.lineWidth = Math.max(2.5, w * .035); g.strokeStyle = "rgba(255,150,60,.95)"; g.stroke(); g.stroke(); g.restore();
-  } else if (!(fuel && tileArt.cell)) {   // the faint white inner rim
+  if (!(fuel && tileArt.cell)) {   // the faint white inner rim
     rr(1, 1, w - 2, h - 2, rad - 1);
     g.lineWidth = 1.5; g.strokeStyle = fuel ? "rgba(255,214,150,.16)" : "rgba(255,255,255,.15)"; g.stroke();
   }
