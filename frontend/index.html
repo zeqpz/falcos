@@ -576,8 +576,10 @@
   body.features-up #app { opacity: 0; }
   .features {
     position: fixed; inset: 0; z-index: 58; overflow: hidden;
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2.2vh;
-    padding: 3vh 4vw 4vh; user-select: none;
+    /* down the screen, the top third left clear so the FALCOS sign on the building shows above the cards
+       (owner, 2026-11-17: "scoot the load in screen down some so you can see the falcos sign") */
+    display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 2.2vh;
+    padding: 36vh 4vw 4vh; user-select: none;
     opacity: 0; transition: opacity .6s ease;
     -webkit-backdrop-filter: brightness(.5) sepia(.55) saturate(1.5) hue-rotate(-8deg);
     backdrop-filter: brightness(.5) sepia(.55) saturate(1.5) hue-rotate(-8deg);
@@ -590,7 +592,7 @@
   /* a card: the picture sits in the frame's window (11.2-89.5% across, 7.7-70.2% down), the frame over it,
      the title on the frame's cream plate below */
   .lcard {
-    position: relative; width: min(19vw, calc((100vh - 24vh - 26vh) * 760 / 1154)); aspect-ratio: 760 / 1154; flex: none;
+    position: relative; width: min(19vw, calc((100vh - 40vh - 24vh) * 760 / 1154)); aspect-ratio: 760 / 1154; flex: none;
     filter: drop-shadow(0 12px 22px rgba(0, 0, 0, .7));
     opacity: 0; transform: translateY(4vh) scale(.92);
   }
@@ -641,14 +643,14 @@
   }
   .features.ready .fcont { opacity: 1; animation: bcont 1.5s ease-in-out infinite; }
   @media (orientation: portrait) {
-    .features { gap: 2.6vh; justify-content: center; }
+    .features { gap: 2.6vh; justify-content: flex-end; padding-top: 30vh; }
     .lcards { gap: 2.4vw; }
     .lcard { width: min(29vw, 220px); }
     .lbar { width: min(88vw, 560px); }
   }
   @media (max-height: 520px) and (orientation: landscape) {
-    .features { gap: 1.2vh; padding: 2vh 4vw; }
-    .lcard { width: calc((100vh - 18vh - 30vh) * 760 / 1154); }
+    .features { gap: 1.2vh; padding: 36vh 4vw 2vh; }
+    .lcard { width: calc((100vh - 38vh - 28vh) * 760 / 1154); }
   }
   @media (prefers-reduced-motion: reduce) {
     .features .lcard, .features .fcont, .lbar .lbfuel, .lbar .lbfuel::after { animation: none !important; opacity: 1; transform: none; }
@@ -2346,6 +2348,17 @@
   .hudframe button:disabled, .hudframe .sidebtn:disabled, .hudframe .sidebtn.on:disabled, .hudframe .hudbtn:disabled { opacity: 1; cursor: default; filter: none; }
   .hudframe .sidebtn:disabled::before { filter: none; }
   .hudframe .sidebtn.on:disabled::before { filter: drop-shadow(0 0 5px rgba(79, 155, 255, .75)); }
+  /* Rapid on, plain to see (owner, 2026-11-17: "when you click the rapid symbol make there some way to know its
+     enabled"): the tab fills orange and the bolt goes white and glows; a notice says RAPID ON / OFF as it is pressed */
+  .hudframe .sidebtn.rapid.on .tabshape path, .hudframe .sidebtn.rapid.on:hover:not(:disabled) .tabshape path {
+    fill: rgba(255, 122, 26, .88); stroke: #FFD9A8;
+  }
+  .hudframe .sidebtn.rapid.on, .hudframe .sidebtn.rapid.on:disabled { color: #fff; }
+  .hudframe .sidebtn.rapid.on::before, .hudframe .sidebtn.rapid.on:disabled::before {
+    filter: drop-shadow(0 0 6px rgba(255, 214, 160, .95)); animation: rapidGlow 1.4s ease-in-out infinite;
+  }
+  @keyframes rapidGlow { 50% { filter: drop-shadow(0 0 11px rgba(255, 190, 120, 1)); } }
+  @media (prefers-reduced-motion: reduce) { .hudframe .sidebtn.rapid.on::before { animation: none; } }
   .hud button:focus { outline: none; }
   .hud button:focus-visible { outline: none; }
   .hudframe :is(.hudbtn, .sidebtn):focus-visible .tabshape path { stroke: #fff; }
@@ -3307,7 +3320,7 @@ const TEMPO_FAST = .3;   // was .4: a losing Rapid spin with a drop took 2.5-4.3
 // its every hold, wait and CSS animation runs at BONUS_PACE (Rapid and Skip still hurry it, at their own pace).
 // PREMIUM and MIDNIGHT RUN play at the base game's pace (owner, 2026-11-17: "the 2nd and 3rd bonus keep those at a
 // normal pace"). The symbols' own Blender clips keep their speed, as always (rigPlay).
-const BONUS_PACE = 1.7;
+const BONUS_PACE = 1.4;   // was 1.7 (owner, 2026-11-17: "the first bonus feels a tad bit to slow speed it up a little bit")
 const tempo = () => (state.skip || $("turbo").checked) ? TEMPO_FAST : state.bonus === "fillup" ? BONUS_PACE : 1;
 // The Multi's whole show - the can spraying its value on, the blow-out and its neighbours' pops,
 // the value landing - plays this many times faster than it was first timed (owner, 2026-10-22:
@@ -9028,7 +9041,11 @@ function setRapid(on) {
   try { localStorage.setItem("falcos.rapid", on ? "1" : "0"); } catch (e) { /* storage blocked */ }
   syncTempo();
 }
-$("rapidBtn").addEventListener("click", () => { setRapid(!$("turbo").checked); sfx("toggle"); });
+$("rapidBtn").addEventListener("click", () => {
+  const on = !$("turbo").checked;
+  setRapid(on); sfx("toggle");
+  notice(on ? T("<b>RAPID ON</b> — spins play fast") : T("<b>RAPID OFF</b> — normal speed"), false, 1800);
+});
 let rapidWas = false;
 try { rapidWas = localStorage.getItem("falcos.rapid") === "1"; } catch (e) { /* storage blocked */ }
 setRapid(rapidWas);
