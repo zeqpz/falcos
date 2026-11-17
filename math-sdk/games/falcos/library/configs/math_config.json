@@ -56,7 +56,7 @@
                 {
                     "name": "midnight",
                     "hr": "14000.0",
-                    "rtp": "0.0974274",
+                    "rtp": "0.1075864",
                     "identity_condition": {
                         "search": [
                             {
@@ -72,7 +72,7 @@
                 {
                     "name": "premium",
                     "hr": "2700.0",
-                    "rtp": "0.291736",
+                    "rtp": "0.3100119",
                     "identity_condition": {
                         "search": [
                             {
@@ -88,7 +88,7 @@
                 {
                     "name": "fillup",
                     "hr": "400.0",
-                    "rtp": "0.3450458",
+                    "rtp": "0.3796442",
                     "identity_condition": {
                         "search": [
                             {
@@ -115,7 +115,7 @@
                 {
                     "name": "basegame",
                     "hr": "3.0",
-                    "rtp": "0.2245408",
+                    "rtp": "0.1615075",
                     "identity_condition": {
                         "search": [],
                         "win_range_start": -1,
@@ -142,7 +142,7 @@
                 {
                     "name": "midnight",
                     "hr": "6363.636363636363",
-                    "rtp": "0.0671747",
+                    "rtp": "0.0705489",
                     "identity_condition": {
                         "search": [
                             {
@@ -158,7 +158,7 @@
                 {
                     "name": "premium",
                     "hr": "1227.2727272727273",
-                    "rtp": "0.2199853",
+                    "rtp": "0.2040398",
                     "identity_condition": {
                         "search": [
                             {
@@ -174,7 +174,7 @@
                 {
                     "name": "fillup",
                     "hr": "181.8181818181818",
-                    "rtp": "0.2359882",
+                    "rtp": "0.2239813",
                     "identity_condition": {
                         "search": [
                             {
@@ -201,7 +201,7 @@
                 {
                     "name": "basegame",
                     "hr": "2.5",
-                    "rtp": "0.4372685",
+                    "rtp": "0.4618467",
                     "identity_condition": {
                         "search": [],
                         "win_range_start": -1,
@@ -437,7 +437,7 @@
             "dresses": [
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.06971799943729577",
+                    "scale_factor": "0.047476055693959636",
                     "identity_condition_win_range": [
                         0.195,
                         0.205
@@ -446,7 +446,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.05139337194152967",
+                    "scale_factor": "0.03841764354129457",
                     "identity_condition_win_range": [
                         0.295,
                         0.305
@@ -455,7 +455,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.06555931505869543",
+                    "scale_factor": "0.05266515168404519",
                     "identity_condition_win_range": [
                         0.395,
                         0.405
@@ -464,7 +464,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.03333374430943351",
+                    "scale_factor": "0.028309212829935575",
                     "identity_condition_win_range": [
                         0.495,
                         0.505
@@ -473,7 +473,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.04348529856480897",
+                    "scale_factor": "0.03846940034326268",
                     "identity_condition_win_range": [
                         0.595,
                         0.605
@@ -482,7 +482,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.016173219582913585",
+                    "scale_factor": "0.01481557691157846",
                     "identity_condition_win_range": [
                         0.695,
                         0.705
@@ -491,7 +491,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.07060404147482108",
+                    "scale_factor": "0.06683591680280297",
                     "identity_condition_win_range": [
                         0.795,
                         0.805
@@ -500,7 +500,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.014626501241026877",
+                    "scale_factor": "0.01406823582138363",
                     "identity_condition_win_range": [
                         0.895,
                         0.905
@@ -509,7 +509,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.042801556420233464",
+                    "scale_factor": "0.04259654570153309",
                     "identity_condition_win_range": [
                         0.995,
                         1.005
@@ -518,7 +518,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.02198167494056228",
+                    "scale_factor": "0.022663294511825274",
                     "identity_condition_win_range": [
                         1.095,
                         1.105
@@ -527,7 +527,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.10983036640275112",
+                    "scale_factor": "0.1141530343659065",
                     "identity_condition_win_range": [
                         1.195,
                         1.205
@@ -536,7 +536,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.008409076309038716",
+                    "scale_factor": "0.008930048353540113",
                     "identity_condition_win_range": [
                         1.295,
                         1.305
@@ -545,7 +545,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.07044781947301101",
+                    "scale_factor": "0.07578071784871601",
                     "identity_condition_win_range": [
                         1.395,
                         1.405
@@ -554,7 +554,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.026449494742061277",
+                    "scale_factor": "0.029273399699087866",
                     "identity_condition_win_range": [
                         1.495,
                         1.505
@@ -563,7 +563,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.12852072998423975",
+                    "scale_factor": "0.14389173093808702",
                     "identity_condition_win_range": [
                         1.595,
                         1.605
@@ -572,7 +572,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.011001488781205675",
+                    "scale_factor": "0.012455788191348119",
                     "identity_condition_win_range": [
                         1.695,
                         1.705
@@ -581,7 +581,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.08928142768666439",
+                    "scale_factor": "0.10306308802190421",
                     "identity_condition_win_range": [
                         1.795,
                         1.805
@@ -590,7 +590,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.02251013708813876",
+                    "scale_factor": "0.026171585179115463",
                     "identity_condition_win_range": [
                         1.895,
                         1.905
@@ -599,7 +599,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.18041241099081243",
+                    "scale_factor": "0.21198178193706493",
                     "identity_condition_win_range": [
                         1.995,
                         2.005
@@ -608,7 +608,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.023244124511420404",
+                    "scale_factor": "0.027678462904445346",
                     "identity_condition_win_range": [
                         2.095,
                         2.105
@@ -617,7 +617,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.07316070300735024",
+                    "scale_factor": "0.08722704321684055",
                     "identity_condition_win_range": [
                         2.195,
                         2.205
@@ -626,7 +626,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.02509037872442371",
+                    "scale_factor": "0.029593433193716188",
                     "identity_condition_win_range": [
                         2.295,
                         2.305
@@ -635,7 +635,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.20087316654543794",
+                    "scale_factor": "0.24439653640143227",
                     "identity_condition_win_range": [
                         2.395,
                         2.405
@@ -644,7 +644,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.012850373078184305",
+                    "scale_factor": "0.015952247478450626",
                     "identity_condition_win_range": [
                         2.495,
                         2.505
@@ -653,7 +653,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.11631603886106054",
+                    "scale_factor": "0.14634371895180506",
                     "identity_condition_win_range": [
                         2.595,
                         2.605
@@ -662,7 +662,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.04127063951706528",
+                    "scale_factor": "0.051546360629645675",
                     "identity_condition_win_range": [
                         2.695,
                         2.705
@@ -671,7 +671,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.09781709896173986",
+                    "scale_factor": "0.12407703357051361",
                     "identity_condition_win_range": [
                         2.795,
                         2.805
@@ -680,7 +680,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.02435853868062052",
+                    "scale_factor": "0.03132895476891316",
                     "identity_condition_win_range": [
                         2.895,
                         2.905
@@ -689,7 +689,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.12702308936884538",
+                    "scale_factor": "0.1654764064428555",
                     "identity_condition_win_range": [
                         2.995,
                         3.005
@@ -698,7 +698,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.020874968026833238",
+                    "scale_factor": "0.025626126506689825",
                     "identity_condition_win_range": [
                         3.095,
                         3.105
@@ -707,7 +707,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.1873419527217073",
+                    "scale_factor": "0.24316981477281985",
                     "identity_condition_win_range": [
                         3.195,
                         3.205
@@ -716,7 +716,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.02174728725683908",
+                    "scale_factor": "0.028846740032186756",
                     "identity_condition_win_range": [
                         3.295,
                         3.305
@@ -725,7 +725,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.10245015806265186",
+                    "scale_factor": "0.13588258292961983",
                     "identity_condition_win_range": [
                         3.395,
                         3.405
@@ -734,7 +734,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.03634361889001172",
+                    "scale_factor": "0.04889005658858766",
                     "identity_condition_win_range": [
                         3.495,
                         3.505
@@ -743,7 +743,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.15555254125053875",
+                    "scale_factor": "0.21066398887152718",
                     "identity_condition_win_range": [
                         3.595,
                         3.605
@@ -752,7 +752,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.01949820106016101",
+                    "scale_factor": "0.02542397024365895",
                     "identity_condition_win_range": [
                         3.695,
                         3.705
@@ -761,7 +761,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.09125771868914888",
+                    "scale_factor": "0.12397998042967506",
                     "identity_condition_win_range": [
                         3.795,
                         3.805
@@ -770,7 +770,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.036071549503738004",
+                    "scale_factor": "0.049793998991548655",
                     "identity_condition_win_range": [
                         3.895,
                         3.905
@@ -779,7 +779,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.16396240019445735",
+                    "scale_factor": "0.22770967552694263",
                     "identity_condition_win_range": [
                         3.995,
                         4.005
@@ -788,7 +788,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.020094221562967342",
+                    "scale_factor": "0.028071692093230873",
                     "identity_condition_win_range": [
                         4.095,
                         4.105
@@ -797,7 +797,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.1463819131993658",
+                    "scale_factor": "0.20420674328078414",
                     "identity_condition_win_range": [
                         4.195,
                         4.205
@@ -806,7 +806,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.033700143078995416",
+                    "scale_factor": "0.04915363291244172",
                     "identity_condition_win_range": [
                         4.295,
                         4.305
@@ -815,7 +815,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.12308876967480238",
+                    "scale_factor": "0.17327459317073526",
                     "identity_condition_win_range": [
                         4.395,
                         4.405
@@ -824,7 +824,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0281289646044062",
+                    "scale_factor": "0.04017935718599182",
                     "identity_condition_win_range": [
                         4.495,
                         4.505
@@ -833,7 +833,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.05591082776260658",
+                    "scale_factor": "0.08028307237847024",
                     "identity_condition_win_range": [
                         4.595,
                         4.605
@@ -842,7 +842,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.013854365619472212",
+                    "scale_factor": "0.01999606410787527",
                     "identity_condition_win_range": [
                         4.695,
                         4.705
@@ -851,7 +851,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.1630175757603157",
+                    "scale_factor": "0.2345777655636387",
                     "identity_condition_win_range": [
                         4.795,
                         4.805
@@ -860,7 +860,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.013494067706901426",
+                    "scale_factor": "0.019670775568576146",
                     "identity_condition_win_range": [
                         4.895,
                         4.905
@@ -869,7 +869,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.11720368185593306",
+                    "scale_factor": "0.1675903791984233",
                     "identity_condition_win_range": [
                         4.995,
                         5.005
@@ -878,7 +878,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.001570185406314849",
+                    "scale_factor": "0.002019468889461492",
                     "identity_condition_win_range": [
                         5.095,
                         5.105
@@ -887,7 +887,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.003645073264659471",
+                    "scale_factor": "0.004456758928466741",
                     "identity_condition_win_range": [
                         5.195,
                         5.205
@@ -896,7 +896,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0005047024520297729",
+                    "scale_factor": "0.0006267317243156354",
                     "identity_condition_win_range": [
                         5.295,
                         5.305
@@ -905,7 +905,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.003140370812629698",
+                    "scale_factor": "0.003899664062408398",
                     "identity_condition_win_range": [
                         5.395,
                         5.405
@@ -914,7 +914,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0007850927031574245",
+                    "scale_factor": "0.0009749160156020995",
                     "identity_condition_win_range": [
                         5.495,
                         5.505
@@ -923,7 +923,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.004766634269170077",
+                    "scale_factor": "0.00591913295186989",
                     "identity_condition_win_range": [
                         5.595,
                         5.605
@@ -932,7 +932,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0005047024520297729",
+                    "scale_factor": "0.0005570948660583426",
                     "identity_condition_win_range": [
                         5.695,
                         5.705
@@ -941,7 +941,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0029721366619531067",
+                    "scale_factor": "0.0036907534876365194",
                     "identity_condition_win_range": [
                         5.795,
                         5.805
@@ -950,7 +950,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0013458732054127277",
+                    "scale_factor": "0.0017409214564323206",
                     "identity_condition_win_range": [
                         5.895,
                         5.905
@@ -959,7 +959,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0030842927624041678",
+                    "scale_factor": "0.003899664062408398",
                     "identity_condition_win_range": [
                         5.995,
                         6.005
@@ -968,7 +968,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0005607805022553032",
+                    "scale_factor": "0.0006963685825729282",
                     "identity_condition_win_range": [
                         6.095,
                         6.105
@@ -977,7 +977,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0026917464108254553",
+                    "scale_factor": "0.0033425691963500552",
                     "identity_condition_win_range": [
                         6.195,
                         6.205
@@ -986,7 +986,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0004486244018042426",
+                    "scale_factor": "0.0005570948660583426",
                     "identity_condition_win_range": [
                         6.295,
                         6.305
@@ -995,7 +995,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00543957087187644",
+                    "scale_factor": "0.0067547752509574035",
                     "identity_condition_win_range": [
                         6.395,
                         6.405
@@ -1004,7 +1004,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0006168585524808336",
+                    "scale_factor": "0.000766005440830221",
                     "identity_condition_win_range": [
                         6.495,
                         6.505
@@ -1013,7 +1013,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.002747824461050986",
+                    "scale_factor": "0.0033425691963500552",
                     "identity_condition_win_range": [
                         6.595,
                         6.605
@@ -1022,7 +1022,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0007290146529318941",
+                    "scale_factor": "0.0009052791573448067",
                     "identity_condition_win_range": [
                         6.695,
                         6.705
@@ -1031,7 +1031,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0030282147121786377",
+                    "scale_factor": "0.0037603903458938125",
                     "identity_condition_win_range": [
                         6.795,
                         6.805
@@ -1040,7 +1040,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0003364683013531819",
+                    "scale_factor": "0.0004178211495437569",
                     "identity_condition_win_range": [
                         6.895,
                         6.905
@@ -1049,7 +1049,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0017944976072169704",
+                    "scale_factor": "0.0022283794642333704",
                     "identity_condition_win_range": [
                         6.995,
                         7.005
@@ -1058,7 +1058,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0004486244018042426",
+                    "scale_factor": "0.0005570948660583426",
                     "identity_condition_win_range": [
                         7.095,
                         7.105
@@ -1067,7 +1067,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0032525269130807585",
+                    "scale_factor": "0.003969300920665691",
                     "identity_condition_win_range": [
                         7.195,
                         7.205
@@ -1076,7 +1076,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0002803902511276516",
+                    "scale_factor": "0.0003481842912864641",
                     "identity_condition_win_range": [
                         7.295,
                         7.305
@@ -1085,7 +1085,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0025235122601488646",
+                    "scale_factor": "0.0032032954798354696",
                     "identity_condition_win_range": [
                         7.395,
                         7.405
@@ -1094,7 +1094,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0005607805022553032",
+                    "scale_factor": "0.0006963685825729282",
                     "identity_condition_win_range": [
                         7.495,
                         7.505
@@ -1103,7 +1103,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0023552781094722734",
+                    "scale_factor": "0.002855111188549006",
                     "identity_condition_win_range": [
                         7.595,
                         7.605
@@ -1112,7 +1112,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0003364683013531819",
+                    "scale_factor": "0.0004178211495437569",
                     "identity_condition_win_range": [
                         7.695,
                         7.705
@@ -1121,7 +1121,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0016823415067659096",
+                    "scale_factor": "0.0021587426059760774",
                     "identity_condition_win_range": [
                         7.795,
                         7.805
@@ -1130,7 +1130,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0002243122009021213",
+                    "scale_factor": "0.0002785474330291713",
                     "identity_condition_win_range": [
                         7.895,
                         7.905
@@ -1139,7 +1139,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0025795903103743947",
+                    "scale_factor": "0.003133658621578177",
                     "identity_condition_win_range": [
                         7.995,
                         8.005
@@ -1148,7 +1148,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0002243122009021213",
+                    "scale_factor": "0.00020891057477187845",
                     "identity_condition_win_range": [
                         8.095,
                         8.105
@@ -1157,7 +1157,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0016262634565403793",
+                    "scale_factor": "0.002019468889461492",
                     "identity_condition_win_range": [
                         8.195,
                         8.205
@@ -1166,7 +1166,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0004486244018042426",
+                    "scale_factor": "0.0006267317243156354",
                     "identity_condition_win_range": [
                         8.295,
                         8.305
@@ -1175,7 +1175,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0006729366027063638",
+                    "scale_factor": "0.0008356422990875138",
                     "identity_condition_win_range": [
                         8.395,
                         8.405
@@ -1184,7 +1184,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0003364683013531819",
+                    "scale_factor": "0.0004178211495437569",
                     "identity_condition_win_range": [
                         8.495,
                         8.505
@@ -1193,7 +1193,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0006729366027063638",
+                    "scale_factor": "0.0008356422990875138",
                     "identity_condition_win_range": [
                         8.595,
                         8.605
@@ -1202,7 +1202,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0005047024520297729",
+                    "scale_factor": "0.0005570948660583426",
                     "identity_condition_win_range": [
                         8.695,
                         8.705
@@ -1211,7 +1211,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0020188098081190915",
+                    "scale_factor": "0.0024372900390052486",
                     "identity_condition_win_range": [
                         8.795,
                         8.805
@@ -1220,7 +1220,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0004486244018042426",
+                    "scale_factor": "0.0006267317243156354",
                     "identity_condition_win_range": [
                         8.895,
                         8.905
@@ -1229,7 +1229,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0023552781094722734",
+                    "scale_factor": "0.0029247480468062984",
                     "identity_condition_win_range": [
                         8.995,
                         9.005
@@ -1238,7 +1238,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00039254635157871223",
+                    "scale_factor": "0.0004178211495437569",
                     "identity_condition_win_range": [
                         9.095,
                         9.105
@@ -1247,7 +1247,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.001401951255638258",
+                    "scale_factor": "0.0018105583146896134",
                     "identity_condition_win_range": [
                         9.195,
                         9.205
@@ -1256,7 +1256,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00039254635157871223",
+                    "scale_factor": "0.00048745800780104976",
                     "identity_condition_win_range": [
                         9.295,
                         9.305
@@ -1265,7 +1265,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0004486244018042426",
+                    "scale_factor": "0.0005570948660583426",
                     "identity_condition_win_range": [
                         9.395,
                         9.405
@@ -1274,7 +1274,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0003364683013531819",
+                    "scale_factor": "0.0004178211495437569",
                     "identity_condition_win_range": [
                         9.495,
                         9.505
@@ -1283,7 +1283,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.002130965908570152",
+                    "scale_factor": "0.0026462006137771272",
                     "identity_condition_win_range": [
                         9.595,
                         9.605
@@ -1292,7 +1292,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "5.6078050225530326e-05",
+                    "scale_factor": "6.963685825729283e-05",
                     "identity_condition_win_range": [
                         9.695,
                         9.705
@@ -1301,7 +1301,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0008411707533829548",
+                    "scale_factor": "0.0010445528738593924",
                     "identity_condition_win_range": [
                         9.795,
                         9.805
@@ -1310,7 +1310,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00039254635157871223",
+                    "scale_factor": "0.00048745800780104976",
                     "identity_condition_win_range": [
                         9.895,
                         9.905
@@ -1319,7 +1319,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0007850927031574245",
+                    "scale_factor": "0.0009749160156020995",
                     "identity_condition_win_range": [
                         9.995,
                         10.005
@@ -1328,7 +1328,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00016823415067659096",
+                    "scale_factor": "0.00020891057477187845",
                     "identity_condition_win_range": [
                         10.095,
                         10.105
@@ -1337,7 +1337,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0007850927031574245",
+                    "scale_factor": "0.0009052791573448067",
                     "identity_condition_win_range": [
                         10.195,
                         10.205
@@ -1346,7 +1346,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0002243122009021213",
+                    "scale_factor": "0.0002785474330291713",
                     "identity_condition_win_range": [
                         10.295,
                         10.305
@@ -1355,7 +1355,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.001401951255638258",
+                    "scale_factor": "0.0016016477399177348",
                     "identity_condition_win_range": [
                         10.395,
                         10.405
@@ -1364,7 +1364,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0002243122009021213",
+                    "scale_factor": "0.0003481842912864641",
                     "identity_condition_win_range": [
                         10.495,
                         10.505
@@ -1373,7 +1373,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0007290146529318941",
+                    "scale_factor": "0.0008356422990875138",
                     "identity_condition_win_range": [
                         10.595,
                         10.605
@@ -1382,7 +1382,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00011215610045106065",
+                    "scale_factor": "0.00013927371651458565",
                     "identity_condition_win_range": [
                         10.695,
                         10.705
@@ -1391,7 +1391,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0011776390547361367",
+                    "scale_factor": "0.0013927371651458564",
                     "identity_condition_win_range": [
                         10.795,
                         10.805
@@ -1400,7 +1400,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0007850927031574245",
+                    "scale_factor": "0.0009749160156020995",
                     "identity_condition_win_range": [
                         10.995,
                         11.005
@@ -1409,7 +1409,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0002243122009021213",
+                    "scale_factor": "0.0002785474330291713",
                     "identity_condition_win_range": [
                         11.095,
                         11.105
@@ -1418,7 +1418,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0007850927031574245",
+                    "scale_factor": "0.0009052791573448067",
                     "identity_condition_win_range": [
                         11.195,
                         11.205
@@ -1427,7 +1427,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00011215610045106065",
+                    "scale_factor": "0.00013927371651458565",
                     "identity_condition_win_range": [
                         11.295,
                         11.305
@@ -1436,7 +1436,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0006168585524808336",
+                    "scale_factor": "0.0006963685825729282",
                     "identity_condition_win_range": [
                         11.395,
                         11.405
@@ -1445,7 +1445,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00011215610045106065",
+                    "scale_factor": "0.00013927371651458565",
                     "identity_condition_win_range": [
                         11.495,
                         11.505
@@ -1454,7 +1454,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0010094049040595457",
+                    "scale_factor": "0.001183826590373978",
                     "identity_condition_win_range": [
                         11.595,
                         11.605
@@ -1463,7 +1463,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00016823415067659096",
+                    "scale_factor": "0.00020891057477187845",
                     "identity_condition_win_range": [
                         11.695,
                         11.705
@@ -1472,7 +1472,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0005047024520297729",
+                    "scale_factor": "0.0006267317243156354",
                     "identity_condition_win_range": [
                         11.795,
                         11.805
@@ -1481,7 +1481,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00011215610045106065",
+                    "scale_factor": "0.00020891057477187845",
                     "identity_condition_win_range": [
                         11.895,
                         11.905
@@ -1490,7 +1490,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0008411707533829548",
+                    "scale_factor": "0.0010445528738593924",
                     "identity_condition_win_range": [
                         11.995,
                         12.005
@@ -1499,7 +1499,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00011215610045106065",
+                    "scale_factor": "0.00013927371651458565",
                     "identity_condition_win_range": [
                         12.095,
                         12.105
@@ -1508,7 +1508,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0002803902511276516",
+                    "scale_factor": "0.0003481842912864641",
                     "identity_condition_win_range": [
                         12.195,
                         12.205
@@ -1517,7 +1517,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "5.6078050225530326e-05",
+                    "scale_factor": "6.963685825729283e-05",
                     "identity_condition_win_range": [
                         12.295,
                         12.305
@@ -1526,7 +1526,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0005607805022553032",
+                    "scale_factor": "0.0006963685825729282",
                     "identity_condition_win_range": [
                         12.395,
                         12.405
@@ -1535,7 +1535,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0007850927031574245",
+                    "scale_factor": "0.0009749160156020995",
                     "identity_condition_win_range": [
                         12.595,
                         12.605
@@ -1544,7 +1544,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0010094049040595457",
+                    "scale_factor": "0.0011141897321166852",
                     "identity_condition_win_range": [
                         12.795,
                         12.805
@@ -1553,7 +1553,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00016823415067659096",
+                    "scale_factor": "0.00020891057477187845",
                     "identity_condition_win_range": [
                         12.895,
                         12.905
@@ -1562,7 +1562,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0005607805022553032",
+                    "scale_factor": "0.0006267317243156354",
                     "identity_condition_win_range": [
                         12.995,
                         13.005
@@ -1571,7 +1571,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00011215610045106065",
+                    "scale_factor": "0.00013927371651458565",
                     "identity_condition_win_range": [
                         13.095,
                         13.105
@@ -1580,7 +1580,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0007290146529318941",
+                    "scale_factor": "0.0009749160156020995",
                     "identity_condition_win_range": [
                         13.195,
                         13.205
@@ -1589,7 +1589,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00016823415067659096",
+                    "scale_factor": "0.00020891057477187845",
                     "identity_condition_win_range": [
                         13.295,
                         13.305
@@ -1598,7 +1598,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00039254635157871223",
+                    "scale_factor": "0.00048745800780104976",
                     "identity_condition_win_range": [
                         13.395,
                         13.405
@@ -1607,7 +1607,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00016823415067659096",
+                    "scale_factor": "0.00020891057477187845",
                     "identity_condition_win_range": [
                         13.495,
                         13.505
@@ -1616,7 +1616,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0006168585524808336",
+                    "scale_factor": "0.000766005440830221",
                     "identity_condition_win_range": [
                         13.595,
                         13.605
@@ -1625,7 +1625,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0005047024520297729",
+                    "scale_factor": "0.0006267317243156354",
                     "identity_condition_win_range": [
                         13.795,
                         13.805
@@ -1634,7 +1634,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0002243122009021213",
+                    "scale_factor": "0.0002785474330291713",
                     "identity_condition_win_range": [
                         13.895,
                         13.905
@@ -1643,7 +1643,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0007850927031574245",
+                    "scale_factor": "0.0009749160156020995",
                     "identity_condition_win_range": [
                         13.995,
                         14.005
@@ -1652,7 +1652,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "5.6078050225530326e-05",
+                    "scale_factor": "6.963685825729283e-05",
                     "identity_condition_win_range": [
                         14.095,
                         14.105
@@ -1661,7 +1661,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0005047024520297729",
+                    "scale_factor": "0.0006267317243156354",
                     "identity_condition_win_range": [
                         14.195,
                         14.205
@@ -1670,7 +1670,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00011215610045106065",
+                    "scale_factor": "0.00013927371651458565",
                     "identity_condition_win_range": [
                         14.295,
                         14.305
@@ -1679,7 +1679,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0002803902511276516",
+                    "scale_factor": "0.0003481842912864641",
                     "identity_condition_win_range": [
                         14.395,
                         14.405
@@ -1688,7 +1688,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0005607805022553032",
+                    "scale_factor": "0.0006267317243156354",
                     "identity_condition_win_range": [
                         14.595,
                         14.605
@@ -1697,7 +1697,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00011215610045106065",
+                    "scale_factor": "0.00013927371651458565",
                     "identity_condition_win_range": [
                         14.695,
                         14.705
@@ -1706,7 +1706,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00039254635157871223",
+                    "scale_factor": "0.00048745800780104976",
                     "identity_condition_win_range": [
                         14.795,
                         14.805
@@ -1715,7 +1715,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00016823415067659096",
+                    "scale_factor": "0.00020891057477187845",
                     "identity_condition_win_range": [
                         14.895,
                         14.905
@@ -1724,7 +1724,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00011215610045106065",
+                    "scale_factor": "0.00013927371651458565",
                     "identity_condition_win_range": [
                         14.995,
                         15.005
@@ -1733,7 +1733,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00011215610045106065",
+                    "scale_factor": "0.00013927371651458565",
                     "identity_condition_win_range": [
                         15.095,
                         15.105
@@ -1742,7 +1742,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0007850927031574245",
+                    "scale_factor": "0.0009749160156020995",
                     "identity_condition_win_range": [
                         15.195,
                         15.205
@@ -1751,7 +1751,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "5.6078050225530326e-05",
+                    "scale_factor": "6.963685825729283e-05",
                     "identity_condition_win_range": [
                         15.295,
                         15.305
@@ -1760,7 +1760,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0005047024520297729",
+                    "scale_factor": "0.0006267317243156354",
                     "identity_condition_win_range": [
                         15.395,
                         15.405
@@ -1769,7 +1769,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "5.6078050225530326e-05",
+                    "scale_factor": "6.963685825729283e-05",
                     "identity_condition_win_range": [
                         15.495,
                         15.505
@@ -1778,7 +1778,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0002803902511276516",
+                    "scale_factor": "0.0003481842912864641",
                     "identity_condition_win_range": [
                         15.595,
                         15.605
@@ -1787,7 +1787,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0002803902511276516",
+                    "scale_factor": "0.0002785474330291713",
                     "identity_condition_win_range": [
                         15.795,
                         15.805
@@ -1796,7 +1796,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00039254635157871223",
+                    "scale_factor": "0.00048745800780104976",
                     "identity_condition_win_range": [
                         15.995,
                         16.005
@@ -1805,7 +1805,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0003364683013531819",
+                    "scale_factor": "0.0003481842912864641",
                     "identity_condition_win_range": [
                         16.195,
                         16.205
@@ -1814,7 +1814,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0003364683013531819",
+                    "scale_factor": "0.0004178211495437569",
                     "identity_condition_win_range": [
                         16.395,
                         16.405
@@ -1823,7 +1823,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00011215610045106065",
+                    "scale_factor": "0.00013927371651458565",
                     "identity_condition_win_range": [
                         16.495,
                         16.505
@@ -1832,7 +1832,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0002243122009021213",
+                    "scale_factor": "0.0002785474330291713",
                     "identity_condition_win_range": [
                         16.595,
                         16.605
@@ -1841,7 +1841,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0003364683013531819",
+                    "scale_factor": "0.0004178211495437569",
                     "identity_condition_win_range": [
                         16.795,
                         16.805
@@ -1850,7 +1850,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "5.6078050225530326e-05",
+                    "scale_factor": "6.963685825729283e-05",
                     "identity_condition_win_range": [
                         16.895,
                         16.905
@@ -1859,7 +1859,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00011215610045106065",
+                    "scale_factor": "0.00013927371651458565",
                     "identity_condition_win_range": [
                         16.995,
                         17.005
@@ -1868,7 +1868,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0002243122009021213",
+                    "scale_factor": "0.0002785474330291713",
                     "identity_condition_win_range": [
                         17.195,
                         17.205
@@ -1877,7 +1877,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00011215610045106065",
+                    "scale_factor": "0.00013927371651458565",
                     "identity_condition_win_range": [
                         17.295,
                         17.305
@@ -1886,7 +1886,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0002803902511276516",
+                    "scale_factor": "0.0003481842912864641",
                     "identity_condition_win_range": [
                         17.395,
                         17.405
@@ -1895,7 +1895,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00011215610045106065",
+                    "scale_factor": "0.00013927371651458565",
                     "identity_condition_win_range": [
                         17.495,
                         17.505
@@ -1904,7 +1904,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00016823415067659096",
+                    "scale_factor": "0.00020891057477187845",
                     "identity_condition_win_range": [
                         17.595,
                         17.605
@@ -1913,7 +1913,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "5.6078050225530326e-05",
+                    "scale_factor": "6.963685825729283e-05",
                     "identity_condition_win_range": [
                         17.695,
                         17.705
@@ -1922,7 +1922,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0002803902511276516",
+                    "scale_factor": "0.0003481842912864641",
                     "identity_condition_win_range": [
                         17.795,
                         17.805
@@ -1931,7 +1931,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00016823415067659096",
+                    "scale_factor": "0.00020891057477187845",
                     "identity_condition_win_range": [
                         17.895,
                         17.905
@@ -1940,7 +1940,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0008411707533829548",
+                    "scale_factor": "0.0010445528738593924",
                     "identity_condition_win_range": [
                         17.995,
                         18.005
@@ -1949,7 +1949,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "5.6078050225530326e-05",
+                    "scale_factor": "6.963685825729283e-05",
                     "identity_condition_win_range": [
                         18.095,
                         18.105
@@ -1958,7 +1958,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00016823415067659096",
+                    "scale_factor": "0.00020891057477187845",
                     "identity_condition_win_range": [
                         18.195,
                         18.205
@@ -1967,7 +1967,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00011215610045106065",
+                    "scale_factor": "0.00013927371651458565",
                     "identity_condition_win_range": [
                         18.295,
                         18.305
@@ -1976,7 +1976,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0006168585524808336",
+                    "scale_factor": "0.000766005440830221",
                     "identity_condition_win_range": [
                         18.395,
                         18.405
@@ -1985,7 +1985,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0002243122009021213",
+                    "scale_factor": "0.00020891057477187845",
                     "identity_condition_win_range": [
                         18.595,
                         18.605
@@ -1994,7 +1994,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "5.6078050225530326e-05",
+                    "scale_factor": "6.963685825729283e-05",
                     "identity_condition_win_range": [
                         18.695,
                         18.705
@@ -2003,7 +2003,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0003364683013531819",
+                    "scale_factor": "0.0004178211495437569",
                     "identity_condition_win_range": [
                         18.795,
                         18.805
@@ -2012,7 +2012,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0003364683013531819",
+                    "scale_factor": "0.0004178211495437569",
                     "identity_condition_win_range": [
                         18.995,
                         19.005
@@ -2021,7 +2021,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00016823415067659096",
+                    "scale_factor": "0.00020891057477187845",
                     "identity_condition_win_range": [
                         19.395,
                         19.405
@@ -2030,7 +2030,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "5.6078050225530326e-05",
+                    "scale_factor": "6.963685825729283e-05",
                     "identity_condition_win_range": [
                         19.495,
                         19.505
@@ -2039,7 +2039,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00016823415067659096",
+                    "scale_factor": "0.00020891057477187845",
                     "identity_condition_win_range": [
                         19.595,
                         19.605
@@ -2048,7 +2048,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00039254635157871223",
+                    "scale_factor": "0.0005570948660583426",
                     "identity_condition_win_range": [
                         19.795,
                         19.805
@@ -2057,7 +2057,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "5.6078050225530326e-05",
+                    "scale_factor": "6.963685825729283e-05",
                     "identity_condition_win_range": [
                         19.895,
                         19.905
@@ -2066,7 +2066,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0004486244018042426",
+                    "scale_factor": "0.0005570948660583426",
                     "identity_condition_win_range": [
                         19.995,
                         20.005
@@ -2075,7 +2075,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         20.095,
                         20.105
@@ -2084,7 +2084,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00037101427322207406",
+                    "scale_factor": "0.0004593155698506714",
                     "identity_condition_win_range": [
                         20.195,
                         20.205
@@ -2093,7 +2093,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0005194199825109036",
+                    "scale_factor": "0.00064304179779094",
                     "identity_condition_win_range": [
                         20.395,
                         20.405
@@ -2102,7 +2102,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00014840570928882963",
+                    "scale_factor": "0.00018372622794026857",
                     "identity_condition_win_range": [
                         20.595,
                         20.605
@@ -2111,7 +2111,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         20.695,
                         20.705
@@ -2120,7 +2120,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00029681141857765926",
+                    "scale_factor": "0.00036745245588053714",
                     "identity_condition_win_range": [
                         20.795,
                         20.805
@@ -2129,7 +2129,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         20.895,
                         20.905
@@ -2138,7 +2138,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00029681141857765926",
+                    "scale_factor": "0.00036745245588053714",
                     "identity_condition_win_range": [
                         20.995,
                         21.005
@@ -2147,7 +2147,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00022260856393324443",
+                    "scale_factor": "0.00027558934191040284",
                     "identity_condition_win_range": [
                         21.195,
                         21.205
@@ -2156,7 +2156,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         21.295,
                         21.305
@@ -2165,7 +2165,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00014840570928882963",
+                    "scale_factor": "0.00018372622794026857",
                     "identity_condition_win_range": [
                         21.395,
                         21.405
@@ -2174,7 +2174,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00014840570928882963",
+                    "scale_factor": "0.00018372622794026857",
                     "identity_condition_win_range": [
                         21.495,
                         21.505
@@ -2183,7 +2183,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00022260856393324443",
+                    "scale_factor": "0.00027558934191040284",
                     "identity_condition_win_range": [
                         21.595,
                         21.605
@@ -2192,7 +2192,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00014840570928882963",
+                    "scale_factor": "0.00018372622794026857",
                     "identity_condition_win_range": [
                         21.695,
                         21.705
@@ -2201,7 +2201,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0005936228371553185",
+                    "scale_factor": "0.0007349049117610743",
                     "identity_condition_win_range": [
                         21.795,
                         21.805
@@ -2210,7 +2210,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00044521712786648886",
+                    "scale_factor": "0.0004593155698506714",
                     "identity_condition_win_range": [
                         21.995,
                         22.005
@@ -2219,7 +2219,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         22.195,
                         22.205
@@ -2228,7 +2228,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         22.295,
                         22.305
@@ -2237,7 +2237,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00022260856393324443",
+                    "scale_factor": "0.00027558934191040284",
                     "identity_condition_win_range": [
                         22.395,
                         22.405
@@ -2246,7 +2246,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00022260856393324443",
+                    "scale_factor": "0.00027558934191040284",
                     "identity_condition_win_range": [
                         22.595,
                         22.605
@@ -2255,7 +2255,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         22.695,
                         22.705
@@ -2264,7 +2264,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00022260856393324443",
+                    "scale_factor": "0.00027558934191040284",
                     "identity_condition_win_range": [
                         22.795,
                         22.805
@@ -2273,7 +2273,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00014840570928882963",
+                    "scale_factor": "0.00018372622794026857",
                     "identity_condition_win_range": [
                         22.995,
                         23.005
@@ -2282,7 +2282,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00022260856393324443",
+                    "scale_factor": "0.00027558934191040284",
                     "identity_condition_win_range": [
                         23.395,
                         23.405
@@ -2291,7 +2291,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         23.495,
                         23.505
@@ -2300,7 +2300,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         23.695,
                         23.705
@@ -2309,7 +2309,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00022260856393324443",
+                    "scale_factor": "0.00018372622794026857",
                     "identity_condition_win_range": [
                         23.895,
                         23.905
@@ -2318,7 +2318,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00029681141857765926",
+                    "scale_factor": "0.00036745245588053714",
                     "identity_condition_win_range": [
                         23.995,
                         24.005
@@ -2327,7 +2327,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00014840570928882963",
+                    "scale_factor": "0.00018372622794026857",
                     "identity_condition_win_range": [
                         24.195,
                         24.205
@@ -2336,7 +2336,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         24.295,
                         24.305
@@ -2345,7 +2345,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00014840570928882963",
+                    "scale_factor": "0.00018372622794026857",
                     "identity_condition_win_range": [
                         24.395,
                         24.405
@@ -2354,7 +2354,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         24.495,
                         24.505
@@ -2363,7 +2363,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         24.795,
                         24.805
@@ -2372,7 +2372,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         24.995,
                         25.005
@@ -2381,7 +2381,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         25.095,
                         25.105
@@ -2390,7 +2390,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00014840570928882963",
+                    "scale_factor": "0.00018372622794026857",
                     "identity_condition_win_range": [
                         25.195,
                         25.205
@@ -2399,7 +2399,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00029681141857765926",
+                    "scale_factor": "0.00036745245588053714",
                     "identity_condition_win_range": [
                         25.595,
                         25.605
@@ -2408,7 +2408,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00014840570928882963",
+                    "scale_factor": "0.00018372622794026857",
                     "identity_condition_win_range": [
                         25.795,
                         25.805
@@ -2417,7 +2417,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00029681141857765926",
+                    "scale_factor": "0.00036745245588053714",
                     "identity_condition_win_range": [
                         25.995,
                         26.005
@@ -2426,7 +2426,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         26.095,
                         26.105
@@ -2435,7 +2435,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         26.195,
                         26.205
@@ -2444,7 +2444,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00029681141857765926",
+                    "scale_factor": "0.00036745245588053714",
                     "identity_condition_win_range": [
                         26.395,
                         26.405
@@ -2453,7 +2453,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         26.595,
                         26.605
@@ -2462,7 +2462,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00022260856393324443",
+                    "scale_factor": "0.00027558934191040284",
                     "identity_condition_win_range": [
                         26.795,
                         26.805
@@ -2471,7 +2471,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00014840570928882963",
+                    "scale_factor": "0.00018372622794026857",
                     "identity_condition_win_range": [
                         27.195,
                         27.205
@@ -2480,7 +2480,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00014840570928882963",
+                    "scale_factor": "0.00018372622794026857",
                     "identity_condition_win_range": [
                         27.395,
                         27.405
@@ -2489,7 +2489,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00014840570928882963",
+                    "scale_factor": "0.00018372622794026857",
                     "identity_condition_win_range": [
                         27.595,
                         27.605
@@ -2498,7 +2498,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         27.695,
                         27.705
@@ -2507,7 +2507,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         27.795,
                         27.805
@@ -2516,7 +2516,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         27.895,
                         27.905
@@ -2525,7 +2525,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00029681141857765926",
+                    "scale_factor": "0.00036745245588053714",
                     "identity_condition_win_range": [
                         27.995,
                         28.005
@@ -2534,7 +2534,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         28.195,
                         28.205
@@ -2543,7 +2543,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00014840570928882963",
+                    "scale_factor": "0.00018372622794026857",
                     "identity_condition_win_range": [
                         28.395,
                         28.405
@@ -2552,7 +2552,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00022260856393324443",
+                    "scale_factor": "0.00027558934191040284",
                     "identity_condition_win_range": [
                         28.795,
                         28.805
@@ -2561,7 +2561,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00014840570928882963",
+                    "scale_factor": "0.00018372622794026857",
                     "identity_condition_win_range": [
                         28.995,
                         29.005
@@ -2570,7 +2570,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         29.395,
                         29.405
@@ -2579,7 +2579,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00022260856393324443",
+                    "scale_factor": "0.00027558934191040284",
                     "identity_condition_win_range": [
                         29.595,
                         29.605
@@ -2588,7 +2588,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         29.695,
                         29.705
@@ -2597,7 +2597,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         29.895,
                         29.905
@@ -2606,7 +2606,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         29.995,
                         30.005
@@ -2615,7 +2615,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         30.195,
                         30.205
@@ -2624,7 +2624,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         30.295,
                         30.305
@@ -2633,7 +2633,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         30.695,
                         30.705
@@ -2642,7 +2642,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00044521712786648886",
+                    "scale_factor": "0.0005511786838208057",
                     "identity_condition_win_range": [
                         30.795,
                         30.805
@@ -2651,7 +2651,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         30.995,
                         31.005
@@ -2660,7 +2660,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         31.195,
                         31.205
@@ -2669,7 +2669,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         31.395,
                         31.405
@@ -2678,7 +2678,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00014840570928882963",
+                    "scale_factor": "0.00018372622794026857",
                     "identity_condition_win_range": [
                         31.995,
                         32.005
@@ -2687,7 +2687,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         32.795,
                         32.805
@@ -2696,7 +2696,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00014840570928882963",
+                    "scale_factor": "0.00018372622794026857",
                     "identity_condition_win_range": [
                         33.195,
                         33.205
@@ -2705,7 +2705,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         33.395,
                         33.405
@@ -2714,7 +2714,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00037101427322207406",
+                    "scale_factor": "0.0004593155698506714",
                     "identity_condition_win_range": [
                         33.595,
                         33.605
@@ -2723,7 +2723,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         33.795,
                         33.805
@@ -2732,7 +2732,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         34.295,
                         34.305
@@ -2741,7 +2741,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00014840570928882963",
+                    "scale_factor": "0.00018372622794026857",
                     "identity_condition_win_range": [
                         34.395,
                         34.405
@@ -2750,7 +2750,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         34.795,
                         34.805
@@ -2759,7 +2759,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         34.895,
                         34.905
@@ -2768,7 +2768,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         35.595,
                         35.605
@@ -2777,7 +2777,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00014840570928882963",
+                    "scale_factor": "0.00018372622794026857",
                     "identity_condition_win_range": [
                         35.795,
                         35.805
@@ -2786,7 +2786,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00014840570928882963",
+                    "scale_factor": "0.00018372622794026857",
                     "identity_condition_win_range": [
                         35.995,
                         36.005
@@ -2795,7 +2795,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         36.395,
                         36.405
@@ -2804,7 +2804,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         36.595,
                         36.605
@@ -2813,7 +2813,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         37.095,
                         37.105
@@ -2822,7 +2822,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         37.395,
                         37.405
@@ -2831,7 +2831,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00014840570928882963",
+                    "scale_factor": "0.00018372622794026857",
                     "identity_condition_win_range": [
                         37.595,
                         37.605
@@ -2840,7 +2840,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         37.995,
                         38.005
@@ -2849,7 +2849,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00022260856393324443",
+                    "scale_factor": "0.00027558934191040284",
                     "identity_condition_win_range": [
                         39.595,
                         39.605
@@ -2858,7 +2858,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         39.995,
                         40.005
@@ -2867,7 +2867,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         40.295,
                         40.305
@@ -2876,7 +2876,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         40.795,
                         40.805
@@ -2885,7 +2885,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         40.895,
                         40.905
@@ -2894,7 +2894,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         41.195,
                         41.205
@@ -2903,7 +2903,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         41.395,
                         41.405
@@ -2912,7 +2912,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         41.595,
                         41.605
@@ -2921,7 +2921,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00014840570928882963",
+                    "scale_factor": "0.00018372622794026857",
                     "identity_condition_win_range": [
                         41.995,
                         42.005
@@ -2930,7 +2930,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         42.295,
                         42.305
@@ -2939,16 +2939,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
-                    "identity_condition_win_range": [
-                        42.895,
-                        42.905
-                    ],
-                    "prob": 1.0
-                },
-                {
-                    "fence": "basegame",
-                    "scale_factor": "0.00014840570928882963",
+                    "scale_factor": "0.00018372622794026857",
                     "identity_condition_win_range": [
                         43.995,
                         44.005
@@ -2957,7 +2948,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         44.595,
                         44.605
@@ -2966,7 +2957,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         45.195,
                         45.205
@@ -2975,7 +2966,16 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
+                    "identity_condition_win_range": [
+                        45.295,
+                        45.305
+                    ],
+                    "prob": 1.0
+                },
+                {
+                    "fence": "basegame",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         45.595,
                         45.605
@@ -2984,7 +2984,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00014840570928882963",
+                    "scale_factor": "0.00018372622794026857",
                     "identity_condition_win_range": [
                         45.995,
                         46.005
@@ -2993,7 +2993,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         46.195,
                         46.205
@@ -3002,7 +3002,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00014840570928882963",
+                    "scale_factor": "0.00018372622794026857",
                     "identity_condition_win_range": [
                         46.295,
                         46.305
@@ -3011,7 +3011,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         46.795,
                         46.805
@@ -3020,7 +3020,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         46.995,
                         47.005
@@ -3029,7 +3029,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         47.595,
                         47.605
@@ -3038,7 +3038,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00014840570928882963",
+                    "scale_factor": "0.00018372622794026857",
                     "identity_condition_win_range": [
                         48.195,
                         48.205
@@ -3047,7 +3047,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         48.595,
                         48.605
@@ -3056,7 +3056,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         48.895,
                         48.905
@@ -3065,7 +3065,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         49.195,
                         49.205
@@ -3074,7 +3074,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         51.595,
                         51.605
@@ -3083,7 +3083,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         51.995,
                         52.005
@@ -3092,7 +3092,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         52.395,
                         52.405
@@ -3101,7 +3101,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00014840570928882963",
+                    "scale_factor": "0.00018372622794026857",
                     "identity_condition_win_range": [
                         52.795,
                         52.805
@@ -3110,7 +3110,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00014840570928882963",
+                    "scale_factor": "0.00018372622794026857",
                     "identity_condition_win_range": [
                         54.195,
                         54.205
@@ -3119,7 +3119,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.00014840570928882963",
+                    "scale_factor": "0.00018372622794026857",
                     "identity_condition_win_range": [
                         54.795,
                         54.805
@@ -3128,7 +3128,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         55.595,
                         55.605
@@ -3137,7 +3137,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         56.995,
                         57.005
@@ -3146,7 +3146,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         57.995,
                         58.005
@@ -3155,7 +3155,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         58.795,
                         58.805
@@ -3164,7 +3164,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         58.995,
                         59.005
@@ -3173,7 +3173,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         60.395,
                         60.405
@@ -3182,7 +3182,16 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
+                    "identity_condition_win_range": [
+                        62.395,
+                        62.405
+                    ],
+                    "prob": 1.0
+                },
+                {
+                    "fence": "basegame",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         64.395,
                         64.405
@@ -3191,7 +3200,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         66.395,
                         66.405
@@ -3200,7 +3209,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         67.395,
                         67.405
@@ -3209,7 +3218,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         67.795,
                         67.805
@@ -3218,7 +3227,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         71.995,
                         72.005
@@ -3227,7 +3236,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         73.995,
                         74.005
@@ -3236,7 +3245,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         75.195,
                         75.205
@@ -3245,7 +3254,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         79.395,
                         79.405
@@ -3254,7 +3263,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         80.695,
                         80.705
@@ -3263,7 +3272,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         84.595,
                         84.605
@@ -3272,7 +3281,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         90.195,
                         90.205
@@ -3281,7 +3290,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "7.420285464441481e-05",
+                    "scale_factor": "9.186311397013429e-05",
                     "identity_condition_win_range": [
                         97.395,
                         97.405
@@ -3290,7 +3299,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0002198259568840789",
+                    "scale_factor": "0.00027099618621189613",
                     "identity_condition_win_range": [
                         102.995,
                         103.005
@@ -3299,7 +3308,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0002198259568840789",
+                    "scale_factor": "0.00027099618621189613",
                     "identity_condition_win_range": [
                         103.695,
                         103.705
@@ -3308,7 +3317,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0002198259568840789",
+                    "scale_factor": "0.00027099618621189613",
                     "identity_condition_win_range": [
                         105.395,
                         105.405
@@ -3317,7 +3326,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0002198259568840789",
+                    "scale_factor": "0.00027099618621189613",
                     "identity_condition_win_range": [
                         107.895,
                         107.905
@@ -3326,7 +3335,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0002198259568840789",
+                    "scale_factor": "0.00027099618621189613",
                     "identity_condition_win_range": [
                         107.995,
                         108.005
@@ -3335,7 +3344,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0002198259568840789",
+                    "scale_factor": "0.00027099618621189613",
                     "identity_condition_win_range": [
                         109.395,
                         109.405
@@ -3344,7 +3353,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0002198259568840789",
+                    "scale_factor": "0.00027099618621189613",
                     "identity_condition_win_range": [
                         127.395,
                         127.405
@@ -3353,7 +3362,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0002198259568840789",
+                    "scale_factor": "0.00027099618621189613",
                     "identity_condition_win_range": [
                         152.995,
                         153.005
@@ -3362,7 +3371,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0002198259568840789",
+                    "scale_factor": "0.00027099618621189613",
                     "identity_condition_win_range": [
                         171.295,
                         171.305
@@ -3371,7 +3380,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0002198259568840789",
+                    "scale_factor": "0.00027099618621189613",
                     "identity_condition_win_range": [
                         263.495,
                         263.505
@@ -3380,7 +3389,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0002198259568840789",
+                    "scale_factor": "0.00027099618621189613",
                     "identity_condition_win_range": [
                         316.795,
                         316.805
@@ -3389,7 +3398,7 @@
                 },
                 {
                     "fence": "basegame",
-                    "scale_factor": "0.0002198259568840789",
+                    "scale_factor": "0.00027099618621189613",
                     "identity_condition_win_range": [
                         363.495,
                         363.505

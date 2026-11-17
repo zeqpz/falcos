@@ -92,9 +92,11 @@ when the board holds neither a cluster nor a feature.
 
 ## Scatters
 
-* **FALCOS Token (BS)** - 3 in the base game -> FILL UP; 4 or more -> PREMIUM.
+* **FALCOS Token (BS)** - exactly 3 in the base game (and no DS) -> FILL UP; 4 or more -> PREMIUM.
 * **Midnight Token (DS)** - darker, rare. 3 in the base game (or in a FUEL CHANCE spin) -> MIDNIGHT
   RUN. MIDNIGHT RUN can also be bought (500x).
+* **Mixed** (owner, 2026-11-17) - 3 or more tokens with at least one DS among them (2 BS + 1 DS, 2 + 2 ...)
+  -> MIDNIGHT RUN, unless 4 or more are BS (PREMIUM). Order: 3+ DS, 4+ BS, mixed 3+, exactly 3 BS.
 
 ## Bonuses
 

@@ -67,13 +67,14 @@ class GameExecutables(GameCalculations):
         return [(r, c) for r, column in enumerate(self.board) for c, s in enumerate(column) if s.name == name]
 
     def compute_anticipation(self) -> None:
-        """Slow-stop the reels after the one where either scatter class reaches 2."""
+        """Slow-stop the reels after the one where the tokens reach 2, of either kind (one more makes a trigger:
+        3 BS, 3 DS, or a mixed 3)."""
         bs = ds = 0
         first = -1
         for r, column in enumerate(self.board):
             bs += sum(1 for s in column if s.name == "BS")
             ds += sum(1 for s in column if s.name == "DS")
-            if first < 0 and (bs >= 2 or ds >= 2):
+            if first < 0 and bs + ds >= 2:
                 first = r + 1
         ant = [0] * self.config.num_reels
         if 0 < first < self.config.num_reels:
@@ -92,17 +93,17 @@ class GameExecutables(GameCalculations):
             conds["reel_weights"][self.gametype] = self.config.bonus_reels[self.bonus_kind]
         if self.gametype == self.config.basegame_type and want in self.config.bonus_scatters:
             spec = self.config.bonus_scatters[want]
-            self.force_scatter_board(
-                get_random_outcome(conds["reel_weights"][self.gametype]),
-                get_random_outcome(spec.get("BS", {0: 1})),
-                get_random_outcome(spec.get("DS", {0: 1})),
-            )
+            if "pairs" in spec:
+                n_bs, n_ds = (int(v) for v in get_random_outcome(spec["pairs"]).split(","))
+            else:
+                n_bs, n_ds = get_random_outcome(spec.get("BS", {0: 1})), get_random_outcome(spec.get("DS", {0: 1}))
+            self.force_scatter_board(get_random_outcome(conds["reel_weights"][self.gametype]), n_bs, n_ds)
         else:
             while True:
                 self.create_board_reelstrips()
                 if self.gametype != self.config.basegame_type or want == "any":
                     break
-                if self.count_name("BS") < 3 and self.count_name("DS") < 3:
+                if self.check_bonus_trigger() is None:
                     break
         self.compute_anticipation()
 
@@ -345,12 +346,15 @@ class GameExecutables(GameCalculations):
     def check_bonus_trigger(self):
         """Scatters are counted on the board the base spin ENDS on (they never burn, so tumbles
         can only add to them). 3+ DS -> MIDNIGHT RUN (it outranks everything); else 4+ BS ->
-        PREMIUM; else exactly 3 BS -> FILL UP."""
+        PREMIUM; else 3+ tokens with at least one DS among them -> MIDNIGHT RUN (2026-11-17); else exactly 3 BS ->
+        FILL UP."""
         n_bs, n_ds = self.count_name("BS"), self.count_name("DS")
         if n_ds >= 3:
             return "midnight", self.positions_of("DS"), "DS", n_ds
         if n_bs >= 4:
             return "premium", self.positions_of("BS"), "BS", n_bs
+        if n_ds >= 1 and n_bs + n_ds >= self.config.mixed_trigger:
+            return "midnight", sorted(self.positions_of("BS") + self.positions_of("DS")), "DS", n_bs + n_ds
         if n_bs == 3:
             return "fillup", self.positions_of("BS"), "BS", n_bs
         return None

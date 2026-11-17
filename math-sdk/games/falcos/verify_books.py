@@ -341,8 +341,13 @@ class Replay:
     def on_freeSpinTrigger(self, e, tags):
         check(e["totalFs"] == 10, "totalFs")
         self.fs_total = 10
-        for p in e["positions"]:
-            check(self.board[p["reel"]][p["row"] - 1] == e["symbol"], "trigger position does not hold the scatter")
+        held = [self.board[p["reel"]][p["row"] - 1] for p in e["positions"]]
+        if all(h == e["symbol"] for h in held):
+            pass
+        else:   # a mixed trigger (2026-11-17): 3+ tokens with a DS among them, MIDNIGHT RUN
+            check(e["symbol"] == "DS" and all(h in ("BS", "DS") for h in held) and len(held) >= 3
+                  and 1 <= held.count("DS") < 3 and held.count("BS") < 4, "trigger position does not hold the scatter")
+            tags.add("mixed_trigger")
 
     def on_enterBonus(self, e, tags):
         tags.add(f"bonus_{e['reason']}" + ("_bought" if e["bought"] else ""))

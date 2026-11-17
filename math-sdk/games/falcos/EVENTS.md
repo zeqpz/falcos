@@ -60,7 +60,9 @@ base / chance (FUEL CHANCE)
          featureFire(zippo) -> tumbleBoard                       the first zippo only
       (the spin ends when the board holds neither a cluster nor a feature)
   setWin (only if the spin won; omitted when the cap was hit) -> setTotalWin
-  -- bonus, if the final board shows 3+ DS / 4+ BS / 3 BS --
+  -- bonus, if the final board shows 3+ DS (MIDNIGHT RUN) / 4+ BS (PREMIUM) / 3+ tokens with a DS among them
+     (MIDNIGHT RUN, a mixed trigger since 2026-11-17: freeSpinTrigger symbol "DS", positions = every token) /
+     exactly 3 BS and no DS (FILL UP) --
   [freeSpinTrigger] (PREMIUM / MIDNIGHT RUN only) -> enterBonus -> bonus events (below)
   finalWin
 

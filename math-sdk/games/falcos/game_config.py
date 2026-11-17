@@ -184,11 +184,18 @@ class GameConfig(Config):
             },
         }
 
-        # scatter counts forced on a trigger board (the other scatter class may tease)
+        # mixed tokens (owner, 2026-11-17: "Yes, mixed counts", then "if there is already 2 fs symbols and 1 xfs symbol
+        # that should be the midnight bonus but if there is just 3 fs symbols that should be the fuel up bonus"): 3+
+        # tokens with at least one DS among them start MIDNIGHT RUN - checked after 3+ DS (MIDNIGHT RUN) and 4+ BS
+        # (PREMIUM), before exactly 3 BS (FILL UP)
+        self.mixed_trigger = 3
+        # scatter counts forced on a trigger board (the other scatter class may tease). "pairs" draws the two counts
+        # together ("bs,ds": weight) - MIDNIGHT RUN's board is now and then a mixed one; FILL UP's may not show a DS
+        # (3 BS + 1 DS is a mixed trigger, MIDNIGHT RUN)
         self.bonus_scatters = {
-            "fillup": {"BS": {3: 1}, "DS": {0: 80, 1: 15, 2: 5}},
-            "premium": {"BS": {4: 88, 5: 10, 6: 2}, "DS": {0: 80, 1: 15, 2: 5}},
-            "midnight": {"DS": {3: 1}, "BS": {0: 75, 1: 18, 2: 7}},
+            "fillup": {"BS": {3: 1}, "DS": {0: 1}},
+            "premium": {"pairs": {"4,0": 80, "5,0": 10, "6,0": 2, "4,1": 6, "4,2": 2}},
+            "midnight": {"pairs": {"0,3": 45, "1,3": 10, "2,3": 4, "2,1": 18, "1,2": 12, "2,2": 6, "3,1": 5}},
         }
 
         b, f = self.basegame_type, self.freegame_type

@@ -721,16 +721,16 @@
         "symbol": "BS",
         "positions": [
             {
-                "reel": 1,
-                "row": 4
+                "reel": 0,
+                "row": 3
             },
             {
                 "reel": 2,
-                "row": 5
+                "row": 2
             },
             {
                 "reel": 4,
-                "row": 5
+                "row": 1
             },
             {
                 "reel": 6,
@@ -801,16 +801,16 @@
         "symbol": "BS",
         "positions": [
             {
-                "reel": 0,
+                "reel": 2,
                 "row": 5
             },
             {
-                "reel": 1,
-                "row": 3
+                "reel": 4,
+                "row": 4
             },
             {
                 "reel": 6,
-                "row": 1
+                "row": 2
             }
         ]
     }

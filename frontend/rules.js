@@ -163,15 +163,15 @@ const RULES = (() => {
 
 <section>
   <h4>${t("Scatters")}</h4>
-  ${special("BS", "FALCOS Token", "Appears anywhere. 3 in the base game start FILL UP; 4 or more start PREMIUM. During PREMIUM and MIDNIGHT RUN, 3 or more on the board a free spin ends on add 5 free spins; in FILL UP, each one that lands adds 5 spins to the fuel gauge. It does not form clusters and has no value of its own.", social, t)}
-  ${special("DS", "Midnight Token", "Darker and rare. 3 in the base game (or in a FUEL CHANCE spin) start MIDNIGHT RUN. It does not form clusters and has no value of its own.", social, t)}
+  ${special("BS", "FALCOS Token", "Appears anywhere. Exactly 3 in the base game (with no Midnight Token) start FILL UP; 4 or more start PREMIUM. Together with a Midnight Token, any 3 or more tokens start MIDNIGHT RUN. During PREMIUM and MIDNIGHT RUN, 3 or more on the board a free spin ends on add 5 free spins; in FILL UP, each one that lands adds 5 spins to the fuel gauge. It does not form clusters and has no value of its own.", social, t)}
+  ${special("DS", "Midnight Token", "Darker and rare. 3 in the base game (or in a FUEL CHANCE spin) start MIDNIGHT RUN, and so do 3 or more tokens of both kinds together (unless 4 or more of them are FALCOS Tokens: that is PREMIUM). It does not form clusters and has no value of its own.", social, t)}
 </section>
 
 <section>
   <h4>${t("Bonuses")}</h4>
-  <p><b>FILL UP</b> — ${t("3 FALCOS Tokens, or bought. A Fuel Drop collection game with a fuel gauge that counts your spins left; no cell multipliers. It starts with 3 spins. Every spin uses one, and any spin that lands something new (a drop or a feature) sets it back to 3 if it was lower. A FALCOS Token can land in an empty cell: it adds 5 spins on top, then leaves. The bonus ends when no spins are left. At the end you win the total of every drop left plus every collector's total, times the bet, capped at the max win.")}</p>
+  <p><b>FILL UP</b> — ${t("Exactly 3 FALCOS Tokens and no Midnight Token, or bought. A Fuel Drop collection game with a fuel gauge that counts your spins left; no cell multipliers. It starts with 3 spins. Every spin uses one, and any spin that lands something new (a drop or a feature) sets it back to 3 if it was lower. A FALCOS Token can land in an empty cell: it adds 5 spins on top, then leaves. The bonus ends when no spins are left. At the end you win the total of every drop left plus every collector's total, times the bet, capped at the max win.")}</p>
   <p><b>PREMIUM</b> — ${t("4 or more FALCOS Tokens, or bought. 10 free spins of the base game with sticky cell multipliers: a cell that reached x8 keeps x8 into the next spin and keeps growing.")}</p>
-  <p><b>MIDNIGHT RUN</b> — ${t("3 Midnight Tokens, or bought. 10 free spins with sticky cell multipliers, every cell starting at x4, and Gas Pumps landing far more often. The biggest bonus in the game.")}</p>
+  <p><b>MIDNIGHT RUN</b> — ${t("3 Midnight Tokens, or 3 or more tokens of both kinds together (such as 2 FALCOS Tokens and 1 Midnight Token), or bought. 10 free spins with sticky cell multipliers, every cell starting at x4, and Gas Pumps landing far more often. The biggest bonus in the game.")}</p>
   <p>${t("Re-triggers: in PREMIUM and MIDNIGHT RUN, a free spin that ends with 3 or more FALCOS Tokens on the board adds 5 free spins (up to 60 free spins in all). In FILL UP, every FALCOS Token that lands adds 5 spins to the fuel gauge. No bonus can start inside another.")}</p>
   <p class="fine">${t("Bonuses are played at the bet of the triggering spin. Every round is decided in full the moment it is placed: if the connection drops, reload the game and the round is settled and paid.")}</p>
 </section>
