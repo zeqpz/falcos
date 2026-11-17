@@ -579,7 +579,7 @@
     /* down the screen, the top third left clear so the FALCOS sign on the building shows above the cards
        (owner, 2026-11-17: "scoot the load in screen down some so you can see the falcos sign") */
     display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 2.2vh;
-    padding: 36vh 4vw 4vh; user-select: none;
+    padding: 30vh 4vw 3vh; user-select: none;
     opacity: 0; transition: opacity .6s ease;
     -webkit-backdrop-filter: brightness(.5) sepia(.55) saturate(1.5) hue-rotate(-8deg);
     backdrop-filter: brightness(.5) sepia(.55) saturate(1.5) hue-rotate(-8deg);
@@ -592,7 +592,8 @@
   /* a card: the picture sits in the frame's window (11.2-89.5% across, 7.7-70.2% down), the frame over it,
      the title on the frame's cream plate below */
   .lcard {
-    position: relative; width: min(19vw, calc((100vh - 40vh - 24vh) * 760 / 1154)); aspect-ratio: 760 / 1154; flex: none;
+    /* as big as the room under the sign allows (owner, 2026-11-17: "make these bigger") */
+    position: relative; width: min(25vw, calc((100vh - 30vh - 23vh) * 760 / 1154)); aspect-ratio: 760 / 1154; flex: none;
     filter: drop-shadow(0 12px 22px rgba(0, 0, 0, .7));
     opacity: 0; transform: translateY(4vh) scale(.92);
   }
@@ -645,12 +646,12 @@
   @media (orientation: portrait) {
     .features { gap: 2.6vh; justify-content: flex-end; padding-top: 30vh; }
     .lcards { gap: 2.4vw; }
-    .lcard { width: min(29vw, 220px); }
+    .lcard { width: min(31vw, 280px); }
     .lbar { width: min(88vw, 560px); }
   }
   @media (max-height: 520px) and (orientation: landscape) {
-    .features { gap: 1.2vh; padding: 36vh 4vw 2vh; }
-    .lcard { width: calc((100vh - 38vh - 28vh) * 760 / 1154); }
+    .features { gap: 1.2vh; padding: 30vh 4vw 2vh; }
+    .lcard { width: calc((100vh - 30vh - 26vh) * 760 / 1154); }
   }
   @media (prefers-reduced-motion: reduce) {
     .features .lcard, .features .fcont, .lbar .lbfuel, .lbar .lbfuel::after { animation: none !important; opacity: 1; transform: none; }
