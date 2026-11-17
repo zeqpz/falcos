@@ -579,7 +579,7 @@
     /* down the screen, the top third left clear so the FALCOS sign on the building shows above the cards
        (owner, 2026-11-17: "scoot the load in screen down some so you can see the falcos sign") */
     display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 2.2vh;
-    padding: 30vh 4vw 3vh; user-select: none;
+    padding: 21vh 4vw 3vh; user-select: none;
     opacity: 0; transition: opacity .6s ease;
     -webkit-backdrop-filter: brightness(.5) sepia(.55) saturate(1.5) hue-rotate(-8deg);
     backdrop-filter: brightness(.5) sepia(.55) saturate(1.5) hue-rotate(-8deg);
@@ -593,7 +593,7 @@
      the title on the frame's cream plate below */
   .lcard {
     /* as big as the room under the sign allows (owner, 2026-11-17: "make these bigger") */
-    position: relative; width: min(25vw, calc((100vh - 30vh - 23vh) * 760 / 1154)); aspect-ratio: 760 / 1154; flex: none;
+    position: relative; width: min(26vw, calc((100vh - 21vh - 23vh) * 760 / 1154)); aspect-ratio: 760 / 1154; flex: none;
     filter: drop-shadow(0 12px 22px rgba(0, 0, 0, .7));
     opacity: 0; transform: translateY(4vh) scale(.92);
   }
@@ -644,14 +644,14 @@
   }
   .features.ready .fcont { opacity: 1; animation: bcont 1.5s ease-in-out infinite; }
   @media (orientation: portrait) {
-    .features { gap: 2.6vh; justify-content: flex-end; padding-top: 30vh; }
+    .features { gap: 2.6vh; justify-content: flex-end; padding-top: 22vh; }
     .lcards { gap: 2.4vw; }
     .lcard { width: min(31vw, 280px); }
     .lbar { width: min(88vw, 560px); }
   }
   @media (max-height: 520px) and (orientation: landscape) {
-    .features { gap: 1.2vh; padding: 30vh 4vw 2vh; }
-    .lcard { width: calc((100vh - 30vh - 26vh) * 760 / 1154); }
+    .features { gap: 1.2vh; padding: 21vh 4vw 2vh; }
+    .lcard { width: calc((100vh - 21vh - 26vh) * 760 / 1154); }
   }
   @media (prefers-reduced-motion: reduce) {
     .features .lcard, .features .fcont, .lbar .lbfuel, .lbar .lbfuel::after { animation: none !important; opacity: 1; transform: none; }
