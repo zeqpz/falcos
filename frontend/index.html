@@ -74,6 +74,7 @@
        only the pair that applies is preloaded (assetUrls skips media rules that do not match) */
     --wall-img: url("assets/bonus_wall.webp");
     --zombie-img: url("assets/scene/plate_zombie.webp");
+    --wall-patch: url("assets/scene/signpatch_lit.webp");   /* the building's lettering hidden during play (sign_patch.py) */
     --sym-fit: .92;    /* a symbol fills this share of its tile (SYM_FIT in the script, boardgl.js) */
     /* frame_sq.webp's glass opening, as fractions of the picture (frame_sq.json, measured by
        compress_assets.py - keep these in step with it): left, top, width, height */
@@ -89,7 +90,8 @@
     :root { --cell-w: 150px; --fo-l: .03096; --fo-t: .15494; --fo-w: .93808; --fo-h: .80189; }
   }
   @media (max-width: 900px) and (max-height: 1000px), (max-height: 500px) {
-    :root { --wall-img: url("assets/bonus_wall_m.webp"); --zombie-img: url("assets/scene/plate_zombie_m.webp"); }
+    :root { --wall-img: url("assets/bonus_wall_m.webp"); --zombie-img: url("assets/scene/plate_zombie_m.webp");
+            --wall-patch: url("assets/scene/signpatch_lit_m.webp"); }
   }
 
   /* The faces ship as subset WOFF2 (tools/make_webfonts.py, from the masters in art/fonts): every
@@ -165,6 +167,18 @@
     background: #070B18 var(--wall-img) var(--wall-x, 50%) var(--wall-y, 50%) / var(--wall-scale) no-repeat;
     /* the scene's lean (--scene-yaw); the hop (bgbounce) is on translate/scale and rides on top */
     transform: perspective(2600px) rotateY(var(--scene-yaw));
+  }
+  /* While playing, the building's FALCOS lettering is hidden - the board covers most of it and only a sliver showed
+     (owner, 2026-11-17: "remove the background of the sign covered by the board but only on the playing screen"): a
+     letter-free fascia patch rides over the plate as a second layer, same size and place. The loading screen and the
+     bonus intros keep the full sign. */
+  body:not(.features-up) #bgwall {
+    background: var(--wall-patch) var(--wall-x, 50%) var(--wall-y, 50%) / var(--wall-scale) no-repeat,
+                #070B18 var(--wall-img) var(--wall-x, 50%) var(--wall-y, 50%) / var(--wall-scale) no-repeat;
+  }
+  body:not(.features-up) #bgalt {
+    background: var(--altpatch, none) var(--wall-x, 50%) var(--wall-y, 50%) / var(--wall-scale) no-repeat,
+                #070B18 var(--alt, none) var(--wall-x, 50%) var(--wall-y, 50%) / var(--wall-scale) no-repeat;
   }
   #bgwall::after {
     content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
@@ -6251,9 +6265,9 @@ const plateUrl = u => SMALL_PLATES ? u.replace(/\.webp$/, "_m.webp") : u;
 // like the normal one"): its L and S fail on their own clocks through SceneFX's fault episodes, their off states
 // cut by tools/falcos/zombie_sign.py (assets/scene/zsign_off_<l>.webp, rects in scene.json's zombie_layers).
 const Scene = (() => {
-  const PLATES = { zombie: { url: plateUrl("assets/scene/plate_zombie.webp"), wash: "rgba(90, 255, 70, .55)" },
-                   midnight: { url: plateUrl("assets/scene/plate_midnight.webp"), wash: "rgba(140, 110, 255, .6)" },
-                   nitro: { url: plateUrl("assets/scene/plate_nitro.webp"), wash: "rgba(70, 120, 255, .6)" } };
+  const PLATES = { zombie: { url: plateUrl("assets/scene/plate_zombie.webp"), patch: plateUrl("assets/scene/signpatch_zombie.webp"), wash: "rgba(90, 255, 70, .55)" },
+                   midnight: { url: plateUrl("assets/scene/plate_midnight.webp"), patch: plateUrl("assets/scene/signpatch_midnight.webp"), wash: "rgba(140, 110, 255, .6)" },
+                   nitro: { url: plateUrl("assets/scene/plate_nitro.webp"), patch: plateUrl("assets/scene/signpatch_nitro.webp"), wash: "rgba(70, 120, 255, .6)" } };
   let alt = null, now = "normal", zcfg = null;
   const zTimers = new Set();
   const zLater = (ms, fn) => { const id = setTimeout(() => { zTimers.delete(id); fn(); }, ms); zTimers.add(id); };
@@ -6330,6 +6344,7 @@ const Scene = (() => {
     now = name;
     if (p) {
       a.style.setProperty("--alt", `url("${p.url}")`);
+      a.style.setProperty("--altpatch", `url("${p.patch}")`);   // its building lettering hidden while playing
       a.classList.add("on");
       if (name === "zombie") { placeSign(); flicker(); } else stopFlicker();
       a.classList.toggle("zombie", name === "zombie");
@@ -7931,6 +7946,7 @@ function assetUrls() {
   for (const n of ["logo_fillup", "logo_premium_zombie", "logo_midnight", "logo_nitro", "logo_chance"]) urls.add("assets/menu/" + n + ".webp");   // the bonus screens' and the buy menu's lettering
   for (const n of ["chance", "fillup", "premium", "nitro", "midnight"]) urls.add("assets/menu/" + n + ".webp");
   for (const n of ["plate_zombie", "plate_nitro", "plate_midnight"]) urls.add(plateUrl("assets/scene/" + n + ".webp"));   // the bonus scenes
+  for (const n of ["zombie", "nitro", "midnight"]) urls.add(plateUrl("assets/scene/signpatch_" + n + ".webp"));   // and their play-time sign patches
   // a plate named in :root is the desktop one; on a phone-sized window only its _m twin is drawn
   return [...new Set([...urls].map(u => /(bonus_wall|scene\/plate_\w+?)\.webp$/.test(u) && !/_m\.webp$/.test(u) ? plateUrl(u) : u))];
 }
