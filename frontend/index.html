@@ -42,7 +42,7 @@
        they share one vanishing point off to the side and read as one picture. Negative = the
        right side comes forward and the left falls back; flip the sign to lean the other way,
        0deg for flat. Each piece carries its own perspective() so none depends on a parent. */
-    --scene-yaw: -5deg;
+    --scene-yaw: 0deg;   /* flat (owner, 2026-11-17: "i feel like the board is at an angle can you fix that"); was -5deg */
     --char-height: 49.5vh;   /* base size the crop window is derived from */
     --char-headroom: 1.2;    /* canvas above the rig's standing height, so smoke, hats and
                                 raised arms have room: the figure is scaled to the box WITHOUT
@@ -85,7 +85,8 @@
      art on this same query. A phone held upright is fitted by its width, where wider cells would only make
      the symbols smaller: it keeps the 106 px cells and frame_sq. */
   @media (orientation: landscape) and (min-aspect-ratio: 4/3) {
-    :root { --cell-w: 134px; --fo-l: .03402; --fo-t: .15494; --fo-w: .93196; --fo-h: .80189; }
+    /* 150 px cells (owner, 2026-11-17: "make it wider"; was 134): frame_wide re-cut by tools/falcos/widen_frame.py */
+    :root { --cell-w: 150px; --fo-l: .03096; --fo-t: .15494; --fo-w: .93808; --fo-h: .80189; }
   }
   @media (max-width: 900px) and (max-height: 1000px), (max-height: 500px) {
     :root { --wall-img: url("assets/bonus_wall_m.webp"); --zombie-img: url("assets/scene/plate_zombie_m.webp"); }
