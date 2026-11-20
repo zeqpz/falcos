@@ -5,6 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>Falcos</title>
 <link rel="icon" href="data:,">
+<script>
+// The phone tier (iOS crash on the first spin, Engine live test 2026-11-20; the sister games' fix: zeqpz/fallslotsga
+// 9c3ac82, zeqpz/orleans db24101, zeqpz/poweroutage 26a8e8c / e9f5c03). Safari kills a page that outgrows its memory,
+// and on iOS every animating, 3D-transformed or blended element is a GPU layer at its LAYOUT size x DPR^2 under the
+// scaled #app. window.MOBILE (html.mob): every iOS browser and touch phones / tablets; ?mobile=1|0 forces it.
+// A phone gets: no living scene (scenefx.js), no 3D lean on the stage and the wall, no board pop / wall hop, no
+// filters or blend modes, no motion-blur smears, no idle clips, and the win / burn clips at a lower density.
+window.MOBILE = (() => {
+  const q = new URLSearchParams(location.search).get("mobile");
+  if (q === "1" || q === "0") return q === "1";
+  const ua = navigator.userAgent || "", touch = (navigator.maxTouchPoints || 0) > 1;
+  const ios = /iP(hone|od|ad)|CriOS|FxiOS|EdgiOS/.test(ua) || (/Macintosh/.test(ua) && touch) || (navigator.platform === "MacIntel" && touch);
+  const small = Math.min(screen.width || 9999, screen.height || 9999) <= 820;
+  return ios || (touch && (/Android|Mobi|Tablet|Silk|Kindle/i.test(ua) || small));
+})();
+document.documentElement.classList.toggle("mob", window.MOBILE);
+</script>
 <style>
   :root {
     --bg: #070B18;           /* Falcos (art/falcos/STYLE.md): night blues, the sign's neon red, sodium amber, chrome; gold for money */
@@ -3345,6 +3362,20 @@
     .replaycard .rpplay { padding: 6px 10px; font-size: 13.5px; }
     .replaycard .rpfoot { font-size: 9.5px; }
   }
+
+  /* ---------- the phone tier (window.MOBILE, html.mob): iOS crash on the first spin, 2026-11-20 ---------- */
+  /* no filters, backdrop blurs or blend modes anywhere (each is a software-painted or blended layer on iOS) */
+  html.mob *, html.mob *::before, html.mob *::after { filter: none !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; mix-blend-mode: normal !important; }
+  /* the stage and the wall stand flat and still: their 3D lean made each a layer the size of the screen and more
+     (31 MB and 11 MB), the wall's hop another, and the glass sheen over the board a blended one (23 MB) */
+  html.mob .stage, html.mob #bgwall { transform: none !important; animation: none !important; }
+  html.mob .glassfx { display: none !important; }
+  /* the board never animates as a whole (its pop on a reveal was a 29 MB layer, with layers for all that lies over it) */
+  html.mob .board, html.mob .board.pop { animation: none !important; transition: none !important; scale: 1 !important; }
+  /* no motion-blur smears, nothing drifting at idle */
+  html.mob .smear { display: none !important; }
+  html.mob .frameglow, html.mob .board.flash .frameglow { animation: none !important; display: none !important; }   /* a 23 MB layer while it flashed */
+  html.mob .bonusbtn, html.mob .bonusbtn::before, html.mob .bonusbtn::after, html.mob #bonusBtn, html.mob #bonusBtn::before, html.mob #bonusBtn::after { animation: none !important; }
 </style>
 </head>
 <body>
@@ -3544,7 +3575,7 @@
 <script src="assets/spine/pixi.min.js"></script>
 <script src="rgs.js"></script>
 <script src="rules.js"></script>
-<script src="scenefx.js"></script>
+<script>if (!window.MOBILE) document.write('<script src="scenefx.js"><\/script>');</script>
 <script src="boardgl.js"></script>
 <script>
 "use strict";
@@ -3935,6 +3966,7 @@ const wanderIO = typeof IntersectionObserver === "function" ? new IntersectionOb
   }
 }) : null;
 function wander(targets, frames, { seg = 6, rate = 8 } = {}) {
+  if (window.MOBILE) return;   // (phones: nothing wanders at idle - each wandering element is a layer of its own)
   let t = 0;
   // the first stretch is a random part of a full one, so the 49 cells (each its own wander)
   // renew at scattered moments instead of all in the same frame every `seg` seconds
@@ -4076,7 +4108,7 @@ const SYM_HOLD_HEADROOM = 1.1;
 const CLIP_OF = { drop: "land", win: "hit", multi: "hit" };
 let symReady = null;
 // sheet px per rig unit the biggest symbol needs at rest on this screen, times the headroom -> the density to load
-const symDpr = () => Math.min(window.devicePixelRatio || 1, window.BoardGL && BoardGL.on ? BoardGL.MAX_RES : 99);
+const symDpr = () => Math.min(window.devicePixelRatio || 1, window.MOBILE ? 2 : 99, window.BoardGL && BoardGL.on ? BoardGL.MAX_RES : 99);
 function symWantDensity() {
   const c = cellEls[0] && cellEls[0][0], dpr = symDpr();
   let px = dpr;
@@ -4098,7 +4130,7 @@ function symHoldScale() {
   const unit = Math.min(c.clientWidth * SYM_FIT, c.clientHeight * SYM_FIT) / 100;
   const fit = c.getBoundingClientRect().width / c.offsetWidth;
   const L = Math.max(screen.availWidth || 0, screen.availHeight || 0);
-  const grow = Math.max(1, Math.min(L / innerWidth, L / innerHeight) || 1);
+  const grow = window.MOBILE ? 1 : Math.max(1, Math.min(L / innerWidth, L / innerHeight) || 1);   // (a phone's window does not grow)
   const k = unit * (fit > 0 ? fit : 1) * dpr * grow * SYM_HOLD_HEADROOM / (parseInt(SYMF.density.slice(1), 10) / 10);
   // left at the sheet's own size only when it is that already: with the denser-fitting sheets (2026-11-09)
   // a k of .85-.97 is common, and keeping the whole sheet there held a third more on the GPU than needed
@@ -4111,7 +4143,7 @@ function symSheet(id, clip) {
   if (!s && BoardGL.on) {
     // drawn by the board canvas: every clip is an atlas at the size the screen shows it (the hit and the
     // Multi with the headroom of their pop)
-    const url = `assets/sym/${SYMF.density}/${key}.webp`, k = SYM_HOLD.includes(clip) ? SYMF.k : Math.min(1, SYMF.k * SYM_HEADROOM / SYM_HOLD_HEADROOM);
+    const url = `assets/sym/${SYMF.density}/${key}.webp`, k = SYM_HOLD.includes(clip) ? SYMF.k : Math.min(1, SYMF.k * SYM_HEADROOM / SYM_HOLD_HEADROOM) * (window.MOBILE ? .6 : 1);   // (phones: the win and burn clips at 60%)
     s = { ok: false, ready: null, atlas: null };
     s.ready = BoardGL.atlas(id, clip, url, k).then(a => { s.atlas = a; s.ok = true; }, e => { SYMF.sheets.delete(key); throw e; });
     SYMF.sheets.set(key, s);
@@ -4166,7 +4198,7 @@ function loadSymFrames() {
     // clip at a time, every symbol's at once.
     await Promise.all(ids.map(id => symSheet(id, "land")));
     (async () => {
-      for (const clip of ["hit", "idle", "burn"]) await Promise.all(ids.map(id => (man.symbols[id].clips[clip] ? symSheet(id, clip) : Promise.resolve()).catch(() => {})));
+      for (const clip of (window.MOBILE ? ["hit", "burn"] : ["hit", "idle", "burn"])) await Promise.all(ids.map(id => (man.symbols[id].clips[clip] ? symSheet(id, clip) : Promise.resolve()).catch(() => {})));
     })();
     return ids.length > 0;
   })().catch(e => { console.warn("animated symbols unavailable:", e); return false; });
@@ -4465,7 +4497,10 @@ function shardLayer() {
     shardCtx = shardCanvas.getContext("2d");
   }
   const w = board.offsetWidth + BURST_PAD * 2, h = board.offsetHeight + BURST_PAD * 2;
-  const dpr = Math.min(2, devicePixelRatio || 1);
+  // (phones: at the density the screen shows it - under #app's scale of ~.4, 2 px per layout px was a 2242 x 2124
+  // canvas, 19 MB, for a board drawn 1070 px across)
+  const fitK = window.MOBILE && board.offsetWidth ? board.getBoundingClientRect().width / board.offsetWidth : 1;
+  const dpr = Math.min(2, (devicePixelRatio || 1) * (fitK > 0 && fitK < 1 ? fitK : 1));
   burstDpr = dpr;
   if (shardCanvas.width !== Math.round(w * dpr) || shardCanvas.height !== Math.round(h * dpr)) {
     shardCanvas.width = Math.round(w * dpr); shardCanvas.height = Math.round(h * dpr);
@@ -4566,7 +4601,8 @@ function burstKit(name, img, upTo = 3) {
 // loaded, so the first time a symbol bursts the frame is not held up cutting 30-odd pieces
 function warmBursts() {
   if (REDUCED_MOTION) return;
-  const jobs = Object.keys(FLAT).flatMap(name => [1, 2, 3].map(upTo => [name, upTo]));
+  // (phones: one way of tearing each symbol, not three - every piece is a canvas, ~400 of them held otherwise)
+  const jobs = Object.keys(FLAT).flatMap(name => (window.MOBILE ? [1] : [1, 2, 3]).map(upTo => [name, upTo]));
   const idle = window.requestIdleCallback ? f => requestIdleCallback(f, { timeout: 3000 }) : f => setTimeout(f, 250);
   const next = () => {
     const job = jobs.shift();
@@ -4623,7 +4659,7 @@ function smearOn(cell, name) {
   if (cell.smear) cell.smear.style.backgroundImage = SMEARS[name] ? `url("${SMEARS[name]}")` : "";
 }
 function makeSmears() {
-  if (REDUCED_MOTION) return;
+  if (REDUCED_MOTION || window.MOBILE) return;   // (phones show no motion-blur smears: none are made)
   const names = Object.keys(FLAT), tries = {};
   // one symbol a turn - a few ms of pixel work - close behind one another: the first spin wants them
   // all, and a page drawing every frame has little idle time to wait for
@@ -4997,7 +5033,7 @@ const Cam = (() => {
   }
   function play(fn, ms) {
     const els = [$("camfar"), $("camnear"), document.querySelector(".stage")];
-    if (els.some(e => !e)) return;
+    if (els.some(e => !e) || window.MOBILE) return;   // (phones: the camera holds still - moving it animates the stage and two window-sized layers, ~50 MB)
     path = fn; t0 = performance.now(); dur = Math.max(1, ms);
     const n = Math.max(2, Math.min(150, Math.round(ms / 33) + 1)), far = [], near = [], st = [];
     for (let i = 0; i < n; i++) {
