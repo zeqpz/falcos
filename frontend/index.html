@@ -1060,15 +1060,7 @@
   body.replay .betbox, body.replay #bonusBtn, body.replay #autoBtn, body.replay #spinBtn { display: none; }
   .replaymeta { font-family: var(--legible); font-size: 13px; color: var(--ink); margin: 0 0 10px; line-height: 1.6; }
   .replayres { font-family: var(--mono); font-size: 17px; letter-spacing: .08em; color: var(--gold); margin: 0 0 16px; line-height: 1.7; }
-  /* a popout S window (400x225): the replay panel's text shrinks and its Play / Play again button stays in view at
-     the panel's foot instead of scrolling out of it (approval [243]) */
-  @media (max-height: 300px) {
-    #replayWrap .infopanel { padding: 8px 14px 10px; max-height: calc(100vh - 12px); display: flex; flex-direction: column; }
-    #replayWrap .infopanel h3 { font-size: 15px; margin: 0 0 4px; }
-    #replayWrap .replaymeta, #replayWrap .fine { font-size: 10px !important; line-height: 1.35 !important; margin: 0 0 4px !important; }
-    #replayWrap .replayres { font-size: 12px; line-height: 1.35; margin: 0 0 6px; }
-    #replayWrap #replayPlay { position: sticky; bottom: 0; margin-top: auto; flex: none; padding: 6px 18px; font-size: 13px; }
-  }
+  /* (the replay panel's popout S rules live with the Bet Replay card, .replaycard, at the end of the sheet) */
   .infopanel h3 {
     margin: 0 0 12px; font-family: var(--disp); font-size: 22px; letter-spacing: .06em;
     text-transform: uppercase; color: var(--spray);
@@ -2409,9 +2401,11 @@
     letter-spacing: .01em; text-indent: 0; min-width: 0; text-align: left; white-space: nowrap;
     color: #fff; text-shadow: 0 2px 0 rgba(0, 0, 0, .3); font-variant-numeric: tabular-nums;
   }
-  /* long figures step down so a seven-figure balance never crowds the bet */
-  #balance.long, #betVal.long { font-size: calc(28px * var(--hs, 1)); }
-  #balance.vlong, #betVal.vlong { font-size: calc(22px * var(--hs, 1)); }
+  /* (a long figure is shrunk to its column by hudFit - the old .long / .vlong steps are gone) */
+  /* a Popout S-sized window: the labels a size up, so BALANCE / WIN / BET stay legible next to the figures */
+  @media (max-height: 300px) and (orientation: landscape) {
+    .hudstat .lbl, #balanceLbl { font-size: calc(20px * var(--hs, 1)); letter-spacing: .08em; }
+  }
   .hudstat.bet { align-items: flex-end; }
   .hudstat.bet .val, #betVal { text-align: right; }
   /* the balance flashes green on the way up and red on the way down */
@@ -2575,13 +2569,16 @@
      WIN in the bar: between BALANCE and BET, between thin dividers. A cluster's figure, done
      counting on the board, is pulled down into it (flyWinToHud), and it pops and counts up as it
      lands. The bar runs longer to make room for it (buildHud). */
-  .hudbar { display: grid; grid-template-columns: 1fr auto 1fr; }
-  .hudbar > .hudstat:first-child { justify-self: start; }
-  .hudbar > .hudbet { justify-self: end; }
+  /* three FIXED columns (approval 2026-11-19: the WIN overlapped the BET): BALANCE and BET+arrows a little wider than
+     the WIN between its dividers. A column never grows with its figure - hudFit shrinks a long figure to its column */
+  .hudbar { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, .92fr) minmax(0, 1.08fr); }
+  .hudbar > .hudstat:first-child { justify-self: stretch; }
+  .hudbar > .hudbet { justify-self: stretch; justify-content: flex-end; min-width: 0; }
+  .hudbet > .hudstat { flex: 1 1 auto; min-width: 0; }
   .hudstat.win {
-    align-items: center; justify-self: center; padding: 0 calc(26px * var(--hs, 1));
+    align-items: center; justify-self: stretch; padding: 0 calc(12px * var(--hs, 1));
     border-left: calc(2px * var(--hs, 1)) solid rgba(255, 255, 255, .14); border-right: calc(2px * var(--hs, 1)) solid rgba(255, 255, 255, .14);
-    min-width: calc(190px * var(--hs, 1));
+    min-width: 0;
   }
   .hudstat.win .lbl { color: var(--hud-on); }
   .hudstat.win .val, #roundWin {
@@ -2595,7 +2592,7 @@
   /* the figure on its way down from the board to the bar */
   .winpop.winfly { position: fixed; z-index: 60; animation: none; will-change: transform, opacity; }
   @media (max-width: 1100px) and (orientation: portrait) {
-    .hudstat.win { padding: 0 calc(14px * var(--hs, 1)); min-width: calc(150px * var(--hs, 1)); }
+    .hudstat.win { padding: 0 calc(8px * var(--hs, 1)); }
   }
 
   /* The bonus screens in the HUD's paint (Tipsy Harvest): no painted plates or rims - the free-spin
@@ -3027,6 +3024,11 @@
   #bonusWrap .bshopbar { border-top: 3px solid #0C0C12; }
   #bonusWrap .bshopx { background: #FF7A1A; border: 3px solid #0C0C12; box-shadow: 2px 3px 0 #0C0C12; color: #fff; }
   #bonusWrap .bsbet .val { min-width: 110px; text-align: center; }
+  /* the bar's figures may give way (fitBonusFigures shrinks one to the box it is left) rather than push off the panel */
+  #bonusWrap .bshopbar { max-width: 100%; min-width: 0; }
+  #bonusWrap .bsstat { flex: 0 1 auto; min-width: 0; }
+  #bonusWrap .bsstat > .val { min-width: 0; overflow: visible; }
+  #bonusWrap .bsbet { min-width: 0; }
   #bonusWrap .bssep { width: 1px; height: 34px; background: rgba(255, 255, 255, .12); }
   /* A phone (owner, 2026-11-10: no scrolling): the two special spins as compact rows, the three bonuses side
      by side as small upright cards - the whole buy on one screen, fitBonus() scaling only what is left over */
@@ -3089,6 +3091,260 @@
   html.railside .rail:has(#fsCard.on:not(.fill)) { transform: translateY(-100%) scale(min(1.5, calc(var(--side, 400) / 190))); }
   html.railside #fsCard.fill .fuelrow { flex-direction: column; align-items: flex-start; gap: 4px; }
   html.railside .ftotal { height: 84px; padding-left: 12px; }
+
+  /* ---------- the price of a mode, spelled out (approval 2026-11-19: "show the base cost, applied multiplier,
+     and final cost clearly before the player activates the feature") ----------
+     Every card carries a little sum - the bet, the mode's cost multiplier, the total it charges - and pressing
+     PLAY / ACTIVATE opens the same sum in a confirm sheet before anything is charged. */
+  #bonusWrap .bccost { display: grid; gap: 2px; min-width: 0; padding: 6px 10px; border-radius: 10px;
+    background: rgba(6, 10, 30, .62); border: 2px solid #0C0C12; font-family: "Fredoka", var(--num); line-height: 1.1; }
+  #bonusWrap .bccost > div { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; min-width: 0; }
+  #bonusWrap .bccost .k { flex: none; font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: #CFE0FF; }
+  #bonusWrap .bccost b { min-width: 0; font-size: 14px; font-weight: 700; color: #fff; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  #bonusWrap .bccost .tot { margin-top: 2px; padding-top: 3px; border-top: 1px solid rgba(255, 255, 255, .18); }
+  #bonusWrap .bccost .tot .k { color: #fff; }
+  #bonusWrap .bccost .tot b { font-size: 19px; color: #FF9A40; text-shadow: 2px 2px 0 #0C0C12; }
+  /* a wide card: the sum and ACTIVATE side by side under the description (the text side runs a little wider for it) */
+  #bonusWrap .bc.wide .bcbody { width: 70%; }
+  #bonusWrap .bc.wide .bccost { flex: 1 1 150px; width: auto; min-width: 140px; max-width: 210px; }
+  #bonusWrap .bc.wide .bccost .tot b { font-size: 17px; }
+  #bonusWrap .bc.wide .bcbtn { min-width: 0; padding: 10px 14px; letter-spacing: .1em; }
+  /* a tall card: the sum across the card's width, PLAY under it */
+  #bonusWrap .bc.tall .bcbody { align-items: stretch; }
+  #bonusWrap .bc.tall .bcfoot { align-items: center; }
+  #bonusWrap .bc.tall .bccost { align-self: stretch; width: auto; max-width: 240px; margin: 0 auto; box-sizing: border-box; width: 100%; }
+  @media (max-width: 760px) {
+    /* an upright phone's wide card: the text side runs the card's width (the description held to the left part,
+       clear of the art) so the sum gets real room beside ACTIVATE */
+    #bonusWrap .bc.wide .bcbody { width: 100%; }
+    #bonusWrap .bc.wide .bcdesc { max-width: 74%; }
+    #bonusWrap .bc.wide .bccost { width: auto; flex: 0 1 180px; min-width: 0; padding: 4px 8px; }
+    #bonusWrap .bc.wide .bccost .tot b { font-size: 14px; }
+    #bonusWrap .bc.wide .bcbtn { margin-left: auto; }
+    #bonusWrap .bccost .k { font-size: 9.5px; letter-spacing: .06em; }
+    #bonusWrap .bccost b { font-size: 11.5px; }
+    #bonusWrap .bccost .tot b { font-size: 14px; }
+    #bonusWrap .bc.tall .bccost { padding: 3px 5px; gap: 1px; }
+    #bonusWrap .bc.tall .bccost > div { gap: 4px; }
+    #bonusWrap .bc.tall .bccost .k { font-size: 8.5px; letter-spacing: .02em; }
+    #bonusWrap .bc.tall .bccost b { font-size: 10px; }
+    #bonusWrap .bc.tall .bccost .tot b { font-size: 12.5px; }
+  }
+  /* the confirm sheet over the menu */
+  #bonusWrap .bsconfirm { position: absolute; inset: 0; z-index: 5; display: grid; place-items: center; padding: 12px;
+    background: rgba(8, 12, 34, .78); border-radius: inherit; animation: menuBlurIn .16s ease-out; }
+  #bonusWrap .bsconfirm[hidden] { display: none; }
+  #bonusWrap .bscbox { --acc: #FF7A1A; display: flex; flex-direction: column; align-items: stretch; gap: 10px;
+    width: min(380px, 100%); max-height: 100%; overflow: auto; padding: 16px 18px; border-radius: 16px;
+    background: #14245E; border: 3px solid var(--acc); box-shadow: 0 0 0 3px #0C0C12, 6px 8px 0 #0C0C12, 0 0 26px color-mix(in srgb, var(--acc) 55%, transparent);
+    animation: bscIn .22s cubic-bezier(.2, .9, .3, 1.2); }
+  @keyframes bscIn { from { opacity: 0; transform: translateY(10px) scale(.96); } to { opacity: 1; transform: none; } }
+  #bonusWrap .bsclogo { height: 54px; width: 100%; object-fit: contain; filter: drop-shadow(3px 4px 0 #0C0C12); }
+  #bonusWrap .bsctitle { margin: -4px 0 0; text-align: center; font-family: "Fredoka", var(--num); font-size: 15px; font-weight: 700;
+    letter-spacing: .14em; text-transform: uppercase; color: #fff; }
+  #bonusWrap .bsccost { padding: 10px 14px; gap: 6px; }
+  #bonusWrap .bsccost .k { font-size: 13px; }
+  #bonusWrap .bsccost b { font-size: 18px; }
+  #bonusWrap .bsccost .tot b { font-size: 24px; }
+  #bonusWrap .bscnote { margin: 0; text-align: center; font-family: "Fredoka", var(--read); font-size: 13px; line-height: 1.35; color: #DCE6FF; }
+  #bonusWrap .bscbtns { display: flex; gap: 10px; }
+  #bonusWrap .bscbtns .bcbtn { flex: 1 1 0; min-width: 0; margin: 0; padding: 10px 8px; font-size: 15px; letter-spacing: .1em; }
+  @media (prefers-reduced-motion: reduce) { #bonusWrap .bscbox, #bonusWrap .bsconfirm { animation: none; } }
+
+  /* ---------- the bonus menu in a short window (Popout S 400x225, Popout L 800x450, a phone on its side) ----------
+     (approval 2026-11-19: "in Popout S the bonus menu looks like a scaled-down version of the desktop layout ...
+     the text is barely visible"). fitBonus sets html.bshort for a window no taller than 560 px that is wider than
+     it is tall. The menu then fills the window at its own size: one header row (title, balance, the bet with its
+     arrows, the close X) over all five cards in one row. Where the five fit side by side they share the width;
+     a narrower window shows two and a half and the row scrolls sideways (arrows, swipe or the wheel). The type
+     grows with the cards (--bsk) but never drops under a readable size. */
+  html.bshort #bonusWrap .bonuspop { padding: 4px; width: 100vw; height: 100vh; max-width: none; max-height: none; overflow: hidden; scale: none !important; }
+  html.bshort #bonusWrap .bshop { --bsk: 1; width: 100%; height: 100%; display: grid; grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-rows: auto minmax(0, 1fr); align-items: center; gap: 6px 10px; padding: 6px 8px 8px; border-width: 3px; box-shadow: 4px 5px 0 #0C0C12; border-radius: 14px; }
+  html.bshort #bonusWrap .bsrow { display: none !important; }
+  html.bshort #bonusWrap .bshoptitle { grid-row: 1; grid-column: 1; margin: 0; font-size: calc(13px * var(--bsk)); letter-spacing: .14em; white-space: nowrap; text-align: left; }
+  html.bshort #bonusWrap .bshopbar { grid-row: 1; grid-column: 2; justify-self: center; gap: calc(10px * var(--bsk)); padding: 0; border: 0; min-width: 0; max-width: 100%; }
+  /* the label beside its figure, not over it: the header stays one line high */
+  html.bshort #bonusWrap .bsstat { flex-direction: row; align-items: center; gap: 5px; min-width: 0; }
+  html.bshort #bonusWrap .bsstat .lbl { font-size: calc(9px * var(--bsk)); letter-spacing: .1em; flex: none; }
+  html.bshort #bonusWrap .bsstat .val { font-size: calc(13px * var(--bsk)); min-width: 0; }
+  html.bshort #bonusWrap .bsbet { gap: 5px; }
+  html.bshort #bonusWrap .bsbet .val { min-width: calc(46px * var(--bsk)); }
+  /* the narrowest windows (Popout S): the header is the balance, the bet and the X - the title gives way */
+  html.bshort.bsnarrow #bonusWrap .bshoptitle { display: none; }
+  html.bshort.bsnarrow #bonusWrap .bshop { grid-template-columns: minmax(0, 1fr) auto; }
+  html.bshort.bsnarrow #bonusWrap .bshopbar { grid-column: 1; }
+  html.bshort.bsnarrow #bonusWrap .bshopx { grid-column: 2; }
+  html.bshort #bonusWrap .bshop #bonusBetDown, html.bshort #bonusWrap .bshop #bonusBetUp { width: calc(22px * var(--bsk)); height: calc(22px * var(--bsk)); border-width: 2px; box-shadow: 1px 2px 0 #0C0C12; }
+  html.bshort #bonusWrap .bshop #bonusBetDown::before, html.bshort #bonusWrap .bshop #bonusBetUp::before { width: 8px; height: 8px; border-left-width: 3px; border-bottom-width: 3px; }
+  html.bshort #bonusWrap .bssep { height: calc(22px * var(--bsk)); }
+  html.bshort #bonusWrap .bshopx { position: relative; inset: auto; grid-row: 1; grid-column: 3; width: calc(24px * var(--bsk)); height: calc(24px * var(--bsk)); border-width: 2px; box-shadow: 1px 2px 0 #0C0C12; }
+  html.bshort #bonusWrap .bshopx::before, html.bshort #bonusWrap .bshopx::after { width: 12px; height: 2.5px; }
+  #bonusWrap .bsstripwrap[hidden] { display: none; }
+  html.bshort #bonusWrap .bsstripwrap { grid-row: 2; grid-column: 1 / -1; position: relative; align-self: stretch; min-height: 0; }
+  html.bshort #bonusWrap .bsstrip { height: 100%; display: grid; grid-auto-flow: column; grid-auto-columns: var(--bcw, 160px); gap: 8px;
+    overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: none; padding: 2px 6px 6px 2px; }
+  html.bshort #bonusWrap .bsstrip::-webkit-scrollbar { display: none; }
+  html.bshort #bonusWrap .bsstrip .bc { flex-direction: column; min-height: 0; height: 100%; scroll-snap-align: start; border-radius: 12px; border-width: 2px; box-shadow: 3px 4px 0 #0C0C12; }
+  html.bshort #bonusWrap .bsstrip .bc:hover { transform: none; }
+  html.bshort #bonusWrap .bsstrip .bc .bcart { left: 0; right: auto; top: 0; width: 100%; height: 46%; object-position: 50% 35%;
+    -webkit-mask-image: linear-gradient(180deg, #000 40%, transparent 100%); mask-image: linear-gradient(180deg, #000 40%, transparent 100%); }
+  html.bshort #bonusWrap .bsstrip .bc .bcbody { width: auto; height: 100%; margin: 0; padding: calc(5px * var(--bsk)) calc(7px * var(--bsk)) calc(7px * var(--bsk));
+    gap: calc(4px * var(--bsk)); align-items: stretch; justify-content: flex-end; text-align: center;
+    background: linear-gradient(180deg, rgba(20, 36, 94, .2) 0, rgba(20, 36, 94, .9) var(--bsfade, 30%), #14245E calc(var(--bsfade, 30%) + 16%)); }
+  /* a tall card (Popout L, a phone on its side) shows more of its art over the text */
+  html.bshort:not(.bsnarrow) #bonusWrap .bsstrip .bc { --bsfade: 44%; }
+  html.bshort #bonusWrap .bsstrip .bcdesc, html.bshort #bonusWrap .bsstrip .bclogo { text-shadow: 1px 1px 0 #0C0C12; }
+  html.bshort #bonusWrap .bsstrip .bclogo { height: calc(21px * var(--bsk)); max-width: none; object-position: center; flex: none; }
+  html.bshort #bonusWrap .bsstrip .bcdesc { font-size: calc(10.5px * var(--bsk)); line-height: 1.2; min-height: 0; flex: none; }
+  html.bshort #bonusWrap .bsstrip .bcfoot { flex-direction: column; align-items: stretch; gap: calc(4px * var(--bsk)); margin: 0; }
+  html.bshort #bonusWrap .bsstrip .bccost { flex: none; width: auto; min-width: 0; max-width: none; margin: 0; padding: calc(2px * var(--bsk)) calc(6px * var(--bsk)); gap: 0; border-radius: 8px; line-height: 1.12; }
+  html.bshort #bonusWrap .bsstrip .bcdesc { max-width: none; }
+  html.bshort #bonusWrap .bsstrip .bccost > div { gap: 6px; }
+  html.bshort #bonusWrap .bsstrip .bccost .k { font-size: calc(9.5px * var(--bsk)); letter-spacing: .05em; }
+  html.bshort #bonusWrap .bsstrip .bccost b { font-size: calc(10.5px * var(--bsk)); }
+  html.bshort #bonusWrap .bsstrip .bccost .tot { margin-top: 1px; padding-top: 1px; }
+  html.bshort #bonusWrap .bsstrip .bccost .tot b { font-size: calc(13px * var(--bsk)); text-shadow: 1px 1px 0 #0C0C12; }
+  html.bshort #bonusWrap .bsstrip .bcbtn { width: 100%; min-width: 0; margin: 0; padding: calc(4px * var(--bsk)) 4px; font-size: calc(11px * var(--bsk)); letter-spacing: .1em; border-width: 2px; box-shadow: 2px 3px 0 #0C0C12; }
+  /* the row's arrows: only while it scrolls, and only on the side there is more to see */
+  html.bshort #bonusWrap .bsnav { position: absolute; top: 50%; z-index: 2; width: 28px; height: 28px; margin-top: -14px; padding: 0; border-radius: 50%;
+    background: #FF7A1A; border: 2px solid #0C0C12; box-shadow: 1px 2px 0 #0C0C12; color: #fff; cursor: pointer; }
+  html.bshort #bonusWrap .bsnav[hidden] { display: none; }
+  html.bshort #bonusWrap .bsnav.prev { left: -2px; }
+  html.bshort #bonusWrap .bsnav.next { right: -2px; }
+  html.bshort #bonusWrap .bsnav::before { content: ""; position: absolute; left: 50%; top: 50%; width: 8px; height: 8px; border-left: 3px solid currentColor; border-bottom: 3px solid currentColor;
+    translate: -35% -50%; rotate: 45deg; }
+  html.bshort #bonusWrap .bsnav.next::before { rotate: -135deg; translate: -65% -50%; }
+  /* the confirm sheet in a short window: the sum and the two buttons side by side, no logo */
+  html.bshort #bonusWrap .bsconfirm { padding: 6px; }
+  html.bshort #bonusWrap .bscbox { width: min(360px, 100%); padding: 8px 12px; gap: 6px; display: grid; grid-template-columns: 1fr; }
+  html.bshort #bonusWrap .bsclogo { display: none; }
+  html.bshort #bonusWrap .bsctitle { margin: 0; font-size: calc(13px * var(--bsk)); }
+  html.bshort #bonusWrap .bsccost { padding: 5px 10px; gap: 2px; }
+  html.bshort #bonusWrap .bsccost .k { font-size: calc(10.5px * var(--bsk)); }
+  html.bshort #bonusWrap .bsccost b { font-size: calc(13px * var(--bsk)); }
+  html.bshort #bonusWrap .bsccost .tot b { font-size: calc(16px * var(--bsk)); }
+  html.bshort #bonusWrap .bscnote { font-size: calc(10.5px * var(--bsk)); line-height: 1.25; }
+  html.bshort #bonusWrap .bscbtns .bcbtn { padding: calc(6px * var(--bsk)) 6px; font-size: calc(12px * var(--bsk)); border-width: 2px; }
+
+  /* ---------- the bonus intro in a short window (Popout S / L, a phone on its side) ----------
+     One tall column (logo, YOU WON, the spins, FREE SPINS, how it works) had to be shrunk to under half its size in
+     400x225, its how-it-works text a few px high. A short window sets the screen out in two columns instead - the
+     logo and the spins on the left, how it works beside them - so it needs far less shrinking (bonusIntro's --fit). */
+  @media (max-height: 520px) and (orientation: landscape) {
+    .bonusintro .inner { padding: 2vh 3vw; }
+    .bonusintro .bstack { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 3.5vw; row-gap: .4vh;
+      align-items: center; justify-items: center; width: min(100%, 980px); }
+    .bonusintro .bstack > .blogo, .bonusintro .bstack > .byou, .bonusintro .bstack > .bnum, .bonusintro .bstack > .bfs { grid-column: 1; }
+    html .bonusintro .bstack > .bhow, html.sprayfx .bonusintro .bstack > .bhow { grid-column: 2; grid-row: 1 / 5; align-self: center; justify-self: stretch;
+      max-width: none; margin: 0; padding: 8px 12px; border-width: 2px; border-radius: 12px;
+      font-size: clamp(11px, 3.3vh, 16px); line-height: 1.4; -webkit-text-stroke-width: 2px; }
+    .bonusintro .bhow b, .bonusintro .bhow strong { -webkit-text-stroke-width: 2.5px; }
+    .bonusintro .bstack > .bcont { grid-column: 1 / -1; }
+    .bonusintro .blogo { height: min(22vh, 150px); max-width: 38vw; }
+    .bonusintro.x .blogo { height: min(19vh, 130px); }
+    .bonusintro .bnum { padding: 2vh 4vw 2.4vh; }
+    .bonusintro .bnum img { height: clamp(30px, 15vh, 110px); }
+    .bonusintro .byou { font-size: clamp(13px, 5vh, 34px); margin-top: 0; }
+    .bonusintro .bfs { font-size: clamp(15px, 6.5vh, 44px); }
+  }
+
+  /* ---------- the rules panel in a short window (Popout S 400x225, Popout L 800x450, a phone on its side) ----------
+     (approval 2026-11-19, Popout S/L review): the big title and the roomy padding left one line of rules in view at
+     400x225. A short window gets a slim title, tighter boxes and a Close that stays in view at the panel's foot. */
+  @media (max-height: 520px) and (orientation: landscape) {
+    #infoWrap { padding: 6px 6px calc(var(--hud-top, 150px) + 4px); }
+    #infoWrap .infopanel { max-height: calc(100vh - var(--hud-top, 150px) - 12px); padding: 8px 12px 0; border-radius: 14px; }
+    html #infoWrap .infopanel h3 { font-size: 15px; letter-spacing: .12em; margin: 0 0 6px; }
+    html #infoWrap .infopanel section { padding: 8px 10px 6px; margin: 0 0 8px; border-radius: 11px; }
+    html #infoWrap .infopanel section > h4 { font-size: 11.5px; margin: 0 0 6px; }
+    html #infoWrap .infopanel p { font-size: 12.5px; line-height: 1.45; margin: 0 0 6px; }
+    html #infoWrap .infopanel .fine { font-size: 11.5px; }
+    html #infoWrap .infopanel .ptext { font-size: 12.5px; line-height: 1.4; }
+    html #infoWrap .infopanel .kvgrid b { font-size: 19px; }
+    /* Close rides at the panel's foot on a band of the panel's own blue, so the text scrolls away under it */
+    html #infoWrap #infoClose { position: sticky; bottom: 0; z-index: 2; display: block; margin: 4px auto 0; padding: 4px 18px; font-size: 13px; min-width: 0;
+      background-color: color-mix(in srgb, #fff 8%, var(--hud-fill, #1F45B8)); box-shadow: 0 0 0 200vw var(--hud-fill, #1F45B8);
+      clip-path: inset(-8px -100vw -8px -100vw); }
+    html #infoWrap .infopanel::after { content: ""; display: block; height: 6px; }
+  }
+  @media (max-height: 300px) and (orientation: landscape) {
+    #infoWrap { padding: 4px 4px calc(var(--hud-top, 150px) + 3px); }
+    #infoWrap .infopanel { max-height: calc(100vh - var(--hud-top, 150px) - 8px); padding: 6px 10px 0; }
+    html #infoWrap .infopanel h3 { font-size: 13px; margin: 0 0 4px; }
+  }
+
+  /* ---------- Bet Replay panel (approval 2026-11-19: "resemble the provided example") ----------
+     A dark card with a gold rim: the REPLAY pill and the title, the round's figures in an inset table (the cost side
+     in gold, the win side in green, the two totals on their own lit rows), the big gold START REPLAY / PLAY AGAIN
+     button and the small print under it. A short window (Popout S) sets the two groups side by side. */
+  #replayWrap { background: rgba(6, 8, 18, .55); }
+  .replaycard { position: relative; display: flex; flex-direction: column; gap: 14px; width: min(400px, calc(100vw - 24px));
+    max-height: calc(100vh - 16px); overflow: auto; padding: 22px 24px 18px; border-radius: 22px; box-sizing: border-box;
+    background: linear-gradient(180deg, #1C2340, #141A30); border: 2px solid #8A6A1E; box-shadow: 0 0 0 3px #0C0C12, 0 22px 50px rgba(0, 0, 0, .65);
+    font-family: var(--hud-font, "Fredoka"), sans-serif; color: #fff; text-align: left; animation: infoRise .3s cubic-bezier(.2, .9, .3, 1.1); }
+  .replaycard .rphead { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .replaycard .rppill { padding: 5px 18px; border-radius: 999px; background: linear-gradient(90deg, #FFD43B, #FFB000); color: #1A1406;
+    font-weight: 700; font-size: 13px; letter-spacing: .26em; text-transform: uppercase; }
+  .replaycard h3 { margin: 0; font-size: 28px; font-weight: 700; letter-spacing: .01em; color: #fff; text-transform: none; text-align: center; }
+  .replaycard .rptable { display: flex; flex-direction: column; gap: 0; padding: 6px 12px; border-radius: 14px; background: #10152A; }
+  .replaycard .rpgroup { display: flex; flex-direction: column; padding: 6px 0; }
+  .replaycard .rpgroup + .rpgroup { border-top: 1px solid rgba(255, 255, 255, .12); }
+  .replaycard .rprow { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; padding: 9px 2px; min-width: 0; }
+  .replaycard .rprow.mode { padding-bottom: 12px; margin-bottom: 4px; border-bottom: 1px solid rgba(255, 255, 255, .12); }
+  .replaycard .rprow span { flex: none; font-size: 15px; color: #A9B0C7; }
+  .replaycard .rprow b { min-width: 0; font-size: 16px; font-weight: 700; color: #FFCC33; white-space: nowrap; font-variant-numeric: tabular-nums; text-align: right; }
+  .replaycard .rprow.mode b { font-size: 17px; letter-spacing: .08em; text-transform: uppercase; }
+  .replaycard .rpgroup.win .rprow b { color: #34D27B; }
+  .replaycard .rprow.hi { margin: 4px -14px; padding: 12px 14px; border-radius: 10px; background: #2A2A2C; }
+  .replaycard .rprow.hi span { color: #C9CDD8; }
+  .replaycard .rprow.hi b { font-size: 22px; }
+  .replaycard .rpstatus { margin: 0; text-align: center; font-size: 14px; color: #C9CDD8; }
+  .replaycard .rpstatus:empty { display: none; }
+  .replaycard .rpstatus.err { color: #FF8080; }
+  .replaycard .rpplay { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; padding: 15px 18px; border: 0; border-radius: 16px;
+    background: linear-gradient(90deg, #FFD43B, #FFA000); color: #1A1406; font-family: inherit; font-size: 22px; font-weight: 700; cursor: pointer;
+    box-shadow: 0 6px 18px rgba(255, 170, 0, .3); transition: transform .12s ease, filter .15s ease; }
+  .replaycard .rpplay[hidden] { display: none; }
+  .replaycard .rpplay:hover { filter: brightness(1.06); }
+  .replaycard .rpplay:active { transform: scale(.97); }
+  .replaycard .rpplay:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+  .replaycard .rpplay i { width: 0; height: 0; border-style: solid; border-width: .38em 0 .38em .62em; border-color: transparent transparent transparent currentColor; }
+  .replaycard .rpplay.again i { width: .9em; height: .9em; border: .14em solid currentColor; border-right-color: transparent; border-radius: 50%; }
+  .replaycard .rpfoot { margin: -2px 0 0; text-align: center; font-size: 12.5px; line-height: 1.4; color: #7F879E; }
+  @media (prefers-reduced-motion: reduce) { .replaycard { animation: none; } }
+  /* a short window (Popout S 400x225, Popout L 800x450, a phone on its side): the cost and the win side by side,
+     the title beside its pill, everything a size down - the whole panel in view, Start Replay included */
+  @media (max-height: 520px) and (orientation: landscape) {
+    #replayWrap { padding: 6px; }
+    .replaycard { width: min(560px, calc(100vw - 12px)); gap: 7px; padding: 10px 14px 9px; border-radius: 14px; }
+    .replaycard .rphead { flex-direction: row; justify-content: center; gap: 10px; }
+    .replaycard .rppill { padding: 3px 10px; font-size: 10px; letter-spacing: .2em; }
+    .replaycard h3 { font-size: 18px; }
+    .replaycard .rptable { flex-direction: row; gap: 12px; padding: 4px 10px; }
+    .replaycard .rpgroup { flex: 1 1 0; min-width: 0; padding: 2px 0; }
+    .replaycard .rpgroup + .rpgroup { border-top: 0; border-left: 1px solid rgba(255, 255, 255, .12); padding-left: 12px; justify-content: center; }
+    .replaycard .rprow { padding: 4px 1px; gap: 8px; }
+    .replaycard .rprow.mode { padding-bottom: 5px; margin-bottom: 2px; }
+    .replaycard .rprow span { font-size: 11.5px; }
+    .replaycard .rprow b { font-size: 12.5px; }
+    .replaycard .rprow.mode b { font-size: 12.5px; }
+    .replaycard .rprow.hi { margin: 2px -8px; padding: 5px 8px; border-radius: 8px; }
+    .replaycard .rprow.hi b { font-size: 15px; }
+    .replaycard .rpstatus { font-size: 11.5px; }
+    .replaycard .rpplay { padding: 7px 12px; font-size: 15px; border-radius: 11px; gap: 8px; }
+    .replaycard .rpfoot { font-size: 10px; margin: -1px 0 0; }
+  }
+  @media (max-height: 260px) and (orientation: landscape) {
+    .replaycard { gap: 5px; padding: 7px 10px 6px; }
+    .replaycard .rprow { padding: 3px 1px; }
+    .replaycard .rprow span { font-size: 10.5px; }
+    .replaycard .rprow b, .replaycard .rprow.mode b { font-size: 11.5px; }
+    .replaycard .rprow.hi { padding: 3px 7px; margin: 1px -7px; }
+    .replaycard .rprow.hi b { font-size: 13px; }
+    .replaycard .rpplay { padding: 6px 10px; font-size: 13.5px; }
+    .replaycard .rpfoot { font-size: 9.5px; }
+  }
 </style>
 </head>
 <body>
@@ -3183,11 +3439,35 @@
       <h3 class="bshoptitle" id="bonusTitle">Bonus Buy</h3>
       <div class="bsrow wide" id="bshopWide"></div>
       <div class="bsrow tall" id="bshopTall"></div>
+      <!-- a short window (Popout S / L, a phone on its side): all five cards in one row, laid out at a readable size
+           instead of the full menu shrunk to fit (paintBonus moves the cards here; fitBonus sets html.bshort) -->
+      <div class="bsstripwrap" id="bshopStripWrap" hidden>
+        <div class="bsstrip" id="bshopStrip"></div>
+        <button type="button" class="bsnav prev" id="bshopPrev" aria-label="Previous" hidden></button>
+        <button type="button" class="bsnav next" id="bshopNext" aria-label="Next" hidden></button>
+      </div>
+      <!-- the price, spelled out before anything is charged: the bet, the mode's cost multiplier and what that makes -->
+      <div class="bsconfirm" id="bsConfirm" hidden role="alertdialog" aria-modal="true" aria-labelledby="bscTitle">
+        <div class="bscbox">
+          <img class="bsclogo" id="bscLogo" alt="" draggable="false">
+          <h4 class="bsctitle" id="bscTitle"></h4>
+          <div class="bccost bsccost">
+            <div><span class="k" id="bscBetK">Bet</span><b id="bscBet"></b></div>
+            <div><span class="k" id="bscMultK">Multiplier</span><b id="bscMult"></b></div>
+            <div class="tot"><span class="k" id="bscTotK">Total</span><b id="bscTot"></b></div>
+          </div>
+          <p class="bscnote" id="bscNote"></p>
+          <div class="bscbtns">
+            <button type="button" class="bcbtn amber" id="bscNo">Cancel</button>
+            <button type="button" class="bcbtn" id="bscYes">Confirm</button>
+          </div>
+        </div>
+      </div>
       <div class="bshopbar">
         <div class="bsstat"><span class="lbl">Balance</span><span class="val" id="bshopBal">0.00</span></div>
         <i class="bssep" aria-hidden="true"></i>
         <div class="bsstat bsplay">
-          <span class="lbl">Play</span>
+          <span class="lbl">Bet</span>
           <div class="bsbet">
             <button type="button" id="bonusBetDown" aria-label="Lower bet"></button>
             <span class="val" id="bonusBetVal">1.00</span>
@@ -3220,13 +3500,27 @@
   <i class="intrograin" aria-hidden="true"></i>
 </div>
 
+<!-- Bet Replay (approval 2026-11-19, after Engine's example): the round's mode, base bet, cost multiplier and total
+     cost, its payout multiplier and total win, all on view before the round is started; START REPLAY plays it, and the
+     panel comes back at the end with PLAY AGAIN. bootReplay fills it. -->
 <div class="infowrap" id="replayWrap" hidden>
-  <div class="infopanel" role="dialog" aria-modal="true" aria-label="Round replay">
-    <h3>Round replay</h3>
-    <p class="replaymeta" id="replayMeta"></p>
-    <p class="replayres" id="replayResult" hidden></p>
-    <p class="fine" id="replayStatus">Loading the round…</p>
-    <button class="infoclose" id="replayPlay" hidden>Play</button>
+  <div class="replaycard" role="dialog" aria-modal="true" aria-labelledby="replayTitle">
+    <div class="rphead"><span class="rppill">Replay</span><h3 id="replayTitle">Bet Replay</h3></div>
+    <div class="rptable" id="replayTable">
+      <div class="rpgroup">
+        <div class="rprow mode"><span>Mode</span><b id="rpMode">&mdash;</b></div>
+        <div class="rprow"><span>Base Bet</span><b id="rpBase">&mdash;</b></div>
+        <div class="rprow"><span>Bet Multiplier</span><b id="rpCost">&mdash;</b></div>
+        <div class="rprow hi"><span>Total Bet</span><b id="rpTotal">&mdash;</b></div>
+      </div>
+      <div class="rpgroup win">
+        <div class="rprow"><span>Payout Multiplier</span><b id="rpPayM">&mdash;</b></div>
+        <div class="rprow hi"><span>Total Win</span><b id="rpWin">&mdash;</b></div>
+      </div>
+    </div>
+    <p class="rpstatus" id="replayStatus" role="status">Loading the round&hellip;</p>
+    <button type="button" class="rpplay" id="replayPlay" hidden><i aria-hidden="true"></i><span id="replayPlayTxt">Start Replay</span></button>
+    <p class="rpfoot" id="replayFoot">This is a replay of a previous bet round. No bets will be placed.</p>
   </div>
 </div>
 
@@ -3292,8 +3586,10 @@ const REELS = 7, ROWS = 5;   // the 7x5 cluster board; the events pad every reel
 // amount x cost); these are only so the buy buttons can show the right price.
 const MODE_COST = { base: 1, chance: 3, fillup: 100, premium: 300, nitro: 500, midnight: 500 };   // replaced from the RGS's gameModes at boot
 // Falcos's bet modes (FALCOS_DESIGN.md "Bet modes") as the player reads them, by the math's mode key.
+// A mode carries one name everywhere - the game, the replay window and (by its key) the math - and none holds a word
+// social mode forbids (Engine: mode names must not contain "buy", "bet" or "pay").
 const MODE_NAMES = {
-  base: "Base game", chance: "FUEL CHANCE spin", fillup: "Buy FILL UP", premium: "Buy PREMIUM", nitro: "NITRO SPIN", midnight: "Buy MIDNIGHT RUN",
+  base: "Base game", chance: "FUEL CHANCE", fillup: "FILL UP", premium: "PREMIUM", nitro: "NITRO SPIN", midnight: "MIDNIGHT RUN",
 };
 
 const state = {
@@ -3322,17 +3618,37 @@ const $ = id => document.getElementById(id);
 // next starts its animation from the top. Reading offsetWidth did the same at the price
 // of a full page layout - once per landing icon, dozens of times per drop.
 const restyle = (...els) => { for (const el of els) if (el) void getComputedStyle(el).animationName; };
+// Money on screen (rgs.js formatMoney). A win is always shown EXACTLY: the currency's usual decimals, and as
+// many more as the amount needs (a 0.1x win on a 1-cent bet is $0.001; Engine: "display payouts below one cent
+// with enough precision to match the amount returned by the RGS"). The balance never shows more than the
+// currency's usual decimals (fmtBal). A count-up runs at the precision of the figure it lands on (fmtAt +
+// dpOf), so it holds one width the whole way and ends on the exact amount - never a rounded one.
 const fmt = v => RGS.money(v);
+const dpOf = (...vs) => Math.max(...vs.map(v => RGS.exactDp(Math.round(v || 0))));
+const fmtAt = (v, dp) => RGS.money(Math.round(v), null, dp);
+const snapTo = (v, dp) => { const u = Math.pow(10, 6 - dp); return Math.round(v / u) * u; };
 const TOUCH = matchMedia("(pointer: coarse)").matches && !matchMedia("(pointer: fine)").matches;   // phones/tablets say Tap, not Click
-// A mode's own bet cap from authenticate (gameModes[].maxBet): over it the RGS refuses the round; 0 = the mode is off (XGC)
-const modeOpen = (mode, b = bet()) => { const mx = RGS.modeMaxBet(mode); return mx === null || (mx > 0 && b <= mx); };
+// A mode's own bet cap from authenticate (gameModes[].maxBet): over it the RGS refuses the round. RGS.modeMaxBet gives
+// null for "no cap" - including the maxBet: 0 that the live RGS sends for EVERY mode under XGC (Gold Coins). Reading 0 as
+// "mode off" locked the base game and every bonus card under GC (approval 2026-11-19: "the game does not work when
+// currency is GC"); the mode is never hidden or locked for it.
+const modeOpen = (mode, b = bet()) => { const mx = RGS.modeMaxBet(mode); return mx === null || b <= mx; };
 // Social casinos (Stake.us) forbid a list of gambling terms. Every player-facing string
-// goes through T(): a no-op normally, the sweeps vocabulary when the lobby says social=true.
-const SOCIAL = RGS.social;
-if (SOCIAL) document.documentElement.classList.add("social");
+// goes through T(): a no-op normally, the sweeps vocabulary in social mode - the lobby's
+// social=true, a social coin in the launch URL (rgs.js), or, found only at authenticate,
+// jurisdiction.socialCasino or an SC / GC wallet (goSocial, from boot).
+let SOCIAL = RGS.social;
 const T = s => RULES.T(s, SOCIAL);
 // the symbols' short names reach the board as alt text and the ticker: they follow the rule too
-if (SOCIAL) for (const d of Object.values(SYM)) { d.label = T(d.label); d.sub = T(d.sub); }
+// (a name's two words are swapped together: CASH DRAWER -> COIN DRAWER)
+function socialSyms() {
+  for (const d of Object.values(SYM)) {
+    if (!d.label) continue;
+    const both = T((d.label + " " + d.sub).trim()).split(" ");
+    d.label = both[0]; d.sub = both.slice(1).join(" ");
+  }
+}
+if (SOCIAL) { document.documentElement.classList.add("social"); socialSyms(); }
 const bet = () => state.bets[state.betIdx] || 0;
 // Event amounts are hundredths of the bet (payoutMultiplier 63340 == 633.40x), and the
 // bet is a 6dp integer, so round back to a whole integer amount.
@@ -5085,6 +5401,10 @@ function countTo(el, from, to, ms, f = fmt) {
   };
   if (REDUCED_MOTION || ms <= 0 || from === to) { el.textContent = f(to); return; }   // skip only quickens (ms is already on the tempo)
   const t0 = performance.now();
+  // the frames in between: the balance at its usual decimals; a win at the decimals its exact figure needs, so a
+  // count to $0.0015 reads $0.0000 -> $0.0015 (it used to snap to whole cents and show $0.00 the whole way)
+  const dp = f === fmtBal ? RGS.decimalsOf() : dpOf(from, to);
+  const frame = f === fmtBal ? v => fmtBal(Math.round(v)) : v => fmtAt(v, dp);
   const step = now => {
     const t = tweens.get(el);
     if (!t || t.token !== token) return;   // superseded, or the hard land already ran
@@ -5092,9 +5412,8 @@ function countTo(el, from, to, ms, f = fmt) {
     // or the ease would draw the first frame below the figure it counts from
     const p = Math.max(0, Math.min(1, (now - t0) / ms));
     if (p >= 1) { finish(); return; }
-    // ease-out, snapped to whole cents: only the landed figure may carry sub-cent digits
     const v = from + (to - from) * (1 - Math.pow(1 - p, 3));
-    el.textContent = f(Math.round(v / 10000) * 10000);
+    el.textContent = frame(snapTo(v, dp));
     t.raf = requestAnimationFrame(step);
   };
   tweens.set(el, { token, raf: requestAnimationFrame(step), land: setTimeout(finish, ms + 150) });
@@ -5111,11 +5430,36 @@ function cashFx(el, dir) {
   el._fxT = setTimeout(() => el.classList.remove("up", "down", "bump"), 760);
 }
 
-const fmtBal = v => RGS.money(v, null, 0);   // balance shows the usual 2 decimals, never more
-function fitFigure(el, text) {
-  el.classList.toggle("long", text.length > 12 && text.length <= 16);
-  el.classList.toggle("vlong", text.length > 16);
+const fmtBal = v => RGS.moneyBalance(v);   // the balance: the currency's usual decimals (2 for USD / SC / GC), rounded
+// Figures that always fit their room (approval 2026-11-19: "the Win amount can overlap the bet amount ... make them
+// size down if the amount is too large"). A figure keeps its stylesheet size while it fits and is stepped down just
+// enough to fit when it doesn't - never under 40% of it. Everything is in layout px (scrollWidth / clientWidth), so
+// the page's own --fit scale never skews it. The bar's three figures are watched (hudFit below); the menus' figures
+// are fitted as they are painted.
+function fitTo(el, room) {
+  if (!el || !el.isConnected) return;
+  el.style.fontSize = "";
+  const need = el.scrollWidth;
+  if (!(room > 8) || need <= room) return;
+  const fs = parseFloat(getComputedStyle(el).fontSize) || 16;
+  let size = Math.max(fs * .4, Math.floor(fs * room / need * 10) / 10);
+  el.style.fontSize = size + "px";
+  // the width does not scale quite in step with the size (fixed spacing, rounding): one more measured step
+  const need2 = el.scrollWidth;
+  if (need2 > room || need2 < room * .95) {
+    size = Math.max(fs * .4, Math.min(fs, Math.floor(size * room / need2 * 10) / 10));
+    el.style.fontSize = size + "px";
+  }
 }
+// a label-and-figure row (a card's cost lines): the figure gets what the row has left after its label
+function fitRow(row) {
+  const k = row && row.querySelector(".k"), b = row && row.querySelector("b");
+  if (!k || !b) return;
+  const gap = parseFloat(getComputedStyle(row).columnGap) || 0;
+  fitTo(b, row.clientWidth - k.offsetWidth - gap - 1);
+}
+const fitRows = root => { for (const r of (root || document).querySelectorAll(".bccost > div")) fitRow(r); };
+function fitFigure(el) { if (el && typeof hudFit === "function") hudFit(el, true); }
 function setBalance(v, dir) {
   const el = $("balance"), from = state.balance;
   state.balance = v;
@@ -5216,7 +5560,7 @@ function paintFsWin() {
     fitFsCard();                // measured on landing whatever its glyphs (see above)
     bumpFsWin(el);
   };
-  const t0 = performance.now();
+  const t0 = performance.now(), rollDp = dpOf(from, v);
   const step = now => {
     if (!mine()) return;
     if (gone()) { stopFsRoll(); return; }
@@ -5224,11 +5568,11 @@ function paintFsWin() {
     // later in that frame): below 0 the curve's fractional power is NaN, which drew $0.00 for a frame
     const p = Math.min(1, Math.max(0, (now - t0) / ms));
     if (p >= 1) { finish(); return; }
-    // whole cents while it runs, and never below where it started; drawn in the currency's own
-    // decimals (none for yen or won: fmt's sub-cent digits had a count in yen showing "¥421.7",
-    // and its figure changing shape rebuilt the row and re-measured the plate every few frames)
-    roll.shown = Math.max(from, Math.round((from + (v - from) * ease(p)) / 10000) * 10000);
-    if (rollNumerals(el, fmtBal(roll.shown), true)) fitFsCard();
+    // never below where it started, and at one fixed number of decimals the whole way - the ones the exact
+    // figure it lands on needs - so the row keeps its shape (a figure changing shape rebuilds the row and
+    // re-measures the plate) and a sub-cent win counts in its own digits instead of sitting at 0.00
+    roll.shown = Math.max(from, snapTo(from + (v - from) * ease(p), rollDp));
+    if (rollNumerals(el, fmtAt(roll.shown, rollDp), true)) fitFsCard();
     roll.raf = requestAnimationFrame(step);
   };
   roll.raf = requestAnimationFrame(step);
@@ -6088,8 +6432,8 @@ function fillSet(r, y, f, pop = false) {
 // the running board total: FUEL TOTAL under the board, in money at the bet, in the neon numerals - counting
 // up (or down) to each new total the events give
 let fuelShown = 0, fuelRaf = 0;
-// a figure part way through a count, at whole cents (the RGS's money is in millionths)
-const tidyMoney = x => bet() >= 10000 ? Math.round(x / 10000) * 10000 : Math.round(x);
+// a figure part way through a count: at the decimals of the exact figure the count lands on (dpOf), so a
+// sub-cent total counts in its own digits and the row never changes shape on the way
 function fillTotal(v, quiet) {
   const card = $("fsCard"), el = $("fuelNum");
   card.classList.add("fill");
@@ -6101,9 +6445,10 @@ function fillTotal(v, quiet) {
   cancelAnimationFrame(fuelRaf);
   if (quiet || REDUCED_MOTION || from === to) { rollNumerals(el, fmt(to), false); return; }
   const t0 = performance.now(), ms = Math.min(1100, 320 + 25 * Math.sqrt(Math.abs(to - from) / Math.max(1, bet()) * 100)) * tempo();
+  const dp = dpOf(from, to);
   const step = now => {
     const p = Math.min(1, (now - t0) / ms), e = 1 - Math.pow(1 - p, 3);
-    rollNumerals(el, fmt(p < 1 ? tidyMoney(from + (to - from) * e) : to), p < 1);
+    rollNumerals(el, p < 1 ? fmtAt(snapTo(from + (to - from) * e, dp), dp) : fmt(to), p < 1);
     if (p < 1) fuelRaf = requestAnimationFrame(step);
     else { el.classList.remove("bump"); restyle(el); el.classList.add("bump"); }
   };
@@ -6194,11 +6539,11 @@ async function fillSummary(ev) {
   if (REDUCED_MOTION) rollNumerals(money, fmt(to), false);
   else {
     await hold(350);
-    const t0 = performance.now(), ms = 1000 * tempo();
+    const t0 = performance.now(), ms = 1000 * tempo(), dp = dpOf(to);
     await new Promise(res => {
       const step = now => {
         const p = Math.min(1, (now - t0) / ms), e = 1 - Math.pow(1 - p, 3);
-        rollNumerals(money, fmt(p < 1 ? tidyMoney(to * e) : to), p < 1);
+        rollNumerals(money, p < 1 ? fmtAt(snapTo(to * e, dp), dp) : fmt(to), p < 1);
         if (p < 1) requestAnimationFrame(step); else res();
       };
       requestAnimationFrame(step);
@@ -7074,7 +7419,9 @@ function hoverWin(host, reach, lag, css) {
 function clearWinChip(all) {   // the figures see themselves out; a new round sweeps up any left
   if (all) for (const c of document.querySelectorAll("#board .winpop")) c.remove();
 }
-const winFigure = (v, exact) => (exact ? fmt(v) : fmtBal(v)).replace(/[^\d.,]/g, "");
+// a cluster's figure on the board, the digits only: exact once landed; while it counts, at the decimals of the
+// exact figure it is counting to (dp), so a sub-cent cluster win counts 0.0000 -> 0.0015 rather than sitting at 0.00
+const winFigure = (v, exact, dp) => (exact ? fmt(v) : fmtAt(v, dp)).replace(/[^\d.,]/g, "");
 function placeWinChip(positions, amount, mult) {
   if (!positions || !positions.length) return 0;
   const board = $("board");
@@ -7100,9 +7447,9 @@ function placeWinChip(positions, amount, mult) {
   chip.appendChild(num);
   chip.style.left = (x + cell.offsetWidth / 2) + "px";
   chip.style.top = (top + cell.offsetHeight / 2) + "px";
-  const final = amount, m = mult > 1 ? mult : 1, base = final / m;
+  const final = amount, m = mult > 1 ? mult : 1, base = final / m, dp = dpOf(final);
   const paint = (v, exact) => {
-    const t = winFigure(v, exact);
+    const t = winFigure(v, exact, dp);
     if (t === num.textContent) return;   // only a new figure is drawn (and its new colour)
     num.textContent = t;
     chip.style.color = `hsl(${(44 - 46 * Math.min(1, v / Math.max(1e-9, final))).toFixed(0)} 100% 62%)`;   // sodium amber -> neon red (Falcos)
@@ -7173,7 +7520,7 @@ function placeWinChip(positions, amount, mult) {
   return IN + UP1 + (m > 1 ? GAP + HIT + UP2 : 0) + 150;
 }
 
-const RGS_MESSAGE = {
+const RGS_MESSAGE_EN = {
   ERR_IPB: "Not enough balance — lower the bet.",
   ERR_IS: "Session expired — reopen the game from the lobby.",
   ERR_ATE: "Session expired — reopen the game from the lobby.",
@@ -7184,7 +7531,9 @@ const RGS_MESSAGE = {
   ERR_GEN: "Something went wrong — try again.",
   ERR_ACT: "Slow down — give it a second.",
 };
-for (const k of Object.keys(RGS_MESSAGE)) RGS_MESSAGE[k] = T(RGS_MESSAGE[k]);
+const RGS_MESSAGE = {};
+const paintRgsMessages = () => { for (const [k, v] of Object.entries(RGS_MESSAGE_EN)) RGS_MESSAGE[k] = T(v); };
+paintRgsMessages();
 
 /** Animate a round's event stream, then settle it. Shared by play, resume and replay —
  *  a replay is watched, not played, so it never touches the wallet (settle: false). */
@@ -7308,21 +7657,30 @@ function paintActive() {
   if (m !== "base") {
     pill.style.setProperty("--acc", o.acc);
     pill.querySelector("b").textContent = T(o.title) + " " + T("ON");
-    pill.querySelector("span").textContent = T(`${fmt(MODE_COST[m] * bet())} a spin`);
+    // the whole sum, not just the total: the bet, the mode's multiplier and what a spin costs with it
+    pill.querySelector("span").textContent = T(`${fmt(bet())} × ${fmtMult(MODE_COST[m])} = ${fmt(MODE_COST[m] * bet())} a spin`);
   }
 }
 function resolveBuys() {}
-let bshopArmed = null, bshopArmT = 0;
+let bshopArmed = null;   // the mode whose confirm sheet is up
+const bshopCards = new Map();   // mode -> its card, built once and moved between the layouts
+// a card's sum: the bet, the mode's cost multiplier, and the total it charges (once for a buy, on every spin for an
+// ACTIVATE mode) - the same three lines the confirm sheet shows
+const COST_KEYS = () => ({ bet: T("Bet"), mult: T("Multiplier") });
 function bshopCard(o) {
   const card = document.createElement("div");
   card.className = "bc " + (o.wide ? "wide" : "tall");
   card.dataset.mode = o.mode;
   card.style.setProperty("--acc", o.acc);
+  const k = COST_KEYS(), act = ACTIVATE_MODES.includes(o.mode);
   card.innerHTML =
     `<img class="bcart" src="assets/menu/${o.art}.webp" alt="" draggable="false">` +
     `<div class="bcbody"><img class="bclogo" src="assets/menu/${o.logo}.webp" alt="${T(o.title)}" draggable="false">` +
-    `<p class="bcdesc"></p><div class="bcfoot"><div class="bcprice"><b></b><small></small></div>` +
-    `<button type="button" class="bcbtn${o.btn === "Activate" ? " amber" : ""}"></button></div></div>`;
+    `<p class="bcdesc"></p><div class="bcfoot"><div class="bccost">` +
+      `<div><span class="k">${k.bet}</span><b class="cb"></b></div>` +
+      `<div><span class="k">${k.mult}</span><b class="cm"></b></div>` +
+      `<div class="tot"><span class="k">${T(act ? "Per spin" : "Total")}</span><b class="ct"></b></div>` +
+    `</div><button type="button" class="bcbtn${o.btn === "Activate" ? " amber" : ""}"></button></div></div>`;
   card.querySelector(".bcdesc").textContent = T(o.desc);
   if (o.odds) card.querySelector(".bcdesc").insertAdjacentHTML("afterend", `<p class="bcodds">${T(o.odds)}</p>`);
   card.querySelector(".bcbtn").addEventListener("click", () => bshopGet(o));
@@ -7332,50 +7690,98 @@ function bshopGet(o) {
   if (state.active === o.mode) {   // the mode that is on: its card turns it off, no confirmation needed
     setActive(null); sfx("toggle", .9); paintBonus(); return;
   }
-  if (bshopArmed !== o.mode) {   // the first press asks; the second, within a few seconds, buys
-    bshopArmed = o.mode;
-    clearTimeout(bshopArmT);
-    bshopArmT = setTimeout(() => { bshopArmed = null; paintBonus(); }, 4000);
-    sfx("bet", 1.1);
-    paintBonus();
-    return;
-  }
-  bshopArmed = null; clearTimeout(bshopArmT);
+  // nothing is charged on the first press: the confirm sheet spells out the price (bet x multiplier = total) and
+  // only its CONFIRM buys (Engine: a mode costing more than 2x the bet must be confirmed - every mode here does)
+  bshopArmed = o.mode;
+  sfx("bet", 1.1);
+  paintBonus();
+  $("bscNo").focus({ preventScroll: true });   // the keyboard lands on Cancel: a stray Space / Enter never buys
+}
+function bshopConfirmed() {
+  const o = BUYS.find(x => x.mode === bshopArmed);
+  bshopArmed = null;
+  if (!o) { paintBonus(); return; }
+  const price = MODE_COST[o.mode] * bet();
+  if (price > state.balance || !modeOpen(o.mode)) { paintBonus(); return; }   // the bet or the balance moved under it
   sfx("buyConfirm");
   closeBonus();
   if (ACTIVATE_MODES.includes(o.mode)) setActive(o.mode);   // on from now: this spin, and every one after it
   playRound(o.mode);
 }
+function bshopCancel() {
+  if (!bshopArmed) return false;
+  bshopArmed = null; sfx("menuClose"); paintBonus();
+  return true;
+}
+$("bscYes").addEventListener("click", bshopConfirmed);
+$("bscNo").addEventListener("click", bshopCancel);
+$("bsConfirm").addEventListener("click", e => { if (e.target === $("bsConfirm")) bshopCancel(); });
+// the sum, written into a card or the sheet
+function paintCost(box, mode) {
+  const cost = MODE_COST[mode];
+  box.querySelector(".cb, #bscBet").textContent = fmt(bet());
+  box.querySelector(".cm, #bscMult").textContent = "×" + fmtMult(cost);
+  box.querySelector(".ct, #bscTot").textContent = fmt(cost * bet());
+}
 function paintBonus() {
   const wrap = $("bonusWrap");
   if (!wrap || wrap.hidden) return;
   const live = BUYS.filter(o => MODE_COST[o.mode] > 0);
-  for (const [id, wide] of [["bshopWide", true], ["bshopTall", false]]) {
-    const row = $(id), mine = live.filter(o => !!o.wide === wide);
-    if (row.dataset.modes !== mine.map(o => o.mode).join()) {
-      row.replaceChildren(...mine.map(bshopCard));
-      row.dataset.modes = mine.map(o => o.mode).join();
-    }
+  const cardOf = o => { let c = bshopCards.get(o.mode); if (!c) { c = bshopCard(o); bshopCards.set(o.mode, c); } return c; };
+  // where the cards go: two rows (FUEL CHANCE / NITRO SPIN wide, the three bonuses tall), or - a short window - one row
+  const short = document.documentElement.classList.contains("bshort");
+  const want = { bshopStrip: short ? live : [], bshopWide: short ? [] : live.filter(o => o.wide), bshopTall: short ? [] : live.filter(o => !o.wide) };
+  for (const [id, mine] of Object.entries(want)) {
+    const row = $(id), key = mine.map(o => o.mode).join();
+    if (row.dataset.modes !== key || row.children.length !== mine.length) { row.replaceChildren(...mine.map(cardOf)); row.dataset.modes = key; }
     row.hidden = !mine.length;
   }
-  for (const card of document.querySelectorAll("#bonusWrap .bc")) {
+  $("bshopStripWrap").hidden = !short;
+  for (const card of bshopCards.values()) {
+    if (!card.isConnected) continue;
     const o = BUYS.find(x => x.mode === card.dataset.mode), cost = MODE_COST[o.mode], price = cost * bet();
     const over = price > state.balance, btn = card.querySelector(".bcbtn"), armed = bshopArmed === o.mode, capped = !modeOpen(o.mode);
-    card.querySelector(".bcprice b").textContent = fmt(price);
-    card.querySelector(".bcprice small").textContent = T(`${fmtMult(cost)}x bet`);
+    paintCost(card, o.mode);
     card.classList.toggle("armed", armed);
-    btn.classList.toggle("confirm", armed && !over && !capped);
     const on = state.active === o.mode;
     card.classList.toggle("on", on);
-    btn.textContent = on ? T("Turn off") : capped ? T("Lower the bet") : over ? T("Low balance") : armed ? T("Confirm") : T(o.btn);
+    btn.textContent = on ? T("Turn off") : capped ? T("Lower the bet") : over ? T("Low balance") : T(o.btn);
     btn.disabled = !on && (over || capped);
   }
+  // the confirm sheet: up while a mode is armed and still affordable at the live bet
+  const sheet = $("bsConfirm"), o = BUYS.find(x => x.mode === bshopArmed);
+  if (o && (MODE_COST[o.mode] * bet() > state.balance || !modeOpen(o.mode) || !(MODE_COST[o.mode] > 0))) bshopArmed = null;
+  if (o && bshopArmed) {
+    const act = ACTIVATE_MODES.includes(o.mode);
+    sheet.querySelector(".bscbox").style.setProperty("--acc", o.acc);
+    $("bscLogo").src = `assets/menu/${o.logo}.webp`; $("bscLogo").alt = T(o.title);
+    $("bscTitle").textContent = T(act ? `Activate ${o.title}?` : `Buy ${o.title}?`);
+    $("bscBetK").textContent = T("Bet"); $("bscMultK").textContent = T("Multiplier");
+    $("bscTotK").textContent = T(act ? "Total per spin" : "Total");
+    paintCost(sheet, o.mode);
+    $("bscNote").textContent = T(act
+      ? `Every spin is ${fmt(MODE_COST[o.mode] * bet())} while it is on: the bet of ${fmt(bet())} times ${fmtMult(MODE_COST[o.mode])}. It stays on until you turn it off.`
+      : `${fmt(MODE_COST[o.mode] * bet())} is charged once when you confirm: the bet of ${fmt(bet())} times ${fmtMult(MODE_COST[o.mode])}.`);
+    $("bscYes").textContent = T(act ? "Activate" : "Confirm");
+    $("bscNo").textContent = T("Cancel");
+  }
+  sheet.hidden = !(o && bshopArmed);
   $("bshopBal").textContent = fmtBal(state.balance);
   $("bonusBetVal").textContent = fmt(bet());
   $("bonusBetUp").disabled = state.betIdx >= state.bets.length - 1;
   $("bonusBetDown").disabled = state.betIdx <= 0;
+  fitBonusFigures();
+  if (short) requestAnimationFrame(stripNav);
+}
+// every figure in the menu fits its room: the cost lines (the figure gets what its label leaves), the balance and
+// the bet in the bar (each fitted to the box the bar's flex layout gives it)
+function fitBonusFigures() {
+  if ($("bonusWrap").hidden) return;
+  fitRows($("bonusWrap"));
+  for (const id of ["bshopBal", "bonusBetVal"]) { const el = $(id); el.style.fontSize = ""; fitTo(el, el.clientWidth); }
 }
 function closeBonus() {
+  bshopArmed = null; $("bsConfirm").hidden = true;
   if (!$("bonusWrap").hidden) sfx("menuClose");
   if (music.want === "menu") musicTo("base", 1.2);   // the base game's loop picks up where it left off
   showMenu($("bonusWrap"), false);
@@ -7400,16 +7806,64 @@ function openBonus() {
 // Never a scroll (owner, 2026-11-10: "big enough to where you dont have to scroll"): the panel is laid out
 // at its full height (.fit lifts the box's 100vh cap - shrinking that capped, scrolling box is what cut the
 // bottom row off) and the whole of it scaled to the window, a phone's stacked cards included.
+// A short window (Popout S 400x225, Popout L 800x450, a phone on its side) is not given the full menu shrunk to a
+// fraction (approval 2026-11-19: the text was barely visible): html.bshort lays it out for the window at its own
+// size - one header row over all five cards in one row (see the stylesheet's "short window" block).
+const bonusShort = () => innerHeight <= 560 && innerWidth > innerHeight;
 function fitBonus() {
   const pop = document.querySelector("#bonusWrap .bonuspop"), panel = document.querySelector("#bonusWrap .bshop");
   if (!pop || !panel || $("bonusWrap").hidden) return;
+  const short = bonusShort(), was = document.documentElement.classList.contains("bshort");
+  document.documentElement.classList.toggle("bshort", short);
+  document.documentElement.classList.toggle("bsnarrow", short && innerWidth < 560);
+  if (short !== was) paintBonus();   // the cards move between the two layouts
+  if (short) {
+    pop.style.scale = ""; pop.classList.remove("fit");
+    // five cards side by side when each gets at least 138 px; otherwise a little over two on view (wide enough for a
+    // description to take three lines) and the row scrolls. The type grows with the card (--bsk, up to 1.3x) and
+    // never shrinks under its base size.
+    const strip = $("bshopStrip"), gap = 8, n = Math.max(1, strip.children.length);
+    const room = strip.clientWidth - 8;
+    const five = (room - gap * (n - 1)) / n;
+    const w = five >= 138 ? five : Math.max(160, Math.min(210, (room - 2 * gap) / 2.1));
+    strip.style.setProperty("--bcw", Math.floor(w) + "px");
+    const h = strip.clientHeight;
+    const k = Math.max(1, Math.min(1.3, h / 185, w / 120));
+    panel.style.setProperty("--bsk", k.toFixed(3));
+    stripNav();
+    fitBonusFigures();
+    return;
+  }
+  panel.style.removeProperty("--bsk");
   pop.style.scale = "";
   pop.classList.add("fit");
+  fitBonusFigures();
   const pad = 2 * (parseFloat(getComputedStyle(pop).paddingTop) || 18);
   const k = Math.min((innerHeight - 8) / (panel.offsetHeight + pad), (innerWidth - 4) / (panel.offsetWidth + pad));
   pop.style.scale = k < 1 ? k.toFixed(3) : "";
 }
 addEventListener("resize", fitBonus);
+// the one-row layout's arrows: shown only while the row overflows, each only while there is more on its side
+function stripNav() {
+  const s = $("bshopStrip");
+  if (!s || $("bshopStripWrap").hidden) return;
+  const more = s.scrollWidth - s.clientWidth > 2;
+  $("bshopPrev").hidden = !more || s.scrollLeft <= 2;
+  $("bshopNext").hidden = !more || s.scrollLeft >= s.scrollWidth - s.clientWidth - 2;
+}
+{
+  const s = $("bshopStrip");
+  const by = dir => { const c = s.querySelector(".bc"); s.scrollBy({ left: dir * ((c ? c.offsetWidth : 160) + 8), behavior: REDUCED_MOTION ? "auto" : "smooth" }); };
+  $("bshopPrev").addEventListener("click", () => by(-1));
+  $("bshopNext").addEventListener("click", () => by(1));
+  s.addEventListener("scroll", () => requestAnimationFrame(stripNav), { passive: true });
+  // a mouse wheel turns the row sideways (a trackpad's own sideways swipe passes through as it is)
+  s.addEventListener("wheel", e => {
+    if (Math.abs(e.deltaY) <= Math.abs(e.deltaX) || s.scrollWidth <= s.clientWidth) return;
+    e.preventDefault();
+    s.scrollBy({ left: e.deltaY });
+  }, { passive: false });
+}
 $("bonusBtn").addEventListener("click", () => openBonus());
 $("activePill").addEventListener("click", () => { if (state.playing) return; setActive(null); sfx("toggle", .9); });
 // The Bonus button hums while the pointer rests on it - a mouse pointer, that is: a finger
@@ -7435,7 +7889,7 @@ $("bonusClose").addEventListener("click", () => closeBonus());
 $("bonusBetUp").addEventListener("click", () => { state.betIdx = Math.min(state.betIdx + 1, state.bets.length - 1); sfx("bet", 1.22); refreshBet(); });
 $("bonusBetDown").addEventListener("click", () => { state.betIdx = Math.max(state.betIdx - 1, 0); sfx("bet", 0.8); refreshBet(); });
 $("bonusWrap").addEventListener("click", e => { if (e.target === $("bonusWrap")) closeBonus(); });
-document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("bonusWrap").hidden) closeBonus(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("bonusWrap").hidden && !bshopCancel()) closeBonus(); });   // Escape backs out of the confirm sheet first
 
 /** One round. Resolves true when it ran to completion, false when it did not start or
  *  failed — autoplay stops on false. */
@@ -7686,6 +8140,49 @@ function buildHud() {
 buildHud();
 matchMedia("(max-width: 1100px) and (orientation: portrait)").addEventListener?.("change", buildHud);
 
+// The bar's three figures (BALANCE | WIN | BET) sit in three fixed columns (the stylesheet: .hudbar), so a long
+// figure can never push into its neighbour; each is fitted to its own column (fitTo). A figure is measured again only
+// when its number of characters changes or the bar is resized - a count-up keeps its length for many frames (the
+// digits are tabular), so a count costs no layout. The WIN keeps a little room for its landing pop.
+let hudFitImpl = null;
+function hudFit(el, force) { if (hudFitImpl) hudFitImpl(el, force); }
+(() => {
+  const bar = document.querySelector(".hudbar");
+  const vals = ["balance", "roundWin", "betVal"].map(id => $(id)).filter(Boolean);
+  if (!bar || !vals.length) return;
+  const key = new WeakMap();
+  // the bar's width as the ResizeObserver last saw it: reading bar.clientWidth here would force a layout on every
+  // frame of a count-up (the text changes each frame); the figure is only measured when its length changes
+  let barW = bar.clientWidth;
+  const room = el => {
+    const slot = el.closest(".hudstat");
+    if (!slot) return 0;
+    const cs = getComputedStyle(slot);
+    return slot.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+  };
+  hudFitImpl = (el, force) => {
+    if (!el) return;
+    const k = el.textContent.length + "|" + barW;
+    if (!force && key.get(el) === k) return;
+    key.set(el, k);
+    fitTo(el, room(el) * (el.id === "roundWin" ? .9 : .99));
+    const lbl = el.closest(".hudstat") && el.closest(".hudstat").querySelector(".lbl");
+    if (lbl) fitTo(lbl, room(el));   // "BALANCE USDT" in a phone's narrow column
+  };
+  const all = force => vals.forEach(el => hudFitImpl(el, force));
+  const mo = new MutationObserver(recs => {
+    for (const r of recs) {
+      const t = r.target.nodeType === 3 ? r.target.parentElement : r.target;
+      const v = t && t.closest && t.closest("#balance, #roundWin, #betVal");
+      if (v) hudFitImpl(v);
+    }
+  });
+  vals.forEach(el => mo.observe(el, { childList: true, characterData: true, subtree: true }));
+  if (window.ResizeObserver) new ResizeObserver(() => { barW = bar.clientWidth; all(true); }).observe(bar);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => all(true));
+  all(true);
+})();
+
 function setButtons(on) {
   // off with no round running (not connected yet, a replay waiting for Play) is just Spin, greyed
   $("spinBtn").textContent = (on || !state.playing) ? T("Spin") : (state.noSkip ? T("Spinning\u2026") : T("Skip >>"));
@@ -7809,6 +8306,7 @@ function fitToScreen() {
     const natW = kids.length ? Math.max(...kids.map(e => e.getBoundingClientRect().right)) - Math.min(...kids.map(e => e.getBoundingClientRect().left)) : 0;
     // .72 was the fit under which the bar grows back; Falcos's chrome board frame makes the page ~11% taller,
     // so the threshold moves with it (.72 x 1.11) and the bar keeps the size on screen it had before
+    // (a bigger cap was tried for Popout S: past 1.5x the Bonus button beside the bar runs off a 400 px window)
     let hs = Math.min(1.5, Math.max(1, .8 / fit));
     if (natW) hs = Math.max(1, Math.min(hs, (W / fit - 40) / natW));
     if (hs > 1.02) {
@@ -8484,10 +8982,12 @@ function totalWinScreen(amount, { total = true } = {}) {
     const perBet = bet() > 0 ? amount / bet() : 0;
     const tiers = WIN_TIERS.filter(t => perBet >= t.at);
     const runMs = REDUCED_MOTION ? 0 : 2200 + tiers.length * 700;
+    const figDp = dpOf(amount);
     let shown = -1, fitLen = -1;
     const paint = v => {
-      // the running figure moves in whole cents; only the landed one shows any sub-cent digits
-      const s = v >= amount ? fmt(amount) : RGS.money(Math.round(v), undefined, 0);
+      // the running figure counts at the decimals of the exact amount it lands on (a sub-cent win shows its
+      // digits all the way up), and lands on the exact amount itself
+      const s = v >= amount ? fmt(amount) : fmtAt(snapTo(v, figDp), figDp);
       amountEl.innerHTML = numeralRow(s);
       // measuring the figure forces a layout: only when it gains a digit can it outgrow the screen
       if (s.length !== fitLen) { fitLen = s.length; fitFigure(); }
@@ -9122,9 +9622,9 @@ $("rapidBtn").addEventListener("click", () => {
 let rapidWas = false;
 try { rapidWas = localStorage.getItem("falcos.rapid") === "1"; } catch (e) { /* storage blocked */ }
 setRapid(rapidWas);
-if (SOCIAL) {   // restricted vocabulary: every static word on the page goes through T() too -
-                // labels, buttons, the chooser, the loading screen - and so do the names
-                // screen readers and tooltips use
+// restricted vocabulary: every static word on the page goes through T() too - labels, buttons, the chooser, the
+// loading screen - and so do the names screen readers and tooltips use
+function socialText() {
   const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
   for (let n = walker.nextNode(); n; n = walker.nextNode()) {
     if (n.parentElement && /^(SCRIPT|STYLE)$/.test(n.parentElement.tagName)) continue;
@@ -9137,6 +9637,25 @@ if (SOCIAL) {   // restricted vocabulary: every static word on the page goes thr
       if (v && T(v) !== v) el.setAttribute(a, T(v));
     }
   }
+  // the Bonus button's two words are two spans: BUY / BONUS reads GET / BONUS (Engine: "buy bonus" -> "get bonus")
+  const bb1 = document.querySelector("#bonusBtn .bb1");
+  if (bb1 && /^buy$/i.test(bb1.textContent.trim())) bb1.textContent = "Get";
+}
+if (SOCIAL) socialText();
+// Social mode found only at authenticate (jurisdiction.socialCasino, or an SC / GC wallet on a launch without
+// social=true): switched on there and then, before the game is shown - every string from here on reads it, and the
+// ones already on the page are swapped now. Cards of the bonus menu are rebuilt on its next opening.
+function goSocial() {
+  if (SOCIAL) return;
+  SOCIAL = true;
+  RGS.setSocial(true);
+  document.documentElement.classList.add("social");
+  socialSyms();
+  paintRgsMessages();
+  socialText();
+  for (const c of bshopCards.values()) c.remove();
+  bshopCards.clear();
+  for (const id of ["bshopStrip", "bshopWide", "bshopTall"]) $(id).dataset.modes = "";
 }
 setAutoBtn();
 
@@ -9205,52 +9724,95 @@ document.addEventListener("visibilitychange", async () => {
 // waits for Play, animates it exactly as the player saw it, and offers Play again. No
 // wallet call is ever made and nothing on screen can start a real round.
 let REPLAY = false;
+// Loaded with replay=true (Engine's Bet Replay, studio.engine.io/docs/approval-guidelines/game-replay-requirements):
+// no session and no wallet call - the round comes from GET {rgs_url}/bet/replay/{game}/{version}/{mode}/{event}. The
+// panel shows the round's mode, base bet, cost multiplier, total cost, payout multiplier and total win before it is
+// started (approval 2026-11-19: "Mode, Base Bet, Cost Multiplier, Total Bet Cost, Payout Multiplier, Total Win"), the
+// round plays exactly as the player saw it, and the panel comes back at the end with PLAY AGAIN. The optional params
+// may be missing or junk and it still plays: amount -> 1.00, currency -> the default (SC in social mode), lang -> the
+// game's only language, English (no other language is shipped, so any lang value reads English - nothing corrupts).
 async function bootReplay(p) {
   REPLAY = true;
   document.body.classList.add("replay");
+  document.documentElement.lang = "en";
   const intro = $("intro"); if (intro) intro.remove();
   if (p.currency) RGS.state.currency = p.currency;
-  state.bets = [p.amount || RGS.UNIT]; state.betIdx = 0;
+  else if (SOCIAL) RGS.state.currency = "XSC";   // a social replay link without its coin: never a "$"
+  state.bets = [p.amount > 0 ? p.amount : RGS.UNIT]; state.betIdx = 0;
   state.mode = p.mode || "base";
-  const modeName = T(MODE_NAMES[state.mode] || state.mode);
-  $("balanceLbl").innerHTML = (SOCIAL ? "Replay" : "Replay bet") + `<span class="cur">${RGS.currencyName()}</span>`;
+  const modeName = T(MODE_NAMES[state.mode] || String(state.mode).toUpperCase());
+  // the bar is a viewer's: the replayed bet where the balance was (no balance in a replay), the round's win as it plays
+  $("balanceLbl").innerHTML = T("Replay bet") + `<span class="cur">${RGS.currencyName()}</span>`;
   $("balance").textContent = fmt(bet());
+  $("roundWin").textContent = fmt(0);
   refreshBet(); setButtons(false);
-  const wrap = $("replayWrap"), meta = $("replayMeta"), status = $("replayStatus"),
-        result = $("replayResult"), play = $("replayPlay");
-  meta.textContent = T(`${modeName} \u00b7 event ${p.event} \u00b7 bet ${fmt(bet())}`);
+  const wrap = $("replayWrap"), status = $("replayStatus"), play = $("replayPlay");
+  for (const el of wrap.querySelectorAll("#replayTitle, .rppill, .rprow > span, #replayFoot, #replayPlayTxt")) el.textContent = T(el.textContent);
+  const put = (id, text) => { $(id).textContent = text; };
+  // the cost side is known from the link alone; the multipliers and the win once the round is in
+  put("rpMode", modeName);
+  put("rpBase", fmt(bet()));
+  if (MODE_COST[state.mode] > 0) { put("rpCost", fmtMult(MODE_COST[state.mode]) + "x"); put("rpTotal", fmt(MODE_COST[state.mode] * bet())); }
+  status.classList.remove("err");
+  status.textContent = T("Loading the round\u2026");
   wrap.hidden = false;
+  fitReplay();
   let round;
   try {
     const d = await RGS.replay(p);
     if (typeof d.costMultiplier === "number" && d.costMultiplier > 0) MODE_COST[state.mode] = d.costMultiplier;
-    round = { events: d.state, payoutMultiplier: d.payoutMultiplier || 0, amount: bet(), mode: state.mode };
+    if (!(MODE_COST[state.mode] > 0)) MODE_COST[state.mode] = 1;
+    round = { events: d.state, payoutMultiplier: Number(d.payoutMultiplier) || 0, amount: bet(), mode: state.mode };
   } catch (err) {
-    status.textContent = T("This replay could not be loaded. Check the link and try again.");
+    status.classList.add("err");
+    // the server answered (404 per the docs; the live RGS has been seen to answer 500 for an unknown event): the link
+    // is wrong. No answer at all: the connection
+    status.textContent = T(err && err.status
+      ? "This round could not be found. Check the replay link and try again."
+      : "This replay could not be loaded. Check your connection and reload to try again.");
     return;
   }
   // a replay has no loading screen: Play waits (at most 15 s) for what the round animates - the
   // symbol rigs, the spray can and the characters - so nothing swaps or uploads once it runs
   await Promise.race([Promise.all([loadSymFrames(), prepareSpray(), charsLoaded]).catch(() => {}), new Promise(r => setTimeout(r, 15000))]);
   const cost = MODE_COST[state.mode] * bet();
+  // the round's total win: its payout multiplier (a plain multiple of the base bet) times the base bet, exactly
   const payout = Math.round(round.payoutMultiplier * bet());
-  meta.textContent = T(`${modeName} \u00b7 event ${p.event} \u00b7 bet cost ${fmt(cost)} (x${MODE_COST[state.mode]} the bet of ${fmt(bet())})`);
+  put("rpCost", fmtMult(MODE_COST[state.mode]) + "x");
+  put("rpTotal", fmt(cost));
+  put("rpPayM", fmtMult(round.payoutMultiplier) + "x");
+  put("rpWin", fmt(payout));
   status.textContent = "";
   play.hidden = false;
-  play.textContent = T("Play");
+  fitReplay();
+  play.focus({ preventScroll: true });
   play.addEventListener("click", async () => {
+    if (state.playing) return;
     wrap.hidden = true;
     state.playing = true; state.skip = false;
     setButtons(false);
     try { await presentRound(round, { settle: false }); } catch (e) { /* shown in the ticker */ }
     state.playing = false;
     setButtons(false);   // the viewer's bar stays off, but Rapid and the menu come back
-    result.innerHTML = T(`Bet cost ${fmt(cost)}<br>Payout ${fmt(payout)} \u00b7 ${round.payoutMultiplier.toFixed(2)}x the bet`);
-    result.hidden = false;
-    play.textContent = T("Play again");
+    // the end of the sequence: the same figures, and a button to watch the round again
+    $("replayPlayTxt").textContent = T("Play Again");
+    play.classList.add("again");
     wrap.hidden = false;
+    fitReplay();
+    play.focus({ preventScroll: true });
   });
 }
+// the replay panel's figures fit their rows (a big win at a top bet in Popout S)
+function fitReplay() {
+  if ($("replayWrap").hidden) return;
+  for (const row of document.querySelectorAll("#replayWrap .rprow")) {
+    const k = row.querySelector("span"), b = row.querySelector("b");
+    if (!k || !b) continue;
+    fitTo(b, row.clientWidth - k.offsetWidth - (parseFloat(getComputedStyle(row).columnGap) || 0)
+      - (parseFloat(getComputedStyle(row).paddingLeft) || 0) - (parseFloat(getComputedStyle(row).paddingRight) || 0) - 1);
+  }
+}
+addEventListener("resize", fitReplay);
 
 // Optional readouts a jurisdiction can require in the header: RTP, a session clock, and
 // the player's net position since the game opened. Hidden unless asked for.
@@ -9294,6 +9856,7 @@ async function boot() {
     return;
   }
 
+  if (RGS.socialFromSession) goSocial();   // Stake.us said so (socialCasino), or the wallet is SC / GC
   const lbl = $("balanceLbl");
   if (lbl) lbl.innerHTML = T("Balance") + `<span class="cur">${RGS.currencyName()}</span>`;
 
@@ -9326,6 +9889,7 @@ async function boot() {
   state.betIdx = Math.max(0, at);
   if ($("maxWin")) $("maxWin").textContent = "x" + RULES.MAX_WIN;
   setBalance(RGS.state.balance);
+  $("roundWin").textContent = fmt(0);   // the WIN slot in the wallet's own money from the start ("0.00 GC", "¥0"), not the page's placeholder
 
   // Jurisdictions can forbid the buy feature or turbo; hide the controls rather than ignore the flags.
   if (RGS.jurisdiction().disabledBuyFeature) {

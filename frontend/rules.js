@@ -40,26 +40,53 @@ const RULES = (() => {
   // the bet modes (the math's mode keys), as the Bonus panel sells them
   const MODES = [
     { keys: ["chance"], name: "FUEL CHANCE", what: "Base spins with about 2.2 times the chance of triggering any bonus. Once activated it stays on for every spin until you turn it off." },
-    { keys: ["fillup"], name: "Buy FILL UP", what: "Starts the FILL UP bonus." },
-    { keys: ["premium"], name: "Buy PREMIUM", what: "Starts PREMIUM: 10 free spins with sticky cell multipliers." },
+    // (the mode names carry no "Buy": a mode is named the same in the game, the replay and the math - Engine's social rule)
+    { keys: ["fillup"], name: "FILL UP", what: "Starts the FILL UP bonus straight away." },
+    { keys: ["premium"], name: "PREMIUM", what: "Starts PREMIUM straight away: 10 free spins with sticky cell multipliers." },
     { keys: ["nitro"], name: "NITRO SPIN", what: "Spins with every cell preloaded with a multiplier from x16 to x2048. Once activated it stays on for every spin until you turn it off." },
-    { keys: ["midnight"], name: "Buy MIDNIGHT RUN", what: "Starts MIDNIGHT RUN: 10 free spins with sticky cell multipliers, every cell starting at x4." },
+    { keys: ["midnight"], name: "MIDNIGHT RUN", what: "Starts MIDNIGHT RUN straight away: 10 free spins with sticky cell multipliers, every cell starting at x4." },
   ];
 
-  // Restricted phrase -> replacement, from Stake's jurisdiction-requirements table. Longer
+  // Restricted phrase -> replacement, from Engine's jurisdiction-requirements table
+  // (studio.engine.io/docs/approval-guidelines/jurisdiction-requirements, read 2026-11-19). Longer
   // phrases first so "buy bonus" is swapped before "buy" gets a chance at it.
+  // The first group are whole phrases of this game's copy whose word-for-word swap would read wrong
+  // or change the sense ("the round is settled and paid" -> "...and won" says something else): each
+  // is given a replacement that keeps the meaning. "paying symbols" are the nine symbols in the
+  // paytable (as opposed to the feature symbols and tokens) - "regular symbols" in social copy, which
+  // the paytable section names as such (approval 2026-11-19 flagged "paying").
   const SWEEPS = [
+    ["paying symbols", "regular symbols"], ["paying symbol", "regular symbol"],
+    ["settled and paid", "settled and added to your balance"],
+    ["bet replay", "round replay"], ["replay bet", "replay"],
+    ["previous bet round", "previous round"], ["no bets will be placed", "nothing will be played or charged"],
+    ["bet too high", "play amount too high"],
+    ["raise bet", "raise play amount"], ["lower bet", "lower play amount"],
+    ["at the bet of", "at the play amount of"], ["current bet", "current play amount"], ["same bet", "same play amount"],
+    ["the bet", "the play amount"], ["your bet", "your play amount"], ["base bet", "base play"],
+    ["cash drawer", "coin drawer"],
     ["pay table", "win table"], ["paytable", "win table"], ["payouts", "wins"], ["payout", "win"],
     ["buying", "getting"], ["gambling", "play"],
-    ["buy bonus", "get bonus"], ["bonus buy", "bonus"], ["total bet", "total play"],
+    ["buy bonus", "get bonus"], ["bonus buy", "bonus features"], ["total bet", "total play"],
     ["at the cost of", "for"], ["cost of", "can be played for"], ["pays out", "wins"],
     ["paid out", "won"], ["pay out", "win"], ["win feature", "play feature"],
     ["place your bets", "come and play"], ["betting", "playing"], ["bets", "plays"], ["bet", "play"],
-    ["bought", "instantly triggered"], ["buy", "get"], ["purchase", "play"],
-    ["cash", "coins"], ["money", "coins"], ["currency", "token"], ["credit", "balance"],
-    ["wager", "play"], ["gamble", "play"], ["stake", "play amount"],
-    ["pays", "wins"], ["paid", "won"], ["pay", "win"], ["costs", "is played for"], ["cost", "amount"],
+    ["bettor", "player"], ["rebet", "respin"],
+    ["bought", "instantly triggered"], ["buys", "gets"], ["buy", "get"],
+    ["purchases", "plays"], ["purchased", "instantly triggered"], ["purchase", "play"],
+    ["cash", "coins"], ["money", "coins"], ["currency", "token"],
+    ["credits", "balance"], ["credited", "added to the balance"], ["credit", "balance"],
+    ["deposits", "get coins"], ["deposit", "get coins"], ["withdrawals", "redemptions"], ["withdraw", "redeem"],
+    ["funds", "balance"], ["fund", "balance"],
+    ["wagers", "plays"], ["wagering", "playing"], ["wagered", "played"], ["wager", "play"],
+    ["gambles", "plays"], ["gambled", "played"], ["gamble", "play"],
+    ["stakes", "play amounts"], ["staked", "played"], ["stake", "play amount"],
+    ["payers", "winners"], ["payer", "winner"], ["paying", "winning"],
+    ["pays", "wins"], ["paid", "won"], ["pay", "win"],
   ];
+  // Every word social mode may never show (the table's restricted terms and their forms): the QA scan
+  // (tools/falcos/qa/social_scan.js) and RULES.restricted() check finished screens against it.
+  const RESTRICTED = /\b(bets?|betting|bettor|rebet|buy(s|ing)?|bought|purchas(e|es|ed|ing)|cash|money|currency|credits?|credited|deposits?|withdraw(s|als?)?|funds?|wager(s|ed|ing)?|gambl(e|es|ed|ing)|stakes?|staked|pay(s|ing|er|ers|out|outs|table)?|paid|paylines?|costs?|costing|win feature)\b/i;
   // Each replacement word borrows the case of the word it replaces ("Buy Bonus" -> "Get
   // Bonus", "BET" -> "PLAY"), so headings and buttons keep their look.
   function recase(from, to) {
@@ -120,7 +147,7 @@ const RULES = (() => {
     const html = `
 <section>
   <h4>${t("About the game")}</h4>
-  <p>${t(`Falcos is a 7-reel, 5-row video slot with cluster pays and tumbling reels. A cluster is 5 or more matching symbols touching horizontally or vertically (diagonals do not count), anywhere on the board. Every cluster pays by its symbol and size (15 or more pays the top rate), times its multiplier; then the winning symbols clear, the symbols above fall, new ones drop in, and the new board is paid again. The values below are multiples of the total bet, shown at your current bet of ${fmt(bet)}.`)}</p>
+  <p>${t(`Falcos is a 7-reel, 5-row video slot with cluster pays and tumbling reels. A cluster is 5 or more matching symbols touching horizontally or vertically (diagonals do not count), anywhere on the board. Every cluster pays by its symbol and size (15 or more pays the top rate), times its multiplier; then the winning symbols clear, the symbols above fall, new ones drop in, and the new board is checked for wins again. The values below are multiples of the total bet, shown at your current bet of ${fmt(bet)}.`)}</p>
   <div class="kvgrid">
     <div><span>RTP</span><b>${RTP}</b><small>${t("every mode")}</small></div>
     <div><span>${t("Max win")}</span><b>${x(MAX_WIN)}</b><small>${t("of the total bet")} · ${money(MAX_WIN)}</small></div>
@@ -132,32 +159,32 @@ const RULES = (() => {
 <section>
   <h4>${t("Game modes")}</h4>
   <table class="modes">
-    <tr><th>${t("Mode")}</th><th>${t("Cost")}</th><th>${t("What you get")}</th></tr>
+    <tr><th>${t("Mode")}</th><th>${t("Amount")}</th><th>${t("What you get")}</th></tr>
     <tr><td>${t("Base game")}</td><td>${x(1)} <em>${money(1)}</em></td><td>${t("One spin. FILL UP, PREMIUM and MIDNIGHT RUN trigger naturally from FALCOS Tokens and Midnight Tokens.")}</td></tr>
     ${modeRows}
   </table>
-  <p class="fine">${t("All are chosen from the Bonus panel, which shows the exact price at your bet before anything is charged; a buy asks you to confirm. FUEL CHANCE and NITRO SPIN, once activated, stay on until you turn them off. The max win applies to every mode.")}</p>
+  <p class="fine">${t("All are chosen from the Bonus panel. Each card shows the mode's price at your bet - the bet, the mode's multiplier and the total they make - and pressing it opens the same sum to confirm; nothing is charged until you confirm. FUEL CHANCE and NITRO SPIN, once activated, stay on until you turn them off, and the bar then shows the amount of each spin. The max win applies to every mode.")}</p>
 </section>
 
 <section>
   <h4>${t("Paytable")}</h4>
-  <p class="fine">${t("Pays by cluster size: 5 to 14, and 15 or more matching symbols touching horizontally or vertically. Multiples of the total bet and the amount at your current bet, before the cluster's multiplier. There is no wild symbol.")}</p>
+  <p class="fine">${t("Pays by cluster size: 5 to 14, and 15 or more matching symbols touching horizontally or vertically. Multiples of the total bet and the amount at your current bet, before the cluster's multiplier. There is no wild symbol. These nine are the paying symbols; the feature symbols and the tokens below never form clusters.")}</p>
   <div class="paytable">${payRows}</div>
 </section>
 
 <section>
   <h4>${t("Cell multipliers")}</h4>
   <div class="prow"><div class="ptile multi"><span>x8</span><small>CELL</small></div><div class="pname">${t("Cell multipliers")}</div>
-    <div class="ptext">${t(`Every cell has its own multiplier. It starts at x1 and doubles each time a win or a feature hits that cell, up to ${x(CELL_MAX)}. The multiplier belongs to the cell, not the symbol: whatever tumbles into the cell takes it on. A cluster's multiplier is the SUM of the multipliers of its cells that are at x2 or more; if none are, the cluster pays x1. In the base game the cells reset every spin; in PREMIUM and MIDNIGHT RUN they keep their multipliers for the whole bonus.`)}</div></div>
+    <div class="ptext">${t(`Every cell has its own multiplier. It starts at x1 and doubles each time a win or a feature hits that cell, up to ${x(CELL_MAX)}. The multiplier belongs to the cell, not the symbol: whatever tumbles into the cell takes it on. A cluster's multiplier is the SUM of the multipliers of its cells that are at x2 or more; if none are, the cluster's multiplier is x1. In the base game the cells reset every spin; in PREMIUM and MIDNIGHT RUN they keep their multipliers for the whole bonus.`)}</div></div>
 </section>
 
 <section>
   <h4>${t("Feature symbols")}</h4>
-  <p class="fine">${t("Cluster wins always come first: whenever the board holds a cluster, it is paid and the board refills before any feature fires. Only when no cluster is left does the next feature fire: all Gas Pumps together, otherwise one Scratch Ticket or Gold Scratch Ticket, otherwise one Lighter (reel by reel, top to bottom). The board refills after each, and is checked for clusters again before the next feature. Feature symbols do not form clusters.")}</p>
+  <p class="fine">${t("Cluster wins always come first: whenever the board holds a cluster, its win is counted and the board refills before any feature fires. Only when no cluster is left does the next feature fire: all Gas Pumps together, otherwise one Scratch Ticket or Gold Scratch Ticket, otherwise one Lighter (reel by reel, top to bottom). The board refills after each, and is checked for clusters again before the next feature. Feature symbols do not form clusters.")}</p>
   ${special("ZP", "Lighter", "Lights up its 3x3 area: its own cell and the 8 around it double their multipliers, and the paying symbols there burn - they clear, feeding their doubled multipliers into any cluster they were part of. Tokens keep their place but their cells still double. It does not appear in FILL UP.", social, t)}
   ${special("ST", "Scratch Ticket", "Scratches off one paying symbol that is on the board: every cell holding it doubles and burns, and so does the ticket's own cell. In FILL UP it collects every Fuel Drop in its 8 neighbours, adding their values to its own, plus any collector there that activated on an earlier spin; with nothing to collect it is removed, otherwise it stays with its total.", social, t)}
   ${special("GT", "Gold Scratch Ticket", "Every paying symbol on the board doubles and burns, and so does the ticket's own cell. In FILL UP it collects every Fuel Drop on the whole board, then doubles everything it collected.", social, t)}
-  ${special("GP", "Gas Pump", `The biggest single event - at most one per column. It rolls a fuel grade: REGULAR ${list(PUMP.REGULAR)}, PLUS ${list(PUMP.PLUS)}, PREMIUM ${list(PUMP.PREMIUM)}, or FULL TANK. REGULAR to PREMIUM: every cell in its column gets the pump's multiplier and the paying symbols in the column burn. FULL TANK: every cell in the column becomes a MAX cell, and any cluster touching a MAX cell pays the max win. Pumps in different columns fire together. In FILL UP it rolls ${x(2)} to ${x(64)} and multiplies every Fuel Drop in its column and any collector there that has already collected; then it leaves.`, social, t)}
+  ${special("GP", "Gas Pump", `The biggest single event - at most one per column. It rolls a fuel grade: REGULAR ${list(PUMP.REGULAR)}, PLUS ${list(PUMP.PLUS)}, PREMIUM ${list(PUMP.PREMIUM)}, or FULL TANK. REGULAR to PREMIUM: every cell in its column gets the pump's multiplier and the paying symbols in the column burn. FULL TANK: every cell in the column becomes a MAX cell, and any cluster touching a MAX cell awards the max win. Pumps in different columns fire together. In FILL UP it rolls ${x(2)} to ${x(64)} and multiplies every Fuel Drop in its column and any collector there that has already collected; then it leaves.`, social, t)}
   ${special("FDA", "Fuel Drops", `FILL UP only. Sticky: green ${list(DROPS.green)}, amber ${list(DROPS.amber)}, red ${list(DROPS.red)}. A drop that grows changes colour: green under x5, amber from x5, red from x50.`, social, t)}
 </section>
 
@@ -181,7 +208,7 @@ const RULES = (() => {
   <table class="guide">
     <tr><td><b>${t("Spin")}</b></td><td>${t("The round arrow button at the right of the bar. Plays one round at the current bet; the spacebar does the same. While a round plays the button is locked, so a round can never be started twice; click the board to hurry the round along (every winning cluster is still shown in full).")}</td></tr>
     <tr><td><b>− / +</b></td><td>${t("Lowers or raises the bet through every level offered by the server. The Bonus panel has its own − / + for the same bet.")}</td></tr>
-    <tr><td><b>${t("Bonus")}</b></td><td>${t("Opens the Bonus panel: buy a bonus (FILL UP, PREMIUM, MIDNIGHT RUN) or turn on a special spin (FUEL CHANCE, NITRO SPIN). The total charge is shown before you confirm; a special spin stays on - the bar shows its price a spin - until you turn it off on its card or the pill over the bar. The ✕ closes the panel.")}</td></tr>
+    <tr><td><b>${t("Bonus")}</b></td><td>${t("Opens the Bonus panel: buy a bonus (FILL UP, PREMIUM, MIDNIGHT RUN) or turn on a special spin (FUEL CHANCE, NITRO SPIN). Every card shows the bet, the mode's multiplier and the total; PLAY or ACTIVATE shows that sum again and charges nothing until you confirm it. A special spin stays on - the bar shows its price a spin - until you turn it off on its card or the pill over the bar. The ✕ closes the panel.")}</td></tr>
     <tr><td><b>${t("Auto")}</b></td><td>${t("The play arrow button. Plays a chosen number of rounds one after another at the current bet (with FUEL CHANCE or NITRO SPIN on, at that spin's price). You confirm the number and the price a round before it starts; press it again to stop. It also stops when the balance can't cover the next round.")}</td></tr>
     <tr><td><b>${t("Rapid")}</b></td><td>${t("The lightning bolt button. Shortens the reel spin and win animations. Results are unaffected.")}</td></tr>
     <tr><td><b>${t("Info")}</b></td><td>${t("The three-line button. Opens this page: the rules, the paytable and your recent rounds.")}</td></tr>
@@ -196,5 +223,13 @@ const RULES = (() => {
     return html;
   }
 
-  return { render, T, PAYS, TIERS, NAMES, RTP, MAX_WIN };
+  /** The restricted words left in a piece of text (social-mode QA): [] when it is clean. */
+  function restricted(text) {
+    const out = [];
+    const re = new RegExp(RESTRICTED.source, "gi");
+    for (let m; (m = re.exec(String(text))); ) out.push(m[0]);
+    return out;
+  }
+
+  return { render, T, restricted, PAYS, TIERS, NAMES, RTP, MAX_WIN };
 })();

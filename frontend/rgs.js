@@ -14,30 +14,75 @@
 const RGS = (() => {
   const UNIT = 1000000;
 
-  const CURRENCY = {
-    USD: { symbol: "$", decimals: 2 },            CAD: { symbol: "CA$", decimals: 2 },
-    JPY: { symbol: "¥", decimals: 0 },            EUR: { symbol: "€", decimals: 2 },
-    RUB: { symbol: "₽", decimals: 2 },            CNY: { symbol: "CN¥", decimals: 2 },
-    PHP: { symbol: "₱", decimals: 2 },            INR: { symbol: "₹", decimals: 2 },
-    IDR: { symbol: "Rp", decimals: 0 },           KRW: { symbol: "₩", decimals: 0 },
-    BRL: { symbol: "R$", decimals: 2 },           MXN: { symbol: "MX$", decimals: 2 },
-    DKK: { symbol: "KR", decimals: 2, after: true },
-    PLN: { symbol: "zł", decimals: 2, after: true },
-    VND: { symbol: "₫", decimals: 0, after: true },
-    TRY: { symbol: "₺", decimals: 2 },
-    CLP: { symbol: "CLP", decimals: 0, after: true },
-    ARS: { symbol: "ARS", decimals: 2, after: true },
-    PEN: { symbol: "S/", decimals: 2, after: true },
-    // crypto (Engine's table): BTC reads 10.000000 BTC; USDT falls through to the 2-decimal "10.00 USDT"
-    BTC: { symbol: "BTC", decimals: 6, after: true },
+  // Engine's currency table (studio.engine.io/docs/rgs "Supported currencies", read 2026-11-19): symbol,
+  // the currency's usual decimals, and whether the symbol goes after the amount. A code that is not here
+  // (the RGS may send new ones) shows 2 decimals with the code after the amount.
+  const CURRENCY = {};
+  for (const [codes, symbol, decimals, after] of [
+    ["USD", "$", 2], ["CAD", "CA$", 2], ["JPY", "¥", 0], ["EUR", "€", 2], ["RUB", "₽", 2], ["CNY", "CN¥", 2],
+    ["PHP", "₱", 2], ["INR", "₹", 2], ["IDR", "Rp", 0], ["KRW", "₩", 0], ["BRL", "R$", 2], ["MXN", "MX$", 2],
+    ["DKK NOK", "kr", 2, 1], ["PLN", "zł", 2, 1], ["VND", "₫", 0, 1], ["TRY", "₺", 2], ["CLP", "CLP", 0, 1],
+    ["ARS", "ARS", 2, 1], ["PEN", "S/", 2], ["NGN", "₦", 2], ["SAR", "SAR", 2, 1], ["ILS", "₪", 2],
+    ["AED", "AED", 2, 1], ["TWD", "NT$", 2], ["KWD", "KD", 3], ["JOD", "JD", 3], ["CRC", "₡", 2],
+    ["TND", "TND", 3, 1], ["SGD", "SG$", 2], ["MYR", "RM", 2], ["OMR", "OMR", 3, 1], ["QAR", "QAR", 2, 1],
+    ["BHD", "BD", 3], ["PKR", "₨", 2], ["EGP", "EGP", 2, 1], ["NZD", "NZ$", 2], ["BOB", "Bs", 2], ["GHS", "GH₵", 2],
+    ["KES", "KSh", 2], ["MAD", "MAD", 2, 1], ["BAM", "KM", 2], ["ISK", "kr", 0, 1], ["TZS", "TSh", 2],
+    ["UGX", "USh", 0], ["XOF", "CFA", 0, 1], ["AUD", "A$", 2], ["BWP", "P", 2], ["GEL", "₾", 2], ["HNL", "L", 2],
+    ["JMD", "J$", 2], ["KGS", "KGS", 2, 1], ["MZN", "MZN", 2, 1], ["PGK", "K", 2], ["TMT", "TMT", 2, 1],
+    ["TTD", "TT$", 2], ["UAH", "₴", 2], ["XCD", "EC$", 2],
+    // crypto: the code after the amount, at the coin's own decimals
+    ["APE CRO DOGE EOS LINK POL SAND TRUMP TRX UNI XRP", null, 4, 1], ["BCH BNB BTC ETH LTC SOL", null, 6, 1],
+    ["BUSD DAI USDC USDT", null, 2, 1], ["SHIB", null, 0, 1],
     // the social-casino coins read "10.00 SC" / "10.00 GC" - never with a $ in front
-    XGC: { symbol: "GC", decimals: 2, after: true },
-    XSC: { symbol: "SC", decimals: 2, after: true },
-    XEC: { symbol: "SC", decimals: 2, after: true },
-  };
-  const CURRENCY_SOCIAL = new Set(["XGC", "XSC", "XEC"]);
+    ["XGC", "GC", 2, 1], ["XSC XEC XRC WRW", "SC", 2, 1],
+  ]) for (const code of codes.split(" ")) CURRENCY[code] = { symbol: symbol || code, decimals, after: !!after };
+  const CURRENCY_SOCIAL = new Set(["XGC", "XSC", "XEC", "XRC", "WRW"]);
+  const metaOf = code => CURRENCY[code] || { symbol: code || "", decimals: 2, after: true };
   // thousands grouped: 1,000,000.00 - the integer part only
   const group = s => s.replace(/^(\d+)/, d => d.replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+  // Money is formatted from the integer itself, never through a float: 0.0015 stays 0.0015 (toFixed on a
+  // double can turn it into 0.0014), and a VND balance past 2^53 keeps its last digits as the RGS sent them.
+  const big = a => { try { return BigInt(typeof a === "bigint" ? a : Math.round(Number(a) || 0)); } catch (e) { return 0n; } };
+  const P10 = n => 10n ** BigInt(n);
+  // amount (6dp integer) as text with exactly dp decimals, rounded half up (away from zero)
+  function digits(amount, dp) {
+    let n = big(amount);
+    const neg = n < 0n;
+    if (neg) n = -n;
+    dp = Math.max(0, Math.min(6, dp | 0));
+    const unit = P10(6 - dp);
+    const q = dp < 6 ? (n + unit / 2n) / unit : n;
+    const s = q.toString().padStart(dp + 1, "0");
+    const out = dp ? s.slice(0, -dp) + "." + s.slice(-dp) : s;
+    return (neg && q > 0n ? "-" : "") + out;
+  }
+  // the fewest decimals (at least min) that show the amount exactly - 6 at most, the RGS's own precision
+  function exactDp(amount, min) {
+    const n = big(amount) < 0n ? -big(amount) : big(amount);
+    let dp = Math.max(0, min | 0);
+    while (dp < 6 && n % P10(6 - dp) !== 0n) dp++;
+    return dp;
+  }
+  // The display layer's only money formatter.
+  //   how omitted  -> exact: the currency's usual decimals, more when the amount needs them (a 0.1x win on a
+  //                   1-cent bet is 0.001) - wins, bets, prices, payouts
+  //   "balance"    -> always two decimals, rounded, whatever the currency (Engine, 2026-11-20: JPY 995 -> 995.00)
+  //   a number dp  -> exactly that many decimals (a count-up holds one width the whole way to its exact figure)
+  function formatMoney(amount, currency, how) {
+    const code = currency || state.currency;
+    const meta = metaOf(code);
+    const dp = typeof how === "number" ? Math.max(0, Math.min(6, how | 0))
+             : how === "balance" ? 2   // (Engine, 2026-11-20) the balance: always two decimals, in every currency
+             : exactDp(amount, meta.decimals);
+    let s = digits(amount, dp);
+    const neg = s[0] === "-";
+    if (neg) s = s.slice(1);
+    s = group(s);
+    const sign = neg ? "-" : "";
+    // social mode never shows a $ / € sign: a real-money code (a replay link without the coin, say) goes as a code
+    if (social && !CURRENCY_SOCIAL.has(code)) return `${sign}${s} ${code}`;
+    return meta.after ? `${sign}${s} ${meta.symbol}` : `${sign}${meta.symbol}${s}`;
+  }
 
   const q = new URLSearchParams(location.search);
   const sessionID = q.get("sessionID") || "";
@@ -46,13 +91,14 @@ const RGS = (() => {
   const raw = (q.get("rgs_url") || "").trim().replace(/\/+$/, "");
   const root = raw ? (/^https?:\/\//i.test(raw) ? raw : "https://" + raw) : "";
   // social=true means the game is loaded on a social casino (Stake.us): restricted gambling
-  // vocabulary must not appear anywhere in the UI. The jurisdiction flag says the same
-  // thing after authenticate; the URL param is there before it.
-  const social = q.get("social") === "true";
-  const urlCurrency = (q.get("currency") || "").trim();
+  // vocabulary must not appear anywhere in the UI. The jurisdiction flag (socialCasino) says the
+  // same thing after authenticate, and the social coins (XSC / XGC ...) only exist there: any of
+  // the three turns it on. The URL and the currency param are there before authenticate.
+  const urlCurrency = (q.get("currency") || "").trim().toUpperCase();
+  let social = /^(true|1)$/i.test(q.get("social") || "") || CURRENCY_SOCIAL.has(urlCurrency);
 
   const state = {
-    currency: "USD",
+    currency: urlCurrency || "USD",   // authenticate's balance.currency replaces it; the lobby's param until then
     balance: 0,          // integer, 6dp
     config: null,        // minBet / maxBet / stepBet / betLevels / jurisdiction
     round: null,         // active or last-completed round from authenticate
@@ -78,6 +124,7 @@ const RGS = (() => {
     if (typeof c === "string" && /^ERR_/.test(c)) return c;
     // The RGS rate-limits bursts of requests ("Slow down"); a 429 body is sometimes plain text.
     if (status === 429 || (data && /slow down|too many/i.test(String(data.message || "")))) return "ERR_ACT";
+    if (status === 423) return "ERR_MAINTENANCE";   // /wallet/play: new rounds paused (maintenance); settling still works
     return status >= 500 ? "ERR_GEN" : "ERR_VAL";
   }
 
@@ -123,7 +170,15 @@ const RGS = (() => {
   }
 
   return {
-    UNIT, sessionID, lang, device, rgsUrl: root, social, urlCurrency,
+    UNIT, sessionID, lang, device, rgsUrl: root, urlCurrency,
+    get social() { return social; },
+    /** Social mode on after the fact: authenticate's jurisdiction.socialCasino, or a social coin as the wallet. */
+    get socialFromSession() {
+      const j = (state.config && state.config.jurisdiction) || {};
+      return j.socialCasino === true || CURRENCY_SOCIAL.has(state.currency);
+    },
+    setSocial(on) { social = !!on; },
+    isSocialCurrency: code => CURRENCY_SOCIAL.has(code || state.currency),
     get state() { return state; },
     RgsError,
 
@@ -152,11 +207,11 @@ const RGS = (() => {
 
     async balance() { return absorb(await call("/wallet/balance", {})); },
 
-    /** amount is the BASE bet; the RGS debits amount x the mode's cost multiplier. */
+    /** amount is the BASE bet; the RGS debits amount x the mode's cost multiplier. The request is
+     *  exactly the documented { sessionID, amount, mode }: the session already fixes the wallet's
+     *  currency (an extra field risks a plain 400 "Bad Request" on the live RGS). */
     async play(amount, mode) {
-      const body = { amount, mode };
-      if (urlCurrency) body.currency = urlCurrency;   // the lobby names the wallet to play with
-      const d = absorb(await call("/wallet/play", body));
+      const d = absorb(await call("/wallet/play", { amount, mode }));
       state.round = normalizeRound(d.round);
       return d;
     },
@@ -193,14 +248,18 @@ const RGS = (() => {
     /** Bet Replay: the lobby opens the game with replay=true plus the round's coordinates.
      *  No session is involved — anyone with the link can watch the round. */
     replayParams() {
+      // the optional params may be missing or junk: the replay still plays (amount -> 1.00, currency -> the
+      // default) rather than failing (approval guideline: "keep working when they are missing or invalid")
+      const amt = Number(q.get("amount"));
       return {
         replay: q.get("replay") === "true",
         game: q.get("game") || "",
         version: q.get("version") || "",
         mode: q.get("mode") || "",
         event: q.get("event") || "",
-        amount: Number(q.get("amount")) || 0,
-        currency: urlCurrency,
+        amount: Number.isFinite(amt) && amt > 0 ? Math.round(amt) : 0,
+        currency: /^[A-Z0-9]{2,6}$/.test(urlCurrency) ? urlCurrency : "",
+        lang,
       };
     },
 
@@ -225,45 +284,31 @@ const RGS = (() => {
       return (m && typeof m.costMultiplier === "number") ? m.costMultiplier : null;
     },
 
-    /** A mode's own bet cap (gameModes[].maxBet, micro-units) or null when the RGS gives none.
-     *  0 means the mode is disabled for this player/currency (seen for every mode under XGC). */
+    /** A mode's own bet cap (gameModes[].maxBet, micro-units), or null when there is none. The live
+     *  RGS sends maxBet: 0 for EVERY mode under XGC (Gold Coins): 0 means "no per-mode cap" - fall back
+     *  to config.maxBet. Reading it as "mode off" locked the whole game under GC (2026-11 rejection). */
     modeMaxBet(mode) {
       const modes = (state.config && state.config.gameModes) || [];
       const m = modes.find(x => x.mode === mode);
-      return (m && typeof m.maxBet === "number") ? m.maxBet : null;
+      return (m && typeof m.maxBet === "number" && m.maxBet > 0) ? m.maxBet : null;
     },
-
 
     /** The token the player is playing with, as the balance label names it. The social
      *  coins go by their short codes: their long names carry words social mode forbids. */
     currencyName(code) {
       const c = code || state.currency;
-      if (c === "XSC" || c === "XEC") return "SC";
-      if (c === "XGC") return "GC";
-      return c;
+      return CURRENCY_SOCIAL.has(c) ? metaOf(c).symbol : c;
     },
 
-    /** extra = how many digits past the currency's usual precision may show when the
-     *  amount needs them. Reviewers' current rule (May–Jun 2026): the balance is capped
-     *  at the usual 2, bets and wins may carry up to 4 when a sub-cent value needs it. */
-    money(amount, currency, extra = 2) {
-      const meta = CURRENCY[currency || state.currency] ||
-                   { symbol: currency || state.currency, decimals: 2, after: true };
-      const a = amount || 0;
-      const v = a / UNIT;
-      const maxDec = Math.min(6, meta.decimals + Math.max(0, extra));
-      const unit = Math.pow(10, 6 - meta.decimals);
-      // rounded DOWN to the currency's precision, never up (a balance of 0.005 is 0.00, not 0.01)
-      let s = (Math.floor(a / unit) * unit / UNIT).toFixed(meta.decimals);
-      if (extra > 0 && unit > 1 && a % unit !== 0) {
-        s = v.toFixed(maxDec).replace(/0+$/, "");
-        const d = s.split(".")[1] || "";
-        if (d.length < meta.decimals) s = v.toFixed(meta.decimals);   // never a bare "0." (2026-11-16 audit [273])
-      }
-      s = group(s);
-      if (social && !CURRENCY_SOCIAL.has(currency || state.currency)) return `${s} ${currency || state.currency}`;   // social mode: never a $ / € sign
-      return meta.after ? `${s} ${meta.symbol}` : `${meta.symbol}${s}`;
-    },
+    /** Money for the screen - see formatMoney: money(a) exact (wins, bets, prices), money(a, null,
+     *  "balance") at the currency's usual decimals, money(a, null, dp) at exactly dp decimals. */
+    money: formatMoney,
+    /** The balance: always two decimals, rounded, in every currency. */
+    moneyBalance(amount, currency) { return formatMoney(amount, currency, "balance"); },
+    /** How many decimals the exact form of an amount takes (at least the currency's usual ones). */
+    exactDp(amount, currency) { return exactDp(amount, metaOf(currency || state.currency).decimals); },
+    /** The currency's usual decimals. */
+    decimalsOf(currency) { return metaOf(currency || state.currency).decimals; },
 
     /** Bet must sit within min/max and land on a step boundary. */
     validBet(amount) {

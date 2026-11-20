@@ -30,8 +30,11 @@ GAME = os.path.join(ROOT, "math-sdk", "games", "falcos")
 PUBLISH = os.path.join(GAME, "library", "publish_files")
 CACHE = os.path.join(GAME, "library", "beta_cache")
 
-PORT = 8733
+PORT = int(sys.argv[1]) if len(sys.argv) > 1 and sys.argv[1].isdigit() else 8733   # `mock_rgs.py 8747` runs it on another port
 UNIT = 1_000_000
+# the social-casino coins (Stake.us): the live RGS sends socialCasino: true with them, and under XGC every mode's
+# own maxBet comes back as 0 - which means "no per-mode cap", not "mode off" (reviewers test both coins)
+SOCIAL_CURRENCIES = {"XGC", "XSC", "XEC", "XRC", "WRW"}
 ID_RE = re.compile(rb'"id":\s*(\d+)')
 
 MIME = {
@@ -180,7 +183,7 @@ class Handler(BaseHTTPRequestHandler):
             except ValueError:
                 return self._err("ERR_VAL", 400, "event must be an integer")
             if book_id not in mode.offsets:
-                return self._json({"error": "ERR_GEN", "message": "no such event"}, 500)
+                return self._send(404, b"", "text/plain")   # the live RGS: a plain 404 with no JSON body
             with open(mode.jsonl, "rb") as fh:
                 fh.seek(mode.offsets[book_id])
                 book = json.loads(fh.readline())
@@ -224,10 +227,12 @@ class Handler(BaseHTTPRequestHandler):
                     "defaultBetLevel": 1 * UNIT,
                     "betLevels": BET_LEVELS,
                     "gameModes": [
-                        {"mode": name, "costMultiplier": cost, "maxBet": BET_LEVELS[-1]}
+                        {"mode": name, "costMultiplier": cost,
+                         "maxBet": 0 if w["currency"] == "XGC" else BET_LEVELS[-1]}
                         for name, cost in MODES.items()
                     ],
-                    "jurisdiction": {"socialCasino": False, "disabledFullscreen": False, "disabledTurbo": False},
+                    "jurisdiction": {"socialCasino": w["currency"] in SOCIAL_CURRENCIES,
+                                     "disabledFullscreen": False, "disabledTurbo": False},
                 },
             }
             if w["round"] is not None:
