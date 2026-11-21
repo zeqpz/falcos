@@ -141,6 +141,18 @@
     built.add(rec);
     return { frames: rec.frames, fw: a.fw, fh: a.fh, k };   // the same array the rebuild refills
   }
+  // (phones, 2026-11-21) an atlas let go: its texture off the GPU, its record gone (the caller forgets its sheet and
+  // asks again when the clip is next wanted). `frames` is the array atlas() handed out.
+  function release(frames) {
+    for (const r of built) if (r.frames === frames) {
+      built.delete(r);
+      r.frames.length = 0;
+      try { r.source.destroy(); } catch (err) { /* already gone */ }
+      dirty = true;
+      return true;
+    }
+    return false;
+  }
   // the GPU context gone: its textures with it. Nothing is drawn from them until each is built again.
   let lost = false;
   function onLost(e) {
@@ -376,5 +388,5 @@
     if (dirty) { dirty = false; app.render(); }
   }
 
-  window.BoardGL = { on: false, init, atlas, touch: () => { dirty = true; }, MAX_RES, get app() { return app; }, get cells() { return C; } };   // cells: read-only, for QA
+  window.BoardGL = { on: false, init, atlas, release, touch: () => { dirty = true; }, MAX_RES, get app() { return app; }, get cells() { return C; } };   // cells: read-only, for QA
 })();

@@ -4198,7 +4198,9 @@ function loadSymFrames() {
     // clip at a time, every symbol's at once.
     await Promise.all(ids.map(id => symSheet(id, "land")));
     (async () => {
-      for (const clip of (window.MOBILE ? ["hit", "burn"] : ["hit", "idle", "burn"])) await Promise.all(ids.map(id => (man.symbols[id].clips[clip] ? symSheet(id, clip) : Promise.resolve()).catch(() => {})));
+      // (phones: only the landings are held. The win and burn clips come in when a symbol first plays one and the
+      // least recently played are let go again - symDemand: 79 MB of textures down to the landings plus a handful)
+      for (const clip of (window.MOBILE ? [] : ["hit", "idle", "burn"])) await Promise.all(ids.map(id => (man.symbols[id].clips[clip] ? symSheet(id, clip) : Promise.resolve()).catch(() => {})));
     })();
     return ids.length > 0;
   })().catch(e => { console.warn("animated symbols unavailable:", e); return false; });
@@ -4297,6 +4299,22 @@ function winClipMs(cells, clip = "hit") {
   }
   return ms;
 }
+// (phones) the clips held beyond the landings: at most SYM_DEMAND_MAX win / burn atlases stay on the GPU; past that
+// the least recently played goes (never one playing now, or played in the last 3 s). It is fetched again from the
+// browser's cache the next time its symbol wins.
+const SYM_DEMAND_MAX = 8;
+function symDemand() {
+  if (!window.MOBILE || !window.BoardGL || !BoardGL.release) return;
+  const now = performance.now(), busy = new Set();
+  for (const el of symPlaying) busy.add(el._name + "_" + el._clip);
+  const extra = [...SYMF.sheets].filter(([key, s]) => s.ok && s.atlas && !SYM_HOLD.includes(key.slice(key.lastIndexOf("_") + 1)));
+  extra.sort((a, b) => (a[1].used || 0) - (b[1].used || 0));
+  for (let i = 0; extra.length - i > SYM_DEMAND_MAX; i++) {
+    const [key, s] = extra[i];
+    if (busy.has(key) || now - (s.used || 0) < 3000) continue;
+    if (BoardGL.release(s.atlas.frames)) SYMF.sheets.delete(key);
+  }
+}
 // Play one of a symbol's clips, always at its own speed: Rapid and Skip hurry the game along, never the icons'
 // animations (owner, 2026-11-04). A clip whose sheet has not arrived yet is let go:
 // the symbol keeps its rest pose (only ever in the first seconds of a session).
@@ -4305,7 +4323,17 @@ function rigPlay(cell, clip, { loop = false, speed = 1 } = {}) {
   if (!el || REDUCED_MOTION) return null;
   clip = CLIP_OF[clip] || clip;
   const c = el._m.clips[clip], s = SYMF.sheets.get(el._name + "_" + clip);
-  if (!c || !s || !s.ok) { if (c && !s) symSheet(el._name, clip).catch(() => {}); return null; }
+  if (!c || !s || !s.ok) {
+    if (c && !s) {
+      const asked = performance.now(), name = el._name, opts = { loop, speed };
+      const got = symSheet(name, clip);
+      // (phones) a clip fetched on demand still plays if it is there within the beat it was wanted for
+      if (window.MOBILE) got.then(() => { symDemand(); if (performance.now() - asked < 450 && rigOf(cell) === el && el._name === name && !symPlaying.has(el)) rigPlay(cell, clip, opts); }, () => {});
+      else got.catch(() => {});
+    }
+    return null;
+  }
+  s.used = performance.now();
   Object.assign(el, { _clip: clip, _t0: performance.now(), _rate: clip === "idle" ? speed * SYM_IDLE_RATE : speed, _loop: loop });
   symDraw(el, clip, 0);
   symPlaying.add(el);
@@ -4953,7 +4981,7 @@ function boardThud(r) {
   // newer one won anyway).
   const k = 0.7 + r * 0.12, ease = "cubic-bezier(.2,.8,.3,1)", bd = $("board");
   if (!REDUCED_MOTION && bd._thud) bd._thud.cancel();
-  if (!REDUCED_MOTION) bd._thud = bd.animate([
+  if (!REDUCED_MOTION && !window.MOBILE) bd._thud = bd.animate([   // (phones: the board is never animated whole - a 29 MB layer)
     { transform: "none", easing: ease },
     { offset: .35, transform: `translateY(${(2.4 * k).toFixed(2)}px) rotate(${(.12 * k).toFixed(3)}deg)`, easing: ease },
     { offset: .7, transform: `translateY(${(-.8 * k).toFixed(2)}px)`, easing: ease },
