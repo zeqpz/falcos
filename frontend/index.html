@@ -3371,9 +3371,17 @@ document.documentElement.classList.toggle("mob", window.MOBILE);
   html.mob .stage, html.mob #bgwall { transform: none !important; animation: none !important; }
   html.mob .glassfx { display: none !important; }
   /* the board never animates as a whole (its pop on a reveal was a 29 MB layer, with layers for all that lies over it) */
-  html.mob .board, html.mob .board.pop { animation: none !important; transition: none !important; scale: 1 !important; }
+  html.mob #board, html.mob .board, html.mob .board.pop { animation: none !important; transition: none !important; scale: 1 !important; }   /* (#board: its bonus glow is set by id) */
   /* no motion-blur smears, nothing drifting at idle */
   html.mob .smear { display: none !important; }
+  /* (free spins, 2026-11-22) the bonus scenes hold still: the zombie night's drifting clouds were four layers twice the
+     screen's width (95 MB for the whole bonus); the total-win screen's burst is a 39 MB sprite sheet and its flash a
+     screen-sized layer - a phone shows the win without them */
+  html.mob #bgalt .zclouds i { animation: none !important; will-change: auto !important; }
+  html.mob .fxsprite.twburst, html.mob .twflash { display: none !important; }
+  /* the stage and the bar cut instead of fading / popping round the win screens (31 MB and 12 MB as layers) */
+  html.mob .stage { transition: none !important; }
+  html.mob .bottom, html.mob .bottom.back { animation: none !important; transition: none !important; }
   html.mob .frameglow, html.mob .board.flash .frameglow { animation: none !important; display: none !important; }   /* a 23 MB layer while it flashed */
   html.mob .bonusbtn, html.mob .bonusbtn::before, html.mob .bonusbtn::after, html.mob #bonusBtn, html.mob #bonusBtn::before, html.mob #bonusBtn::after { animation: none !important; }
 </style>
@@ -7599,6 +7607,23 @@ const RGS_MESSAGE = {};
 const paintRgsMessages = () => { for (const [k, v] of Object.entries(RGS_MESSAGE_EN)) RGS_MESSAGE[k] = T(v); };
 paintRgsMessages();
 
+// The unfinished-round card: CONTINUE or SKIP, nothing about the result (resolves "continue" | "skip").
+function resumeAsk() {
+  return new Promise(resolve => {
+    const wrap = document.createElement("div");
+    wrap.className = "infowrap"; wrap.id = "resumeWrap";
+    wrap.innerHTML = `<div class="replaycard" role="alertdialog" aria-modal="true" aria-labelledby="resumeTitle">
+      <div class="rphead"><span class="rppill">${T("Round")}</span><h3 id="resumeTitle">${T("Unfinished round")}</h3></div>
+      <p class="rpfoot" style="margin: 4px 0 14px">${T("You have a round that did not finish. Continue to watch it play out, or skip it. Either way it is settled and your balance is brought up to date.")}</p>
+      <button type="button" class="rpplay" id="resumeGo"><i aria-hidden="true"></i><span>${T("Continue")}</span></button>
+      <button type="button" class="rpplay" id="resumeSkip" style="margin-top: 10px; background: #26304f; color: #fff"><span>${T("Skip")}</span></button>
+    </div>`;
+    document.body.appendChild(wrap);
+    const done = v => { wrap.remove(); resolve(v); };
+    wrap.querySelector("#resumeGo").addEventListener("click", () => done("continue"));
+    wrap.querySelector("#resumeSkip").addEventListener("click", () => done("skip"));
+  });
+}
 /** Animate a round's event stream, then settle it. Shared by play, resume and replay —
  *  a replay is watched, not played, so it never touches the wallet (settle: false). */
 async function presentRound(round, { settle = true } = {}) {
@@ -9970,30 +9995,34 @@ async function boot() {
 
   refreshBet();
 
-  // Every bet is stateless (owner, 2026-11-10): the RGS resolves the whole round in the one /play call, and nothing
-  // is saved or resumed mid-round. A round left open by a dropped connection is already decided, so it is simply
-  // settled here (end-round pays it) and its result told in a notice - never replayed, never continued. It is
-  // settled before the buttons come on, so a spin can never reach /play while the RGS still holds it open.
+  // A round left open (the page was refreshed or restarted mid-round, or the connection dropped) is already decided by
+  // the RGS. Engine, 2026-11-21: "users must be given the option to either continue the active round or skip it. The
+  // final win amount must not be displayed automatically." So nothing is settled or shown on its own: once the opening
+  // screens are done a card asks. CONTINUE plays the round out from its start, at the amount it was played at, and
+  // settles it the usual way (presentRound). SKIP settles it without playing it: the balance is brought up to date
+  // and no amount is announced. The buttons stay off until one is chosen, so a spin can never reach /play while the
+  // RGS still holds the round open.
   const open = RGS.state.round;
-  let settled = null;
   if (open && open.active !== false) {
-    const amount = open.amount || bet();
-    const paid = typeof open.payout === "number" ? open.payout : Math.round((open.payoutMultiplier || 0) * amount);
-    try {
-      await RGS.endRound();
-      setBalance(RGS.state.balance, paid > 0 ? "up" : null);
-      settled = { paid };
-    } catch (err) {
-      settled = { err };
+    await introDone;
+    const choice = await resumeAsk();
+    if (choice === "continue" && Array.isArray(open.events) && open.events.length) {
+      const amount = open.amount || bet();
+      if (!state.bets.includes(amount)) state.bets = [...state.bets, amount].sort((x, y) => x - y);
+      state.betIdx = state.bets.indexOf(amount);
+      refreshBet();
+      state.playing = true; state.skip = false; state.mode = open.mode || "base";
+      setButtons(false);
+      try { await presentRound(open); }
+      catch (err) { notice(`<b>${RGS_MESSAGE[err.code] || T(err.message || "Round failed")}</b>`, true, 5000); try { await RGS.balance(); setBalance(RGS.state.balance); } catch (e) { /* offline */ } }
+      state.playing = false; state.skip = false;
+    } else {
+      try { await RGS.endRound(); setBalance(RGS.state.balance); notice(T("Round skipped. Your balance is up to date."), false, 4000); }
+      catch (err) { notice(`<b>${RGS_MESSAGE[err.code] || T(err.message || "")}</b>`, true, 6000); }
     }
   }
   setButtons(true);
   tick("Good luck.");
-  if (settled && settled.err) notice(`<b>${RGS_MESSAGE[settled.err.code] || T(settled.err.message || "")}</b>`, true, 6000);
-  else if (settled) {
-    await introDone;
-    notice(settled.paid > 0 ? T(`Your last round was settled: it paid <b>${fmt(settled.paid)}</b>`) : T("Your last round was settled"), false, 5000);
-  }
 }
 boot();
 </script>

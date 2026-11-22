@@ -25,7 +25,7 @@ const UA = "Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/6
   });
   const p = await c.newPage();
   const errs = []; let crashed = false;
-  p.on("pageerror", e => errs.push(e.message.slice(0, 160))); p.on("crash", () => { crashed = true; console.log("*** CRASH"); });
+  p.on("pageerror", e => errs.push(e.message.slice(0, 160))); p.on("console", m => { if (m.type() === "error" || m.type() === "warning") errs.push(m.type() + " " + m.text().slice(0, 140)); }); p.on("crash", () => { crashed = true; console.log("*** CRASH"); });
   await p.goto(`${base}/index.html?sessionID=p${Date.now()}&rgs_url=${base}&lang=en&device=mobile${extra}`);
   const census = tag => p.evaluate(async tag => {
     const name = el => (el.id ? "#" + el.id : el.tagName.toLowerCase() + "." + String(el.className && el.className.baseVal !== undefined ? el.className.baseVal : el.className).split(" ").slice(0, 2).join("."));
@@ -60,6 +60,23 @@ const UA = "Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/6
   for (let i = 0; i < 3; i++) { await p.touchscreen.tap(vp.width / 2, vp.height * .62); await p.waitForTimeout(2500); }
   const bd = await snap("board");
   let peak = bd;
+  if (process.env.BUY) {
+    await p.evaluate(() => document.getElementById("bonusBtn").click()); await p.waitForTimeout(1800);
+    const how = await p.evaluate(async i => { const w = ms => new Promise(r => setTimeout(r, ms)); const vis = sel => [...document.querySelectorAll(sel)].filter(b => b.getClientRects().length && !b.disabled); const go = vis("#bonusWrap button").filter(b => /^play/i.test(b.textContent.trim()))[i]; if (!go) return "no card"; go.click(); await w(900); const conf = vis("#bonusWrap button").find(b => /confirm/i.test(b.textContent)); if (conf) conf.click(); return "bought card " + i; }, +process.env.BUY);
+    console.log(how);
+    const t0 = Date.now(); let idle = 0, n = 0;
+    while (Date.now() - t0 < 240000 && idle < 3 && !crashed) {
+      await p.waitForTimeout(2200);
+      await p.touchscreen.tap(vp.width / 2, vp.height * .5).catch(() => {});
+      const playing = await p.evaluate(() => state.playing).catch(() => false);
+      idle = playing ? 0 : idle + 1;
+      const r = await census("b" + Math.round((Date.now() - t0) / 1000));
+      const extra = await p.evaluate(() => ({ nodes: document.querySelectorAll("*").length, anims: document.getAnimations().length, fs: (document.querySelector(".fsplate, #fsLeft, .spinsleft") || {}).textContent || "" })).catch(() => ({}));
+      if (n++ % 6 === 0 || (r.total || 0) > (peak.total || 0)) console.log(`${r.tag}: TOTAL ${r.total} | cv ${r.cvN}=${r.cvMB} | tex ${r.texN}=${r.texMB} | pics ${r.picMB} | layers ${r.layN}=${r.layMB} | nodes ${extra.nodes} anims ${extra.anims}`);
+      if ((r.total || 0) > (peak.total || 0)) peak = r;
+    }
+    console.log("bonus ran", Math.round((Date.now() - t0) / 1000), "s");
+  } else
   for (let i = 0; i < +spins && !crashed; i++) {
     await p.evaluate(() => { const s = document.getElementById("spinBtn"); if (s && !s.disabled) s.click(); }).catch(() => {});
     for (let k = 0; k < 5; k++) { await p.waitForTimeout(700); const r = await snap(`spin${i + 1}.${k}`); if ((r.total || 0) > (peak.total || 0)) peak = r; }
