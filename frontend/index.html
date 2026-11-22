@@ -3381,6 +3381,7 @@ document.documentElement.classList.toggle("mob", window.MOBILE);
   html.mob .fxsprite.twburst, html.mob .twflash { display: none !important; }
   /* the stage and the bar cut instead of fading / popping round the win screens (31 MB and 12 MB as layers) */
   html.mob .stage { transition: none !important; }
+  html.mob .board::after, html.mob .board.pop::after { animation: none !important; }   /* the pop's glow lives on the board's ::after: a 29 MB layer */
   html.mob .bottom, html.mob .bottom.back { animation: none !important; transition: none !important; }
   html.mob .frameglow, html.mob .board.flash .frameglow { animation: none !important; display: none !important; }   /* a 23 MB layer while it flashed */
   html.mob .bonusbtn, html.mob .bonusbtn::before, html.mob .bonusbtn::after, html.mob #bonusBtn, html.mob #bonusBtn::before, html.mob #bonusBtn::after { animation: none !important; }
