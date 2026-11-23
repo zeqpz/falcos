@@ -3381,6 +3381,7 @@ document.documentElement.classList.toggle("mob", window.MOBILE);
   html.mob .fxsprite.twburst, html.mob .twflash { display: none !important; }
   /* the stage and the bar cut instead of fading / popping round the win screens (31 MB and 12 MB as layers) */
   html.mob .stage { transition: none !important; }
+  html.mob .bonuspop, html.mob .bonuspop.fit { animation: none !important; }   /* the Buy Bonus menu cuts in: its pop was an 11 MB layer */
   html.mob .board::after, html.mob .board.pop::after { animation: none !important; }   /* the pop's glow lives on the board's ::after: a 29 MB layer */
   html.mob .bottom, html.mob .bottom.back { animation: none !important; transition: none !important; }
   html.mob .frameglow, html.mob .board.flash .frameglow { animation: none !important; display: none !important; }   /* a 23 MB layer while it flashed */
@@ -5921,12 +5922,36 @@ const musicRaw = {};
 const fetchMusic = name => musicRaw[name] || (musicRaw[name] =
   fetch(OPUS_OK ? MUSIC[name].ogg : MUSIC[name].aac).then(r => r.ok ? r.arrayBuffer() : null).catch(() => null));
 audioLater.then(() => fetchMusic("base")).then(() => Object.keys(MUSIC).forEach(name => fetchMusic(name)));
+// Decoded sound on a phone (Engine, iPhone 12, 2026-11-22: the page was killed on opening the Buy Bonus menu - the
+// menu's music being decoded on top of everything else). Decoded, the game's sound was ~96 MB there - the base loop
+// alone 24 MB, the 178 effects ~50 MB, each as 48 kHz stereo floats - twice what all its pictures and textures hold.
+// A phone's context runs at 24 kHz (audio(), below) and every decoded clip is folded down to mono before it is kept
+// (slimSnd): a quarter of the memory. And the decodes take turns, two at a time, instead of all 178 at once.
+// Desktop is untouched: decodeSnd is plain decodeAudioData there.
+const slimSnd = buf => {
+  const O = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+  if (!window.MOBILE || !buf || buf.numberOfChannels < 2 || !O) return buf;
+  try {
+    const oc = new O(1, buf.length, buf.sampleRate), src = oc.createBufferSource();
+    src.buffer = buf; src.connect(oc.destination); src.start();
+    const done = oc.startRendering();
+    return done && done.then ? done.then(m => m || buf, () => buf) : buf;
+  } catch (e) { return buf; }
+};
+let sndBusy = 0;
+const sndWaiting = [];
+function decodeSnd(bytes) {
+  if (!window.MOBILE) return actx.decodeAudioData(bytes);
+  const turn = sndBusy < 2 ? (sndBusy++, Promise.resolve()) : new Promise(r => sndWaiting.push(r));
+  const next = () => { const n = sndWaiting.shift(); if (n) n(); else sndBusy--; };
+  return turn.then(() => actx.decodeAudioData(bytes)).then(slimSnd).then(b => { next(); return b; }, e => { next(); throw e; });
+}
 const musicTrack = {};   // name -> Promise<{ buf, at } | null>; at: where the cue's first frame sits in buf, in seconds
 function loadTrack(name) {
   if (musicTrack[name]) return musicTrack[name];
   const m = MUSIC[name];
-  const fromOgg = () => fetchMusic(name).then(b => actx.decodeAudioData(b)).then(buf => ({ buf, at: 0 }));
-  const fromAac = () => (OPUS_OK ? fetch(m.aac).then(r => r.arrayBuffer()) : fetchMusic(name)).then(b => actx.decodeAudioData(b))
+  const fromOgg = () => fetchMusic(name).then(b => decodeSnd(b)).then(buf => ({ buf, at: 0 }));
+  const fromAac = () => (OPUS_OK ? fetch(m.aac).then(r => r.arrayBuffer()) : fetchMusic(name)).then(b => decodeSnd(b))
     .then(buf => ({ buf, at: Math.max(0, (m.aacStart - Math.max(0, m.aacFrames - buf.duration * MUSIC_RATE)) / MUSIC_RATE) }));
   musicTrack[name] = (OPUS_OK ? fromOgg().catch(fromAac) : fromAac()).catch(() => null);   // silence, never a broken round
   return musicTrack[name];
@@ -5938,7 +5963,7 @@ const LOOP_RESUMES = ["base", "menu"];
 // Decoded, the five cues would hold ~70 MB of samples - a lot for a phone. The base game's loop and
 // the intro (which has to hit the moment a bonus lands) stay decoded; each other cue is decoded
 // while the one before it plays (NEXT) or as it is asked for, and let go once it has faded out.
-const MUSIC_KEEP = ["base", "intro"], MUSIC_NEXT = { intro: "bonus", bonus: "total" };
+const MUSIC_KEEP = window.MOBILE ? ["base"] : ["base", "intro"], MUSIC_NEXT = { intro: "bonus", bonus: "total" };
 // Fade the wanted cue up and every other one down, over `fade` seconds. Before the first touch it
 // only records the choice: the browser keeps the sound shut until then. A cue with a head starts
 // from its top, hit first; a cue on the beat of the one it takes over from (the free spins after
@@ -6080,7 +6105,8 @@ function audio() {
   const Ctx = window.AudioContext || window.webkitAudioContext;
   if (!Ctx) return null;
   if (!actx) {
-    actx = new Ctx();
+    if (window.MOBILE) { try { actx = new Ctx({ sampleRate: 24000 }); } catch (e) { actx = null; } }   // (phones: half the samples)
+    if (!actx) actx = new Ctx();
     // everything routes through one of two buses so the volume sliders (and mute) are a
     // single gain each rather than a change to every source
     sfxBus = actx.createGain(); sfxBus.connect(actx.destination);
@@ -6088,8 +6114,8 @@ function audio() {
     applyVolumes();
     for (const name of Object.keys(SFX)) {
       const url = SFX[name];   // one decode per file: the names sharing it share the buffer
-      const dec = sfxDecodeByUrl[url] || (sfxDecodeByUrl[url] = sfxRaw[name].then(b => b && actx.decodeAudioData(b))
-        .catch(() => aacOf(url).then(b => b && actx.decodeAudioData(b))));   // an Opus copy that will not decode: the AAC
+      const dec = sfxDecodeByUrl[url] || (sfxDecodeByUrl[url] = sfxRaw[name].then(b => b && decodeSnd(b))
+        .catch(() => aacOf(url).then(b => b && decodeSnd(b))));   // an Opus copy that will not decode: the AAC
       sfxDecoding[name] = dec
         .then(buf => { if (buf) sfxBuf[name] = buf; })
         .catch(() => {});   // a missing clip just means silence, never a broken round

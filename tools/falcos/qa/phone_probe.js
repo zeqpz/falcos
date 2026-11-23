@@ -9,6 +9,17 @@ const UA = "Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/6
   const c = await b.newContext(eng === "webkit" ? { ...pw.devices["iPhone 12"] } : { viewport: { width: 390, height: 664 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true, userAgent: UA });
   await c.addInitScript(() => {
     const T = window.__tex = { live: new Map(), bytes: 0, ctx: 0, bmp: 0 };
+    const A = window.__aud = { bytes: 0, n: 0, list: [] };
+    for (const C of [window.AudioContext, window.webkitAudioContext, window.OfflineAudioContext]) {
+      if (!C || C.prototype.__hooked) continue; C.prototype.__hooked = true;
+      const dec = C.prototype.decodeAudioData;
+      C.prototype.decodeAudioData = function (buf, ok, bad) {
+        const inLen = buf && buf.byteLength;
+        const note = b => { if (b) { const by = b.length * b.numberOfChannels * 4; A.bytes += by; A.n++; A.list.push([+(by / 1e6).toFixed(1), +b.duration.toFixed(1), inLen]); } return b; };
+        const p = dec.call(this, buf, b => { note(b); ok && ok(b); }, bad);
+        return p && p.then ? (ok ? p : p.then(note)) : p;
+      };
+    }
     const hook = P => {
       if (!P) return;
       const gc = HTMLCanvasElement.prototype.getContext;
@@ -51,15 +62,29 @@ const UA = "Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/6
     for (const [u, n] of pics) { if (u.startsWith("data:")) continue; const mb = await size(u); picMB += mb; plist.push([+mb.toFixed(1), (u.split("/assets/")[1] || u.slice(-30)), n]); }
     plist.sort((a, b) => b[0] - a[0]); layers.sort((a, b) => b[0] - a[0]);
     const cvMB = cv.reduce((s, c) => s + c[3], 0), layMB = layers.reduce((s, l) => s + l[0], 0), texMB = window.__tex.bytes / 1e6;
-    return { tag, total: +(cvMB + layMB + texMB + picMB).toFixed(0), cvMB: +cvMB.toFixed(1), cvN: cv.length, cvTop: cv.slice(0, 6), texMB: +texMB.toFixed(1), texN: window.__tex.live.size, gl: window.__tex.ctx, picMB: +picMB.toFixed(1), picTop: plist.slice(0, 8), layMB: +layMB.toFixed(1), layN: layers.length, layTop: layers.slice(0, 8), filt: filt.length, transform: getComputedStyle(app).transform.slice(0, 30), zoom: z, mob: document.documentElement.className };
+    let audMB = 0, rate = 0; const heldSet = new Set(), tracks = [];
+    try { for (const b of Object.values(sfxBuf)) if (b) heldSet.add(b); } catch (e) {}
+    try { for (const [n, pr] of Object.entries(musicTrack)) { const t = await Promise.race([pr, new Promise(r => setTimeout(() => r(null), 50))]); if (t && t.buf) { heldSet.add(t.buf); tracks.push(n); } } } catch (e) {}
+    for (const b of heldSet) audMB += b.length * b.numberOfChannels * 4 / 1e6;
+    try { rate = actx ? actx.sampleRate : 0; } catch (e) {}
+    window.__aud.n = heldSet.size; window.__aud.list = [[rate, tracks.join("+")]];
+    return { tag, audMB: +audMB.toFixed(1), audN: window.__aud.n, audTop: window.__aud.list.slice().sort((x, y) => y[0] - x[0]).slice(0, 8), total: +(cvMB + layMB + texMB + picMB + audMB).toFixed(0), cvMB: +cvMB.toFixed(1), cvN: cv.length, cvTop: cv.slice(0, 6), texMB: +texMB.toFixed(1), texN: window.__tex.live.size, gl: window.__tex.ctx, picMB: +picMB.toFixed(1), picTop: plist.slice(0, 8), layMB: +layMB.toFixed(1), layN: layers.length, layTop: layers.slice(0, 8), filt: filt.length, transform: getComputedStyle(app).transform.slice(0, 30), zoom: z, mob: document.documentElement.className };
   }, tag).catch(e => ({ tag, err: e.message.slice(0, 100) }));
   const out = [];
-  const snap = async tag => { const r = await census(tag); out.push(r); console.log(`${r.tag}: TOTAL ${r.total} MB | canvases ${r.cvN} = ${r.cvMB} | textures ${r.texN} = ${r.texMB} (gl ${r.gl}) | pictures ${r.picMB} | layers ${r.layN} = ${r.layMB} | filters ${r.filt} | ${r.transform} zoom ${r.zoom} ${r.mob} ${r.err || ""}`); return r; };
+  const snap = async tag => { const r = await census(tag); out.push(r); console.log(`${r.tag}: TOTAL ${r.total} MB | canvases ${r.cvN} = ${r.cvMB} | textures ${r.texN} = ${r.texMB} (gl ${r.gl}) | pictures ${r.picMB} | layers ${r.layN} = ${r.layMB} | AUDIO ${r.audN} = ${r.audMB} | filters ${r.filt} | ${r.transform} zoom ${r.zoom} ${r.mob} ${r.err || ""}`); return r; };
   await p.waitForTimeout(8000); await snap("load");
   const vp = p.viewportSize();
   for (let i = 0; i < 3; i++) { await p.touchscreen.tap(vp.width / 2, vp.height * .62); await p.waitForTimeout(2500); }
   const bd = await snap("board");
   let peak = bd;
+  if (process.env.SHOP) {
+    for (let k = 0; k < 3; k++) {
+      await p.evaluate(() => document.getElementById("bonusBtn").click());
+      for (const t of [300, 900, 2500]) { await p.waitForTimeout(t === 300 ? 300 : t - 300); const r = await snap("shop" + k + "@" + t); if ((r.total || 0) > (peak.total || 0)) peak = r; }
+      await p.evaluate(() => { const x = document.getElementById("bonusClose") || document.querySelector("#bonusWrap .bshopx"); if (x) x.click(); });
+      await p.waitForTimeout(1500); await snap("closed" + k);
+    }
+  } else
   if (process.env.BUY) {
     await p.evaluate(() => document.getElementById("bonusBtn").click()); await p.waitForTimeout(1800);
     const how = await p.evaluate(async i => { const w = ms => new Promise(r => setTimeout(r, ms)); const vis = sel => [...document.querySelectorAll(sel)].filter(b => b.getClientRects().length && !b.disabled); const go = vis("#bonusWrap button").filter(b => /^play/i.test(b.textContent.trim()))[i]; if (!go) return "no card"; go.click(); await w(900); const conf = vis("#bonusWrap button").find(b => /confirm/i.test(b.textContent)); if (conf) conf.click(); return "bought card " + i; }, +process.env.BUY);
@@ -82,6 +107,7 @@ const UA = "Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/6
     for (let k = 0; k < 5; k++) { await p.waitForTimeout(700); const r = await snap(`spin${i + 1}.${k}`); if ((r.total || 0) > (peak.total || 0)) peak = r; }
   }
   console.log("PEAK", peak.tag, peak.total, "MB");
+  console.log("  audio (MB, seconds, file bytes):", JSON.stringify(peak.audTop));
   console.log("  canvases:", JSON.stringify(peak.cvTop)); console.log("  pictures:", JSON.stringify(peak.picTop)); console.log("  layers:", JSON.stringify(peak.layTop));
   console.log("errors", JSON.stringify(errs.slice(0, 5)), "crashed", crashed);
   require("fs").writeFileSync(process.env.OUT || "probe_out.json", JSON.stringify(out));
