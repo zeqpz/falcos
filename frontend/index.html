@@ -3385,6 +3385,12 @@ document.documentElement.classList.toggle("mob", window.MOBILE);
   html.mob .board::after, html.mob .board.pop::after { animation: none !important; }   /* the pop's glow lives on the board's ::after: a 29 MB layer */
   html.mob .bottom, html.mob .bottom.back { animation: none !important; transition: none !important; }
   html.mob .frameglow, html.mob .board.flash .frameglow { animation: none !important; display: none !important; }   /* a 23 MB layer while it flashed */
+  /* (2026-11-22) the bonus scene's plate cuts in under the wash (its fade was a layer the size of the wall), is off the
+     page once the scene is back (it stayed decoded behind opacity 0: 12 MB), and the night plate under it is not
+     drawn while it is up (another 12 MB) */
+  html.mob #bgalt { transition: none !important; }
+  html.mob #bgalt:not(.on) { display: none !important; }
+  html.mob #bgwall.altup { background-image: none !important; }
   html.mob .bonusbtn, html.mob .bonusbtn::before, html.mob .bonusbtn::after, html.mob #bonusBtn, html.mob #bonusBtn::before, html.mob #bonusBtn::after { animation: none !important; }
 </style>
 </head>
@@ -4811,7 +4817,11 @@ function blow(b, variant, f) {
 function burstStep() {
   const ctx = shardCtx, D = burstDpr;
   if (!ctx) { burstRaf = 0; return; }
-  ctx.clearRect(0, 0, shardCanvas.width, shardCanvas.height);
+  // the whole canvas, in its own pixels (bug, 2026-11-22: cleared under the drawing scale, which on a phone is under 1 -
+  // the canvas is at the density the screen shows it - so its right and bottom strips were never wiped and the last
+  // burst's pieces stayed drawn there)
+  const wipe = () => { ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, shardCanvas.width, shardCanvas.height); ctx.setTransform(D, 0, 0, D, 0, 0); };
+  wipe();
   const now = performance.now();
   // the physics steps by the time since the last frame, in 60ths of a second (every speed's unit),
   // so a burst flies the same on a 60 Hz screen and a 144 Hz one
@@ -4909,7 +4919,10 @@ function burstStep() {
   }
   ctx.globalCompositeOperation = "source-over"; ctx.globalAlpha = 1;
   if (bursts.length) burstRaf = requestAnimationFrame(burstStep);
-  else { burstRaf = 0; burstLast = 0; ctx.clearRect(0, 0, shardCanvas.width, shardCanvas.height); }
+  else {
+    burstRaf = 0; burstLast = 0; wipe();
+    if (window.MOBILE) { shardCanvas.width = 0; shardCanvas.height = 0; }   // (phones: not held between bursts - shardLayer sizes it again)
+  }
 }
 // Each slot sits exactly where its cell is laid out. Offsets, not rects: a rect includes
 // whatever transform the cell is animating through, an offset is the resting slot.
@@ -5921,30 +5934,34 @@ setTimeout(releaseAudio, 25000);
 const musicRaw = {};
 const fetchMusic = name => musicRaw[name] || (musicRaw[name] =
   fetch(OPUS_OK ? MUSIC[name].ogg : MUSIC[name].aac).then(r => r.ok ? r.arrayBuffer() : null).catch(() => null));
-audioLater.then(() => fetchMusic("base")).then(() => Object.keys(MUSIC).forEach(name => fetchMusic(name)));
-// Decoded sound on a phone (Engine, iPhone 12, 2026-11-22: the page was killed on opening the Buy Bonus menu - the
-// menu's music being decoded on top of everything else). Decoded, the game's sound was ~96 MB there - the base loop
-// alone 24 MB, the 178 effects ~50 MB, each as 48 kHz stereo floats - twice what all its pictures and textures hold.
-// A phone's context runs at 24 kHz (audio(), below) and every decoded clip is folded down to mono before it is kept
-// (slimSnd): a quarter of the memory. And the decodes take turns, two at a time, instead of all 178 at once.
-// Desktop is untouched: decodeSnd is plain decodeAudioData there.
-const slimSnd = buf => {
-  const O = window.OfflineAudioContext || window.webkitOfflineAudioContext;
-  if (!window.MOBILE || !buf || buf.numberOfChannels < 2 || !O) return buf;
+// (phones, 2026-11-22) The music is not decoded at all there: one <audio> element streams the cue that is playing
+// (MUSIC_STREAM, streamTo below - the sister games' fix, zeqpz/orleans and poweroutage, which pass on Engine's
+// iPhone 12). Every reload Engine reported on Falcos came as a cue was being decoded - the first touch (the base loop
+// and the intro), the free spins (the bonus and total cues), the Buy Bonus menu (its own loop): decodeAudioData holds
+// the whole cue as float samples, twice over while it resamples. A phone only brings the cue files into the browser's
+// cache; nothing of them is held. ?musicstream=0 decodes the music as before (QA).
+const MUSIC_STREAM = !!window.MOBILE && !/[?&]musicstream=0\b/.test(location.search);
+if (MUSIC_STREAM) audioLater.then(() => Object.values(MUSIC).reduce((p, m) => p.then(() => fetch(OPUS_OK ? m.ogg : m.aac).then(r => r.blob()).catch(() => {})), Promise.resolve()));
+else audioLater.then(() => fetchMusic("base")).then(() => Object.keys(MUSIC).forEach(name => fetchMusic(name)));
+// Decoded sound on a phone: every decoded sample is a 32-bit float at the context's rate. A phone's context runs at
+// 32 kHz (the sister games' rate), each effect is kept in mono (monoOf: a plain copy, no second context) and at most
+// two decode at once. Desktop is untouched: decodeSnd is plain decodeAudioData there.
+const AUDIO_RATE = window.MOBILE ? 32000 : 0;
+function monoOf(buf) {
+  if (!window.MOBILE || !buf || buf.numberOfChannels < 2 || !actx) return buf;
   try {
-    const oc = new O(1, buf.length, buf.sampleRate), src = oc.createBufferSource();
-    src.buffer = buf; src.connect(oc.destination); src.start();
-    const done = oc.startRendering();
-    return done && done.then ? done.then(m => m || buf, () => buf) : buf;
+    const k = buf.numberOfChannels, out = actx.createBuffer(1, buf.length, buf.sampleRate), o = out.getChannelData(0);
+    for (let c = 0; c < k; c++) { const d = buf.getChannelData(c); for (let i = 0; i < d.length; i++) o[i] += d[i] / k; }
+    return out;
   } catch (e) { return buf; }
-};
+}
 let sndBusy = 0;
 const sndWaiting = [];
 function decodeSnd(bytes) {
   if (!window.MOBILE) return actx.decodeAudioData(bytes);
   const turn = sndBusy < 2 ? (sndBusy++, Promise.resolve()) : new Promise(r => sndWaiting.push(r));
-  const next = () => { const n = sndWaiting.shift(); if (n) n(); else sndBusy--; };
-  return turn.then(() => actx.decodeAudioData(bytes)).then(slimSnd).then(b => { next(); return b; }, e => { next(); throw e; });
+  const next = () => { const w = sndWaiting.shift(); if (w) w(); else sndBusy--; };
+  return turn.then(() => actx.decodeAudioData(bytes)).then(monoOf).then(b2 => { next(); return b2; }, e => { next(); throw e; });
 }
 const musicTrack = {};   // name -> Promise<{ buf, at } | null>; at: where the cue's first frame sits in buf, in seconds
 function loadTrack(name) {
@@ -5971,6 +5988,7 @@ const MUSIC_KEEP = window.MOBILE ? ["base"] : ["base", "intro"], MUSIC_NEXT = { 
 function musicTo(name, fade = 1.6) {
   music.want = name;
   if (!music.on || !actx) return;
+  if (stream.el) { streamTo(name, fade); return; }   // (phones: streamed, never decoded)
   const live = music.playing[name];
   if (live && !live.leaving) {   // already the one playing
     for (const other of Object.keys(music.playing)) if (other !== name) musicFadeOut(other, fade);
@@ -6033,10 +6051,85 @@ function musicFadeOut(name, fade, when) {
   };
   for (const src of p.srcs) src.stop(gone + .05);
 }
+// (MUSIC_STREAM) the one element the music streams through: made, wired into the music bus and first played in the
+// first touch (iOS lets an element play by itself after that), then handed each cue in turn - a short fade out and in
+// instead of an overlapping cross-fade, and a loop goes round by a seek (a seam of a few ms where it was sample-exact)
+const stream = { el: null, g: null, name: null, swap: 0, loopStart: 0, len: 0, timer: 0, leaving: false, aac: /[?&]musicaac=1\b/.test(location.search) };   // (?musicaac=1: the AAC copies, QA)
+function streamInit() {
+  if (stream.el || !actx) return !!stream.el;
+  try {
+    const el = new Audio();
+    el.preload = "auto";
+    const g = actx.createGain();
+    g.gain.value = 0;
+    g.connect(musicBus);
+    actx.createMediaElementSource(el).connect(g);
+    Object.assign(stream, { el, g });
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) el.pause();
+      else if (stream.name && music.on) el.play().catch(() => {});
+    });
+    // The first touch's pointerdown is not a press the browser lets sound start from on a touch screen (that is the
+    // finger's lift, or the click): the element is asked again on each of those until it is playing.
+    const kick = () => { if (stream.name && music.on && el.paused && !el.ended && !document.hidden) el.play().catch(() => {}); if (actx && actx.state === "suspended") actx.resume().catch(() => {}); };
+    for (const t of ["pointerup", "touchend", "click", "keydown"]) addEventListener(t, kick, true);
+  } catch (e) { stream.el = null; return false; }   // (no media source node: the music is decoded as before)
+  return true;
+}
+// seconds into the playing cue's loop
+const streamPos = () => {
+  const el = stream.el, p = el ? el.currentTime - stream.loopStart : 0;
+  return stream.len > 0 && p > 0 ? p % stream.len : 0;
+};
+function streamTo(name, fade) {
+  const m = MUSIC[name], el = stream.el, g = stream.g;
+  if (!m || (stream.name === name && !stream.leaving)) return;
+  const now = actx.currentTime, out = stream.name ? (m.head ? .08 : Math.min(.6, fade)) : 0;
+  if (stream.name && !stream.leaving) {
+    if (LOOP_RESUMES.includes(stream.name)) music.resume[stream.name] = streamPos();
+    g.gain.cancelScheduledValues(now); g.gain.setValueAtTime(g.gain.value, now); g.gain.linearRampToValueAtTime(0, now + out);
+  }
+  const token = ++stream.swap;
+  stream.leaving = true;
+  const swap = () => {
+    if (token !== stream.swap) return;
+    stream.name = name; stream.leaving = false;
+    stream.loopStart = 0; stream.len = m.frames / MUSIC_RATE;
+    g.gain.cancelScheduledValues(actx.currentTime); g.gain.setValueAtTime(0, actx.currentTime);
+    const aac = !OPUS_OK || stream.aac;
+    el.src = aac ? m.aac : m.ogg;
+    el.play().catch(() => {});   // (in the first touch this is the press that lets it play from now on)
+    // an Opus copy the element says it can play and then cannot (an older iOS): the AAC copy, from then on
+    el.onerror = () => { if (stream.aac || token !== stream.swap) return; stream.aac = true; stream.name = null; stream.swap++; streamTo(name, fade); };
+    const go = () => {
+      if (token !== stream.swap) return;
+      const R = MUSIC_RATE;
+      // the AAC copy carries the encoder's frames and a little of the loop's end in front of the cue (aacStart)
+      const at = aac && isFinite(el.duration) ? Math.max(0, (m.aacStart - Math.max(0, m.aacFrames - el.duration * R)) / R) : 0;
+      stream.loopStart = at + (m.headLen || 0) / R;
+      try { el.currentTime = m.head ? at : stream.loopStart + (music.resume[name] || 0); } catch (e) { /* plays from the top */ }
+      const t = actx.currentTime;
+      g.gain.cancelScheduledValues(t); g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(m.level, t + (m.head ? .02 : fade));
+    };
+    if (el.readyState >= 1) go(); else el.addEventListener("loadedmetadata", go, { once: true });
+  };
+  if (out > 0) setTimeout(swap, out * 1000); else swap();
+  // round the loop: back by its length once it reaches its end (or the file does)
+  if (!stream.timer) stream.timer = setInterval(() => {
+    const e = stream.el;
+    if (!e || !stream.name || stream.leaving || stream.len <= 0 || (e.paused && !e.ended)) return;
+    const end = stream.loopStart + stream.len;
+    if (e.ended || e.currentTime >= end - .03) {
+      try { e.currentTime = stream.loopStart + Math.max(0, Math.min(stream.len - .1, e.currentTime - end)); } catch (x) {}
+      if (e.paused) e.play().catch(() => {});
+    }
+  }, 40);
+}
 // the first touch opens the sound: the wanted loop fades up slowly under the game
 function startMusic() {
   if (music.on || !audio()) return;
   music.on = true;
+  if (MUSIC_STREAM) streamInit();
   musicTo(music.want, 2.5);
 }
 const sfxBuf = {};
@@ -6101,31 +6194,50 @@ const REEL_CURVE = rateCurve(spinPos, REEL_RATE.min, REEL_RATE.max);
 const COUNT_CURVE = rateCurve(p => p * p, .72, 1.95);
 // the payout tally accelerates then eases out; the coin rush is pitched to follow it
 
+// one effect decoded (one decode per file: the names sharing it share the buffer)
+function sfxDecodeOne(name) {
+  if (sfxDecoding[name]) return sfxDecoding[name];
+  if (!sfxRaw[name] || !actx) return Promise.resolve();
+  const url = SFX[name];
+  const dec = sfxDecodeByUrl[url] || (sfxDecodeByUrl[url] = sfxRaw[name].then(b => b && decodeSnd(b))
+    .catch(() => aacOf(url).then(b => b && decodeSnd(b))));   // an Opus copy that will not decode: the AAC
+  return (sfxDecoding[name] = dec
+    .then(buf => { if (buf) sfxBuf[name] = buf; if (window.MOBILE) { delete sfxRaw[name]; delete sfxRawByUrl[url]; } })   // (phones: the file's bytes are let go)
+    .catch(() => {}));   // a missing clip just means silence, never a broken round
+}
 function audio() {
   const Ctx = window.AudioContext || window.webkitAudioContext;
   if (!Ctx) return null;
   if (!actx) {
-    if (window.MOBILE) { try { actx = new Ctx({ sampleRate: 24000 }); } catch (e) { actx = null; } }   // (phones: half the samples)
+    if (AUDIO_RATE) { try { actx = new Ctx({ sampleRate: AUDIO_RATE }); } catch (e) { actx = null; } }   // (phones; an old webkitAudioContext takes no options)
     if (!actx) actx = new Ctx();
     // everything routes through one of two buses so the volume sliders (and mute) are a
     // single gain each rather than a change to every source
     sfxBus = actx.createGain(); sfxBus.connect(actx.destination);
     musicBus = actx.createGain(); musicBus.connect(actx.destination);
     applyVolumes();
-    for (const name of Object.keys(SFX)) {
-      const url = SFX[name];   // one decode per file: the names sharing it share the buffer
-      const dec = sfxDecodeByUrl[url] || (sfxDecodeByUrl[url] = sfxRaw[name].then(b => b && decodeSnd(b))
-        .catch(() => aacOf(url).then(b => b && decodeSnd(b))));   // an Opus copy that will not decode: the AAC
-      sfxDecoding[name] = dec
-        .then(buf => { if (buf) sfxBuf[name] = buf; })
-        .catch(() => {});   // a missing clip just means silence, never a broken round
+    const names = Object.keys(SFX);
+    if (!window.MOBILE) for (const name of names) sfxDecodeOne(name);
+    else {
+      // (phones) the loading screen's own clips now, the rest one at a time, a beat apart: each stereo decode is let
+      // go for its mono copy, and decoding all 178 at the first touch held every one of those at once. One asked for
+      // before its turn is decoded there and then (sfx).
+      for (const name of SFX_EARLY) sfxDecodeOne(name);
+      const rest = names.filter(name => !SFX_EARLY.includes(name));
+      const pump = () => {
+        const name = rest.shift();
+        if (!name) return;
+        const had = !!sfxDecoding[name];
+        sfxDecodeOne(name).then(() => setTimeout(pump, had ? 0 : 90));
+      };
+      pump();
     }
   }
   if (actx.state === "suspended") actx.resume().catch(() => {});
   return actx;
 }
 // browsers only allow audio once the player has interacted — first gesture opens the context
-addEventListener("pointerdown", () => { audio(); startMusic(); if (actx) loadTrack("intro"); }, { once: true });   // the intro is decoded ahead of the first bonus
+addEventListener("pointerdown", () => { audio(); startMusic(); if (actx && !stream.el && !window.MOBILE) loadTrack("intro"); }, { once: true });   // the intro is decoded ahead of the first bonus
 
 function sfx(name, rate = 1) {
   if (vol.sfx <= 0) return;   // the bar is at the bottom: don't even open the context
@@ -6139,7 +6251,7 @@ function sfx(name, rate = 1) {
   if (!sfxBuf[name]) {
     // asked for before the clip has decoded (the first press after the page opens): play it
     // the moment it has, as long as that is still the same beat, otherwise let it go
-    const at = performance.now(), pending = sfxDecoding[name];
+    const at = performance.now(), pending = sfxDecoding[name] || (window.MOBILE ? sfxDecodeOne(name) : null);   // (phones: not its turn yet - decoded now)
     if (pending) pending.then(() => { if (sfxBuf[name] && performance.now() - at < 600) sfx(name, rate); });
     return;
   }
@@ -6686,7 +6798,8 @@ function spriteFx(parent, name, { once = true, cls = "", style = {}, before = nu
   }).catch(() => el.remove());
   return el;
 }
-setTimeout(() => { fxSheet("winburst").catch(() => {}); }, 3000);
+// (phones never show it - html.mob .twburst is hidden - and it is 3840 x 2520: 39 MB decoded, held from 3 s in)
+if (!window.MOBILE) setTimeout(() => { fxSheet("winburst").catch(() => {}); }, 3000);
 // The Lighter's area goes up: the simple fire - a glow over exactly the cells burning (the area's own shape, 2x3 or
 // 2x2 at the board's edge too), two flickering flame layers and a spray of sparks (owner, 2026-11-13: "add back the
 // simple fire fx that we have for our lighter drop" - the Blender fire sprites are retired)
@@ -6790,10 +6903,12 @@ const Scene = (() => {
       a.style.setProperty("--alt", `url("${p.url}")`);
       a.style.setProperty("--altpatch", `url("${p.patch}")`);   // its building lettering hidden while playing
       a.classList.add("on");
+      if (window.MOBILE) $("bgwall").classList.add("altup");   // (phones: the night plate under it is not held meanwhile)
       if (name === "zombie") { placeSign(); flicker(); } else stopFlicker();
       a.classList.toggle("zombie", name === "zombie");
     } else {
       a.classList.remove("on", "zombie");
+      if (window.MOBILE) { $("bgwall").classList.remove("altup"); a.style.removeProperty("--alt"); a.style.removeProperty("--altpatch"); }   // (phones: the bonus plate is let go)
       stopFlicker();
     }
   }
@@ -8562,13 +8677,17 @@ function assetUrls() {
   for (const n of ["plate_zombie", "plate_nitro", "plate_midnight"]) urls.add(plateUrl("assets/scene/" + n + ".webp"));   // the bonus scenes
   for (const n of ["zombie", "nitro", "midnight"]) urls.add(plateUrl("assets/scene/signpatch_" + n + ".webp"));   // and their play-time sign patches
   // a plate named in :root is the desktop one; on a phone-sized window only its _m twin is drawn
-  return [...new Set([...urls].map(u => /(bonus_wall|scene\/plate_\w+?)\.webp$/.test(u) && !/_m\.webp$/.test(u) ? plateUrl(u) : u))];
+  // (the sign patch too: a phone fetched the desktop's 2560 x 1440 one - 15 MB decoded - beside its own)
+  return [...new Set([...urls].map(u => /(bonus_wall|scene\/plate_\w+?|scene\/signpatch_\w+?)\.webp$/.test(u) && !/_m\.webp$/.test(u) ? plateUrl(u) : u))];
 }
 // What the loading screen and the first board do not show waits until the game is up (perf, 2026-11-10: the
 // load bar carried ~16 MB of pictures, a third of them the buy menu, the win screens and the bonus scenes);
 // it comes down right after, long before any of it can be asked for, and is held the same way.
 const LATER_PIC = /assets\/(menu\/|fillup\/|scene\/plate_|scene\/clouds_|(big|mega|xtreme|total)_win|tier_bg|total_bg|bonus_panel|info_panel|banner_box)/;
 function preloadLater() {
+  // (phones: brought into the browser's cache one at a time and not held - a held picture keeps its decoded pixels
+  // once it has been on screen, and these are the win screens and every bonus scene: 60 MB decoded)
+  if (window.MOBILE) { assetUrls().filter(u => LATER_PIC.test(u)).reduce((p, u) => p.then(() => fetch(u).then(r => r.blob()).catch(() => {})), Promise.resolve()); return; }
   for (const u of assetUrls().filter(u => LATER_PIC.test(u))) {
     const img = new Image();
     if (maskUrls.has(u)) img.crossOrigin = "anonymous";
@@ -8598,6 +8717,7 @@ function releaseGonePics() {
     return false;
   };
   for (let i = heldPics.length - 1; i >= 0; i--) if (gone(heldPics[i])) heldPics.splice(i, 1);
+  if (window.MOBILE) heldPics.length = 0;   // (phones: nothing is held once the game is in - what is on screen holds itself)
 }
 // Reports how far along it is, from 0 to 1, and settles once everything has either arrived
 // or failed - a missing piece must never hold the game shut.
@@ -8945,7 +9065,7 @@ function headFx(wrap, head, lvl) {
   // the payoff (owner, 2026-11-13: "make the win animations for dopamine"): a burst of gold coins fountaining up and
   // flipping, confetti and sparkles, behind the headline, once each time a tier lands - a burst, not a rain (owner,
   // 2026-11-10: "remove all the things falling behind it")
-  spriteFx(wrap, "winburst", { cls: "twburst", before: wrap.querySelector(".twin"), fadeIn: 120, fadeOut: 380 });
+  if (!window.MOBILE) spriteFx(wrap, "winburst", { cls: "twburst", before: wrap.querySelector(".twin"), fadeIn: 120, fadeOut: 380 });
   const twin = wrap.querySelector(".twin"), flash = wrap.querySelector(".twflash");
   twin.style.setProperty("--knock", f.knock);
   twin.classList.remove("knock"); restyle(twin); twin.classList.add("knock");
@@ -9446,7 +9566,8 @@ function showMenu(el, on) {
     return;
   }
   if (el.hidden) return;
-  if (REDUCED_MOTION || document.hidden) { el.hidden = true; return; }
+  // (phones: a menu cuts out - its exit animated the whole panel, a layer at its layout size x 9 under the scaled page)
+  if (REDUCED_MOTION || document.hidden || window.MOBILE) { el.hidden = true; return; }
   el.classList.add("leaving"); el.inert = true;   // first, so it is never drawn as gone in between
   el.hidden = true;
   // the curve: a quick swell, then a shrink you can see, and only at the end does it fade out
